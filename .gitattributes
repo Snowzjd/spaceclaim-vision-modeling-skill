@@ -1,0 +1,17 @@
+* text=auto
+
+*.md text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.csv text eol=lf
+
+*.scscript binary
+*.scdoc binary
+*.step binary
+*.stp binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
