@@ -75,16 +75,25 @@ The nested folder is the installable Skill package. Repository-level tests and r
 
 ## Project boundary
 
-This is an independent SpaceClaim modeling module, not a complete Ansys simulation workflow. It does not depend on private CAD models, research parameters, desktop recordings, local paths, meshing state, or solver state. A broader Ansys workflow may consume a released version through the documented integration contract.
+This project covers the SpaceClaim modeling stage:
 
-Not included in v0.1:
+- interpret visual and textual geometry intent;
+- define geometry contracts, parameters, coordinate systems, and modeling strategies;
+- generate, audit, debug, and minimally repair version-aware SpaceClaim scripts;
+- validate body and face identities, dimensions, topology, names, runtime reports, native saves, reopen persistence, and requested geometry exports at the evidence level actually tested.
+
+Outside the project boundary:
 
 - Ansys binaries or proprietary API documentation.
-- Private models, scripts, recordings, or unpublished research data.
 - Guaranteed cross-version compatibility.
-- Shared-topology, neutral-export, mesh-connectivity, Fluent, or solver validation.
+- Workbench project orchestration.
+- Meshing, mesh-quality acceptance, or mesh-connectivity validation.
+- Fluent or other solver setup, execution, convergence, conservation, and result validation.
+- Simulation data processing, plotting, and reporting.
 
 Static script checks, visual inspection, SpaceClaim runtime execution, geometry-kernel measurements, native save/reopen, export, meshing, and solver readiness remain separate validation levels.
+
+Repository examples and fixtures must be public and redistributable; private models, recordings, credentials, unpublished research data, and user-specific paths are not accepted as package content.
 
 This project is independent and is not affiliated with or endorsed by Ansys, Inc.
 

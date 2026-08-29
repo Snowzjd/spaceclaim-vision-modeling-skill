@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-No changes yet.
+- Clarify the project boundary around the Skill's SpaceClaim modeling capabilities, handoff contracts, exclusions, and validation layers.
 
 ## v0.1 - 2026-08-29
 
@@ -12,5 +12,5 @@ No changes yet.
 - Add a tested static `.scscript` archive auditor.
 - Add SpaceClaim API V21 read-only geometry-audit and semantic-helper templates.
 - Add a public synthetic acceptance case and an evidence-bounded capability matrix.
-- Freeze the integration boundary with the separate parent Ansys Workflow.
+- Define the Skill's modeling scope, handoff contract, and downstream evidence boundary.
 - License the repository under Apache License 2.0.

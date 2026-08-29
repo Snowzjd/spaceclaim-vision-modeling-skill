@@ -2,12 +2,12 @@
 
 Develop `spaceclaim-vision-modeling` as a standalone, domain-independent SpaceClaim modeling skill.
 
-## Architectural boundary
+## Product boundary
 
-- Do not depend on private parent repositories, local research paths, unpublished models, run directories, or unpublished evidence.
-- Do not modify a consuming workflow while developing this repository.
-- Treat future integration as a downstream consumer relationship through documented inputs, outputs, versions, and evidence, not shared mutable state.
-- Keep meshing, solver setup, solver execution, data processing, and reporting outside this skill.
+- Cover visual or textual geometry interpretation, modeling-strategy selection, version-aware SpaceClaim scripting, runtime diagnostics, and geometry-level validation.
+- Produce explicit geometry contracts, parameters, scripts, native-model evidence, requested geometry exports, and unresolved-risk handoffs at the validation level actually reached.
+- Keep meshing, Workbench orchestration, solver setup and execution, simulation data processing, and simulation reporting outside this skill.
+- Treat script checks, SpaceClaim execution, geometry measurements, native save/reopen, neutral export, meshing, and solver readiness as separate evidence layers.
 
 ## Development priorities
 
@@ -23,5 +23,6 @@ Develop `spaceclaim-vision-modeling` as a standalone, domain-independent SpaceCl
 - Keep `SKILL.md` concise and route detailed rules to `references/`.
 - Put deterministic tools in `scripts/` and copyable templates or public case assets in `assets/`.
 - Use only redistributable public examples. Do not copy private models, recordings, vendor binaries, licensed documentation, credentials, or user-specific paths.
+- Keep repository development self-contained; do not require unpublished repositories, run directories, or evidence that cannot be redistributed or reproduced.
 - Preserve explicit evidence boundaries. A script, screenshot, or native model alone does not prove export, mesh, or solver readiness.
 - Run the official skill validator after structural changes.

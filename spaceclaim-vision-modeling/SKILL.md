@@ -7,7 +7,7 @@ description: Convert images, sketches, engineering drawings, CAD screenshots, pr
 
 Turn visual or textual design intent into a reviewable SpaceClaim modeling plan, executable script, and evidence-bounded validation result.
 
-This is the v0.1 standalone modeling module. It may be called by a broader workflow, but it must not assume meshing, solver, private model, or parent-repository state.
+This is the v0.1 SpaceClaim modeling skill. Its scope runs from geometry intent through SpaceClaim-native construction and geometry validation; meshing and simulation require separate downstream evidence.
 
 ## Core rules
 
@@ -21,9 +21,9 @@ This is the v0.1 standalone modeling module. It may be called by a broader workf
 8. Distinguish static package checks, SpaceClaim runtime success, visual agreement, geometry-kernel measurements, save/reopen evidence, export evidence, and downstream mesh or solver evidence.
 9. Before controlling the user's desktop, explain why control is needed and obtain authorization for that run.
 10. Repair the smallest failing step. Preserve user-confirmed geometry, parameters, names, and output boundaries.
-11. Operate as a standalone SpaceClaim modeling skill. Do not assume a parent Ansys workflow, private repository, research model, local path, meshing stage, or solver state.
+11. Stay within the requested SpaceClaim modeling scope. Do not infer that geometry success proves shared topology, mesh connectivity, solver readiness, or simulation results.
 
-Read [references/integration-boundary.md](references/integration-boundary.md) when another workflow or agent will consume this skill's outputs.
+Read [references/integration-boundary.md](references/integration-boundary.md) when defining inputs, outputs, execution authorization, or handoff requirements for a modeling task.
 
 ## Resource routing
 

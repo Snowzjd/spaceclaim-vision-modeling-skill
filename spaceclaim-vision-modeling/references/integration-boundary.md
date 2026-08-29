@@ -1,28 +1,19 @@
-# Integration boundary
+# Skill scope and handoff boundary
 
-## Standalone responsibility
+## Modeling responsibility
 
-This skill owns only the SpaceClaim modeling module:
+This skill covers the SpaceClaim modeling stage:
 
 - interpret visual and textual geometry intent;
-- establish parameters, coordinate systems, and modeling strategy;
-- generate or repair SpaceClaim scripts;
+- establish geometry contracts, parameters, coordinate systems, constraints, and modeling strategy;
+- generate, audit, debug, or minimally repair version-aware SpaceClaim scripts;
 - run or guide geometry construction when authorized;
-- validate bodies, features, dimensions, topology, names, native saves, and requested exports at the claimed evidence level;
-- return scripts, outputs, reports, and unresolved risks.
+- validate bodies, features, dimensions, topology, names, runtime reports, native saves, reopen persistence, and requested geometry exports at the evidence level actually reached;
+- return scripts, outputs, reports, assumptions, and unresolved risks.
 
-It does not own:
+## Request contract
 
-- mesh generation or mesh-quality acceptance;
-- shared-topology acceptance in a downstream mesher unless explicitly tested as a SpaceClaim operation;
-- Workbench project orchestration;
-- Fluent setup, execution, convergence, or conservation;
-- simulation data processing, plotting, or reporting;
-- private parent-project state.
-
-## Consumer interface
-
-A parent workflow should provide:
+A modeling request should provide:
 
 ```text
 visual or textual geometry intent
@@ -33,6 +24,8 @@ downstream purpose and acceptance thresholds
 input model path or clean-copy rule when applicable
 authorized execution level
 ```
+
+## Result contract
 
 The skill should return:
 
@@ -47,16 +40,26 @@ validation results by evidence layer
 failure diagnostics and next safe action
 ```
 
-## Coupling rules
+## Outside scope
 
-- Keep this repository, version history, releases, and tests independent.
-- Do not import files through absolute paths from a parent repository.
-- Do not require a parent's naming scheme unless supplied as an input contract for the current task.
-- Do not write into a parent's workspace except through an explicitly provided output path.
-- Publish a stable version before a parent workflow pins or vendors the module.
-- Record the consumed skill version and output hashes in the parent workflow.
+The skill does not perform or claim:
+
+- Workbench project orchestration;
+- mesh generation, mesh-quality acceptance, or mesh-connectivity validation;
+- Fluent or other solver setup, execution, convergence, conservation, or result validation;
+- simulation data processing, plotting, or reporting;
+- universal compatibility across untested SpaceClaim or API versions.
+
+Shared-topology operations and neutral exports are outside the v0.1 validated core. If requested, treat them as separate experimental validation targets and claim success only after the corresponding operation and persistence or transfer checks pass. Neither establishes downstream mesh or solver readiness.
+
+## Handoff rules
+
+- Require explicit input and output paths rather than relying on an application's current directory.
+- Use the naming scheme supplied by the current geometry contract; do not invent downstream names silently.
+- Record the Skill version, target SpaceClaim/API version, output paths, and hashes when artifacts are created.
+- Preserve clean inputs, independent outputs, failure-without-save behavior, and save/reopen checks when persistence matters.
 - Treat breaking changes to inputs, outputs, naming, evidence levels, or failure behavior as interface changes.
 
 ## Evidence boundary
 
-Successful modeling does not imply successful meshing or simulation. A parent workflow must run its own topology transfer, mesh connectivity, mesh quality, solver, convergence, and conservation gates after consuming the model.
+Successful modeling does not imply successful meshing or simulation. Topology transfer, mesh connectivity, mesh quality, solver execution, convergence, conservation, and performance conclusions each require their own downstream evidence.
