@@ -13,3 +13,4 @@ No changes yet.
 - Add SpaceClaim API V21 read-only geometry-audit and semantic-helper templates.
 - Add a public synthetic acceptance case and an evidence-bounded capability matrix.
 - Freeze the integration boundary with the separate parent Ansys Workflow.
+- License the repository under Apache License 2.0.

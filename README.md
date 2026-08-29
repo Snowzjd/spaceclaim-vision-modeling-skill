@@ -88,6 +88,6 @@ Static script checks, visual inspection, SpaceClaim runtime execution, geometry-
 
 This project is independent and is not affiliated with or endorsed by Ansys, Inc.
 
-## License status
+## License
 
-No open-source license has been selected yet. Add an explicit license before public distribution so reuse terms are unambiguous.
+Licensed under the [Apache License 2.0](LICENSE).
