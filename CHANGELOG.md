@@ -3,6 +3,9 @@
 ## Unreleased
 
 - Clarify the project boundary around the Skill's SpaceClaim modeling capabilities, handoff contracts, exclusions, and validation layers.
+- Add a host-prepared, runtime-pending SpaceClaim V21 build script and validation contract for public case 001.
+- Add a versioned structured runtime-report schema and dependency-free host validator.
+- Harden `.scscript` token analysis and expand deterministic host-side tests.
 
 ## v0.1 - 2026-08-29
 

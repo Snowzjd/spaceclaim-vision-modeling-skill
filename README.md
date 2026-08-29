@@ -42,6 +42,14 @@ Audit an existing script package without launching SpaceClaim:
 python .\spaceclaim-vision-modeling\scripts\audit_scscript.py .\model.scscript --require-api 21 --report .\audit.json
 ```
 
+Validate a structured runtime report against the public case contract on the host:
+
+```powershell
+python .\spaceclaim-vision-modeling\scripts\validate_runtime_report.py .\runtime-report.json --contract .\spaceclaim-vision-modeling\assets\cases\001-offset-block-array\validation-contract.json
+```
+
+This command checks report structure and declared measurements only. It does not prove that SpaceClaim executed or that a model was saved or reopened.
+
 For parameterized reusable scripts, add `--forbid-numbered-aliases`. Recorded aliases may still be audited for closure when performing an explicitly same-topology replay.
 
 Run the public unit tests:
@@ -51,6 +59,8 @@ python -m unittest discover -s tests -v
 ```
 
 Real model execution requires a separately licensed Ansys SpaceClaim installation and a script matched to its API version.
+
+The case 001 V21 build script is prepared for an authorized forward test but remains `runtime_pending`; no public runtime success is claimed yet.
 
 ## Repository layout
 

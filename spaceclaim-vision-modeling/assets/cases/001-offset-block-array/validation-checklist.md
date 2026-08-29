@@ -1,6 +1,9 @@
 # Validation checklist
 
-- [ ] Target SpaceClaim/API version recorded.
+- [x] Host-side V21 candidate build script prepared.
+- [x] Versioned JSON report schema and case validation contract prepared.
+- [x] Host report validator covered by unit tests.
+- [x] Target SpaceClaim/API version recorded.
 - [ ] Script package passes `audit_scscript.py`.
 - [ ] Script runs once on a clean model.
 - [ ] Runtime report reaches its final validated stage.
@@ -12,4 +15,4 @@
 - [ ] Native output is reopened and the body/group contract persists.
 - [ ] Export, shared topology, mesh, and solver evidence are reported as not tested.
 
-The case documents an acceptance contract; v0.1 does not bundle a claimed SpaceClaim runtime output.
+The candidate script and structured-report tooling are host-prepared only. SpaceClaim execution, native save, and reopen persistence remain `runtime_pending` until an explicitly authorized V21 forward test succeeds.

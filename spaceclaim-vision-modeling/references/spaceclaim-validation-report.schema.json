@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Snowzjd/spaceclaim-vision-modeling-skill/blob/main/spaceclaim-vision-modeling/references/spaceclaim-validation-report.schema.json",
+  "title": "SpaceClaim geometry validation report",
+  "description": "Versioned report contract for evidence emitted by a SpaceClaim script. A host-side schema check can validate structure and measurements recorded in the JSON, but it cannot prove that SpaceClaim executed, that a native file was saved or reopened, or that any downstream layer ran.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "case_id",
+    "status",
+    "target",
+    "stages",
+    "bodies",
+    "named_face_groups",
+    "outputs",
+    "evidence_layers"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "description": "Contract version. Increment when the report shape changes."
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["passed", "failed"],
+      "description": "Status declared by the SpaceClaim-side report. It is not independently established by this host validator."
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/stage"
+      },
+      "description": "Ordered stage markers emitted by the script."
+    },
+    "bodies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/body"
+      }
+    },
+    "named_face_groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/named_face_group"
+      }
+    },
+    "outputs": {
+      "$ref": "#/$defs/outputs"
+    },
+    "evidence_layers": {
+      "$ref": "#/$defs/evidence_layers"
+    },
+    "validation_boundary": {
+      "type": "string",
+      "description": "Optional explicit note that host validation cannot establish SpaceClaim execution."
+    }
+  },
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "number": {
+      "type": "number"
+    },
+    "vector3": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/number"
+        }
+      ],
+      "items": false,
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spaceclaim_release",
+        "api_version",
+        "python_runtime"
+      ],
+      "properties": {
+        "spaceclaim_release": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "api_version": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            {
+              "type": "integer",
+              "minimum": 0
+            }
+          ]
+        },
+        "python_runtime": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "status"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["passed", "failed", "not_tested"]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "bbox_min_mm",
+        "bbox_max_mm",
+        "volume_mm3"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "bbox_min_mm": {
+          "$ref": "#/$defs/vector3"
+        },
+        "bbox_max_mm": {
+          "$ref": "#/$defs/vector3"
+        },
+        "volume_mm3": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "named_face_group": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "member_count"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "member_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "native_model_path",
+        "report_path"
+      ],
+      "properties": {
+        "native_model_path": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "report_path": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "evidence_layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "static_archive",
+        "spaceclaim_execution",
+        "geometry_measurements",
+        "native_save",
+        "native_reopen",
+        "neutral_export",
+        "mesh",
+        "solver"
+      ],
+      "properties": {
+        "static_archive": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "spaceclaim_execution": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "geometry_measurements": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "native_save": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "native_reopen": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "neutral_export": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "mesh": {
+          "$ref": "#/$defs/evidence_state"
+        },
+        "solver": {
+          "$ref": "#/$defs/evidence_state"
+        }
+      }
+    },
+    "evidence_state": {
+      "type": "string",
+      "enum": ["passed", "failed", "not_tested"]
+    }
+  }
+}

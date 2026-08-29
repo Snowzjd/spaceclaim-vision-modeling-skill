@@ -33,9 +33,11 @@ Load only the resources needed for the current stage:
 - Read [references/modeling-patterns.md](references/modeling-patterns.md) when choosing semantic selectors, Boolean strategy, direct-domain construction, or naming logic.
 - Read [references/failure-recovery.md](references/failure-recovery.md) when a replay or model diverges.
 - Use [scripts/audit_scscript.py](scripts/audit_scscript.py) for deterministic host-side `.scscript` package checks.
+- Use [scripts/validate_runtime_report.py](scripts/validate_runtime_report.py) with [references/spaceclaim-validation-report.schema.json](references/spaceclaim-validation-report.schema.json) to validate a structured report and case contract on the host without upgrading it to runtime evidence.
 - Copy [assets/templates/spaceclaim-v21-geometry-audit.py](assets/templates/spaceclaim-v21-geometry-audit.py) for a read-only SpaceClaim geometry report.
 - Copy [assets/templates/spaceclaim-v21-semantic-helpers.py](assets/templates/spaceclaim-v21-semantic-helpers.py) when building V21 semantic selectors and naming assertions.
 - Use [assets/cases/001-offset-block-array/requirement.md](assets/cases/001-offset-block-array/requirement.md) as the public synthetic acceptance-case format.
+- Treat [assets/cases/001-offset-block-array/output/spaceclaim-v21-build.py](assets/cases/001-offset-block-array/output/spaceclaim-v21-build.py) as `runtime_pending` until an authorized V21 clean-model run and save/reopen check succeed.
 - Use the focused files in `prompts/` when a parser, planner, writer, debugger, or validation-review contract is needed.
 
 ## Workflow

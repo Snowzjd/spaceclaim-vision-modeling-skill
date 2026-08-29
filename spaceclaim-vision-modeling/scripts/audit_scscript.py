@@ -25,11 +25,109 @@ WINDOWS_PATH_PATTERN = re.compile(r"[A-Za-z]:\\[^\r\n\"']+")
 OPERATION_PATTERN = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+")
 
 
+def mask_comments_and_strings(source: str) -> str:
+    """Return *source* with comments and string literals replaced by spaces.
+
+    ``.scscript`` files contain Python-like source, but they are ultimately
+    consumed by a host application rather than by this interpreter.  Using a
+    small lexical scanner instead of ``tokenize`` keeps the audit useful for
+    scripts containing host-specific syntax or an incomplete edit.  Newline
+    characters are retained so that line-oriented diagnostics remain stable.
+    """
+
+    chars = list(source)
+    length = len(chars)
+    index = 0
+    state = "code"
+    quote = ""
+    triple = False
+
+    def blank(position: int) -> None:
+        if chars[position] not in "\r\n":
+            chars[position] = " "
+
+    while index < length:
+        char = source[index]
+        if state == "code":
+            if char == "#":
+                state = "comment"
+                blank(index)
+            elif char in "'\"":
+                quote = char
+                triple = source.startswith(char * 3, index)
+                state = "string"
+                blank(index)
+                if triple:
+                    blank(index + 1)
+                    blank(index + 2)
+                    index += 2
+            index += 1
+            continue
+
+        if state == "comment":
+            if char in "\r\n":
+                state = "code"
+            else:
+                blank(index)
+            index += 1
+            continue
+
+        # String state.  Preserve line breaks, but mask every other character
+        # so that identifiers inside a literal cannot become audit tokens.
+        if triple and source.startswith(quote * 3, index):
+            blank(index)
+            blank(index + 1)
+            blank(index + 2)
+            index += 3
+            state = "code"
+            continue
+        if not triple and char == quote:
+            blank(index)
+            index += 1
+            state = "code"
+            continue
+        if char == "\\":
+            blank(index)
+            index += 1
+            if index < length:
+                # A backslash-newline pair is legal in a Python-like string;
+                # retain the newline while masking the escape marker.
+                blank(index)
+                index += 1
+            continue
+        blank(index)
+        index += 1
+
+    return "".join(chars)
+
+
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
 def decode_member(data: bytes) -> str:
+    # SpaceClaim exports are commonly UTF-8, while older/host-generated
+    # packages may use UTF-16 (with or without a BOM).  Keep a deterministic
+    # fallback for opaque metadata members as well.
+    if data.startswith((b"\xff\xfe", b"\xfe\xff")):
+        try:
+            return data.decode("utf-16")
+        except UnicodeDecodeError:
+            pass
+    if len(data) >= 4:
+        even_nuls = data[0::2].count(0)
+        odd_nuls = data[1::2].count(0)
+        pairs = max(1, len(data) // 2)
+        if odd_nuls > pairs // 3 and even_nuls == 0:
+            try:
+                return data.decode("utf-16-le")
+            except UnicodeDecodeError:
+                pass
+        if even_nuls > pairs // 3 and odd_nuls == 0:
+            try:
+                return data.decode("utf-16-be")
+            except UnicodeDecodeError:
+                pass
     for encoding in ("utf-8-sig", "utf-8", "utf-16"):
         try:
             return data.decode(encoding)
@@ -87,6 +185,16 @@ def audit_archive(
                     "Duplicate archive members: %s" % ", ".join(duplicates),
                 )
 
+            bad_member = archive.testzip()
+            if bad_member is not None:
+                add_issue(
+                    issues,
+                    "error",
+                    "crc_mismatch",
+                    "Archive member failed its CRC check: %s" % bad_member,
+                )
+                return result
+
             member_data: dict[str, bytes] = {}
             for name in sorted(set(member_names)):
                 data = archive.read(name)
@@ -95,7 +203,7 @@ def audit_archive(
                     "size": len(data),
                     "sha256": sha256_bytes(data),
                 }
-    except (OSError, zipfile.BadZipFile) as exc:
+    except (OSError, RuntimeError, zipfile.BadZipFile) as exc:
         add_issue(issues, "error", "invalid_archive", str(exc))
         return result
 
@@ -121,10 +229,11 @@ def audit_archive(
             "Expected API version %s, found %s." % (require_api, api_version or "<empty>"),
         )
 
-    operation_counts = Counter(OPERATION_PATTERN.findall(script))
+    executable_source = mask_comments_and_strings(script)
+    operation_counts = Counter(OPERATION_PATTERN.findall(executable_source))
     result["operation_counts"] = dict(sorted(operation_counts.items()))
     for token in required_operations:
-        if token not in script:
+        if token not in operation_counts:
             add_issue(
                 issues,
                 "error",
@@ -132,7 +241,7 @@ def audit_archive(
                 "Required operation token not found: %s" % token,
             )
     for token in forbidden_operations:
-        if token in script:
+        if token in operation_counts:
             add_issue(
                 issues,
                 "error",
@@ -140,7 +249,7 @@ def audit_archive(
                 "Forbidden operation token found: %s" % token,
             )
 
-    aliases = sorted(set(NUMBERED_ALIAS_PATTERN.findall(script)))
+    aliases = sorted(set(NUMBERED_ALIAS_PATTERN.findall(executable_source)))
     result["numbered_aliases"] = aliases
     user_objects = member_data.get("_userScriptObjects", b"")
     missing_alias_objects = [

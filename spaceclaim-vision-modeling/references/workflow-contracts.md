@@ -71,6 +71,8 @@ Identify the earliest incorrect state, patch that stage, and rerun from a clean 
 
 ## Validation reviewer
 
+Use [spaceclaim-validation-report.schema.json](spaceclaim-validation-report.schema.json) when a machine-readable runtime report is required. Validate the JSON structure and case measurements with `scripts/validate_runtime_report.py`, while preserving the distinction between a host-validated report and independently observed SpaceClaim execution.
+
 Record each evidence layer separately:
 
 ```text

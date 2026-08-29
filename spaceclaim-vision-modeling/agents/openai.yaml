@@ -1,4 +1,4 @@
 interface:
   display_name: "SpaceClaim Vision Modeling"
   short_description: "Turn visual geometry into SpaceClaim scripts"
-  default_prompt: "Use $spaceclaim-vision-modeling to decompose this visual design and produce a validated SpaceClaim script."
+  default_prompt: "Use $spaceclaim-vision-modeling to decompose this visual design and produce an evidence-bounded SpaceClaim modeling plan and script."
