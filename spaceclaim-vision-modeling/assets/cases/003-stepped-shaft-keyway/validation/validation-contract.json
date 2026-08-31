@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "case_id": "003-stepped-shaft-keyway",
+  "expected_report_status": "passed",
+  "target": {
+    "api_version": "V21"
+  },
+  "tolerances": {
+    "bbox_mm": 0.001,
+    "volume_mm3": 0.5,
+    "feature_mm": 0.001,
+    "angle_deg": 0.01
+  },
+  "bodies": [
+    {
+      "name": "STEPPED_SHAFT_KEYWAY_01",
+      "bbox_min_mm": [0.0, -19.0, -19.0],
+      "bbox_max_mm": [100.0, 19.0, 19.0],
+      "volume_mm3": 66658.040821020753
+    }
+  ],
+  "named_face_groups": [],
+  "features": [
+    {
+      "name": "stepped_outer_segments",
+      "count": 3,
+      "measurements": {
+        "left_diameter_mm": 20.0,
+        "middle_diameter_mm": 38.0,
+        "right_diameter_mm": 28.0,
+        "left_length_mm": 25.0,
+        "middle_length_mm": 40.0,
+        "right_length_mm": 35.0
+      }
+    },
+    {
+      "name": "through_bore",
+      "count": 1,
+      "measurements": {
+        "diameter_mm": 10.0,
+        "through_length_mm": 100.0
+      }
+    },
+    {
+      "name": "keyway",
+      "count": 1,
+      "measurements": {
+        "length_mm": 8.0,
+        "width_mm": 8.0,
+        "depth_mm": 3.0,
+        "x_start_mm": 41.0,
+        "x_end_mm": 49.0
+      }
+    },
+    {
+      "name": "end_and_bore_chamfers",
+      "count": 4,
+      "measurements": {
+        "distance_mm": 1.0,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "name": "shoulder_fillets",
+      "count": 2,
+      "measurements": {
+        "radius_mm": 1.0
+      }
+    }
+  ],
+  "evidence_layers": {
+    "static_archive": ["not_tested", "passed"],
+    "spaceclaim_execution": ["passed"],
+    "geometry_measurements": ["passed"],
+    "native_save": ["not_tested", "passed"],
+    "native_reopen": ["not_tested", "passed"],
+    "neutral_export": ["not_tested"]
+  }
+}

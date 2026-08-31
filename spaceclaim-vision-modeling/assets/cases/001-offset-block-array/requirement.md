@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Exercise the v0.1 workflow on a synthetic, non-proprietary geometry before applying it to a real model.
+Exercise the v0.2 workflow on a synthetic, non-proprietary geometry and preserve a reproducible forward-run evidence record.
 
 ## Input contract
 
@@ -17,5 +17,4 @@ Exercise the v0.1 workflow on a synthetic, non-proprietary geometry before apply
 ## Deliberately unresolved
 
 - Fillet radius is not specified and must not be invented.
-- Neutral export is outside this case.
-- Shared topology, meshing, and solver readiness are outside this case.
+- Only the requested SpaceClaim geometry, names, native save, and validation report belong to this case.

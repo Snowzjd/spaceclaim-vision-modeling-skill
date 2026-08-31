@@ -1,0 +1,112 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [
+        80.0,
+        24.0,
+        24.0
+      ],
+      "bbox_min_mm": [
+        0.0,
+        -24.0,
+        -24.0
+      ],
+      "face_count": 22,
+      "name": "FLANGED_PIPE_01",
+      "volume_mm3": 44370.43980693731
+    }
+  ],
+  "case_id": "002-flanged-short-pipe",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "not_tested",
+    "native_save": "passed",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [
+    {
+      "count": 1,
+      "measurements": {
+        "axial_span_mm": 80.0,
+        "diameter_mm": 16.0
+      },
+      "name": "central_bore"
+    },
+    {
+      "count": 8,
+      "measurements": {
+        "diameter_mm": 6.5,
+        "pcd_diameter_mm": 36.0
+      },
+      "name": "bolt_holes"
+    },
+    {
+      "count": 4,
+      "measurements": {
+        "angle_deg": 45.0,
+        "distance_mm": 1.000000000000003
+      },
+      "name": "outer_chamfers"
+    },
+    {
+      "count": 2,
+      "measurements": {
+        "radius_mm": 1.5
+      },
+      "name": "joint_fillets"
+    }
+  ],
+  "generated_at_utc": "2026-08-30T05:29:48Z",
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "../output/002-flanged-short-pipe.scdoc",
+    "report_path": "forward-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {
+      "message": "",
+      "name": "parameters_and_paths_validated",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "outer_solid_and_holes_created",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "joint_fillets_created",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "outer_chamfers_created",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "body_named",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "geometry_and_features_validated",
+      "status": "passed"
+    },
+    {
+      "message": "",
+      "name": "native_model_saved",
+      "status": "passed"
+    }
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "This report is emitted by the case 002 V21 build script. Native reopen and requested export layers require separate evidence."
+}

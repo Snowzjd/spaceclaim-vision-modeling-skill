@@ -1,6 +1,7 @@
-# SpaceClaim 2022 R1 / API V21 candidate script for case 001.
-# IronPython 2.7 compatible. Host-side preparation only: runtime_pending.
-# Set both output paths to new, non-existing files before an authorized run.
+# SpaceClaim 2022 R1 / API V21 forward-tested script for case 001.
+# IronPython 2.7 compatible. Controlled case evidence is recorded in runtime-evidence.md.
+# Set the paths for the current run. The native model may be the run-owned blank
+# design already saved at its final path; the report path must not exist.
 
 from __future__ import print_function
 
@@ -62,12 +63,10 @@ def fresh_report():
             "native_save": "not_tested",
             "native_reopen": "not_tested",
             "neutral_export": "not_tested",
-            "mesh": "not_tested",
-            "solver": "not_tested",
         },
         "validation_boundary": (
-            "This report is emitted by the candidate V21 script. Native reopen, "
-            "neutral export, meshing, and solver layers require separate evidence."
+            "This report is emitted by the case 001 V21 build script. Native reopen "
+            "and requested export layers require separate evidence."
         ),
     }
 
@@ -131,19 +130,21 @@ def validate_parameters():
         raise ValueError("Expected body names must be unique.")
 
 
-def normalized_new_path(value, suffix, label):
+def normalized_new_path(value, suffix, label, allow_existing=False):
     if not value or not isinstance(value, basestring):
         raise ValueError("%s must be set before the authorized run." % label)
     path = os.path.abspath(value)
     if not path.lower().endswith(suffix):
         raise ValueError("%s must end with %s." % (label, suffix))
-    if os.path.exists(path):
+    if os.path.exists(path) and not allow_existing:
         raise ValueError("%s already exists; refusing to overwrite: %s" % (label, path))
     return path.replace("\\", "/")
 
 
 def prepare_output_paths(report):
-    model_path = normalized_new_path(OUTPUT_MODEL_PATH, ".scdoc", "OUTPUT_MODEL_PATH")
+    model_path = normalized_new_path(
+        OUTPUT_MODEL_PATH, ".scdoc", "OUTPUT_MODEL_PATH", allow_existing=True
+    )
     report_path = normalized_new_path(REPORT_PATH, ".json", "REPORT_PATH")
     if model_path.lower() == report_path.lower():
         raise ValueError("Model and report paths must be different.")

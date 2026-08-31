@@ -12,11 +12,9 @@ Grow the library by geometry behavior rather than industry labels:
 - shells, housings, ribs, holes, and slots;
 - linear, circular, grid, and variable-spacing arrays;
 - Boolean merge, subtract, intersect, and split;
-- internal and external flow domains;
+- internal voids, external envelopes, and enclosed regions;
 - naming, defeaturing, and export preparation;
 - visually inferred or dimension-incomplete models.
-
-Domain examples such as heat exchangers or TPMS may be included as applications, but reusable rules must remain geometry-based.
 
 ## Case bundle
 
@@ -31,15 +29,13 @@ case-name/
 │  ├─ geometry-decomposition.md
 │  └─ modeling-strategy.md
 ├─ output/
-│  ├─ script.py or script.scscript
+│  ├─ script.scscript
+│  ├─ script-source.py (optional packaging source; not the formal executable asset)
 │  └─ public neutral-format result when redistributable
 ├─ validation/
 │  ├─ checklist.md
 │  ├─ run-log.txt
 │  └─ known-issues.md
-└─ reusable/
-   ├─ template.py
-   └─ pattern-notes.md
 ```
 
 ## Acceptance questions
@@ -51,8 +47,3 @@ Every case must answer:
 3. Which parameters should be exposed?
 4. Which runtime states are fragile?
 5. Which validation proves success?
-6. What can be generalized without carrying case-specific names or dimensions?
-
-## Template promotion
-
-Promote a case fragment into `assets/templates/` only after it succeeds on at least one clean replay and its assumptions, parameters, version boundary, and validation checks are documented. Keep failed cases when they teach a distinct recovery rule, but label the failing artifact and the corrected result unambiguously.

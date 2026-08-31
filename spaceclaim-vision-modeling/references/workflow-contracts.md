@@ -83,8 +83,24 @@ dimensions, bounding boxes, volumes:
 naming and group membership:
 visual agreement:
 native save and reopen:
-neutral export and reimport:
-mesh or solver evidence:
+requested export and reimport:
 ```
 
-Mark unperformed layers as not tested. Do not infer downstream readiness from a visually plausible model.
+Mark unperformed layers as not tested. Do not infer unmeasured model properties from a visually plausible model.
+
+For final visual agreement, follow [visual-interaction.md](visual-interaction.md) and record:
+
+```text
+window state and obstruction check:
+navigation mapping calibrated:
+overview view:
+standard or focused views reviewed:
+selection state per evidence view:
+expected visible features:
+observed discrepancies:
+occluded or unresolved features:
+screenshot paths and hashes, when archived:
+visual agreement status:
+```
+
+Do not mark visual agreement passed from one attractive perspective or from a screenshot that omits contract-relevant features.

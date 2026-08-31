@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "case_id": "004-rounded-plate-support",
+  "expected_report_status": "passed",
+  "target": {"api_version": "V21"},
+  "tolerances": {
+    "bbox_mm": 0.001,
+    "volume_mm3": 5.0,
+    "feature_mm": 0.001,
+    "angle_deg": 0.01
+  },
+  "bodies": [
+    {
+      "name": "ROUNDED_PLATE_SUPPORT_01",
+      "bbox_min_mm": [0.0, 0.0, 0.0],
+      "bbox_max_mm": [120.0, 80.0, 60.0],
+      "volume_mm3": 128473.8907081775
+    }
+  ],
+  "named_face_groups": [],
+  "features": [
+    {
+      "name": "rounded_base_plate",
+      "count": 1,
+      "measurements": {
+        "length_mm": 120.0,
+        "width_mm": 80.0,
+        "thickness_mm": 10.0,
+        "corner_radius_mm": 10.0
+      }
+    },
+    {
+      "name": "central_support",
+      "count": 1,
+      "measurements": {
+        "diameter_mm": 30.0,
+        "height_mm": 50.0,
+        "center_x_mm": 60.0,
+        "center_y_mm": 40.0
+      }
+    },
+    {
+      "name": "mounting_holes",
+      "count": 4,
+      "measurements": {
+        "diameter_mm": 8.0,
+        "edge_offset_x_mm": 15.0,
+        "edge_offset_y_mm": 15.0,
+        "through_length_mm": 10.0
+      }
+    }
+  ],
+  "evidence_layers": {
+    "static_archive": ["not_tested", "passed"],
+    "spaceclaim_execution": ["passed"],
+    "geometry_measurements": ["passed"],
+    "native_save": ["not_tested", "passed"],
+    "native_reopen": ["not_tested", "passed"],
+    "neutral_export": ["not_tested"]
+  }
+}

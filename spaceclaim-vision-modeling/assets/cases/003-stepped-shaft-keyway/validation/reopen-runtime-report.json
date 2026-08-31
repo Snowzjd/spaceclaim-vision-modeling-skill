@@ -1,0 +1,90 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [99.999999999999986, 19.0, 19.0],
+      "bbox_min_mm": [0.0, -19.0, -19.0],
+      "face_count": 19,
+      "name": "STEPPED_SHAFT_KEYWAY_01",
+      "volume_mm3": 66658.040821020753
+    }
+  ],
+  "case_id": "003-stepped-shaft-keyway",
+  "drawing_metadata": {
+    "keyway_axial_location": "centered_assumption_x_41_to_49_mm",
+    "material_assignment": "not_performed",
+    "material_note": "45 steel"
+  },
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "passed",
+    "native_save": "not_tested",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [
+    {
+      "count": 3,
+      "measurements": {
+        "left_diameter_mm": 20.0,
+        "left_length_mm": 25.0,
+        "middle_diameter_mm": 38.0,
+        "middle_length_mm": 40.0,
+        "right_diameter_mm": 28.0,
+        "right_length_mm": 35.0
+      },
+      "name": "stepped_outer_segments"
+    },
+    {
+      "count": 1,
+      "measurements": {
+        "diameter_mm": 10.0,
+        "through_length_mm": 100.0
+      },
+      "name": "through_bore"
+    },
+    {
+      "count": 1,
+      "measurements": {
+        "depth_mm": 3.0,
+        "length_mm": 8.0,
+        "width_mm": 8.0,
+        "x_end_mm": 49.0,
+        "x_start_mm": 41.0
+      },
+      "name": "keyway"
+    },
+    {
+      "count": 4,
+      "measurements": {
+        "angle_deg": 45.0,
+        "distance_mm": 0.99999999999999978
+      },
+      "name": "end_and_bore_chamfers"
+    },
+    {
+      "count": 2,
+      "measurements": {
+        "radius_mm": 1.0
+      },
+      "name": "shoulder_fillets"
+    }
+  ],
+  "generated_at_utc": "2026-08-30T11:03:11Z",
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "../output/003-stepped-shaft-keyway.scdoc",
+    "report_path": "reopen-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {"message": "", "name": "reopened_geometry_and_features_validated", "status": "passed"}
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "Read-only audit of the active reopened case 003 native document. It does not modify or save the model."
+}

@@ -1,0 +1,51 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [20.0, 8.0, 4.0],
+      "bbox_min_mm": [0.0, 0.0, 0.0],
+      "name": "BLOCK_01",
+      "volume_mm3": 640.0
+    },
+    {
+      "bbox_max_mm": [50.0, 11.0, 4.0],
+      "bbox_min_mm": [30.0, 3.0, 0.0],
+      "name": "BLOCK_02",
+      "volume_mm3": 640.0
+    },
+    {
+      "bbox_max_mm": [80.0, 8.0, 4.0],
+      "bbox_min_mm": [60.0, 0.0, 0.0],
+      "name": "BLOCK_03",
+      "volume_mm3": 640.0000000000001
+    }
+  ],
+  "case_id": "001-offset-block-array",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "passed",
+    "native_save": "not_tested",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "generated_at_utc": "2026-08-29T14:05:54Z",
+  "named_face_groups": [
+    {"member_count": 1, "name": "INLET"},
+    {"member_count": 1, "name": "OUTLET"}
+  ],
+  "outputs": {
+    "native_model_path": "output/001-offset-block-array.scdoc",
+    "report_path": "reopen-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {"message": "", "name": "reopened_geometry_and_groups_validated", "status": "passed"}
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "Read-only audit of the active reopened native case 001 document. It did not modify or save the model. Run-owned output paths were replaced by relative paths for the public case."
+}

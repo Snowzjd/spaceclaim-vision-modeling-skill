@@ -20,7 +20,7 @@ visual or textual geometry intent
 target SpaceClaim/API version
 known dimensions and units
 required bodies, names, groups, and exports
-downstream purpose and acceptance thresholds
+intended use and acceptance thresholds
 input model path or clean-copy rule when applicable
 authorized execution level
 ```
@@ -40,26 +40,18 @@ validation results by evidence layer
 failure diagnostics and next safe action
 ```
 
-## Outside scope
+## Scope limit
 
-The skill does not perform or claim:
-
-- Workbench project orchestration;
-- mesh generation, mesh-quality acceptance, or mesh-connectivity validation;
-- Fluent or other solver setup, execution, convergence, conservation, or result validation;
-- simulation data processing, plotting, or reporting;
-- universal compatibility across untested SpaceClaim or API versions.
-
-Shared-topology operations and neutral exports are outside the v0.1 validated core. If requested, treat them as separate experimental validation targets and claim success only after the corresponding operation and persistence or transfer checks pass. Neither establishes downstream mesh or solver readiness.
+Keep every accepted claim within visual or textual geometry interpretation, SpaceClaim construction, model properties, naming, persistence, or a requested SpaceClaim export. Do not claim universal compatibility across untested SpaceClaim or API versions.
 
 ## Handoff rules
 
 - Require explicit input and output paths rather than relying on an application's current directory.
-- Use the naming scheme supplied by the current geometry contract; do not invent downstream names silently.
+- Use the naming scheme supplied by the current geometry contract; do not invent names silently.
 - Record the Skill version, target SpaceClaim/API version, output paths, and hashes when artifacts are created.
 - Preserve clean inputs, independent outputs, failure-without-save behavior, and save/reopen checks when persistence matters.
 - Treat breaking changes to inputs, outputs, naming, evidence levels, or failure behavior as interface changes.
 
 ## Evidence boundary
 
-Successful modeling does not imply successful meshing or simulation. Topology transfer, mesh connectivity, mesh quality, solver execution, convergence, conservation, and performance conclusions each require their own downstream evidence.
+Successful script execution does not by itself prove intended geometry, naming, measurements, visual agreement, native persistence, or requested export behavior. Validate each claimed SpaceClaim modeling layer directly.

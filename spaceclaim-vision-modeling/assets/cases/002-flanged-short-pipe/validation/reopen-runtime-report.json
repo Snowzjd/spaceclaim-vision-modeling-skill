@@ -1,0 +1,82 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [
+        80.0,
+        24.0,
+        24.0
+      ],
+      "bbox_min_mm": [
+        0.0,
+        -24.0,
+        -24.0
+      ],
+      "face_count": 22,
+      "name": "FLANGED_PIPE_01",
+      "volume_mm3": 44370.43980693731
+    }
+  ],
+  "case_id": "002-flanged-short-pipe",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "passed",
+    "native_save": "not_tested",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [
+    {
+      "count": 1,
+      "measurements": {
+        "axial_span_mm": 80.0,
+        "diameter_mm": 16.0
+      },
+      "name": "central_bore"
+    },
+    {
+      "count": 8,
+      "measurements": {
+        "diameter_mm": 6.5,
+        "pcd_diameter_mm": 36.0
+      },
+      "name": "bolt_holes"
+    },
+    {
+      "count": 4,
+      "measurements": {
+        "angle_deg": 45.0,
+        "distance_mm": 1.000000000000003
+      },
+      "name": "outer_chamfers"
+    },
+    {
+      "count": 2,
+      "measurements": {
+        "radius_mm": 1.5
+      },
+      "name": "joint_fillets"
+    }
+  ],
+  "generated_at_utc": "2026-08-30T06:03:47Z",
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "../output/002-flanged-short-pipe.scdoc",
+    "report_path": "reopen-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {
+      "message": "",
+      "name": "reopened_geometry_and_features_validated",
+      "status": "passed"
+    }
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "Read-only audit of the active reopened case 002 native document. It does not modify or save the model."
+}

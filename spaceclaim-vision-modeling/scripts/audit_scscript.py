@@ -13,16 +13,28 @@ import re
 import sys
 import zipfile
 from collections import Counter
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
+from xml.etree import ElementTree
 
 
-CORE_MEMBERS = ("_script", "_apiVersion", "_smartVariableVersion", "_userScriptObjects")
+CORE_MEMBERS = ("_script", "_apiVersion", "_smartVariableVersion", "[Content_Types].xml")
+CONTENT_TYPES_NAMESPACE = "http://schemas.openxmlformats.org/package/2006/content-types"
+REQUIRED_CONTENT_TYPES = {
+    "/_script": "text/plain",
+    "/_apiVersion": "text/plain",
+    "/_smartVariableVersion": "text/plain",
+}
 NUMBERED_ALIAS_PATTERN = re.compile(
     r"\b(?:Body|Face|Edge|DatumPlane|Component|Part)\d+\b"
 )
 WINDOWS_PATH_PATTERN = re.compile(r"[A-Za-z]:\\[^\r\n\"']+")
 OPERATION_PATTERN = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+")
+MAX_ARCHIVE_BYTES = 64 * 1024 * 1024
+MAX_MEMBER_COUNT = 256
+MAX_MEMBER_BYTES = 32 * 1024 * 1024
+MAX_TOTAL_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
+MAX_COMPRESSION_RATIO = 200.0
 
 
 def mask_comments_and_strings(source: str) -> str:
@@ -171,11 +183,32 @@ def audit_archive(
         add_issue(issues, "error", "archive_missing", "The .scscript file does not exist.")
         return result
 
+    archive_size = archive_path.stat().st_size
+    if archive_size > MAX_ARCHIVE_BYTES:
+        add_issue(
+            issues,
+            "error",
+            "archive_size_limit",
+            "Archive size %d exceeds the %d byte safety limit."
+            % (archive_size, MAX_ARCHIVE_BYTES),
+        )
+        return result
+
     result["archive_sha256"] = sha256_bytes(archive_path.read_bytes())
 
     try:
         with zipfile.ZipFile(archive_path, "r") as archive:
-            member_names = archive.namelist()
+            member_infos = archive.infolist()
+            member_names = [info.filename for info in member_infos]
+            if len(member_infos) > MAX_MEMBER_COUNT:
+                add_issue(
+                    issues,
+                    "error",
+                    "member_count_limit",
+                    "Archive has %d members; the safety limit is %d."
+                    % (len(member_infos), MAX_MEMBER_COUNT),
+                )
+
             duplicates = sorted(name for name, count in Counter(member_names).items() if count > 1)
             if duplicates:
                 add_issue(
@@ -184,6 +217,57 @@ def audit_archive(
                     "duplicate_members",
                     "Duplicate archive members: %s" % ", ".join(duplicates),
                 )
+
+            total_uncompressed = 0
+            for info in member_infos:
+                path = PurePosixPath(info.filename.replace("\\", "/"))
+                if path.is_absolute() or ".." in path.parts:
+                    add_issue(
+                        issues,
+                        "error",
+                        "unsafe_member_name",
+                        "Unsafe archive member name: %s" % info.filename,
+                    )
+                if info.flag_bits & 0x1:
+                    add_issue(
+                        issues,
+                        "error",
+                        "encrypted_member",
+                        "Encrypted archive member is not supported: %s" % info.filename,
+                    )
+                if info.file_size > MAX_MEMBER_BYTES:
+                    add_issue(
+                        issues,
+                        "error",
+                        "member_size_limit",
+                        "Archive member %s exceeds the %d byte safety limit."
+                        % (info.filename, MAX_MEMBER_BYTES),
+                    )
+                total_uncompressed += info.file_size
+                if info.file_size and (
+                    info.compress_size == 0
+                    or float(info.file_size) / float(info.compress_size)
+                    > MAX_COMPRESSION_RATIO
+                ):
+                    add_issue(
+                        issues,
+                        "error",
+                        "compression_ratio_limit",
+                        "Archive member %s exceeds the %.0f:1 compression-ratio safety limit."
+                        % (info.filename, MAX_COMPRESSION_RATIO),
+                    )
+
+            if total_uncompressed > MAX_TOTAL_UNCOMPRESSED_BYTES:
+                add_issue(
+                    issues,
+                    "error",
+                    "uncompressed_size_limit",
+                    "Archive expands to %d bytes; the safety limit is %d."
+                    % (total_uncompressed, MAX_TOTAL_UNCOMPRESSED_BYTES),
+                )
+
+            if any(issue["severity"] == "error" for issue in issues):
+                return result
 
             bad_member = archive.testzip()
             if bad_member is not None:
@@ -203,13 +287,47 @@ def audit_archive(
                     "size": len(data),
                     "sha256": sha256_bytes(data),
                 }
-    except (OSError, RuntimeError, zipfile.BadZipFile) as exc:
+    except (OSError, RuntimeError, NotImplementedError, zipfile.BadZipFile) as exc:
         add_issue(issues, "error", "invalid_archive", str(exc))
         return result
 
     for name in CORE_MEMBERS:
         if name not in member_data:
             add_issue(issues, "error", "missing_member", "Required member missing: %s" % name)
+
+    content_types_data = member_data.get("[Content_Types].xml")
+    if content_types_data is not None:
+        try:
+            root = ElementTree.fromstring(content_types_data)
+            overrides: dict[str, str] = {}
+            for element in root.findall("{%s}Override" % CONTENT_TYPES_NAMESPACE):
+                part_name = element.attrib.get("PartName", "")
+                content_type = element.attrib.get("ContentType", "")
+                if part_name in overrides:
+                    add_issue(
+                        issues,
+                        "error",
+                        "duplicate_content_type_override",
+                        "Duplicate content-type override for %s." % part_name,
+                    )
+                overrides[part_name] = content_type
+            for part_name, expected_type in REQUIRED_CONTENT_TYPES.items():
+                actual_type = overrides.get(part_name)
+                if actual_type != expected_type:
+                    add_issue(
+                        issues,
+                        "error",
+                        "content_type_override_missing",
+                        "Expected %s to declare content type %s; found %s."
+                        % (part_name, expected_type, actual_type or "<missing>"),
+                    )
+        except ElementTree.ParseError as exc:
+            add_issue(
+                issues,
+                "error",
+                "invalid_content_types_xml",
+                "[Content_Types].xml is not well formed: %s" % exc,
+            )
 
     if "_script" not in member_data:
         return result
@@ -220,6 +338,18 @@ def audit_archive(
     smart_version = decode_member(member_data.get("_smartVariableVersion", b"")).strip()
     result["api_version"] = api_version or None
     result["smart_variable_version"] = smart_version or None
+
+    if not script.strip():
+        add_issue(issues, "error", "empty_script", "The _script member is empty.")
+    if not api_version:
+        add_issue(issues, "error", "empty_api_version", "The _apiVersion member is empty.")
+    if not smart_version:
+        add_issue(
+            issues,
+            "error",
+            "empty_smart_variable_version",
+            "The _smartVariableVersion member is empty.",
+        )
 
     if require_api is not None and api_version != str(require_api):
         add_issue(
@@ -232,6 +362,17 @@ def audit_archive(
     executable_source = mask_comments_and_strings(script)
     operation_counts = Counter(OPERATION_PATTERN.findall(executable_source))
     result["operation_counts"] = dict(sorted(operation_counts.items()))
+    invalid_tokens = sorted(
+        set(required_operations + forbidden_operations)
+        - {token for token in required_operations + forbidden_operations if OPERATION_PATTERN.fullmatch(token)}
+    )
+    for token in invalid_tokens:
+        add_issue(
+            issues,
+            "error",
+            "invalid_operation_token",
+            "Operation token is not a dotted identifier: %s" % token,
+        )
     for token in required_operations:
         if token not in operation_counts:
             add_issue(
@@ -251,10 +392,9 @@ def audit_archive(
 
     aliases = sorted(set(NUMBERED_ALIAS_PATTERN.findall(executable_source)))
     result["numbered_aliases"] = aliases
-    user_objects = member_data.get("_userScriptObjects", b"")
-    missing_alias_objects = [
-        alias for alias in aliases if alias.encode("utf-8") not in user_objects
-    ]
+    user_objects_text = decode_member(member_data.get("_userScriptObjects", b""))
+    user_object_aliases = set(NUMBERED_ALIAS_PATTERN.findall(user_objects_text))
+    missing_alias_objects = [alias for alias in aliases if alias not in user_object_aliases]
     if missing_alias_objects:
         add_issue(
             issues,

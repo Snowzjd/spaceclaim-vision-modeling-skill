@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "case_id": "002-flanged-short-pipe",
+  "expected_report_status": "passed",
+  "target": {
+    "api_version": "V21"
+  },
+  "tolerances": {
+    "bbox_mm": 0.001,
+    "volume_mm3": 0.5,
+    "feature_mm": 0.001,
+    "angle_deg": 0.01
+  },
+  "bodies": [
+    {
+      "name": "FLANGED_PIPE_01",
+      "bbox_min_mm": [0.0, -24.0, -24.0],
+      "bbox_max_mm": [80.0, 24.0, 24.0],
+      "volume_mm3": 44370.4398069
+    }
+  ],
+  "named_face_groups": [],
+  "features": [
+    {
+      "name": "central_bore",
+      "count": 1,
+      "measurements": {
+        "diameter_mm": 16.0,
+        "axial_span_mm": 80.0
+      }
+    },
+    {
+      "name": "bolt_holes",
+      "count": 8,
+      "measurements": {
+        "diameter_mm": 6.5,
+        "pcd_diameter_mm": 36.0
+      }
+    },
+    {
+      "name": "outer_chamfers",
+      "count": 4,
+      "measurements": {
+        "distance_mm": 1.0,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "name": "joint_fillets",
+      "count": 2,
+      "measurements": {
+        "radius_mm": 1.5
+      }
+    }
+  ],
+  "evidence_layers": {
+    "static_archive": ["not_tested", "passed"],
+    "spaceclaim_execution": ["passed"],
+    "geometry_measurements": ["passed"],
+    "native_save": ["not_tested", "passed"],
+    "native_reopen": ["not_tested", "passed"],
+    "neutral_export": ["not_tested"]
+  }
+}

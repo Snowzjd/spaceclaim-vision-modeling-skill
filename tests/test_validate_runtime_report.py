@@ -44,6 +44,7 @@ def passing_report() -> dict:
         ],
         "bodies": copy.deepcopy(contract["bodies"]),
         "named_face_groups": copy.deepcopy(contract["named_face_groups"]),
+        "features": [],
         "outputs": {
             "native_model_path": "C:/runs/001/model.scdoc",
             "report_path": "C:/runs/001/runtime-report.json"
@@ -54,9 +55,7 @@ def passing_report() -> dict:
             "geometry_measurements": "passed",
             "native_save": "passed",
             "native_reopen": "not_tested",
-            "neutral_export": "not_tested",
-            "mesh": "not_tested",
-            "solver": "not_tested"
+            "neutral_export": "not_tested"
         }
     }
 
@@ -81,9 +80,27 @@ class ValidateRuntimeReportTests(unittest.TestCase):
 
     def test_invalid_evidence_state_fails(self) -> None:
         report = passing_report()
-        report["evidence_layers"]["mesh"] = "unknown"
+        report["evidence_layers"]["neutral_export"] = "unknown"
         result = self.validate(report)
         self.assertIn("invalid_evidence_state", [issue["code"] for issue in result["issues"]])
+
+    def test_passed_report_cannot_contain_failed_stage(self) -> None:
+        report = passing_report()
+        report["stages"][1]["status"] = "failed"
+        result = self.validate(report)
+        self.assertIn("inconsistent_report_status", [issue["code"] for issue in result["issues"]])
+
+    def test_bbox_minimum_cannot_exceed_maximum(self) -> None:
+        report = passing_report()
+        report["bodies"][0]["bbox_min_mm"][0] = 21.0
+        result = self.validate(report)
+        self.assertIn("invalid_bbox_order", [issue["code"] for issue in result["issues"]])
+
+    def test_output_paths_must_be_distinct(self) -> None:
+        report = passing_report()
+        report["outputs"]["report_path"] = report["outputs"]["native_model_path"]
+        result = self.validate(report)
+        self.assertIn("output_path_collision", [issue["code"] for issue in result["issues"]])
 
     def test_body_name_set_mismatch_fails(self) -> None:
         report = passing_report()
@@ -109,9 +126,9 @@ class ValidateRuntimeReportTests(unittest.TestCase):
         result = self.validate(report)
         self.assertIn("group_member_count_mismatch", [issue["code"] for issue in result["issues"]])
 
-    def test_out_of_scope_evidence_claim_fails_contract(self) -> None:
+    def test_unperformed_export_claim_fails_contract(self) -> None:
         report = passing_report()
-        report["evidence_layers"]["mesh"] = "passed"
+        report["evidence_layers"]["neutral_export"] = "passed"
         result = self.validate(report)
         self.assertIn("evidence_boundary_mismatch", [issue["code"] for issue in result["issues"]])
 
@@ -120,6 +137,43 @@ class ValidateRuntimeReportTests(unittest.TestCase):
         report["target"]["api_version"] = "V22"
         result = self.validate(report)
         self.assertIn("target_mismatch", [issue["code"] for issue in result["issues"]])
+
+    def test_negative_contract_tolerance_fails_without_exception(self) -> None:
+        contract = copy.deepcopy(self.contract)
+        contract["tolerances"]["bbox_mm"] = -0.001
+        result = VALIDATOR.validate_report(passing_report(), contract)
+        self.assertEqual("failed", result["status"])
+        self.assertIn("invalid_contract", [issue["code"] for issue in result["issues"]])
+
+    def test_feature_contract_is_compared(self) -> None:
+        report = passing_report()
+        report["features"] = [
+            {"name": "holes", "count": 4, "measurements": {"diameter_mm": 6.5}}
+        ]
+        contract = copy.deepcopy(self.contract)
+        contract["tolerances"]["feature_mm"] = 0.001
+        contract["features"] = [
+            {"name": "holes", "count": 4, "measurements": {"diameter_mm": 6.5}}
+        ]
+        self.assertEqual("passed", VALIDATOR.validate_report(report, contract)["status"])
+        report["features"][0]["count"] = 3
+        result = VALIDATOR.validate_report(report, contract)
+        self.assertIn("feature_count_mismatch", [issue["code"] for issue in result["issues"]])
+
+    def test_invalid_feature_measurement_fails(self) -> None:
+        report = passing_report()
+        report["features"] = [
+            {"name": "holes", "count": 4, "measurements": {"diameter_mm": "6.5"}}
+        ]
+        result = self.validate(report)
+        self.assertIn("invalid_feature_measurement", [issue["code"] for issue in result["issues"]])
+
+    def test_duplicate_contract_body_name_fails_without_exception(self) -> None:
+        contract = copy.deepcopy(self.contract)
+        contract["bodies"][1]["name"] = contract["bodies"][0]["name"]
+        result = VALIDATOR.validate_report(passing_report(), contract)
+        self.assertEqual("failed", result["status"])
+        self.assertIn("invalid_contract", [issue["code"] for issue in result["issues"]])
 
     def test_cli_returns_zero_for_matching_report(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

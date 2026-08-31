@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Snowzjd/spaceclaim-vision-modeling-skill/blob/main/spaceclaim-vision-modeling/references/spaceclaim-validation-report.schema.json",
   "title": "SpaceClaim geometry validation report",
-  "description": "Versioned report contract for evidence emitted by a SpaceClaim script. A host-side schema check can validate structure and measurements recorded in the JSON, but it cannot prove that SpaceClaim executed, that a native file was saved or reopened, or that any downstream layer ran.",
+  "description": "Versioned report contract for evidence emitted by a SpaceClaim script. A host-side schema check can validate structure and measurements recorded in the JSON, but it cannot prove that SpaceClaim executed or that a native file was saved, reopened, or exported.",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -52,6 +52,13 @@
       "items": {
         "$ref": "#/$defs/named_face_group"
       }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature"
+      },
+      "description": "Optional case-defined geometric feature counts and numeric measurements."
     },
     "outputs": {
       "$ref": "#/$defs/outputs"
@@ -179,6 +186,30 @@
         }
       }
     },
+    "feature": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "count",
+        "measurements"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "measurements": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
     "outputs": {
       "type": "object",
       "additionalProperties": true,
@@ -204,9 +235,7 @@
         "geometry_measurements",
         "native_save",
         "native_reopen",
-        "neutral_export",
-        "mesh",
-        "solver"
+        "neutral_export"
       ],
       "properties": {
         "static_archive": {
@@ -225,12 +254,6 @@
           "$ref": "#/$defs/evidence_state"
         },
         "neutral_export": {
-          "$ref": "#/$defs/evidence_state"
-        },
-        "mesh": {
-          "$ref": "#/$defs/evidence_state"
-        },
-        "solver": {
           "$ref": "#/$defs/evidence_state"
         }
       }

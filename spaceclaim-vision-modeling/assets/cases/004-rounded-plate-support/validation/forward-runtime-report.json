@@ -1,0 +1,67 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [120.00000000000001, 80.00000000000001, 60.0],
+      "bbox_min_mm": [0.0, 0.0, 0.0],
+      "face_count": 16,
+      "name": "ROUNDED_PLATE_SUPPORT_01",
+      "volume_mm3": 128474.05661865692
+    }
+  ],
+  "case_id": "004-rounded-plate-support",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "not_tested",
+    "native_save": "passed",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [
+    {
+      "count": 1,
+      "measurements": {"corner_radius_mm": 10.0, "length_mm": 120.0, "thickness_mm": 10.0, "width_mm": 80.0},
+      "name": "rounded_base_plate"
+    },
+    {
+      "count": 1,
+      "measurements": {"center_x_mm": 60.0, "center_y_mm": 40.0, "diameter_mm": 30.0, "height_mm": 50.0},
+      "name": "central_support"
+    },
+    {
+      "count": 4,
+      "measurements": {"diameter_mm": 8.0, "edge_offset_x_mm": 15.0, "edge_offset_y_mm": 15.0, "through_length_mm": 10.0},
+      "name": "mounting_holes"
+    }
+  ],
+  "generated_at_utc": "2026-08-30T12:16:03Z",
+  "interpretation_metadata": {
+    "input_type": "text_description_in_image",
+    "repository_case_id": "004-rounded-plate-support",
+    "source_label": "case_3",
+    "support_and_plate": "united_single_body",
+    "support_height_interpretation": "50_mm_above_plate_top_total_height_60_mm",
+    "unspecified_edge_treatments": "not_added"
+  },
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "../output/004-rounded-plate-support.scdoc",
+    "report_path": "forward-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {"message": "", "name": "parameters_paths_and_clean_document_validated", "status": "passed"},
+    {"message": "", "name": "plate_support_and_holes_created", "status": "passed"},
+    {"message": "", "name": "plate_corner_rounds_created", "status": "passed"},
+    {"message": "", "name": "body_named", "status": "passed"},
+    {"message": "", "name": "geometry_and_features_validated", "status": "passed"},
+    {"message": "", "name": "native_model_saved", "status": "passed"}
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "This report was emitted by the controlled case 004 V21 run and copied into the public case with only run-owned output paths replaced by relative paths. Native reopen requires the separate read-only audit report."
+}

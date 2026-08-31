@@ -2,6 +2,8 @@
 # IronPython 2.7 compatible. This script does not modify or save the model.
 # Adapt the import when targeting another installed SpaceClaim API version.
 
+from __future__ import print_function
+
 from SpaceClaim.Api.V21 import *
 
 
@@ -123,7 +125,7 @@ def collect_audit_lines():
 
 def emit_audit(lines):
     for line in lines:
-        print line
+        print(line)
     if REPORT_PATH:
         stream = open(REPORT_PATH, "wb")
         try:

@@ -6,11 +6,15 @@
 - Treat official documentation and runtime introspection for the installed version as authoritative.
 - Isolate version-sensitive calls behind small helper functions.
 - Keep embedded Windows paths safe for the target Python parser; prefer forward slashes when backslash escapes are ambiguous.
+- Treat plain IronPython source as a development or packaging input. Package, load, test, and deliver the executable artifact as a SpaceClaim `.scscript` matched to the target API version.
+- For V21 packages, preserve the native minimal members `_script`, `_apiVersion`, `_smartVariableVersion`, and `[Content_Types].xml`; use `scripts/package_scscript.py` instead of renaming a `.py` file.
+- Import required geometry types from their actual versioned subnamespace. A root wildcard import does not guarantee that types such as `CircleProfile` or `PointUV` are defined.
 
 ## Coordinate systems and parameters
 
 - Define the origin, primary axes, handedness, model units, and expected extents before constructing geometry.
 - Keep user dimensions, derived dimensions, tolerances, counts, and file paths in a parameter block.
+- For engineering drawings, record which view or note supplies each parameter, close dimension chains, and label every unresolved placement or feature-scope decision as an assumption.
 - Assert valid ranges before geometry creation.
 
 ## Selection
@@ -28,6 +32,7 @@
 - Identify kept bodies by geometry properties, not return order.
 - Remove tool or overlap remnants only after proving their identity.
 - Re-enumerate bodies and faces after every topology-changing operation.
+- For subtractive features, independently verify the resulting cylindrical, planar, conical, or toroidal faces and their spatial spans; do not treat a successful Boolean return as proof that the intended feature was cut.
 
 ## Naming
 
@@ -46,4 +51,4 @@
 
 ## Evidence boundary
 
-A script package or static audit does not prove geometry correctness. A native model does not prove neutral-format transfer, shared topology, mesh connectivity, or solver readiness. Require evidence from each claimed stage.
+A script package or static audit does not prove geometry correctness. A displayed model does not by itself prove measurements, naming, native persistence, or requested export behavior. Require evidence from each claimed SpaceClaim modeling stage.
