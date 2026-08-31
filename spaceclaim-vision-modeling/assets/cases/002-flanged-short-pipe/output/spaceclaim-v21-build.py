@@ -485,11 +485,13 @@ def run():
     report = fresh_report()
     report_path = None
     save_attempted = False
+    execution_started = False
     try:
         validate_parameters()
         model_path, report_path = prepare_output_paths(report)
         stage(report, "parameters_and_paths_validated", "passed")
 
+        execution_started = True
         body = create_outer_solid_with_holes()
         stage(report, "outer_solid_and_holes_created", "passed")
 
@@ -521,8 +523,15 @@ def run():
         return report
     except Exception as exc:
         report["status"] = "failed"
-        report["evidence_layers"]["spaceclaim_execution"] = "failed"
-        if save_attempted:
+        if (
+            execution_started
+            and report["evidence_layers"]["spaceclaim_execution"] == "not_tested"
+        ):
+            report["evidence_layers"]["spaceclaim_execution"] = "failed"
+        if (
+            save_attempted
+            and report["evidence_layers"]["native_save"] == "not_tested"
+        ):
             report["evidence_layers"]["native_save"] = "failed"
         report["error"] = {"type": exc.__class__.__name__, "message": str(exc)}
         stage(report, "failed", "failed", traceback.format_exc())

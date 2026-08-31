@@ -20,6 +20,12 @@ CONTRACT_PATH = (
     / "001-offset-block-array"
     / "validation-contract.json"
 )
+SCHEMA_PATH = (
+    ROOT
+    / "spaceclaim-vision-modeling"
+    / "references"
+    / "spaceclaim-validation-report.schema.json"
+)
 SPEC = importlib.util.spec_from_file_location("validate_runtime_report", MODULE_PATH)
 assert SPEC and SPEC.loader
 VALIDATOR = importlib.util.module_from_spec(SPEC)
@@ -89,6 +95,39 @@ class ValidateRuntimeReportTests(unittest.TestCase):
         report["stages"][1]["status"] = "failed"
         result = self.validate(report)
         self.assertIn("inconsistent_report_status", [issue["code"] for issue in result["issues"]])
+
+    def test_failed_report_requires_failed_stage_or_evidence_layer(self) -> None:
+        report = passing_report()
+        report["status"] = "failed"
+        result = VALIDATOR.validate_report(report)
+        self.assertEqual("failed", result["status"])
+        self.assertIn("inconsistent_report_status", [issue["code"] for issue in result["issues"]])
+
+    def test_failed_report_with_failed_stage_is_structurally_valid(self) -> None:
+        report = passing_report()
+        report["status"] = "failed"
+        report["stages"][0]["status"] = "failed"
+        result = VALIDATOR.validate_report(report)
+        self.assertEqual("passed", result["status"])
+
+    def test_failed_report_with_failed_evidence_layer_is_structurally_valid(self) -> None:
+        report = passing_report()
+        report["status"] = "failed"
+        report["evidence_layers"]["native_save"] = "failed"
+        result = VALIDATOR.validate_report(report)
+        self.assertEqual("passed", result["status"])
+
+    def test_target_api_version_must_be_string(self) -> None:
+        report = passing_report()
+        report["target"]["api_version"] = 21
+        result = VALIDATOR.validate_report(report)
+        self.assertEqual("failed", result["status"])
+        self.assertIn("invalid_string", [issue["code"] for issue in result["issues"]])
+
+    def test_schema_restricts_api_version_to_non_empty_string(self) -> None:
+        schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+        api_version = schema["$defs"]["target"]["properties"]["api_version"]
+        self.assertEqual({"$ref": "#/$defs/non_empty_string"}, api_version)
 
     def test_bbox_minimum_cannot_exceed_maximum(self) -> None:
         report = passing_report()

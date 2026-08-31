@@ -1,6 +1,6 @@
 # SpaceClaim visual interaction and review
 
-Use this reference after desktop control is authorized. Treat viewport interaction as a read-only observation method unless the task explicitly requires selecting geometry for an operation.
+Use this reference after desktop control is authorized. Keep the SpaceClaim window maximized or full-screen throughout the authorized control transaction by default. Treat viewport interaction as a read-only observation method unless the task explicitly requires selecting geometry for an operation.
 
 ## 1. Preserve a usable viewport
 
@@ -128,7 +128,7 @@ occluded or unresolved features:
 capture path and hash, when archived:
 ```
 
-A screenshot proves only the visible state from that viewpoint. It does not replace dimensional, topological, naming, save, or reopen checks. Mark visual agreement `not_tested` until the multi-view review has actually been performed.
+A screenshot proves only the visible state from that viewpoint. A path or SHA-256 for an image archived outside this repository identifies the artifact but does not expose its pixels for independent review here. A screenshot does not replace dimensional, topological, naming, save, or reopen checks. Mark visual agreement `not_tested` until the multi-view review has actually been performed.
 
 ## 7. Efficient control loop
 

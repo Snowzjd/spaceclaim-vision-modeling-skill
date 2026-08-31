@@ -56,6 +56,24 @@ def compare_reports(
         add_issue(issues, "invalid_forward_report", "$forward", "Forward report structure is invalid.")
     if reopen_validation["status"] != "passed":
         add_issue(issues, "invalid_reopen_report", "$reopened", "Reopen report structure is invalid.")
+    # A comparison is only meaningful for reports that themselves claim a
+    # successful forward/reopen run.  The structure validator deliberately
+    # accepts well-formed failed reports so they can be inspected, therefore
+    # reject those reports explicitly here before comparing their geometry.
+    if not isinstance(forward, dict) or forward.get("status") != "passed":
+        add_issue(
+            issues,
+            "forward_report_not_passed",
+            "$forward.status",
+            "Forward report status must be passed for comparison.",
+        )
+    if not isinstance(reopened, dict) or reopened.get("status") != "passed":
+        add_issue(
+            issues,
+            "reopen_report_not_passed",
+            "$reopened.status",
+            "Reopen report status must be passed for comparison.",
+        )
 
     result: dict[str, Any] = {
         "schema_version": 1,

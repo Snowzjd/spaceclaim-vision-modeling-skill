@@ -1,6 +1,6 @@
 # SpaceClaim Vision Modeling
 
-Local release candidate: **v0.2.0** · Latest published release: **v0.1**
+Version: **v0.2.0**
 
 `spaceclaim-vision-modeling` is a vision-guided, script-first Codex Skill for building and validating three-dimensional models in Ansys SpaceClaim. It converts reference images, sketches, engineering drawings, CAD screenshots, product views, text descriptions, existing SpaceClaim scripts, and error logs into explicit geometry contracts, version-matched `.scscript` packages, controlled desktop execution, and evidence-bounded model review.
 
@@ -54,7 +54,7 @@ These requirements are intentionally separate from the repository. Before using 
 
 - Prepare and audit once before desktop control, then run familiar document and script setup as a short transaction.
 - Start from a new unsaved design when no baseline is supplied, or from an identified copy when a baseline model is supplied.
-- Keep SpaceClaim maximized for viewport work and reserve detailed review for meaningful gates.
+- Keep SpaceClaim maximized throughout authorized control by default and reserve detailed review for meaningful gates.
 - Classify failures, repair the smallest responsible stage, and restart from a clean run state.
 
 ### Validation and visual review
@@ -120,7 +120,7 @@ Recorded numbered aliases may be acceptable for an explicitly same-topology repl
 ### Validate a structured runtime report
 
 ```powershell
-python .\spaceclaim-vision-modeling\scripts\validate_runtime_report.py .\runtime-report.json --contract .\spaceclaim-vision-modeling\assets\cases\001-offset-block-array\validation-contract.json
+python .\spaceclaim-vision-modeling\scripts\validate_runtime_report.py .\runtime-report.json --contract .\contract.json
 ```
 
 This checks report structure and declared measurements. It does not independently prove that SpaceClaim ran or that the report has authentic runtime provenance.
@@ -141,24 +141,15 @@ python -m unittest discover -s tests -v
 
 These Python tests exercise repository utilities, schemas, public case contracts, templates, and documented workflow invariants. They do not launch or execute SpaceClaim.
 
-Validate the installable Skill structure with the official `skill-creator` validator available in your Codex development environment:
+For repository maintainers only, validate the installable Skill structure with the official `skill-creator` validator available in the Codex development environment:
 
 ```powershell
 python <path-to-skill-creator>\scripts\quick_validate.py .\spaceclaim-vision-modeling
 ```
 
-## Public v0.2 release-candidate cases
+## Public assets and evidence
 
-| Case | Input and geometry | Evidence reached |
-|---|---|---|
-| [001 — Offset block array](spaceclaim-vision-modeling/assets/cases/001-offset-block-array/) | Synthetic parameterized block arrangement | Controlled SpaceClaim 2022 R1 / API V21 forward run, geometry report, native save, independent close/reopen audit, and four-view visual review |
-| [002 — Flanged short pipe](spaceclaim-vision-modeling/assets/cases/002-flanged-short-pipe/) | Image-plus-text interpretation; circular profiles, hole pattern, rounds, and chamfers | Controlled V21 forward run, feature-level report, native save, independent close/reopen audit, and three-view visual review |
-| [003 — Stepped shaft with keyway](spaceclaim-vision-modeling/assets/cases/003-stepped-shaft-keyway/) | Multi-view engineering drawing with explicit ambiguity tracking | Controlled V21 forward run, feature-level report, native save, independent close/reopen audit, and three-view visual review |
-| [004 — Rounded plate support](spaceclaim-vision-modeling/assets/cases/004-rounded-plate-support/) | Text-described rounded plate, support, and repeated holes | Controlled V21 forward run, feature-level report, native save, independent close/reopen audit, and three-view visual review |
-
-Each result is specific to its documented geometry, SpaceClaim release, API version, and validation procedure. A successful case is reusable evidence for the demonstrated pattern, not a guarantee for every geometry or release.
-
-Public case bundles contain redistributable requirement descriptions, scripts, contracts, selected reports, and bounded evidence records. A source image or drawing is included only when redistribution is confirmed; otherwise its observations, assumptions, and hash are recorded without packaging the source. Native models, controller screenshots, and machine-specific run artifacts are not generally bundled. Cases 001–004 each record a completed case-specific visual review using the views listed in their evidence files.
+Public asset bundles contain redistributable requirement descriptions, geometry reasoning, `.scscript` packages, contracts, structured reports, and bounded evidence records. Source images or drawings are included only when redistribution is confirmed; otherwise their observations, assumptions, and hashes are recorded without packaging the source. Native models, controller screenshots, and machine-specific run artifacts may remain outside the repository; an external artifact is identified by its recorded path and SHA-256 only, and the repository cannot independently inspect its pixels or runtime provenance. Example-specific evidence remains scoped to its own validation record and must not be promoted to a universal capability claim.
 
 ## Evidence boundary
 
@@ -175,6 +166,8 @@ The project reports only the validation level actually reached:
 | Requested export | Only the export format and artifact that were actually produced and checked |
 
 A script file, passing static audit, screenshot, runtime report, or native model does not automatically prove the other layers. Cross-version compatibility must be verified in the target SpaceClaim/API environment.
+
+Runtime evidence is bound to the exact executed artifact. If a public package is revised afterward, its case record must disclose the difference; unchanged geometry logic or passing host checks do not make the revised package byte-for-byte runtime-tested.
 
 ## Repository layout
 

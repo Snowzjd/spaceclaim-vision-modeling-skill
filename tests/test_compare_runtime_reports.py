@@ -92,6 +92,22 @@ class CompareRuntimeReportsTests(unittest.TestCase):
         self.assertEqual("failed", result["status"])
         self.assertIn("reopen_not_passed", [item["code"] for item in result["issues"]])
 
+    def test_forward_report_status_must_be_passed(self) -> None:
+        forward = report(reopen=False)
+        forward["status"] = "failed"
+        forward["stages"][0]["status"] = "failed"
+        result = COMPARATOR.compare_reports(forward, report(reopen=True))
+        self.assertEqual("failed", result["status"])
+        self.assertIn("forward_report_not_passed", [item["code"] for item in result["issues"]])
+
+    def test_reopen_report_status_must_be_passed(self) -> None:
+        reopened = report(reopen=True)
+        reopened["status"] = "failed"
+        reopened["stages"][0]["status"] = "failed"
+        result = COMPARATOR.compare_reports(report(reopen=False), reopened)
+        self.assertEqual("failed", result["status"])
+        self.assertIn("reopen_report_not_passed", [item["code"] for item in result["issues"]])
+
     def test_feature_change_fails(self) -> None:
         reopened = report(reopen=True)
         reopened["features"][0]["measurements"]["diameter_mm"] = 6.6

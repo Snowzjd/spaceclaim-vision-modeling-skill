@@ -3,9 +3,8 @@
 ## v0.2.0 - 2026-08-31
 
 - Clarify the project boundary around the Skill's SpaceClaim modeling capabilities, handoff contracts, exclusions, and validation layers.
-- Complete controlled SpaceClaim 2022 R1 / API V21 forward runs, structured runtime reports, native save, independent close/reopen audits, and case-specific visual reviews for public cases 001–004.
-- Complete public case 002 from image-plus-text intent through a formal V21 `.scscript`, transient circular-profile construction, holes, rounds, chamfers, native save, visual review, and feature-level close/reopen audit.
-- Complete public case 003 from a multi-view engineering drawing through dimension reconciliation, explicit assumption tracking, a formal V21 `.scscript`, coaxial stepped construction, through-bore and keyway cuts, rounds, chamfers, native save, visual review, and feature-level close/reopen audit.
+- Archive evidence from controlled SpaceClaim 2022 R1 / API V21 forward runs, structured reports, native save/reopen audits, and bounded multi-view reviews in the public case library.
+- Expand the public case library across visual, drawing, and textual input forms while keeping each case's geometry, assumptions, names, and measurements local to its own bundle.
 - Add deterministic four-member V21 `.scscript` packaging and formal packaged assets for public cases.
 - Add a versioned structured runtime-report schema and dependency-free host validator.
 - Harden `.scscript` token analysis, exact smart-variable closure, archive-integrity checks, and resource-safety limits.

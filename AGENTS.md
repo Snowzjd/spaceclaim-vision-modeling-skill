@@ -22,6 +22,6 @@ Develop `spaceclaim-vision-modeling` as a standalone, domain-independent SpaceCl
 - Keep `SKILL.md` concise and route detailed rules to `references/`.
 - Put deterministic tools in `scripts/` and copyable templates or public case assets in `assets/`.
 - Use only redistributable public examples. Do not copy private models, recordings, vendor binaries, licensed documentation, credentials, or user-specific paths.
-- Keep repository development self-contained; do not require unpublished repositories, run directories, or evidence that cannot be redistributed or reproduced.
+- Keep the installable Skill and executable public cases self-contained. External artifacts may be referenced only as bounded provenance: they must not be required to reproduce a public capability claim, and the repository must state when their contents cannot be independently inspected.
 - Preserve explicit evidence boundaries. A script, screenshot, or native model alone does not prove every requested SpaceClaim modeling claim.
 - Run the official skill validator after structural changes.

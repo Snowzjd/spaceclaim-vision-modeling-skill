@@ -457,9 +457,11 @@ def run():
     report = fresh_report()
     report_path = None
     save_attempted = False
+    execution_started = False
     try:
         validate_parameters()
         model_path, report_path = prepare_output_paths(report)
+        execution_started = True
         require_count(current_bodies(), 0, "initial document bodies")
         stage(report, "parameters_paths_and_clean_document_validated", "passed")
 
@@ -491,8 +493,15 @@ def run():
         return report
     except Exception as exc:
         report["status"] = "failed"
-        report["evidence_layers"]["spaceclaim_execution"] = "failed"
-        if save_attempted:
+        if (
+            execution_started
+            and report["evidence_layers"]["spaceclaim_execution"] == "not_tested"
+        ):
+            report["evidence_layers"]["spaceclaim_execution"] = "failed"
+        if (
+            save_attempted
+            and report["evidence_layers"]["native_save"] == "not_tested"
+        ):
             report["evidence_layers"]["native_save"] = "failed"
         report["error"] = {"type": exc.__class__.__name__, "message": str(exc)}
         stage(report, "failed", "failed", traceback.format_exc())

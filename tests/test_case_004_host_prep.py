@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import importlib.util
 import json
 import re
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 
@@ -23,6 +25,7 @@ REOPEN_PATH = CASE_ROOT / "output" / "spaceclaim-v21-reopen-audit.py"
 BUILD_SCSCRIPT_PATH = CASE_ROOT / "output" / "spaceclaim-v21-build.scscript"
 REOPEN_SCSCRIPT_PATH = CASE_ROOT / "output" / "spaceclaim-v21-reopen-audit.scscript"
 CONTRACT_PATH = CASE_ROOT / "validation" / "validation-contract.json"
+EVIDENCE_PATH = CASE_ROOT / "validation" / "runtime-evidence.md"
 FORWARD_REPORT_PATH = CASE_ROOT / "validation" / "forward-runtime-report.json"
 REOPEN_REPORT_PATH = CASE_ROOT / "validation" / "reopen-runtime-report.json"
 AUDITOR_PATH = ROOT / "spaceclaim-vision-modeling" / "scripts" / "audit_scscript.py"
@@ -225,6 +228,78 @@ class Case004HostPrepTests(unittest.TestCase):
             "Forward/reopen comparison failed: %s" % result["issues"],
         )
         self.assertTrue(all(result["comparison"].values()), result["comparison"])
+
+    def test_submitted_scscript_embeds_exact_utf8_neighboring_sources(self) -> None:
+        for archive_path, source_path in (
+            (BUILD_SCSCRIPT_PATH, BUILD_PATH),
+            (REOPEN_SCSCRIPT_PATH, REOPEN_PATH),
+        ):
+            source_bytes = source_path.read_bytes()
+            try:
+                source_bytes.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                self.fail("Neighboring source is not UTF-8: %s" % exc)
+            self.assertTrue(archive_path.is_file(), "Missing submitted archive: %s" % archive_path)
+            with zipfile.ZipFile(archive_path) as archive:
+                self.assertIn("_script", archive.namelist())
+                self.assertEqual(
+                    source_bytes,
+                    archive.read("_script"),
+                    "_script bytes differ from %s" % source_path,
+                )
+
+    def test_runtime_evidence_records_current_public_artifact_hashes(self) -> None:
+        self.assertTrue(EVIDENCE_PATH.is_file(), "Missing runtime evidence: %s" % EVIDENCE_PATH)
+        evidence_lines = EVIDENCE_PATH.read_text(encoding="utf-8").splitlines()
+        artifacts = (
+            ("Public parameterized build package", BUILD_SCSCRIPT_PATH),
+            ("Public parameterized reopen package", REOPEN_SCSCRIPT_PATH),
+            ("Public sanitized forward report", FORWARD_REPORT_PATH),
+            ("Public sanitized native-reopen report", REOPEN_REPORT_PATH),
+        )
+        for label, artifact_path in artifacts:
+            digest = hashlib.sha256(artifact_path.read_bytes()).hexdigest().upper()
+            matching_lines = [line.upper() for line in evidence_lines if label.upper() in line.upper()]
+            self.assertTrue(matching_lines, "Evidence does not name %s" % label)
+            self.assertTrue(
+                any(digest in line for line in matching_lines),
+                "Evidence hash for %s is not current (%s)" % (label, digest),
+            )
+
+    def test_failure_state_machine_only_downgrades_untested_evidence(self) -> None:
+        for source, evidence_names in (
+            (self.build_source, ("spaceclaim_execution", "native_save")),
+            (self.reopen_source, ("spaceclaim_execution", "native_reopen")),
+        ):
+            self.assertIn("execution_started", source)
+            except_start = source.rfind("except Exception as exc:")
+            self.assertGreaterEqual(except_start, 0)
+            except_source = source[except_start:]
+            for evidence_name in evidence_names:
+                pattern = (
+                    r"if[\s\S]*report\[\"evidence_layers\"\]\[\"%s\"\]"
+                    r"\s*==\s*\"not_tested\"[\s\S]*report\[\"evidence_layers\"\]"
+                    r"\[\"%s\"\]\s*=\s*\"failed\""
+                ) % (evidence_name, evidence_name)
+                self.assertRegex(except_source, pattern)
+
+    def test_visual_evidence_heading_and_each_screenshot_record(self) -> None:
+        evidence = EVIDENCE_PATH.read_text(encoding="utf-8")
+        self.assertIn("## Visual review evidence", evidence)
+        self.assertIn(
+            "| Model/run | View | Selection state | Expected visible features | "
+            "Observed agreement or discrepancy | Occluded/unresolved | External capture path / SHA-256 |",
+            evidence,
+        )
+        for screenshot_name in (
+            "visual-home.png",
+            "visual-front-z.png",
+            "visual-side-x.png",
+        ):
+            self.assertRegex(
+                evidence,
+                r"`%s`[^\r\n]*?`[0-9A-Fa-f]{64}`" % re.escape(screenshot_name),
+            )
 
 
 if __name__ == "__main__":

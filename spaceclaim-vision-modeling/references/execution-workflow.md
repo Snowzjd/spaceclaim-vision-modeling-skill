@@ -20,17 +20,17 @@ Do not reread unchanged references, rescan the repository, or rerun the same hos
 Choose exactly one path:
 
 - **No baseline model:** create a new unsaved design, load the prepared script, and run it once. Do not create or save an extra blank working model, and do not manually inspect the blank design for body or group counts; put clean-document assertions in the script. The script writes the validated result directly to a new run-owned native-model path.
-- **Baseline model supplied:** create a hash-recorded copy at the final run-owned path, open the copy, and run against it. Never modify the baseline.
+- **Baseline model supplied:** create a hash-recorded copy at the final run-owned path, open the copy, and run against it. Generate or configure the script for baseline-copy mode: it must verify the active copy and expected path before permitting an existing native-model path. Do not use a no-baseline script whose output guard requires a nonexistent model path. Never modify the baseline.
 
 ## 3. Execute routine setup as one transaction
 
-At the entry gate, observe enough to confirm the target SpaceClaim window, absence of a blocking dialog, the intended new design or baseline copy, and a maximized or full-screen workspace suitable for visual work. Then perform familiar setup actions continuously, as the active controller permits:
+At the entry gate, observe enough to confirm the target SpaceClaim window, absence of a blocking dialog, the intended new design or baseline copy, and a maximized or full-screen workspace. Keep SpaceClaim maximized or full-screen for the entire authorized control transaction by default; only a blocking dialog, required side-by-side comparison, or explicit user request permits a temporary smaller layout. Then perform familiar setup actions continuously, as the active controller permits:
 
 ```text
 new unsaved design or open baseline copy -> open prepared script -> run once
 ```
 
-Prefer deterministic keyboard commands, accessible controls, and script-driven modeling over repeated screen-coordinate actions. Do not perform a separate repository audit, geometry review, or evidence review after each click. Follow any observation or confirmation required by the active computer-control system, but do not duplicate it with extra domain reviews.
+Prefer deterministic keyboard commands, accessible controls, and script-driven modeling over repeated screen-coordinate actions. Load the prepared `.scscript` package; a plain `.py` file is only an editable or packaging source. Do not perform a separate repository audit, geometry review, or evidence review after each click. Follow any observation or confirmation required by the active computer-control system, but do not duplicate it with extra domain reviews.
 
 Never press Run again while completion is uncertain.
 
@@ -47,7 +47,7 @@ Use these checkpoints:
 1. **Entry state:** correct application and document, no blocking dialog.
 2. **Run result:** final runtime-report stage or the first exact error.
 3. **Persistence:** expected native file exists; close/reopen only when persistence is part of the acceptance contract.
-4. **Final review:** geometry, names, measurements, requested groups, multi-view visual agreement, evidence screenshots, reports, paths, and hashes.
+4. **Final review:** geometry, names, measurements, requested groups, multi-view visual agreement, evidence screenshots, reports, paths, and hashes. Record the per-image visual fields defined in `visual-interaction.md`; when images remain external, a path/hash identifies the artifact but does not make its pixels independently reviewable here.
 
 When a native close/reopen check is required, use `scripts/compare_runtime_reports.py` after both reports pass structural validation.
 

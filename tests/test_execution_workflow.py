@@ -32,6 +32,8 @@ class ExecutionWorkflowTests(unittest.TestCase):
         self.assertIn("Baseline model supplied", self.workflow)
         self.assertIn("new unsaved design", self.workflow)
         self.assertIn("Do not create or save an extra blank working model", self.workflow)
+        self.assertIn("baseline-copy mode", self.workflow)
+        self.assertIn("no-baseline script", self.workflow)
         self.assertIn("Never modify the baseline", self.workflow)
 
     def test_visual_control_preserves_a_large_workspace(self) -> None:

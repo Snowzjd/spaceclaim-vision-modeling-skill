@@ -109,15 +109,7 @@
           "$ref": "#/$defs/non_empty_string"
         },
         "api_version": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/non_empty_string"
-            },
-            {
-              "type": "integer",
-              "minimum": 0
-            }
-          ]
+          "$ref": "#/$defs/non_empty_string"
         },
         "python_runtime": {
           "$ref": "#/$defs/non_empty_string"

@@ -23,23 +23,28 @@
 ## Visual review evidence
 
 - Review date: 2026-08-31.
-- Active model: the reopened native model in a maximized SpaceClaim 2022 R1 window.
-- Review actions were viewport-only. No geometry was edited, no script was run, and the model was not saved.
-- The Home overview, axial end view, and orthogonal side view showed two end flanges, the intermediate tube, the central through-bore, four bolt holes on each flange, shoulder rounds, and the specified flange outer-edge chamfers without visible asymmetry or an unexpected second body.
+- Active model: the reopened native model in a maximized SpaceClaim 2022 R1 window; review actions were viewport-only, with no geometry edit, script run, or save.
+- The three screenshot artifacts are archived outside the public bundle. The repository records their paths and SHA-256 values but cannot independently inspect their pixels or verify visual agreement from hashes alone.
+
+| Model/run | View | Selection state | Expected visible features | Observed agreement or discrepancy | Occluded/unresolved | External capture path / SHA-256 |
+|---|---|---|---|---|---|---|
+| `002-reopened-native / visual-2026-08-31` | Home overview | Cleared | Two end flanges, intermediate tube, central through-bore, repeated bolt-hole pattern, shoulder rounds, and outer-edge chamfers; one body | The overall flange-and-tube arrangement, bore, repeated holes, rounds, and chamfers were visible; no unexpected second body or asymmetry | None observed | `visual-home.png` / `C978A83F89B06A649947CD3AA940D46C0EA9202C2BAA23197D0D4C6910EB2057` |
+| `002-reopened-native / visual-2026-08-31` | Axial end (X) | Cleared | Circular flange end profile, central through-bore, and the four-hole pattern on the visible flange | The visible flange profile, bore, and four-hole pattern agreed with the contract | None observed | `visual-end-x.png` / `CB01111CD3FBE1CEE57F04E8FEAB656946FDAC8D0757C323CB42A92C777FEBC2` |
+| `002-reopened-native / visual-2026-08-31` | Orthogonal side (Y) | Cleared | Two flange stations, intermediate tube, coaxial bore, shoulder transitions, and specified outer-edge chamfers | Flange spacing, tube, coaxial bore direction, rounds, and chamfers were visually consistent; no unexpected second body | None observed | `visual-side-y.png` / `03A10B4F92D3CA4099EF3090778CB617736B9CABC598B09F99E1B913BB53C44C` |
+
 - Exact diameters, PCD, radii, chamfer measurements, and body volume remain supported by the structured reports rather than by screenshots alone.
-- Run-owned screenshots are archived outside the public bundle: `visual-home.png` SHA-256 `C978A83F89B06A649947CD3AA940D46C0EA9202C2BAA23197D0D4C6910EB2057`; `visual-end-x.png` SHA-256 `CB01111CD3FBE1CEE57F04E8FEAB656946FDAC8D0757C323CB42A92C777FEBC2`; `visual-side-y.png` SHA-256 `03A10B4F92D3CA4099EF3090778CB617736B9CABC598B09F99E1B913BB53C44C`.
 
 ## Evidence artifacts
 
-- Public parameterized build package: `../output/spaceclaim-v21-build.scscript`, SHA-256 `0E89E668CBFEE8B8515F14392D6F733B34CDF239C48B7661A7D216F03049898E`.
+- Public parameterized build package: `../output/spaceclaim-v21-build.scscript`, SHA-256 `544F7043D056F0153A4EAB32FFE7981A261664A7ACDDAF769F1FBFCC876026F8`.
 - Exact run package after output-path injection: SHA-256 `C86814E0585BA8D8D5C119F6820FF5F8DBFADA6DFED0D879A19CEC33259F0917`.
-- Public parameterized reopen package: `../output/spaceclaim-v21-reopen-audit.scscript`, SHA-256 `3A520E981992BBDD6B4E73FC8810D01B220ED341EA80EDDF9892AABD3E663ED4`.
+- Public parameterized reopen package: `../output/spaceclaim-v21-reopen-audit.scscript`, SHA-256 `CA43B24094D1E6A26D6D6046FAE96C5063DB646FD0F236EB668454CDABDB517E`.
 - Native model created by the controlled run: SHA-256 `57FF6F4C7620F3CFA54D575B7AE3DE1B911AD850A5F6C1D0B396A9F16D340556`; the native file is not bundled in this case.
 - Sanitized forward report: `forward-runtime-report.json`, SHA-256 `BB3D70157AF892E8D8A9D863B3C550F08E403CD6D7520B2E26B44B5C1B580309`.
 - Sanitized reopen report: `reopen-runtime-report.json`, SHA-256 `8749BAE337288DBFA559021514AB3EF2D16004CD3CF7D3FCB2C4C54E1D5DE7EB`.
 
-The public packages retain unset output paths for redistribution. The exact run package differs only by injected run-owned output paths, so the public package hash is not represented as the byte-identical executed package.
+The public packages retain unset output paths for redistribution. The historical forward-run source permitted its run-owned model path to exist, while the current public build package rejects existing model and report paths and adds stricter preflight/evidence-state guards. Geometry construction, assertions, and the native-save call are unchanged. The current public build/reopen packages have not been rerun after those guard changes and are not byte-identical to the executed packages.
 
 ## Evidence boundary
 
-This evidence confirms one controlled SpaceClaim 2022 R1 / API V21 construction, one independent native close/reopen audit, and visible agreement from the three recorded views for this synthetic case. It does not establish compatibility with other SpaceClaim releases or arbitrary flange geometry.
+This evidence supports one controlled SpaceClaim 2022 R1 / API V21 construction, one independent native close/reopen audit, and the recorded visual-review conclusion for this synthetic case. The current public packages differ from the executed packages as disclosed above, and the external screenshot pixels are not independently reviewable from this repository. It does not establish compatibility with other SpaceClaim releases or arbitrary flange geometry.

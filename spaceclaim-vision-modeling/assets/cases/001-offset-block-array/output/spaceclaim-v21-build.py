@@ -1,7 +1,7 @@
-# SpaceClaim 2022 R1 / API V21 forward-tested script for case 001.
-# IronPython 2.7 compatible. Controlled case evidence is recorded in runtime-evidence.md.
-# Set the paths for the current run. The native model may be the run-owned blank
-# design already saved at its final path; the report path must not exist.
+# SpaceClaim 2022 R1 / API V21 candidate build script for case 001.
+# IronPython 2.7 compatible. Historical controlled evidence and the current
+# package difference are recorded in runtime-evidence.md.
+# Start from a new unsaved design. Both run-owned output paths must not exist.
 
 from __future__ import print_function
 
@@ -142,9 +142,7 @@ def normalized_new_path(value, suffix, label, allow_existing=False):
 
 
 def prepare_output_paths(report):
-    model_path = normalized_new_path(
-        OUTPUT_MODEL_PATH, ".scdoc", "OUTPUT_MODEL_PATH", allow_existing=True
-    )
+    model_path = normalized_new_path(OUTPUT_MODEL_PATH, ".scdoc", "OUTPUT_MODEL_PATH")
     report_path = normalized_new_path(REPORT_PATH, ".json", "REPORT_PATH")
     if model_path.lower() == report_path.lower():
         raise ValueError("Model and report paths must be different.")
@@ -274,11 +272,13 @@ def run():
     report = fresh_report()
     report_path = None
     save_attempted = False
+    execution_started = False
     try:
         validate_parameters()
         model_path, report_path = prepare_output_paths(report)
         stage(report, "parameters_and_paths_validated", "passed")
 
+        execution_started = True
         if current_bodies() or current_groups():
             raise ValueError("Case 001 must start from a clean model with no bodies or groups.")
         stage(report, "clean_model_confirmed", "passed")
@@ -308,8 +308,15 @@ def run():
         return report
     except Exception as exc:
         report["status"] = "failed"
-        report["evidence_layers"]["spaceclaim_execution"] = "failed"
-        if save_attempted:
+        if (
+            execution_started
+            and report["evidence_layers"]["spaceclaim_execution"] == "not_tested"
+        ):
+            report["evidence_layers"]["spaceclaim_execution"] = "failed"
+        if (
+            save_attempted
+            and report["evidence_layers"]["native_save"] == "not_tested"
+        ):
             report["evidence_layers"]["native_save"] = "failed"
         report["error"] = {"type": exc.__class__.__name__, "message": str(exc)}
         stage(report, "failed", "failed", traceback.format_exc())

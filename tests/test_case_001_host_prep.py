@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import importlib.util
 import json
 import re
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 
@@ -19,6 +21,7 @@ CASE_ROOT = (
     / "001-offset-block-array"
 )
 SCRIPT_PATH = CASE_ROOT / "output" / "spaceclaim-v21-build.py"
+BUILD_SCSCRIPT_PATH = CASE_ROOT / "output" / "spaceclaim-v21-build.scscript"
 CONTRACT_PATH = CASE_ROOT / "validation-contract.json"
 EVIDENCE_PATH = CASE_ROOT / "runtime-evidence.md"
 FORWARD_REPORT_PATH = CASE_ROOT / "forward-runtime-report.json"
@@ -60,9 +63,10 @@ class Case001Tests(unittest.TestCase):
         cls.source = SCRIPT_PATH.read_text(encoding="utf-8")
         cls.contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
-    def test_candidate_script_is_host_parseable_and_forward_tested(self) -> None:
+    def test_candidate_script_is_host_parseable_and_evidence_bounded(self) -> None:
         ast.parse(self.source)
-        self.assertIn("forward-tested", self.source)
+        self.assertIn("candidate build script", self.source)
+        self.assertIn("Historical controlled evidence", self.source)
         self.assertNotIn("runtime" + "_pending", self.source)
         self.assertIn('from SpaceClaim.Api.V21 import *', self.source)
 
@@ -73,11 +77,20 @@ class Case001Tests(unittest.TestCase):
         self.assertIn("Native persistence result", evidence)
         self.assertIn("Evidence boundary", evidence)
 
-    def test_script_allows_run_owned_model_but_protects_report(self) -> None:
+    def test_model_and_report_paths_both_refuse_overwrite(self) -> None:
         self.assertIn("OUTPUT_MODEL_PATH = None", self.source)
         self.assertIn("REPORT_PATH = None", self.source)
-        self.assertIn('"OUTPUT_MODEL_PATH", allow_existing=True', self.source)
-        self.assertIn('normalized_new_path(REPORT_PATH, ".json", "REPORT_PATH")', self.source)
+        self.assertIn("def normalized_new_path(value, suffix, label, allow_existing=False):", self.source)
+        self.assertRegex(
+            self.source,
+            r'normalized_new_path\(OUTPUT_MODEL_PATH,\s*"\.scdoc",\s*"OUTPUT_MODEL_PATH"(?:,\s*False)?\)',
+        )
+        self.assertRegex(
+            self.source,
+            r'normalized_new_path\(REPORT_PATH,\s*"\.json",\s*"REPORT_PATH"(?:,\s*False)?\)',
+        )
+        self.assertNotIn("allow_existing=True", self.source)
+        self.assertIn("if os.path.exists(path) and not allow_existing:", self.source)
         self.assertIn("refusing to overwrite", self.source)
 
     def test_geometry_validation_precedes_the_only_native_save(self) -> None:
@@ -147,6 +160,66 @@ class Case001Tests(unittest.TestCase):
             "Forward/reopen comparison failed: %s" % result["issues"],
         )
         self.assertTrue(all(result["comparison"].values()), result["comparison"])
+
+    def test_submitted_scscript_embeds_exact_utf8_neighboring_source(self) -> None:
+        source_bytes = SCRIPT_PATH.read_bytes()
+        try:
+            source_bytes.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            self.fail("Neighboring source is not UTF-8: %s" % exc)
+        self.assertTrue(BUILD_SCSCRIPT_PATH.is_file(), "Missing submitted archive: %s" % BUILD_SCSCRIPT_PATH)
+        with zipfile.ZipFile(BUILD_SCSCRIPT_PATH) as archive:
+            self.assertIn("_script", archive.namelist())
+            self.assertEqual(source_bytes, archive.read("_script"))
+
+    def test_runtime_evidence_records_current_public_artifact_hashes(self) -> None:
+        self.assertTrue(EVIDENCE_PATH.is_file(), "Missing runtime evidence: %s" % EVIDENCE_PATH)
+        evidence_lines = EVIDENCE_PATH.read_text(encoding="utf-8").splitlines()
+        artifacts = (
+            ("Public parameterized build package", BUILD_SCSCRIPT_PATH),
+            ("Public sanitized forward report", FORWARD_REPORT_PATH),
+            ("Public sanitized reopen report", REOPEN_REPORT_PATH),
+        )
+        for label, artifact_path in artifacts:
+            digest = hashlib.sha256(artifact_path.read_bytes()).hexdigest().upper()
+            matching_lines = [line.upper() for line in evidence_lines if label.upper() in line.upper()]
+            self.assertTrue(matching_lines, "Evidence does not name %s" % label)
+            self.assertTrue(
+                any(digest in line for line in matching_lines),
+                "Evidence hash for %s is not current (%s)" % (label, digest),
+            )
+
+    def test_failure_state_machine_only_downgrades_untested_evidence(self) -> None:
+        self.assertIn("execution_started", self.source)
+        except_start = self.source.rfind("except Exception as exc:")
+        self.assertGreaterEqual(except_start, 0)
+        except_source = self.source[except_start:]
+        for evidence_name in ("spaceclaim_execution", "native_save"):
+            pattern = (
+                r"if[\s\S]*report\[\"evidence_layers\"\]\[\"%s\"\]"
+                r"\s*==\s*\"not_tested\"[\s\S]*report\[\"evidence_layers\"\]"
+                r"\[\"%s\"\]\s*=\s*\"failed\""
+            ) % (evidence_name, evidence_name)
+            self.assertRegex(except_source, pattern)
+
+    def test_visual_evidence_heading_and_each_screenshot_record(self) -> None:
+        evidence = EVIDENCE_PATH.read_text(encoding="utf-8")
+        self.assertIn("## Visual review evidence", evidence)
+        self.assertIn(
+            "| Model/run | View | Selection state | Expected visible features | "
+            "Observed agreement or discrepancy | Occluded/unresolved | External capture path / SHA-256 |",
+            evidence,
+        )
+        for screenshot_name in (
+            "visual-home.png",
+            "visual-plan.png",
+            "visual-height.png",
+            "visual-end.png",
+        ):
+            self.assertRegex(
+                evidence,
+                r"`%s`[^\r\n]*?`[0-9A-Fa-f]{64}`" % re.escape(screenshot_name),
+            )
 
 
 if __name__ == "__main__":

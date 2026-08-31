@@ -43,7 +43,8 @@
 
 ## Failure and save behavior
 
-- Run on a clean copy and write an independent output.
+- Choose one explicit path policy. In no-baseline mode, start from an unsaved design and require a nonexistent run-owned model path. In baseline-copy mode, verify the active hash-recorded copy and its exact run-owned path before permitting that existing model path. Never weaken a no-baseline guard merely to make it run on a baseline copy.
+- Keep the original baseline unchanged and write only to the verified run-owned output or copy.
 - Emit stage markers and measured assertions to a runtime report.
 - Stop before save on critical failure.
 - Treat “script reached the final line,” “output file exists,” and “native model reopens with expected structure” as separate checks.

@@ -17,12 +17,13 @@ This is the v0.2 version of the SpaceClaim visual modeling skill. Its scope runs
 4. Centralize parameters and avoid unexplained numeric literals.
 5. Match the target SpaceClaim/API version. Do not copy code across API versions without checking availability and runtime behavior.
 6. Select bodies, faces, and edges semantically by direction, position, normal, area, bounding box, volume, topology, and adjacency. Do not generalize recorded `FaceN` or `BodyN` aliases.
-7. Work from a copy, save to a new path, and stop without saving when a critical assertion fails.
-8. Distinguish input interpretation, static package checks, SpaceClaim runtime success, visual agreement, geometry-kernel measurements, save/reopen evidence, and requested export evidence.
-9. Before controlling the user's desktop, explain why control is needed and obtain authorization for that run. Treat that authorization as run-scoped: do not ask again for familiar setup steps unless the scope changes or the controller requires it.
-10. Keep the SpaceClaim window maximized or full-screen during visual work unless a blocking dialog or required side-by-side comparison makes a temporary smaller layout necessary.
-11. Repair the smallest failing step. Preserve user-confirmed geometry, parameters, names, and output boundaries.
-12. Stay within the requested SpaceClaim modeling scope. Do not infer that one successful validation layer proves unperformed modeling checks.
+7. With no baseline, start in a new unsaved design; with a baseline, run only on a hash-recorded copy. Save validated output to a new run-owned path and stop without saving when a critical assertion fails.
+8. Treat plain `.py` as editable or packaging source only; load and deliver the matching SpaceClaim `.scscript` artifact.
+9. Distinguish input interpretation, static package checks, SpaceClaim runtime success, visual agreement, geometry-kernel measurements, save/reopen evidence, and requested export evidence.
+10. Before controlling the user's desktop, explain why control is needed and obtain authorization for that run. Treat that authorization as run-scoped: do not ask again for familiar setup steps unless the scope changes or the controller requires it.
+11. Keep the SpaceClaim window maximized or full-screen throughout authorized control by default; allow a temporary smaller layout only for a blocking dialog, required comparison, or explicit user request.
+12. Repair the smallest failing step. Preserve user-confirmed geometry, parameters, names, and output boundaries.
+13. Stay within the requested SpaceClaim modeling scope. Do not infer that one successful validation layer proves unperformed modeling checks.
 
 Read [references/integration-boundary.md](references/integration-boundary.md) when defining inputs, outputs, execution authorization, or handoff requirements for a modeling task.
 
@@ -40,9 +41,6 @@ Load only the resources needed for the current stage:
 - Use [scripts/compare_runtime_reports.py](scripts/compare_runtime_reports.py) to compare forward and native-reopen body/group measurements on the host without upgrading the reports to independent runtime evidence.
 - Copy [assets/templates/spaceclaim-v21-geometry-audit.py](assets/templates/spaceclaim-v21-geometry-audit.py) for a read-only SpaceClaim geometry report.
 - Copy [assets/templates/spaceclaim-v21-semantic-helpers.py](assets/templates/spaceclaim-v21-semantic-helpers.py) when building V21 semantic selectors and naming assertions.
-- Use [assets/cases/001-offset-block-array/requirement.md](assets/cases/001-offset-block-array/requirement.md) as the public synthetic acceptance-case format.
-- Use [assets/cases/001-offset-block-array/output/spaceclaim-v21-build.scscript](assets/cases/001-offset-block-array/output/spaceclaim-v21-build.scscript) as a V21 forward-tested primitive-array example, bounded by [its runtime evidence](assets/cases/001-offset-block-array/runtime-evidence.md).
-- Use [assets/cases/002-flanged-short-pipe/output/spaceclaim-v21-build.scscript](assets/cases/002-flanged-short-pipe/output/spaceclaim-v21-build.scscript) and its separate [native-reopen audit package](assets/cases/002-flanged-short-pipe/output/spaceclaim-v21-reopen-audit.scscript) as a V21 circular-profile, transient-Boolean, hole-pattern, round, and chamfer example, bounded by [its runtime evidence](assets/cases/002-flanged-short-pipe/validation/runtime-evidence.md).
 - Use the focused files in `prompts/` when a parser, planner, writer, debugger, or validation-review contract is needed.
 
 ## Workflow
@@ -69,7 +67,7 @@ Prefer deterministic parametric construction. Use GUI interaction only for obser
 
 ### 4. Generate and preflight the script
 
-Apply [references/spaceclaim-scripting-rules.md](references/spaceclaim-scripting-rules.md). Keep version-sensitive calls isolated, use semantic selectors, assert critical counts and dimensions, emit a runtime report, and save only after validation passes. Complete relevant host-side checks before starting desktop control; do not repeat unchanged repository or script audits between routine GUI actions.
+Apply [references/spaceclaim-scripting-rules.md](references/spaceclaim-scripting-rules.md). Select the no-baseline or verified baseline-copy path policy explicitly; do not reuse a new-path-only script for an existing copy. Keep version-sensitive calls isolated, use semantic selectors, assert critical counts and dimensions, emit a runtime report, and save only after validation passes. Complete relevant host-side checks before starting desktop control; do not repeat unchanged repository or script audits between routine GUI actions.
 
 When the input is a recorded `.scscript`, run the static auditor first. Numbered smart-variable aliases may be acceptable for a same-topology replay, but they are not reusable semantic selection logic.
 
@@ -77,11 +75,11 @@ When the input is a recorded `.scscript`, run the static auditor first. Numbered
 
 After authorization, follow [references/execution-workflow.md](references/execution-workflow.md). Use the GUI only to establish the intended document, save or open the run-owned model, load the prepared script, and run it once. Let the script perform geometry construction and assertions. Do not insert manual geometry reviews between familiar setup actions; stop at the entry-state gate, the run-result gate, an exception, and any required save/reopen gate.
 
-Preserve a maximized or full-screen SpaceClaim workspace during viewport work. Calibrate one small reversible navigation motion before relying on the default mouse mapping, because user navigation themes can remap spin, pan, zoom, and wheel behavior.
+Preserve a maximized or full-screen SpaceClaim workspace throughout authorized control by default. Use a temporary smaller layout only for a blocking dialog, required comparison, or explicit user request, then restore it. Calibrate one small reversible navigation motion before relying on the default mouse mapping, because user navigation themes can remap spin, pan, zoom, and wheel behavior.
 
 ### 6. Review the final model
 
-After the run completes, verify operations, body counts, names, bounding boxes, volumes, requested groups, visual agreement, and output existence in proportion to risk. Follow the deterministic viewpoint ladder and screenshot contract in [references/visual-interaction.md](references/visual-interaction.md). Reopen native output when save persistence matters.
+After the run completes, verify operations, body counts, names, bounding boxes, volumes, requested groups, visual agreement, and output existence in proportion to risk. Follow the deterministic viewpoint ladder and per-image screenshot contract in [references/visual-interaction.md](references/visual-interaction.md). Reopen native output when save persistence matters. When screenshots are archived outside the repository, record their path and SHA-256 and state that the repository cannot independently review their pixels.
 
 Do not claim an unperformed validation layer without corresponding evidence.
 

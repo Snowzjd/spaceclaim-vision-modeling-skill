@@ -300,6 +300,7 @@ def write_report(path, report):
 def run():
     report = fresh_report()
     report_path = None
+    execution_started = False
     try:
         model_path = normalized_path(
             NATIVE_MODEL_PATH, ".scdoc", "NATIVE_MODEL_PATH", True
@@ -310,6 +311,7 @@ def run():
         report["outputs"]["native_model_path"] = model_path
         report["outputs"]["report_path"] = report_path
 
+        execution_started = True
         bodies = list(GetRootPart().GetAllBodies())
         body = require_count(bodies, 1, "reopened bodies")[0]
         if body.Name != "ROUNDED_PLATE_SUPPORT_01":
@@ -325,8 +327,11 @@ def run():
         return report
     except Exception as exc:
         report["status"] = "failed"
-        report["evidence_layers"]["spaceclaim_execution"] = "failed"
-        report["evidence_layers"]["native_reopen"] = "failed"
+        if execution_started:
+            if report["evidence_layers"]["spaceclaim_execution"] == "not_tested":
+                report["evidence_layers"]["spaceclaim_execution"] = "failed"
+            if report["evidence_layers"]["native_reopen"] == "not_tested":
+                report["evidence_layers"]["native_reopen"] = "failed"
         report["error"] = {"type": exc.__class__.__name__, "message": str(exc)}
         stage(report, "failed", "failed", traceback.format_exc())
         if report_path:

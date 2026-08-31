@@ -55,3 +55,5 @@ Keep every accepted claim within visual or textual geometry interpretation, Spac
 ## Evidence boundary
 
 Successful script execution does not by itself prove intended geometry, naming, measurements, visual agreement, native persistence, or requested export behavior. Validate each claimed SpaceClaim modeling layer directly.
+
+Bind runtime claims to the exact executed artifact. When a redistributed package differs from the executed package, disclose the difference and do not describe the revised bytes as runtime-tested until they are run again.

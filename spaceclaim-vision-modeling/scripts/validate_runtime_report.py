@@ -229,26 +229,36 @@ def validate_structure(report: Any) -> list[dict[str, str]]:
         if extras:
             add_issue(issues, "unexpected_evidence_layer", "$.evidence_layers", "Unexpected keys: %s" % ", ".join(extras))
 
+    failed_stage = isinstance(stages, list) and any(
+        isinstance(stage, dict) and stage.get("status") == "failed"
+        for stage in stages
+    )
+    failed_evidence = isinstance(evidence, dict) and any(
+        evidence.get(key) == "failed" for key in EVIDENCE_KEYS
+    )
+
     if report["status"] == "passed":
-        if isinstance(stages, list) and any(
-            isinstance(stage, dict) and stage.get("status") == "failed"
-            for stage in stages
-        ):
+        if failed_stage:
             add_issue(
                 issues,
                 "inconsistent_report_status",
                 "$.status",
                 "A passed report cannot contain a failed stage.",
             )
-        if isinstance(evidence, dict) and any(
-            evidence.get(key) == "failed" for key in EVIDENCE_KEYS
-        ):
+        if failed_evidence:
             add_issue(
                 issues,
                 "inconsistent_report_status",
                 "$.status",
                 "A passed report cannot contain a failed evidence layer.",
             )
+    elif report["status"] == "failed" and not (failed_stage or failed_evidence):
+        add_issue(
+            issues,
+            "inconsistent_report_status",
+            "$.status",
+            "A failed report must contain at least one failed stage or evidence layer.",
+        )
     return issues
 
 
