@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-15",
+  "input_fields": [
+    {
+      "name": "toroidal_face",
+      "type": "object",
+      "description": "One face identified as the toroidal fillet under review."
+    },
+    {
+      "name": "fillet_association",
+      "type": "object",
+      "description": "Evidence linking the torus to the intended fillet/adjacent geometry."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Requested radius unit."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "fillet_radius_record",
+      "type": "object",
+      "description": "Minor/fillet radius, torus identity, association evidence, and unit."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, not_applicable, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one toroidal face and verify the intended adjacent-feature association.",
+    "Read the analytic minor radius once and convert to the declared unit.",
+    "Return fillet_radius_record and measurement_status.",
+    "If the face is not a relevant torus, return not_applicable rather than fitting a radius."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous association, non-toroidal face, incompatible unit, or nonfinite radius.",
+    "Reject major radius as the fillet radius without the declared semantic distinction.",
+    "Do not infer a fillet from appearance alone."
+  ]
+}

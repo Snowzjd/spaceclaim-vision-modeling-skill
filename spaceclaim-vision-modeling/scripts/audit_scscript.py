@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import sys
 import zipfile
@@ -33,6 +34,12 @@ OPERATION_PATTERN = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+")
 MAX_ARCHIVE_BYTES = 64 * 1024 * 1024
 MAX_MEMBER_COUNT = 256
 MAX_MEMBER_BYTES = 32 * 1024 * 1024
+
+
+def _canonical_path(path: Path) -> str:
+    """Return a case-normalized real path for destructive-output checks."""
+
+    return os.path.normcase(os.path.realpath(os.path.abspath(os.fspath(path))))
 MAX_TOTAL_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
 MAX_COMPRESSION_RATIO = 200.0
 
@@ -462,9 +469,21 @@ def main(argv: list[str] | None = None) -> int:
         required_operations=tuple(args.require_operation),
         forbidden_operations=tuple(args.forbid_operation),
     )
+    report_conflicts_with_archive = bool(
+        args.report
+        and _canonical_path(args.report) == _canonical_path(args.archive)
+    )
+    if report_conflicts_with_archive:
+        add_issue(
+            report.setdefault("issues", []),
+            "error",
+            "report_path_collision",
+            "The JSON report path resolves to the input archive; the archive was not overwritten.",
+        )
+        report["status"] = "failed"
     rendered = json.dumps(report, ensure_ascii=False, indent=2)
     print(rendered)
-    if args.report:
+    if args.report and not report_conflicts_with_archive:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(rendered + "\n", encoding="utf-8")
     return 0 if report["status"] == "passed" else 2

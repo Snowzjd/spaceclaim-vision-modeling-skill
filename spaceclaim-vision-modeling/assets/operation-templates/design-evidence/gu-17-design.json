@@ -1,0 +1,24 @@
+{
+  "operation_id": "geometry_understanding.identify-edge-treatment",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-17",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "边缘处理要求记录",
+    "declared_inputs": [
+      "edge_annotation_or_text",
+      "edge_location_ref"
+    ],
+    "result_fields": [
+      "treatment_kind",
+      "magnitude",
+      "angle",
+      "target_edge_ref",
+      "scope",
+      "unit"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.compare-runtime-reports",
+  "template_version": "0.1.1",
+  "contract_version": 1,
+  "status": "active",
+  "stage": "validation_visual_review",
+  "purpose": "Compare forward and native-reopen report declarations for body, named-group, and feature persistence on the host.",
+  "trigger": "A forward report and a separately captured native-reopen report are available and persistence differences must be checked before visual acceptance.",
+  "inputs": [
+    {
+      "name": "forward_report_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to the forward-run structured report.",
+      "provenance_required": true
+    },
+    {
+      "name": "reopened_report_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to the structured report captured after native reopen.",
+      "provenance_required": true
+    },
+    {
+      "name": "bbox_tolerance_mm",
+      "type": "finite non-negative number",
+      "required": false,
+      "description": "Allowed absolute difference for bounding-box coordinates; defaults to 1e-9 mm."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "finite non-negative number",
+      "required": false,
+      "description": "Allowed absolute difference for body volumes; defaults to 1e-9 mm3."
+    },
+    {
+      "name": "feature_tolerance",
+      "type": "finite non-negative number",
+      "required": false,
+      "description": "Allowed absolute difference for feature measurements; defaults to 1e-9 in the declared units."
+    }
+  ],
+  "preconditions": [
+    "forward_report_path and reopened_report_path identify readable UTF-8 structured report JSON files and resolve to distinct files.",
+    "The two reports are intended to describe the same case and target; their declared statuses and evidence states remain subject to validation.",
+    "Each tolerance, when supplied, is finite and non-negative."
+  ],
+  "outputs": [
+    {
+      "name": "comparison_result",
+      "type": "object",
+      "required": true,
+      "description": "Structured host comparison result with equality flags, status, and machine-readable issues."
+    }
+  ],
+  "postconditions": [
+    "comparison_result is emitted with status passed or failed and an inspectable issue list.",
+    "A passed result means both reports are structurally valid and passed, describe the same case and target, declare native_save/native_reopen as passed, and match within the requested tolerances.",
+    "A failed result does not diagnose a SpaceClaim model independently; it reports differences in the supplied declarations."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/compare_runtime_reports.py",
+    "target_environment": "Host Python 3.9 or newer; compares structured report JSON without launching SpaceClaim or reopening a document.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "The comparator treats forward and reopen reports as input declarations and does not independently observe either run."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No geometry objects are selected; body, named-group, and feature names are compared as declared in the reports."
+    ],
+    "topology_refresh": "Not applicable because the operation has no geometry topology effect."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "non_independent_inputs",
+      "condition": "forward_report_path and reopened_report_path resolve to the same file.",
+      "detection": "Compare canonical real paths before loading either report.",
+      "safe_state": "Comparison status is failed and no native persistence conclusion is made."
+    },
+    {
+      "failure_id": "invalid_forward_report",
+      "condition": "The forward report cannot be read, is structurally invalid, or does not have status passed.",
+      "detection": "Run the shared report structure validator and require forward status passed before comparison.",
+      "safe_state": "No persistence conclusion is made and comparison status is failed."
+    },
+    {
+      "failure_id": "invalid_reopened_report",
+      "condition": "The reopened report cannot be read, is structurally invalid, or does not have status passed.",
+      "detection": "Run the shared report structure validator and require reopened status passed before comparison.",
+      "safe_state": "No persistence conclusion is made and comparison status is failed."
+    },
+    {
+      "failure_id": "invalid_tolerance",
+      "condition": "A requested tolerance is negative, non-finite, or otherwise invalid.",
+      "detection": "Validate all tolerance values before reading report fields.",
+      "safe_state": "No comparison is accepted and status is failed."
+    },
+    {
+      "failure_id": "missing_persistence_evidence",
+      "condition": "The forward report does not declare native_save passed or the reopened report does not declare native_reopen passed.",
+      "detection": "Check the corresponding evidence-layer states before comparing geometry declarations.",
+      "safe_state": "The result is failed and no native persistence claim is promoted."
+    },
+    {
+      "failure_id": "persistence_mismatch",
+      "condition": "Case/target, body bounds or volumes, named-group membership, or feature values differ beyond tolerance.",
+      "detection": "Compare each declared name and numeric field and emit a stable mismatch issue.",
+      "safe_state": "The result is failed; preserve both input reports for investigation."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "non_independent_inputs",
+      "action": "Capture the native-reopen report as a distinct artifact, then rerun the comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "invalid_forward_report",
+      "action": "Repair or regenerate the forward report and rerun the comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "invalid_reopened_report",
+      "action": "Repair or regenerate the reopened report and rerun the comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "invalid_tolerance",
+      "action": "Supply finite non-negative tolerances and rerun without modifying either report.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "missing_persistence_evidence",
+      "action": "Obtain the required native save/reopen evidence through the controlled workflow, then rerun this host comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "persistence_mismatch",
+      "action": "Investigate the first reported difference and rerun with corrected, provenance-preserving reports or an explicitly reviewed tolerance.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Input report structure and status gates",
+      "method": "Run repository compare_runtime_reports host tests with valid, failed, and malformed forward/reopen reports.",
+      "expected": "Both reports must be structurally valid and passed before persistence fields are compared.",
+      "evidence_layer": "host_checked"
+    },
+    {
+      "check": "Persistence equality within tolerances",
+      "method": "Run repository compare_runtime_reports host tests covering body bounds/volumes, named groups, features, native-save/reopen states, and tolerance errors.",
+      "expected": "Equal declarations pass; differences and invalid gates return failed with a stable issue and no exception.",
+      "evidence_layer": "host_checked"
+    },
+    {
+      "check": "Forward and native-reopen inputs are distinct",
+      "method": "Run the command-line host test with both report arguments resolving to the same file.",
+      "expected": "Comparison fails with same_report_path before interpreting report declarations.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-reports-host-check.json",
+            "sha256": "f38d339cda1d4bd40c6e43db31e162209aa3837a0e9d70e67b487c5f4ae115aa",
+            "notes": "Public contract review record; no private model or host path is included."
+          }
+        ],
+        "notes": "The contract is case-neutral and limited to host comparison of declared reports."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-reports-host-check.json",
+            "sha256": "f38d339cda1d4bd40c6e43db31e162209aa3837a0e9d70e67b487c5f4ae115aa",
+            "notes": "Nine repository unit tests passed for this exact tool and contract revision."
+          }
+        ],
+        "notes": "Host report comparison checks only; no SpaceClaim process was launched."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "The comparator never launches SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "Declared measurements are compared but not independently measured."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "The comparator does not save a native document."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "The comparator does not reopen a native document."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No viewport or image is reviewed."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model export is produced."
+      }
+    },
+    "notes": "Formal evidence stops at design_only and host_checked for this host-only operation."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/compare_runtime_reports.py",
+      "role": "implementation",
+      "sha256": "859f646eba8a320f48930851152cc815a96792dd879339b0dfd5bcddf091832c"
+    },
+    {
+      "path": "tests/test_compare_runtime_reports.py",
+      "role": "test",
+      "sha256": "1895c48480a79e12450430116c85cd4ef971870ed6e108cb92eb040eb60a782b"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-reports-host-check.json",
+      "role": "evidence",
+      "sha256": "f38d339cda1d4bd40c6e43db31e162209aa3837a0e9d70e67b487c5f4ae115aa"
+    }
+  ]
+}

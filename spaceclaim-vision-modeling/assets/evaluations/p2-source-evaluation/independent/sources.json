@@ -1,0 +1,184 @@
+{
+  "sources": [
+    {
+      "id": "a",
+      "kind": "image",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/image-a.png\",\"region\":\"whole image, inspected as pixels\"}"
+    },
+    {
+      "id": "a.note",
+      "kind": "image",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/image-a.png\",\"region\":\"bottom two user-note lines\"}"
+    },
+    {
+      "id": "a.triangle",
+      "kind": "image",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/image-a.png\",\"region\":\"left/front triangular region with vertices approximately (211,237), (211,500), (589,500) pixels; pixel coordinates locate only, not dimensions\"}"
+    },
+    {
+      "id": "a.upper",
+      "kind": "image",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/image-a.png\",\"region\":\"light blue upper quadrilateral, approximately (211,237), (450,96), (829,361), (589,500)\"}"
+    },
+    {
+      "id": "b",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"whole drawing, inspected as pixels\"}"
+    },
+    {
+      "id": "b.top",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"TOP (+Z) view and dimensions, x 120..790, y 80..530\"}"
+    },
+    {
+      "id": "b.front",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"FRONT (-Y), x 120..780, y 590..700\"}"
+    },
+    {
+      "id": "b.h1",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"left circle centered approximately (220,310) pixels\"}"
+    },
+    {
+      "id": "b.h2",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"middle circle centered approximately (420,310) pixels\"}"
+    },
+    {
+      "id": "b.h3",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"right circle centered approximately (620,310) pixels\"}"
+    },
+    {
+      "id": "b.front.h1",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"left hidden-line pair in front view, x approximately 190 and 250\"}"
+    },
+    {
+      "id": "b.hole-note",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"3 x DIA 9 THRU; Hole row centered across width\"}"
+    },
+    {
+      "id": "b.edge-note",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"bottom note: All outside perimeter edges: equal-distance chamfer 0.5 mm. Do not chamfer hole edges.\"}"
+    },
+    {
+      "id": "b.delivery",
+      "kind": "drawing",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/drawing-b.png\",\"region\":\"bottom note: Deliver one named body PLATE and native file.\"}"
+    },
+    {
+      "id": "c",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"complete request\"}"
+    },
+    {
+      "id": "c.lengths",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"successive lengths 12 mm, 0.03 m and 22 mm; overall 65 mm; nominal not toleranced rounding\"}"
+    },
+    {
+      "id": "c.left",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"left/end segment, first successive length 12 mm and end diameter 28 mm\"}"
+    },
+    {
+      "id": "c.middle",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"middle segment, second successive length 0.03 m and middle diameter 20 mm\"}"
+    },
+    {
+      "id": "c.right",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"right/end segment, third successive length 22 mm and end diameter 28 mm\"}"
+    },
+    {
+      "id": "c.hole",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"axial blind hole starting at left end, diameter 7 mm; depth not yet decided\"}"
+    },
+    {
+      "id": "c.delivery",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/raw/text-c.md\",\"region\":\"native file and STEP file, each in current run directory; do not choose missing depth or change supplied dimension\"}"
+    },
+    {
+      "id": "plan.conventions",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/review.md\",\"section\":\"Declared planning inputs\"}"
+    },
+    {
+      "id": "plan.b.blank",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/review.md\",\"section\":\"Declared planning inputs\",\"item\":\"B.blank\"}"
+    },
+    {
+      "id": "plan.b.drill",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/review.md\",\"section\":\"Declared planning inputs\",\"item\":\"B.drill\"}"
+    },
+    {
+      "id": "plan.b.chamfer",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/review.md\",\"section\":\"Declared planning inputs\",\"item\":\"B.chamfer\"}"
+    },
+    {
+      "id": "plan.b.edges",
+      "kind": "text",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/review.md\",\"section\":\"Declared planning inputs\",\"item\":\"B.external_edges\"}"
+    },
+    {
+      "id": "a-11",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"a-11\"}"
+    },
+    {
+      "id": "a-ms01",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"a-ms01\"}"
+    },
+    {
+      "id": "b-03-top",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"b-03-top\"}"
+    },
+    {
+      "id": "b-03-front",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"b-03-front\"}"
+    },
+    {
+      "id": "b-15",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"b-15\"}"
+    },
+    {
+      "id": "b-ms07",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"b-ms07\"}"
+    },
+    {
+      "id": "c-11",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"c-11\"}"
+    },
+    {
+      "id": "c-12",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"c-12\"}"
+    },
+    {
+      "id": "c-14",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"c-14\"}"
+    },
+    {
+      "id": "c-07",
+      "kind": "operation",
+      "locator": "{\"path\":\"runs/p2-evaluation/independent/results.json\",\"instance_id\":\"c-07\"}"
+    }
+  ]
+}

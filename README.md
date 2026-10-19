@@ -1,6 +1,15 @@
 # SpaceClaim Vision Modeling
 
-Version: **v0.2.0**
+Version: **v0.3.0**
+
+Release date: **2026-10-19**.
+
+v0.3 establishes four-stage contracts, independently scoped operation libraries,
+version-bound evidence and fallback integration. The registry covers 139 operations:
+5 established host tools are active and 134 operations remain candidates with their
+own recorded scope. The complete modeling workflow remains available when no
+eligible atomic template matches. See the [architecture](spaceclaim-vision-modeling/references/architecture.md)
+and [integration rules](spaceclaim-vision-modeling/references/workflow-integration.md).
 
 `spaceclaim-vision-modeling` is a vision-guided, script-first Codex Skill for building and validating three-dimensional models in Ansys SpaceClaim. It converts reference images, sketches, engineering drawings, CAD screenshots, product views, text descriptions, existing SpaceClaim scripts, and error logs into explicit geometry contracts, version-matched `.scscript` packages, controlled desktop execution, and evidence-bounded model review.
 
@@ -20,16 +29,21 @@ reference material and user intent
 
 Installing or copying this repository does **not** install or provide the following capabilities. All three are required for the complete vision-to-model workflow.
 
-1. **Visual understanding / Vision Skill**
-   - Reads reference images, drawings, screenshots, and product views, then compares the completed model with those references.
+1. **A vision-capable agent with local file and terminal tools**
+   - Use Codex in the Windows desktop app with a model that can actually read reference images and returned screenshots, reason over them, and read/write local files and run host Python commands. A separate product named "Vision Skill" is not required when the agent already provides these capabilities.
+   - Reads reference images, drawings, screenshots, and product views, then compares the completed model with those references. File/terminal permission and desktop-control permission are separate.
    - Without it, the package can still process text, structured parameters, and existing scripts, but it cannot claim visual recognition or final visual-agreement acceptance.
 
-2. **`computer-use` Skill**
+2. **The complete Computer Use plugin: Skill plus working control service**
    - Controls the SpaceClaim window, mouse, keyboard, script loading and execution, view changes, object selection, and screenshot capture.
-   - Without it, the package can still generate, package, and statically audit scripts, but it cannot operate SpaceClaim or collect desktop-based execution evidence.
+   - Install and enable the plugin and both its server and Skill in the desktop app; grant access to SpaceClaim when prompted. Copying only its `SKILL.md` is insufficient. Follow the [official Computer Use setup](https://developers.openai.com/codex/computer-use).
+   - The Windows reference controller uses the plugin's `node_repl` / `@oai/sky` runtime. Do not install a guessed npm substitute or add another desktop MCP to bypass a missing capability. The controller and its tools come from the plugin, not this repository.
+   - Without it, the package can still generate, package, and statically audit scripts, but it cannot operate SpaceClaim or collect desktop-based execution evidence. See the [controller compatibility rules](spaceclaim-vision-modeling/references/controller-compatibility.md) for direct actions, equivalent paths and outstanding live checks.
 
-3. **A local Ansys SpaceClaim installation with a matching scripting API**
+3. **Local SpaceClaim and host Python**
    - SpaceClaim must be installed, launchable, and properly licensed. The `.scscript` API version must match the target SpaceClaim environment.
+   - The currently evidenced desktop baseline is **Windows, SpaceClaim 2022 R1 with scripting API V21 and embedded IronPython 2.7**. A product release number and scripting API number are different. Other releases require explicit compatibility checks; merely editing the API marker is insufficient.
+   - Install **CPython 3.12.x** for host tools and the package's [requirements.txt](spaceclaim-vision-modeling/requirements.txt) in a dedicated virtual environment as below. Host Python is separate from SpaceClaim's embedded IronPython; do not install these packages inside SpaceClaim.
    - Without a usable installation, license, or matching API, the package is limited to host-side preparation and static checks; it cannot produce SpaceClaim runtime evidence.
 
 These requirements are intentionally separate from the repository. Before using a redistributed copy, confirm that the agent environment supplies the first two capabilities and that the local machine supplies the third.
@@ -68,7 +82,63 @@ See the [validated capability matrix](spaceclaim-vision-modeling/references/vali
 
 ## Quick start
 
-Install or link the nested [`spaceclaim-vision-modeling/`](spaceclaim-vision-modeling/) directory as a Codex Skill. The repository root contains development tests and release files; the nested directory is the installable package.
+Download the intended release/source archive and extract it, or obtain a checkout.
+Use all files from the **same version**. This README describes the v0.3.0 package.
+Do not mix it with an older downloaded package that lacks its commands.
+
+Install or link the nested [`spaceclaim-vision-modeling/`](spaceclaim-vision-modeling/) directory as a Codex Skill. The repository root contains development tests and release files; the nested directory is the installable package. Personal standalone skills can be placed under `%USERPROFILE%\.agents\skills`; see [official Skill installation locations](https://developers.openai.com/codex/skills).
+
+In PowerShell, start in the extracted repository root and run:
+
+```powershell
+$Source = (Resolve-Path '.\spaceclaim-vision-modeling').Path
+$Skill = Join-Path $env:USERPROFILE '.agents\skills\spaceclaim-vision-modeling'
+if (Test-Path -LiteralPath $Skill) { throw 'An installation already exists; preserve it and choose an explicit update plan first.' }
+New-Item -ItemType Directory -Path (Split-Path -Parent $Skill) -Force | Out-Null
+Copy-Item -LiteralPath $Source -Destination $Skill -Recurse
+py -3.12 -m venv (Join-Path $Skill '.venv')
+if ($LASTEXITCODE -ne 0) { throw 'Host Python environment creation failed.' }
+$HostPython = Join-Path $Skill '.venv\Scripts\python.exe'
+& $HostPython -m pip install -r (Join-Path $Skill 'requirements.txt')
+if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed; do not continue.' }
+& $HostPython (Join-Path $Skill 'scripts\check_installation.py')
+if ($LASTEXITCODE -ne 0) { throw 'Installed-package check failed.' }
+```
+
+If `py -3.12` is unavailable, install CPython 3.12 with its Windows launcher, or
+replace it with the absolute path to that Python interpreter. No virtual-environment
+activation or PowerShell execution-policy change is necessary. In subsequent
+commands use `$HostPython`, not an unrelated `python` found on PATH. For an
+existing linked checkout, set `$Skill` to the actual nested package directory
+and run the environment/dependency steps there without copying over it.
+
+`check_installation.py --details` inventories every registered operation and its
+installed resources. `host_ready` means package/dependency checks passed; it does
+not observe a live controller, a license, image interpretation or successful CAD.
+`--spaceclaim-exe <absolute-path>` can check the executable exists but does not
+launch it or infer licensing/API support. Repeat this check after installation
+or relevant updates, not between routine mouse actions.
+
+Restart/refresh the agent session if the Skill is not discovered, then ask:
+
+```text
+Use $spaceclaim-vision-modeling. Use its .venv host Python. Perform the first-run
+setup check from references/installation-and-runtime.md. Use only this package,
+your built-in vision/file tools, the declared Computer Use plugin and SpaceClaim.
+Report missing capabilities; do not silently add other skills or MCPs.
+```
+
+That first-run check verifies visual access, the live controller and application
+identity, and a reversible navigation path in an authorized maximized SpaceClaim
+window. It is a short setup check, not a request to test every library operation.
+Then use the normal modeling workflow, selecting only the controls needed by the
+task. Installation cannot remove geometric preconditions or turn unverified
+candidate variants into generally proven operations.
+
+Installed template paths resolve relative to that Skill directory using the
+[installation path rule](spaceclaim-vision-modeling/references/workflow-integration.md#installed-paths-versus-maintainer-evidence).
+Running the maintainer's complete tests and registry-evidence audit requires the
+full repository checkout; those test sources are not modeling runtime components.
 
 Then invoke it with a reference and a concrete modeling request, for example:
 
@@ -99,12 +169,12 @@ Detailed procedures are in the [fast execution workflow](spaceclaim-vision-model
 
 ## Host-side tools
 
-The commands in this section run outside SpaceClaim. They inspect packages or declared reports; they do not create runtime evidence by themselves.
+The commands in this section run outside SpaceClaim. They inspect packages or declared reports; they do not create runtime evidence by themselves. After installation, use the configured `$Skill` and `$HostPython` above; paths to your own inputs/outputs below are relative to your current run directory.
 
 ### Package a script
 
 ```powershell
-python .\spaceclaim-vision-modeling\scripts\package_scscript.py .\model-source.py .\model.scscript --api 21
+& $HostPython (Join-Path $Skill 'scripts\package_scscript.py') .\model-source.py .\model.scscript --api 21
 ```
 
 The `.py` file is editable IronPython source used as packaging input. The artifact loaded, executed, and delivered to SpaceClaim is `model.scscript`.
@@ -112,7 +182,7 @@ The `.py` file is editable IronPython source used as packaging input. The artifa
 ### Audit a `.scscript` package
 
 ```powershell
-python .\spaceclaim-vision-modeling\scripts\audit_scscript.py .\model.scscript --require-api 21 --forbid-numbered-aliases --report .\audit.json
+& $HostPython (Join-Path $Skill 'scripts\audit_scscript.py') .\model.scscript --require-api 21 --forbid-numbered-aliases --report .\audit.json
 ```
 
 Recorded numbered aliases may be acceptable for an explicitly same-topology replay, but they are not reusable semantic selection logic.
@@ -120,7 +190,7 @@ Recorded numbered aliases may be acceptable for an explicitly same-topology repl
 ### Validate a structured runtime report
 
 ```powershell
-python .\spaceclaim-vision-modeling\scripts\validate_runtime_report.py .\runtime-report.json --contract .\contract.json
+& $HostPython (Join-Path $Skill 'scripts\validate_runtime_report.py') .\runtime-report.json --contract .\contract.json
 ```
 
 This checks report structure and declared measurements. It does not independently prove that SpaceClaim ran or that the report has authentic runtime provenance.
@@ -128,7 +198,7 @@ This checks report structure and declared measurements. It does not independentl
 ### Compare forward and reopen reports
 
 ```powershell
-python .\spaceclaim-vision-modeling\scripts\compare_runtime_reports.py .\runtime-report.json .\reopen-report.json
+& $HostPython (Join-Path $Skill 'scripts\compare_runtime_reports.py') .\runtime-report.json .\reopen-report.json
 ```
 
 This checks declared persistence measurements and memberships. It does not replace the actual native close/reopen procedure.
@@ -136,10 +206,10 @@ This checks declared persistence measurements and memberships. It does not repla
 ### Run repository tests
 
 ```powershell
-python -m unittest discover -s tests -v
+& $HostPython -m unittest discover -s tests -v
 ```
 
-These Python tests exercise repository utilities, schemas, public case contracts, templates, and documented workflow invariants. They do not launch or execute SpaceClaim.
+Run that command from the full checkout only when a repository regression is needed. These Python tests exercise repository utilities, schemas, public case contracts, templates, and documented workflow invariants. They do not launch or execute SpaceClaim and are not required for each modeling task. The official `skill-creator` validator is a maintainer tool, not an additional end-user modeling dependency.
 
 For repository maintainers only, validate the installable Skill structure with the official `skill-creator` validator available in the Codex development environment:
 

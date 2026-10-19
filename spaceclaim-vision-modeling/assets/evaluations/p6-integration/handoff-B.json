@@ -1,0 +1,334 @@
+{
+  "contracts": [
+    {
+      "artifact_refs": [],
+      "assumptions": [],
+      "bodies_and_features": {
+        "construction_not_ready": true,
+        "expected_body_count": 1,
+        "front_feature": "upper-right notch"
+      },
+      "confidence": {
+        "basis": "the two missing dimensions change the solid and front topology",
+        "overall": "medium_for_supplied_dimensions_only"
+      },
+      "contract_id": "B-geometry",
+      "contract_kind": "geometry_contract",
+      "contract_version": 1,
+      "coordinate_system": {
+        "axes": {
+          "front_height": "unresolved sign convention",
+          "front_width": "unresolved sign convention",
+          "thickness": "normal to front, magnitude unresolved"
+        },
+        "origin": "not resolved",
+        "units": "mm"
+      },
+      "dimensions_with_provenance": [
+        {
+          "name": "front_width_mm",
+          "provenance": "user_text",
+          "value": 40.0
+        },
+        {
+          "name": "front_height_mm",
+          "provenance": "user_text",
+          "value": 30.0
+        },
+        {
+          "name": "notch_width_mm",
+          "provenance": "user_text",
+          "value": 10.0
+        },
+        {
+          "name": "thickness_mm",
+          "provenance": "unresolved_user_input",
+          "value": null
+        },
+        {
+          "name": "notch_depth_mm",
+          "provenance": "unresolved_user_input",
+          "value": null
+        }
+      ],
+      "evidence_refs": [
+        {
+          "path": "raw-requests.json",
+          "sha256": "780e010023c53dda2ff7f5d25e4af832eb710ddc771cd3b242c4c3d46c8c660b"
+        }
+      ],
+      "handoff_status": "requires_clarification",
+      "observed_geometry": {
+        "front_outline_nominal_bounds_mm": {
+          "height": 30.0,
+          "width": 40.0
+        },
+        "primitive": "bracket_like_prismatic_outline",
+        "upper_right_notch_width_mm": 10.0
+      },
+      "source_manifest": [
+        "raw-requests.json#/requests/1"
+      ],
+      "spatial_relations": [
+        "The notch is described at the upper-right of the front outline."
+      ],
+      "stage": "geometry_understanding",
+      "symmetry_and_repetition": {
+        "details": [],
+        "status": "not_requested"
+      },
+      "unresolved_items": [
+        "3D thickness normal to the front outline is unspecified.",
+        "Upper-right notch depth in the front outline is unspecified.",
+        "The exact notch orientation/placement convention should be confirmed if it is not a simple upper-right corner cutout.",
+        "Target SpaceClaim/API version is unspecified."
+      ],
+      "upstream_contract_refs": [],
+      "validation_intent": {
+        "geometry_measurements": "blocked_until_clarification",
+        "native_reopen": "not_planned",
+        "native_save": "not_planned",
+        "requested_export": "none",
+        "spaceclaim_execution": "blocked_until_clarification",
+        "visual_review": "not_planned"
+      }
+    },
+    {
+      "artifact_refs": [],
+      "assumptions": [],
+      "construction_strategy": null,
+      "contract_id": "B-build",
+      "contract_kind": "build_contract",
+      "contract_version": 1,
+      "entry_state_policy": null,
+      "evidence_refs": [],
+      "failure_checkpoints": [],
+      "geometry_contract_ref": "B-geometry",
+      "handoff_status": "not_tested",
+      "host_preflight_result": {
+        "status": "not_tested"
+      },
+      "ordered_operation_plan": [],
+      "output_policy": null,
+      "parameter_table": [
+        {
+          "name": "front_width_mm",
+          "provenance": "user_text",
+          "value": 40.0
+        },
+        {
+          "name": "front_height_mm",
+          "provenance": "user_text",
+          "value": 30.0
+        },
+        {
+          "name": "notch_width_mm",
+          "provenance": "user_text",
+          "value": 10.0
+        },
+        {
+          "name": "thickness_mm",
+          "provenance": "unresolved_user_input",
+          "value": null
+        },
+        {
+          "name": "notch_depth_mm",
+          "provenance": "unresolved_user_input",
+          "value": null
+        }
+      ],
+      "scscript_artifact": null,
+      "semantic_selection_plan": null,
+      "source_artifact_optional": null,
+      "stage": "modeling_strategy_scripting",
+      "target_environment": {
+        "api_version": null,
+        "python_runtime": null,
+        "spaceclaim_release": null
+      },
+      "topology_dependencies": [],
+      "unresolved_items": [
+        "Blocked by unresolved thickness, notch depth and target-version inputs."
+      ],
+      "unresolved_risks": [
+        {
+          "id": "thickness_mm",
+          "question": "What is the bracket thickness normal to the front outline, in mm?",
+          "why_blocking": "It changes the 3D solid volume and extents."
+        },
+        {
+          "id": "notch_depth_mm",
+          "question": "What is the upper-right notch depth in the front outline, in mm?",
+          "why_blocking": "It changes the front topology and resulting body bounds."
+        },
+        {
+          "id": "notch_orientation",
+          "question": "Should the 10 mm notch be interpreted as a simple corner cutout from the upper-right corner?",
+          "why_blocking": "A different placement/orientation changes the profile topology."
+        },
+        {
+          "id": "target_api_version",
+          "question": "Which SpaceClaim/API version should the eventual script target?",
+          "why_blocking": "Version binding is required before scripting."
+        }
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "B-geometry",
+          "sha256": "0cb95fc2a7de23d80fe003e7fa1d9a5b84a623c561a4f116ec0c7e3f8435ae95"
+        }
+      ],
+      "validation_plan": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "artifact_refs": [],
+      "assumptions": [
+        "Execution is preparation-only and requires explicit desktop authorization."
+      ],
+      "build_contract_ref": "B-build",
+      "contract_id": "B-execution",
+      "contract_kind": "execution_contract",
+      "contract_version": 1,
+      "entry_state_observed": {
+        "reason": "No desktop execution",
+        "status": "not_tested"
+      },
+      "evidence_refs": [],
+      "executed_artifact_identity": {
+        "path": null,
+        "sha256": null,
+        "status": "not_tested"
+      },
+      "failure_state": {
+        "reason": "No run attempted",
+        "status": "not_tested"
+      },
+      "handoff_status": "not_tested",
+      "model_artifact": {
+        "path": null,
+        "sha256": null,
+        "status": "not_tested"
+      },
+      "recovery_actions": [],
+      "runtime_report": {
+        "path": null,
+        "status": "not_tested"
+      },
+      "save_state": {
+        "native_reopen": "not_tested",
+        "native_save": "not_tested",
+        "status": "not_tested"
+      },
+      "stage": "execution_recovery",
+      "stage_events": [],
+      "unresolved_items": [
+        "No SpaceClaim process was launched; no runtime report or native model exists."
+      ],
+      "unresolved_runtime_risks": [
+        "Application API/runtime compatibility and geometry behavior are unobserved."
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "B-build",
+          "sha256": "6a9714ba72a09092b70422f7f5fb2c3d0a40db6b28192ddc45a06fca5827d660"
+        }
+      ]
+    },
+    {
+      "artifact_identity": {
+        "native_model": null,
+        "request_id": "B",
+        "status": "not_tested"
+      },
+      "artifact_refs": [],
+      "assumptions": [],
+      "body_feature_and_name_checks": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "contract_id": "B-acceptance",
+      "contract_kind": "acceptance_contract",
+      "contract_version": 1,
+      "dimension_bbox_and_volume_checks": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "evidence_map": {
+        "geometry_measurements": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "native_reopen": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "native_save": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "requested_export": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "spaceclaim_execution": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "visual_review": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        }
+      },
+      "evidence_refs": [],
+      "geometry_acceptance": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "handoff_status": "not_tested",
+      "native_reopen_result": {
+        "reason": "No execution",
+        "status": "not_tested"
+      },
+      "native_save_result": {
+        "reason": "No execution",
+        "status": "not_tested"
+      },
+      "overall_status": "not_tested",
+      "requested_export_result": {
+        "reason": "No export requested or attempted",
+        "status": "not_tested"
+      },
+      "stage": "validation_visual_review",
+      "unresolved_items": [
+        "Acceptance is not performed because execution and a native artifact are absent."
+      ],
+      "unresolved_risks": [
+        "All runtime, persistence, visual and export evidence layers remain unperformed."
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "B-execution",
+          "sha256": "3ede447e475d7cefba2e23a66a480ae6bb41adeb8f0e7bd201a049d3c2b9f859"
+        }
+      ],
+      "visual_agreement": {
+        "reason": "No viewport review",
+        "status": "not_tested"
+      },
+      "visual_review_views": []
+    }
+  ],
+  "desktop_authorization": false,
+  "handoff_version": 1,
+  "preparation_only": true,
+  "request_id": "B",
+  "required_evidence_layers": [
+    "spaceclaim_execution",
+    "geometry_measurements",
+    "native_save",
+    "native_reopen",
+    "visual_review"
+  ]
+}

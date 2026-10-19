@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/spaceclaim-vision-modeling/operation-evidence.schema.json",
+  "title": "Host-checked atomic operation evidence record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_record_version",
+    "operation_id",
+    "template_version",
+    "recorded_on",
+    "command",
+    "result",
+    "exit_code",
+    "tests_run",
+    "tool",
+    "test",
+    "tool_sha256",
+    "test_sha256",
+    "artifacts",
+    "evidence_boundary",
+    "notes"
+  ],
+  "properties": {
+    "evidence_record_version": {"const": 1},
+    "operation_id": {
+      "type": "string",
+      "pattern": "^(geometry_understanding|modeling_strategy_scripting|execution_recovery|validation_visual_review)\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "recorded_on": {"type": "string", "format": "date"},
+    "command": {"type": "string", "minLength": 1},
+    "result": {"enum": ["passed", "failed"]},
+    "exit_code": {"type": "integer"},
+    "tests_run": {"type": "integer", "minimum": 1},
+    "tool": {"$ref": "#/$defs/repository_path"},
+    "test": {"$ref": "#/$defs/repository_path"},
+    "tool_sha256": {"$ref": "#/$defs/sha256"},
+    "test_sha256": {"$ref": "#/$defs/sha256"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/artifact"}
+    },
+    "evidence_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements",
+        "native_save",
+        "native_reopen",
+        "visual_review",
+        "requested_export"
+      ],
+      "properties": {
+        "design_only": {"$ref": "#/$defs/boundary"},
+        "host_checked": {"$ref": "#/$defs/boundary"},
+        "spaceclaim_execution": {"$ref": "#/$defs/boundary"},
+        "geometry_measurements": {"$ref": "#/$defs/boundary"},
+        "native_save": {"$ref": "#/$defs/boundary"},
+        "native_reopen": {"$ref": "#/$defs/boundary"},
+        "visual_review": {"$ref": "#/$defs/boundary"},
+        "requested_export": {"$ref": "#/$defs/boundary"}
+      }
+    },
+    "notes": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "repository_path": {
+      "type": "string",
+      "pattern": "^(?![A-Za-z]:|/|\\\\|.*\\.\\./).+"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "role", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/repository_path"},
+        "role": {"enum": ["tool", "test", "schema", "fixture"]},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scope"],
+      "properties": {
+        "status": {"enum": ["passed", "failed", "not_tested", "not_applicable"]},
+        "scope": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

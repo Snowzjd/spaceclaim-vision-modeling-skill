@@ -1,0 +1,37 @@
+{
+  "design_review_version": 1,
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "template_version": "0.2.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Public contract review for one atomic dimension-reconciliation boundary, provenance separation, case neutrality, and evidence limits.",
+  "checks": [
+    {
+      "name": "atomic_boundary",
+      "status": "passed",
+      "notes": "The operation reconciles supplied dimension statements and relations; it does not extract unrelated geometry or select a construction order."
+    },
+    {
+      "name": "provenance_boundary",
+      "status": "passed",
+      "notes": "Every retained, derived, conflicting, or missing value is labeled observation, user, inference, or unresolved with source and unit context."
+    },
+    {
+      "name": "case_neutrality",
+      "status": "passed",
+      "notes": "The contract contains no case identifiers, product labels, recorded aliases, or numeric examples and preserves unresolved scope decisions."
+    },
+    {
+      "name": "evidence_boundary",
+      "status": "passed",
+      "notes": "Only design intent is reviewed; no implementation, application runtime, geometry measurement, persistence, visual acceptance, or export is claimed."
+    }
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/references/workflow-contracts.md",
+    "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+    "spaceclaim-vision-modeling/references/operation-template-contract.md"
+  ],
+  "notes": "Public design-only review record for the schema-bound 0.2.0 contract; it is not a host-check, source-interpretation accuracy result, or application evidence record."
+}

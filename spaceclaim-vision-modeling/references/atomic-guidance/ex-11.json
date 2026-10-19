@@ -1,0 +1,43 @@
+{
+  "catalog_id": "EX-11",
+  "input_fields": [
+    {
+      "name": "executed_script_artifact",
+      "type": "object",
+      "description": "Observed actual script path/bytes or authoritative loaded-artifact reference."
+    },
+    {
+      "name": "version_metadata",
+      "type": "object",
+      "description": "API/package/version metadata associated with the run."
+    },
+    {
+      "name": "execution_event",
+      "type": "object",
+      "description": "Run identifier and event to bind to the artifact."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "executed_artifact_identity",
+      "type": "object",
+      "description": "Actual path, SHA-256, version metadata, run ID, and binding evidence."
+    },
+    {
+      "name": "identity_status",
+      "type": "string",
+      "description": "One of bound, mismatch, unavailable, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Read/hash the actual artifact and collect version metadata without substituting planned source.",
+    "Join artifact identity to exactly one execution event and compare operation/version fields.",
+    "Return the identity and status; preserve mismatch as unresolved.",
+    "Do not edit the script or rerun while recording identity."
+  ],
+  "rejection_rules": [
+    "Reject missing actual artifact, report-only identity, or multiple candidate scripts.",
+    "Reject loaded/planned hash mismatch.",
+    "Do not use an output report alone as proof of executed identity."
+  ]
+}

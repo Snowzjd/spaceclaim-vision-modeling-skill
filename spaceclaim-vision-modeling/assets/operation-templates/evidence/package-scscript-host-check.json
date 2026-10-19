@@ -1,0 +1,61 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.package-scscript",
+  "template_version": "0.1.1",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest discover -s tests -p test_package_scscript.py -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 8,
+  "tool": "spaceclaim-vision-modeling/scripts/package_scscript.py",
+  "test": "tests/test_package_scscript.py",
+  "tool_sha256": "b3b59a20e35be932438cb3e330d6dae59940c7f07d030761b1147e8358ffd5d1",
+  "test_sha256": "b2e81532a585bd699361d6df75f42ff26ae7193c5d884ea12d0f97297d5dc057",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/package_scscript.py",
+      "role": "tool",
+      "sha256": "b3b59a20e35be932438cb3e330d6dae59940c7f07d030761b1147e8358ffd5d1"
+    },
+    {
+      "path": "tests/test_package_scscript.py",
+      "role": "test",
+      "sha256": "b2e81532a585bd699361d6df75f42ff26ae7193c5d884ea12d0f97297d5dc057"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The atomic host-packaging contract, trigger, inputs, and postconditions were reviewed."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Eight repository unit tests passed for deterministic archive construction, caller-supplied numeric API metadata, and input guards."
+    },
+    "spaceclaim_execution": {
+      "status": "not_applicable",
+      "scope": "No SpaceClaim process was launched."
+    },
+    "geometry_measurements": {
+      "status": "not_applicable",
+      "scope": "The host packager does not inspect geometry."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was saved."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was reopened."
+    },
+    "visual_review": {
+      "status": "not_applicable",
+      "scope": "No application viewport or image was reviewed."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No model export was requested or produced by this host operation."
+    }
+  },
+  "notes": "The check covers host-side package bytes and safeguards only; it is not SpaceClaim runtime evidence."
+}

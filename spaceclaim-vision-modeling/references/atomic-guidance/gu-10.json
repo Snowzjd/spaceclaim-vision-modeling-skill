@@ -1,0 +1,48 @@
+{
+  "catalog_id": "GU-10",
+  "input_fields": [
+    {
+      "name": "feature_instances",
+      "type": "array",
+      "description": "可分别定位的实例引用；不可见实例不能预先加入集合。"
+    },
+    {
+      "name": "size_or_layout_clues",
+      "type": "object",
+      "description": "数量、间距、角度、方向或范围线索；原始标注和派生布置必须分开。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "rule_kind",
+      "type": "string",
+      "description": "linear、angular、grid、mirror 或 other 等重复规则；无法确定时为 null。"
+    },
+    {
+      "name": "instance_refs",
+      "type": "array",
+      "description": "已观察实例的引用列表；来源中不可见的成员不能伪造引用。"
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "有明确计数依据的实例数；不可见或冲突时为 null，不把候选数当事实。"
+    },
+    {
+      "name": "layout",
+      "type": "object",
+      "description": "间距、角度、方向和范围的记录；每一项注明 observed、user 或 derived。"
+    }
+  ],
+  "procedure": [
+    "逐个登记输入中实际可见的特征实例及其 source_ref，不先按规则补出未见实例。",
+    "从标注和布置线索中判断一个重复规则，并分开记录用户给出的数量与模型推导的数量。",
+    "输出 rule_kind、instance_refs、count 和 layout；不可追溯的字段写 null，并附 provenance 与 unresolved。",
+    "只描述一个重复规则，不把规则应用到新几何或生成建模操作序列。"
+  ],
+  "rejection_rules": [
+    "实例身份或重复范围无法区分时拒绝给出确定计数。",
+    "不可见实例、被遮挡区域或部分视图不得直接计入 count。",
+    "不得从对称、常见阵列或默认间距推断未标注的数量和角度。"
+  ]
+}

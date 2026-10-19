@@ -260,6 +260,20 @@ class AuditScscriptTests(unittest.TestCase):
             self.assertEqual("passed", json.loads(stdout.getvalue())["status"])
             self.assertEqual("passed", json.loads(report_path.read_text(encoding="utf-8"))["status"])
 
+    def test_cli_rejects_report_path_that_is_the_input_archive(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            archive = Path(directory) / "same.scscript"
+            write_archive(archive, "result = Combine.Merge(selection)\n")
+            original_bytes = archive.read_bytes()
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                exit_code = AUDIT.main([str(archive), "--report", str(archive)])
+            result = json.loads(stdout.getvalue())
+            self.assertEqual(2, exit_code)
+            self.assertEqual("failed", result["status"])
+            self.assertIn("report_path_collision", [item["code"] for item in result["issues"]])
+            self.assertEqual(original_bytes, archive.read_bytes())
+
     def test_invalid_archive_fails_cleanly(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             archive = Path(directory) / "invalid.scscript"

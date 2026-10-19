@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "evidence_level": "static_archive_audit_only",
+  "archive": "initial.scscript",
+  "archive_sha256": "30d44d36dcbb5a2d51026e41d7d429d08f090c9b4b8ec5a708a0442ebb633d1a",
+  "status": "passed",
+  "members": {
+    "[Content_Types].xml": {
+      "size": 314,
+      "sha256": "76d94d5aba1c74f7f2173374cf9aa92438d7238d2943f094ed2b9e8bbe8e5d15"
+    },
+    "_apiVersion": {
+      "size": 2,
+      "sha256": "6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443"
+    },
+    "_script": {
+      "size": 10102,
+      "sha256": "d555f959f9cf717345d8d426e6e013147c6f1e88b951436d4efbca90c1d527c5"
+    },
+    "_smartVariableVersion": {
+      "size": 1,
+      "sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+    }
+  },
+  "api_version": "21",
+  "smart_variable_version": "2",
+  "script_line_count": 274,
+  "operation_counts": {
+    "BodySelection.Create": 1,
+    "CurveSegment.Create": 1,
+    "DesignBody.Create": 1,
+    "Direction.Create": 1,
+    "Direction.DirX": 1,
+    "Direction.DirY": 1,
+    "DocumentSave.Execute": 1,
+    "Frame.Create": 1,
+    "Matrix.Identity": 2,
+    "ModelerBody.ExtrudeProfile": 1,
+    "Move.Translate": 1,
+    "Plane.Create": 1,
+    "Point.Create": 2,
+    "SpaceClaim.Api.V21": 1,
+    "SpaceClaim.Api.V21.Geometry": 1,
+    "SpaceClaim.Api.V21.Modeler": 1,
+    "body.Edges": 2,
+    "body.Faces": 2,
+    "body.Name": 2,
+    "body.Shape": 3,
+    "body.Shape.IsClosed": 1,
+    "body.Shape.PieceCount": 1,
+    "body.Shape.Volume": 1,
+    "box.MaxCorner": 1,
+    "box.MinCorner": 1,
+    "created.Name": 1,
+    "exc.__class__.__name__": 1,
+    "json.dumps": 2,
+    "math.sqrt": 1,
+    "model_path.lower": 2,
+    "os.makedirs": 2,
+    "os.path.abspath": 2,
+    "os.path.dirname": 2,
+    "os.path.exists": 2,
+    "os.path.getsize": 1,
+    "os.path.isabs": 2,
+    "os.path.isdir": 2,
+    "os.path.isfile": 1,
+    "point.X": 1,
+    "point.Y": 1,
+    "point.Z": 1,
+    "report_path.lower": 2,
+    "result.Success": 1,
+    "save_result.Success": 1,
+    "shape.GetBoundingBox": 2,
+    "stream.close": 1,
+    "stream.write": 1,
+    "traceback.format_exc": 1,
+    "transient.IsClosed": 1
+  },
+  "numbered_aliases": [],
+  "windows_backslash_paths": [],
+  "issues": []
+}

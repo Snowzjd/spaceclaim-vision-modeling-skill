@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,25 @@ from validate_runtime_report import load_json, validate_report
 
 def add_issue(issues: list[dict[str, str]], code: str, path: str, message: str) -> None:
     issues.append({"code": code, "path": path, "message": message})
+
+
+def canonical_path(path: Path) -> str:
+    return os.path.normcase(os.path.realpath(os.path.abspath(os.fspath(path))))
+
+
+def failed_result(code: str, message: str) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "evidence_level": "host_report_comparison_only",
+        "status": "failed",
+        "comparison": {
+            "case_and_target_equal": False,
+            "bodies_equal": False,
+            "named_face_groups_equal": False,
+            "features_equal": False,
+        },
+        "issues": [{"code": code, "path": "$", "message": message}],
+    }
 
 
 def close_enough(actual: Any, expected: Any, tolerance: float) -> bool:
@@ -229,27 +249,22 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    try:
-        result = compare_reports(
-            load_json(args.forward_report),
-            load_json(args.reopen_report),
-            bbox_tolerance_mm=args.bbox_tolerance_mm,
-            volume_tolerance_mm3=args.volume_tolerance_mm3,
-            feature_tolerance=args.feature_tolerance,
+    if canonical_path(args.forward_report) == canonical_path(args.reopen_report):
+        result = failed_result(
+            "same_report_path",
+            "Forward and native-reopen reports must be separate files; both paths resolve to the same input.",
         )
-    except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as exc:
-        result = {
-            "schema_version": 1,
-            "evidence_level": "host_report_comparison_only",
-            "status": "failed",
-            "comparison": {
-                "case_and_target_equal": False,
-                "bodies_equal": False,
-                "named_face_groups_equal": False,
-                "features_equal": False,
-            },
-            "issues": [{"code": "input_read_error", "path": "$", "message": str(exc)}],
-        }
+    else:
+        try:
+            result = compare_reports(
+                load_json(args.forward_report),
+                load_json(args.reopen_report),
+                bbox_tolerance_mm=args.bbox_tolerance_mm,
+                volume_tolerance_mm3=args.volume_tolerance_mm3,
+                feature_tolerance=args.feature_tolerance,
+            )
+        except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as exc:
+            result = failed_result("input_read_error", str(exc))
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["status"] == "passed" else 2
 

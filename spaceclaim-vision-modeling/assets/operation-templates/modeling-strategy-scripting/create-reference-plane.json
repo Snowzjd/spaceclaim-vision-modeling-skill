@@ -1,0 +1,202 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-reference-plane",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic create-reference-plane operation within the MA-02 boundary: One geometry-reference plane only. It does not create or attach a persistent DatumPlane.",
+  "trigger": "Use when the build plan requires create-reference-plane and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "frame",
+      "type": "Geometry.Frame",
+      "required": true,
+      "description": "A valid in-memory frame reference supplied by the caller."
+    }
+  ],
+  "preconditions": [
+    "frame is a valid Geometry.Frame reference."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "Geometry.Plane",
+      "required": true,
+      "description": "An in-memory plane reference returned by Plane.Create."
+    }
+  ],
+  "postconditions": [
+    "Plane.Create(frame) returns a plane reference without an exception."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-02.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic create-reference-plane operation within the MA-02 boundary: One geometry-reference plane only. It does not create or attach a persistent DatumPlane. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "Not applicable."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_frame",
+      "condition": "Plane.Create rejects or cannot consume the supplied frame.",
+      "detection": "Plane.Create rejects or cannot consume the supplied frame.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_frame",
+      "action": "Supply a valid frame from MA-01 or another verified reference source; no document mutation is expected.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Plane.Create(frame) returns a plane reference without an exception.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Plane.Create(frame) returns a plane reference without an exception.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-02-host-check.json",
+            "sha256": "525468fe8d5a50be8ea837b3541fe76f840cd9346a9e43c0afe76396357e06c7"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-02-host-check.json",
+            "sha256": "525468fe8d5a50be8ea837b3541fe76f840cd9346a9e43c0afe76396357e06c7"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-02.scscript",
+      "sha256": "ae962074ed69c8ac56a7e1b14d0392157ea23551ffa8695d86d9f867d743f12e",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-02.py",
+      "sha256": "a3e81a9f70584d33d20b8cd6e55dd430ebb61365c6eafbf0f69453972249f58c",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-02.action.py",
+      "sha256": "c80767b712921837483c367ab8bebe1d863fb989813c6246d891ae392b986070",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-02-host-check.json",
+      "sha256": "525468fe8d5a50be8ea837b3541fe76f840cd9346a9e43c0afe76396357e06c7",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

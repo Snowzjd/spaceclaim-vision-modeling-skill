@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-21",
+  "input_fields": [
+    {
+      "name": "target_document_identity",
+      "type": "object",
+      "description": "One unique active/native document identity."
+    },
+    {
+      "name": "unsaved_change_disposition",
+      "type": "object",
+      "description": "Explicit save, discard, or cancel disposition for unsaved changes; no default is inferred."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "closed_document_state",
+      "type": "object",
+      "description": "Target identity, close action, final absence, and remaining-work state."
+    },
+    {
+      "name": "close_status",
+      "type": "string",
+      "description": "closed, cancelled, blocked, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Confirm target identity and inspect whether unsaved changes require the supplied disposition.",
+    "Issue one close action for the target document; if a prompt appears, choose only the declared disposition.",
+    "Re-observe target absence and other open documents, then return closed_document_state.",
+    "If a prompt/identity is unexpected, stop and return blocked or needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous target, missing disposition, unexpected save prompt, or a request to close multiple documents.",
+    "Do not silently discard user work.",
+    "Do not reopen or verify geometry in this atom."
+  ]
+}

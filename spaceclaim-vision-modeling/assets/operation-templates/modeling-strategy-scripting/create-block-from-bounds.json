@@ -1,0 +1,258 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-block-from-bounds",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic create-block-from-bounds operation within the MA-05 boundary: One root-part block created with BlockBody.Create(..., ExtrudeType.ForceIndependent). The current variant is root-only, does not accept a component or name, and does not batch multiple blocks.",
+  "trigger": "Use when the build plan requires create-block-from-bounds and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "min_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite minimum corner coordinates in millimetres."
+    },
+    {
+      "name": "max_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite maximum corner coordinates in millimetres; every component must exceed min_mm."
+    },
+    {
+      "name": "bbox_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance used to compare the created body's axis-aligned bounding box."
+    }
+  ],
+  "preconditions": [
+    "All bounds and tolerance values are finite; max_mm is strictly greater than min_mm on all axes.",
+    "The root-part body collection can be enumerated."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "DesignBody",
+      "required": true,
+      "description": "The one newly detected current root-part body that passes the bounding-box and closed-solid checks."
+    }
+  ],
+  "postconditions": [
+    "BlockBody.Create does not report failure.",
+    "Exactly one new body is found by comparing current root bodies with the pre-action collection.",
+    "The new body's bounds match min_mm + max_mm within bbox_tolerance_mm.",
+    "assert_closed confirms a closed, nonempty body."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-05.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic create-block-from-bounds operation within the MA-05 boundary: One root-part block created with BlockBody.Create(..., ExtrudeType.ForceIndependent). The current variant is root-only, does not accept a component or name, and does not batch multiple blocks. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "current_bodies() is re-enumerated after creation."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_block_bounds",
+      "condition": "Vector or positive-extent validation raises ValueError.",
+      "detection": "Vector or positive-extent validation raises ValueError.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "creation_or_identity_failure",
+      "condition": "BlockBody result reports failure, zero/multiple new bodies are detected, or the body is not closed.",
+      "detection": "BlockBody result reports failure, zero/multiple new bodies are detected, or the body is not closed.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    },
+    {
+      "failure_id": "bounds_mismatch",
+      "condition": "Created bounds fail bbox_tolerance_mm.",
+      "detection": "Created bounds fail bbox_tolerance_mm.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_block_bounds",
+      "action": "Correct the bounds and rerun.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "creation_or_identity_failure",
+      "action": "Discard any partially created root body/document state and rerun from a clean state; no rollback is implemented.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "bounds_mismatch",
+      "action": "Stop and inspect units/kernel output before consuming the body.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: BlockBody.Create does not report failure.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "BlockBody.Create does not report failure.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Exactly one new body is found by comparing current root bodies with the pre-action collection.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly one new body is found by comparing current root bodies with the pre-action collection.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The new body's bounds match min_mm + max_mm within bbox_tolerance_mm.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The new body's bounds match min_mm + max_mm within bbox_tolerance_mm.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: assert_closed confirms a closed, nonempty body.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "assert_closed confirms a closed, nonempty body.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-05-host-check.json",
+            "sha256": "47f2051271a7df1971c7fadd7ebbf10f5be5a9f73f36a57313e9d4858554aa22"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-05-host-check.json",
+            "sha256": "47f2051271a7df1971c7fadd7ebbf10f5be5a9f73f36a57313e9d4858554aa22"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-05.scscript",
+      "sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-05.py",
+      "sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-05.action.py",
+      "sha256": "ace850d3698f08e19281ae9be38e205c9e7f71c5f1316b365edbfe7e5e1d09ae",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-05-host-check.json",
+      "sha256": "47f2051271a7df1971c7fadd7ebbf10f5be5a9f73f36a57313e9d4858554aa22",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

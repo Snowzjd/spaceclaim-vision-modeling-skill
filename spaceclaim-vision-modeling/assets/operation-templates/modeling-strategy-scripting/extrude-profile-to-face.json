@@ -1,0 +1,269 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.extrude-profile-to-face",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic extrude-profile-to-face operation within the MA-07 boundary: One root-part target-face extrusion through the V21 ExtrudeFaces.UpTo command. It does not construct a profile, discover faces, attach a transient body, save, or infer source-sheet consumption from command return order.",
+  "trigger": "Use when the build plan requires extrude-profile-to-face and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "profile_face",
+      "type": "current root planar DesignFace",
+      "required": true,
+      "description": "A current planar face that is the only face of an open root-part sheet body. Profile construction and semantic face discovery are caller-owned."
+    },
+    {
+      "name": "direction",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite nonzero extrusion direction; normalized by the shared direction helper."
+    },
+    {
+      "name": "target_face",
+      "type": "current root DesignFace",
+      "required": true,
+      "description": "A distinct current face selected as the native UpTo target."
+    },
+    {
+      "name": "seed_point_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite seed point in millimetres passed to ExtrudeFaces.UpTo."
+    },
+    {
+      "name": "section_policy",
+      "type": "enum(kernel-managed|preserve|consume)",
+      "required": false,
+      "description": "How the caller wants source-face lifecycle checked. kernel-managed records counts without guessing kernel behavior; preserve and consume assert the requested result. Default: \"kernel-managed\"."
+    }
+  ],
+  "preconditions": [
+    "profile_face is current, planar, and the only face of one open root sheet body.",
+    "target_face is a distinct current root face.",
+    "direction and seed_point_mm are finite and direction is nonzero.",
+    "section_policy is kernel-managed, preserve, or consume."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{body: current root DesignBody, section_policy: string, source_count_before: integer, source_count_after: integer}; body is the unique newly detected closed positive-volume solid."
+    }
+  ],
+  "postconditions": [
+    "ExtrudeFaces.UpTo is called with FaceSelection objects, a normalized direction, the supplied seed point, and ExtrudeType.ForceIndependent.",
+    "After re-enumerating current root bodies, exactly one new closed positive-volume body is detected after sheet owners are excluded.",
+    "kernel-managed reports source_count_before and source_count_after without asserting either lifecycle; preserve requires the source face count to remain one and consume requires it to become zero."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-07.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic extrude-profile-to-face operation within the MA-07 boundary: One root-part target-face extrusion through the V21 ExtrudeFaces.UpTo command. It does not construct a profile, discover faces, attach a transient body, save, or infer source-sheet consumption from command return order. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "geometry_type",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Root bodies are enumerated before and after the mutating command; topology references must be reacquired after success."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_target_face_extrusion_input",
+      "condition": "Face ownership, planar-sheet, direction, seed-point, distinctness, or policy validation fails before the command call.",
+      "detection": "Face ownership, planar-sheet, direction, seed-point, distinctness, or policy validation fails before the command call.",
+      "safe_state": "No document mutation is accepted; retain the supplied source/reference state."
+    },
+    {
+      "failure_id": "up_to_command_failure",
+      "condition": "ExtrudeFaces.UpTo reports failure, raises, or no unique new closed positive-volume body is found.",
+      "detection": "ExtrudeFaces.UpTo reports failure, raises, or no unique new closed positive-volume body is found.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    },
+    {
+      "failure_id": "unexpected_source_lifecycle",
+      "condition": "The requested preserve/consume policy does not match the post-command source-face count.",
+      "detection": "The requested preserve/consume policy does not match the post-command source-face count.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_target_face_extrusion_input",
+      "action": "Re-enumerate current root faces and supply a valid one-face planar source, reachable target, and finite parameters; no command mutation is expected.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "up_to_command_failure",
+      "action": "Treat the root document as potentially partially mutated, inspect/reopen a clean run-owned copy, and rerun only after source/target reachability is diagnosed; no rollback is implemented.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "unexpected_source_lifecycle",
+      "action": "Stop and record the kernel lifecycle; use kernel-managed for an explicitly unasserted variant or rerun from a clean copy with a supported policy.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: ExtrudeFaces.UpTo is called with FaceSelection objects, a normalized direction, the supplied seed point, and ExtrudeType.ForceIndependent.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "ExtrudeFaces.UpTo is called with FaceSelection objects, a normalized direction, the supplied seed point, and ExtrudeType.ForceIndependent.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: After re-enumerating current root bodies, exactly one new closed positive-volume body is detected after sheet owners are excluded.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "After re-enumerating current root bodies, exactly one new closed positive-volume body is detected after sheet owners are excluded.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: kernel-managed reports source_count_before and source_count_after without asserting either lifecycle; preserve requires the source face count to remain one and consume requires it to become zero.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "kernel-managed reports source_count_before and source_count_after without asserting either lifecycle; preserve requires the source face count to remain one and consume requires it to become zero.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-07-host-check.json",
+            "sha256": "06d867c1a6a625023c78c1c010db004f8ce3e74bcfd797f48fc43615444c18fa"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-07-host-check.json",
+            "sha256": "06d867c1a6a625023c78c1c010db004f8ce3e74bcfd797f48fc43615444c18fa"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-07.scscript",
+      "sha256": "f8a0b341acec55cf9826d26adb910db460cc9b56400044bb47f5452906f77cb6",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-07.py",
+      "sha256": "1fd3af3c2e7bd79e46d7bd18cc07e06d64ec28e49c7266c8ea5809f6ab53a089",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-07.action.py",
+      "sha256": "c219c91d1e0bedd03e13357c81d024071656e30db0c7aad123b1ee1305773bdc",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-07-host-check.json",
+      "sha256": "06d867c1a6a625023c78c1c010db004f8ce3e74bcfd797f48fc43615444c18fa",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+      "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/harness.py",
+      "sha256": "cc9e159049c56f33bd4cb7f59ed74860af3d9965dd55e5e61d4d1b11f1cc10a0",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

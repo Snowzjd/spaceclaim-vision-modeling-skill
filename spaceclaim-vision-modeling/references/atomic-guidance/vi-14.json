@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-14",
+  "input_fields": [
+    {
+      "name": "viewport",
+      "type": "object",
+      "description": "Maximized viewport and one cursor position over the model/empty viewport."
+    },
+    {
+      "name": "wheel_steps",
+      "type": "integer",
+      "description": "One finite signed number of wheel steps and intended zoom direction."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Calibrated wheel-to-zoom direction and step behavior for the current navigation theme."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "zoomed_view",
+      "type": "object",
+      "description": "Before/after apparent scale, cursor position, applied wheel steps, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Place the cursor at the declared viewport position and verify the active window is SpaceClaim.",
+    "Confirm the calibrated wheel direction and issue exactly one wheel action with wheel_steps.",
+    "Observe apparent scale and verify that the model itself was not edited; return zoomed_view.",
+    "If the direction or result differs from the mapping, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject a missing/zero/nonfinite step count, cursor outside the viewport, uncalibrated wheel behavior, or an unobservable result.",
+    "Do not use repeated wheel actions to compensate for an unknown mapping.",
+    "Do not treat a wheel event as proof of geometry change."
+  ]
+}

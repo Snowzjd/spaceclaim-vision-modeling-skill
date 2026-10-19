@@ -1,0 +1,21 @@
+{
+  "operation_id": "geometry_understanding.identify-planar-profile",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-06",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "平面轮廓记录",
+    "declared_inputs": [
+      "source_region",
+      "planar_clues"
+    ],
+    "result_fields": [
+      "boundary",
+      "supporting_plane",
+      "profile_status"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

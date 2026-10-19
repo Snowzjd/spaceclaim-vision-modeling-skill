@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-18",
+  "input_fields": [
+    {
+      "name": "group_reference",
+      "type": "object",
+      "description": "One unique named group/selection reference."
+    },
+    {
+      "name": "expected_member_set",
+      "type": "array",
+      "description": "Expected member identities, not merely an expected count."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "membership_result",
+      "type": "object",
+      "description": "Actual/expected member identities, added/removed members, and count comparison."
+    },
+    {
+      "name": "comparison_status",
+      "type": "string",
+      "description": "matched, mismatched, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve the group and enumerate its current member identities.",
+    "Compare actual and expected sets, then compare counts as a separate field.",
+    "Return membership_result and comparison_status with added/removed identities.",
+    "Do not modify the group or treat count equality as membership equality."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous group identity or incomparable member identifiers.",
+    "Reject count-only validation.",
+    "Do not add/remove members to make the check pass."
+  ]
+}

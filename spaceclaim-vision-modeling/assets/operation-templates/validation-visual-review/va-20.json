@@ -1,0 +1,272 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.check-native-save-result",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Validate a native save result by reconciling file identity, save record, run reference, and persistence states.",
+  "trigger": "Use after a native .scdoc save when the file digest, save record, and run reference are available for checking.",
+  "inputs": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Positional path argument: path to one native .scdoc output.",
+      "required": true
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Positional expected_sha256 argument: expected SHA-256 digest.",
+      "required": true
+    },
+    {
+      "name": "save_record",
+      "type": "object",
+      "description": "Positional caller-supplied save record with matching run_ref, status=passed, and sha256; the helper does not observe the save event.",
+      "required": true
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "description": "Positional current run reference used to bind save_record.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Call check_native_save_result(path, expected_sha256, save_record, run_ref) with all four arguments positionally.",
+    "path ends in .scdoc and is a regular file.",
+    "save_record belongs to run_ref, has status=passed, and has the expected hash; the record is independently supplied by the caller."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-20 host action identity.",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed/failed based on supplied record and file identity.",
+      "required": true
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Resolved native path.",
+      "required": true
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "Observed file hash.",
+      "required": true
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Normalized expected hash.",
+      "required": true
+    },
+    {
+      "name": "size_bytes",
+      "type": "number",
+      "description": "Observed file size.",
+      "required": true
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "description": "Run identity used to bind save_record.",
+      "required": true
+    },
+    {
+      "name": "save_record_consistent",
+      "type": "boolean",
+      "description": "Whether record/run/hash/status agree.",
+      "required": true
+    },
+    {
+      "name": "native_save_observed",
+      "type": "boolean",
+      "description": "Always false; this host check does not observe the save event.",
+      "required": true
+    },
+    {
+      "name": "native_reopen",
+      "type": "string",
+      "description": "Always not_tested.",
+      "required": true
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for consistency/file identity only.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The result reports file/save-record consistency only.",
+    "native_save_observed=false and native_reopen=not_tested; no native runtime claim is made."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+    "target_environment": "Windows host-side Python helper; it checks one .scdoc identity and supplied save record without opening or controlling SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call validation_host_actions.check_native_save_result(path, expected_sha256, save_record, run_ref) with positional arguments. Invalid extension, run reference, save record, digest, or file inputs raise ValidationInputError, a ValueError subclass; hash mismatch or zero-byte output returns status=failed. The helper does not perform/save/reopen a model or claim native-save observation."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "This host helper does not resolve CAD objects or observe a save event; the caller must supply the exact path, run_ref, and save record.",
+      "If the file identity or independently observed save record is unavailable, return needs_manual_review rather than infer native-save or runtime state."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_input",
+      "condition": "The path extension, run_ref, save_record correlation, digest, or file identity is invalid.",
+      "detection": "check_native_save_result or its identity check raises ValidationInputError, which is a ValueError subclass.",
+      "safe_state": "No native-save or runtime claim is emitted; preserve the host-only boundary and return needs_manual_review to the caller."
+    },
+    {
+      "failure_id": "save_identity_failed",
+      "condition": "The file hash differs from the expected hash or the output is zero bytes.",
+      "detection": "The helper returns a flat result with status=failed and save_record_consistent=false.",
+      "safe_state": "Retain the failed consistency result and do not promote native_save or native_reopen evidence."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_input",
+      "action": "Catch ValidationInputError/ValueError, correct the caller-supplied path, digest, run_ref, or save_record, and retry only with explicit evidence; otherwise return needs_manual_review.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "save_identity_failed",
+      "action": "Inspect the exact output bytes and supplied save record; do not rewrite the expected hash or infer a native save/reopen event.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare the exact positional host-call interface, flat result fields, and ValidationInputError/ValueError boundary with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Call validation_host_actions.check_native_save_result(path, expected_sha256, save_record, run_ref) only after the caller has supplied the independent save record.",
+      "expected": "The result reports file/save-record consistency only.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-20-host-check.json",
+            "sha256": "7f46795efa636ed51495f4a21b7b6d816918a475dc836804ec1ce7670c88b60e"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-20-host-check.json",
+            "sha256": "7f46795efa636ed51495f4a21b7b6d816918a475dc836804ec1ce7670c88b60e"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+      "sha256": "34bc54d851e7de76ef6fc1ed0f3cabde58195ad4c618ab9b2379958b4be78827",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-20.json",
+      "sha256": "667ff1a09a43b94e7e91dc253c1ac0b4da5f4274b6feba21e99f587bd90be626",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_host_actions.py",
+      "sha256": "de28c18795efd37a0795855fbede3ea42ce023454bce96418f96972ff20bc9a9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-20-host-check.json",
+      "sha256": "7f46795efa636ed51495f4a21b7b6d816918a475dc836804ec1ce7670c88b60e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/host-checks.json",
+      "sha256": "f0a2f11840051c995b2cb6f021efa2544921ea721a62799a68634626262618f5",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "evidence"
+    }
+  ]
+}

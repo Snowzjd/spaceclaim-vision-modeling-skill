@@ -1,0 +1,127 @@
+{
+  "activated_active_modeling_templates": [],
+  "activated_host_preflight_templates": [
+    "modeling_strategy_scripting.package-scscript",
+    "modeling_strategy_scripting.audit-scscript"
+  ],
+  "active_modeling_templates_available": [
+    {
+      "operation_id": "modeling_strategy_scripting.package-scscript",
+      "status": "active",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/package-scscript.json",
+      "template_version": "0.1.1"
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.audit-scscript",
+      "status": "active",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/audit-scscript.json",
+      "template_version": "0.1.1"
+    }
+  ],
+  "candidate_matches": [
+    {
+      "candidate_evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "candidate_preconditions": [
+        "plane is valid and kind is rectangle, circle, or polygon.",
+        "Rectangle/circle branch dimensions are finite and positive; centre has two coordinates and angle is finite.",
+        "Polygon branch has at least three vertices, every vertex lies on the supplied plane within the coded tolerance, has nonzero signed area, has no repeated adjacent vertices, and has no detected self-intersection or nonadjacent touching."
+      ],
+      "catalog_id": "MA-04",
+      "eligibility": "not_eligible_for_automatic_selection because registry status is candidate",
+      "operation_id": "modeling_strategy_scripting.create-parameterized-planar-profile",
+      "registry_hash_matches_template": true,
+      "registry_status": "candidate",
+      "registry_template_sha256": "727cea7622c871a8a83aba93ec182d59919bc3b773a2e841b3956e2f6e77cf3d",
+      "template_file_sha256": "727cea7622c871a8a83aba93ec182d59919bc3b773a2e841b3956e2f6e77cf3d",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-parameterized-planar-profile.json",
+      "template_version": "0.1.0"
+    },
+    {
+      "candidate_evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "candidate_preconditions": [
+        "distance_mm is finite and not within 1e-9 of zero.",
+        "profile is suitable for Modeler.Body.ExtrudeProfile and is expected to be a closed planar profile."
+      ],
+      "catalog_id": "MA-06",
+      "eligibility": "not_eligible_for_automatic_selection because registry status is candidate",
+      "operation_id": "modeling_strategy_scripting.extrude-planar-profile",
+      "registry_hash_matches_template": true,
+      "registry_status": "candidate",
+      "registry_template_sha256": "8a4a25bd6d97d1433b5b6170db38c885e66d33d90a344316a1205545ed3396b2",
+      "template_file_sha256": "8a4a25bd6d97d1433b5b6170db38c885e66d33d90a344316a1205545ed3396b2",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/extrude-planar-profile.json",
+      "template_version": "0.3.1"
+    },
+    {
+      "candidate_evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "candidate_preconditions": [
+        "body is transient, closed, nonempty, and suitable for DesignBody.Create.",
+        "name is nonempty and does not match any current root-part body name."
+      ],
+      "catalog_id": "MA-12",
+      "eligibility": "not_eligible_for_automatic_selection because registry status is candidate",
+      "operation_id": "modeling_strategy_scripting.attach-transient-body",
+      "registry_hash_matches_template": true,
+      "registry_status": "candidate",
+      "registry_template_sha256": "f3ca3da964f8b7285202b63128c1092f9c28bdd362a35c4f553c7bc95a4070e0",
+      "template_file_sha256": "f3ca3da964f8b7285202b63128c1092f9c28bdd362a35c4f553c7bc95a4070e0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/attach-transient-body.json",
+      "template_version": "0.1.0"
+    },
+    {
+      "candidate_evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "candidate_preconditions": [
+        "body is a current root DesignBody and passes assert_closed.",
+        "delta_mm is finite; both tolerances are finite and nonnegative."
+      ],
+      "catalog_id": "MA-14",
+      "eligibility": "not_eligible_for_automatic_selection because registry status is candidate",
+      "operation_id": "modeling_strategy_scripting.translate-body",
+      "registry_hash_matches_template": true,
+      "registry_status": "candidate",
+      "registry_template_sha256": "fcc08a8a0fd1f202ad49932a454a8c8acfb4d50ead4126f6633b06944df3145b",
+      "template_file_sha256": "fcc08a8a0fd1f202ad49932a454a8c8acfb4d50ead4126f6633b06944df3145b",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/translate-body.json",
+      "template_version": "0.3.1"
+    }
+  ],
+  "fallback_reason": "Every geometry-changing match is candidate-only; no eligible active modeling template matches the complete polygon-extrude-attach-translate composition.",
+  "fallback_scope": "The generic fallback writes a case-specific composition script while retaining candidate operation IDs as planning references only.",
+  "registry_fallback": {
+    "conditions": [
+      "no active template matches",
+      "a template precondition is unmet",
+      "the target environment is unsupported by the template",
+      "the template conflicts with the accepted geometry contract"
+    ],
+    "enabled": true,
+    "entrypoint": "SKILL.md"
+  },
+  "request_id": "A",
+  "selected_route": "generic_v0.2_fallback",
+  "stage": "modeling_strategy_scripting",
+  "target_environment": {
+    "api_version": "V21",
+    "spaceclaim_release": "2022 R1"
+  }
+}

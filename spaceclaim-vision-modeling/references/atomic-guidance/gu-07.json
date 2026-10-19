@@ -1,0 +1,54 @@
+{
+  "catalog_id": "GU-07",
+  "input_fields": [
+    {
+      "name": "target_region",
+      "type": "object",
+      "description": "主体上一个可定位的局部区域及其原始证据。"
+    },
+    {
+      "name": "body_context",
+      "type": "object",
+      "description": "主体边界、邻接结构和用户说明；上下文只用于定位，不自动提供缺失尺寸。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "feature_kind",
+      "type": "string",
+      "description": "局部特征类别及其证据状态；不能判定时为 null。"
+    },
+    {
+      "name": "location",
+      "type": "object",
+      "description": "特征相对主体的定位、邻接和可见范围；隐藏位置可为 null。"
+    },
+    {
+      "name": "material_effect",
+      "type": "string",
+      "description": "additive、subtractive、surface-only 或 unknown 等含义，必须注明 observed 或 derived。"
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "description": "有来源支持的深度数值；未知或仅视觉估计时为 null。"
+    },
+    {
+      "name": "depth_unit",
+      "type": "string",
+      "description": "Unit of depth; null with not_applicable only when the feature has no depth parameter."
+    }
+  ],
+  "procedure": [
+    "从目标区域提取一个局部形状和与主体的邻接证据，记录原始引用与可见边界。",
+    "分别判断 feature_kind、location 和 material_effect；用户说明标为 user，遮挡处解释标为 derived。",
+    "只有尺寸标注或其他可追溯依据时才填写 depth；否则写 null，并附 provenance 与 unresolved。",
+    "只记录一个局部特征，不把同类实例、主体建模或完整零件描述合并进来。",
+    "depth 必须连同 depth_unit；没有深度参数的特征使用 not_applicable，不将未知盲孔深度标为不适用。"
+  ],
+  "rejection_rules": [
+    "主体与局部区域不能分离或目标边界不明确时拒绝输出确定特征。",
+    "视觉阴影、线宽或默认工艺不得单独证明深度或增减材含义。",
+    "缺少深度证据时不得使用零、平均值或案例尺寸作为默认值。"
+  ]
+}

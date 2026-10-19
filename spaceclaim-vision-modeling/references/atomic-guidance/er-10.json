@@ -1,0 +1,48 @@
+{
+  "catalog_id": "ER-10",
+  "input_fields": [
+    {
+      "name": "failed_precondition",
+      "type": "object",
+      "description": "One failed persistence/export precondition, exact error, and affected artifact."
+    },
+    {
+      "name": "target_artifact_identity",
+      "type": "object",
+      "description": "Expected path, format, role, and run ownership."
+    },
+    {
+      "name": "repair_strategy",
+      "type": "object",
+      "description": "One selected strategy such as new writable path or supported format."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "repaired_condition",
+      "type": "object",
+      "description": "One corrected path/format/permission precondition and scope."
+    },
+    {
+      "name": "repair_action",
+      "type": "string",
+      "description": "One preparation action or needs_manual_review; no persistence command."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when cause or strategy is not specific enough."
+    }
+  ],
+  "procedure": [
+    "Classify the single failure as path/ownership, format, or permission; reject mixed causes.",
+    "Apply one strategy: choose run-owned writable path, supported format, or user-writable directory without changing ACLs.",
+    "Return repaired_condition and one preparation action; leave persistence operation to its own atom.",
+    "If cause/identity is unclear, return needs_manual_review with no guessed path/format."
+  ],
+  "rejection_rules": [
+    "Reject deletion/overwrite of baseline/evidence or changing multiple preconditions.",
+    "Reject generic retry without changing the located condition.",
+    "Do not report save/reopen/export passed."
+  ]
+}

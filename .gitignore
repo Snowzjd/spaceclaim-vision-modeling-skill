@@ -13,7 +13,14 @@ temp/
 runs/
 recordings/
 
+# Local diagnostic evaluation retained for redesign; it is not publishable
+# evidence and must not enter a release artifact.
+spaceclaim-vision-modeling/assets/evaluations/geometry-understanding/blind-set-v1/
+spaceclaim-vision-modeling/scripts/generate_geometry_understanding_blind_set.py
+
 *.scdoc
+!spaceclaim-vision-modeling/assets/evaluations/p3-actions/fixtures/native-loft.scdoc
+!spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc
 *.scdocx
 *.cas
 *.cas.h5

@@ -1,0 +1,258 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.mirror-body-or-feature",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic mirror-body-or-feature operation within the MA-17 boundary: One non-associative root-body mirror across a supplied planar face. Relationships and merging are disabled; feature, component, occurrence, and source-consuming variants are outside this atom.",
+  "trigger": "Use when the build plan requires mirror-body-or-feature and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "current root DesignBody",
+      "required": true,
+      "description": "The current closed positive-volume body to mirror."
+    },
+    {
+      "name": "plane_face",
+      "type": "current planar DesignFace",
+      "required": true,
+      "description": "A current planar face defining the mirror plane."
+    },
+    {
+      "name": "source_policy",
+      "type": "enum(preserve)",
+      "required": true,
+      "description": "The current non-associative variant preserves the source body."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for source and mirrored-body volume comparison."
+    },
+    {
+      "name": "bbox_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for confirming that the preserved source bounds do not change."
+    }
+  ],
+  "preconditions": [
+    "body is a current closed positive-volume root DesignBody.",
+    "plane_face is a current planar face in the root design.",
+    "source_policy is exactly preserve and both tolerances are finite and nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "DesignBody",
+      "required": true,
+      "description": "A newly detected current root mirrored body; the supplied source remains unchanged."
+    }
+  ],
+  "postconditions": [
+    "Mirror.Execute creates exactly one new closed positive-volume root body without associative relationships or merging.",
+    "The supplied source remains present with its original volume and bounds within the declared tolerances.",
+    "The mirrored body preserves source volume within volume_tolerance_mm3 and passes the closed-solid check."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-17.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic mirror-body-or-feature operation within the MA-17 boundary: One non-associative root-body mirror across a supplied planar face. Relationships and merging are disabled; feature, component, occurrence, and source-consuming variants are outside this atom. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "bounding_box",
+      "geometry_type",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Root bodies are enumerated before and after Mirror.Execute; all prior body/face references are stale after the mutation."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_mirror_input",
+      "condition": "Body is stale/noncurrent, plane_face is not current planar topology, source_policy is not preserve, or tolerances are invalid.",
+      "detection": "Body is stale/noncurrent, plane_face is not current planar topology, source_policy is not preserve, or tolerances are invalid.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "mirror_creation_or_integrity_failure",
+      "condition": "Mirror.Execute reports failure, no unique mirrored body is found, or source volume/bounds change beyond tolerance.",
+      "detection": "Mirror.Execute reports failure, no unique mirrored body is found, or source volume/bounds change beyond tolerance.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_mirror_input",
+      "action": "Re-enumerate current root topology, supply a planar mirror face and preserve policy, and rerun from the unchanged source.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "mirror_creation_or_integrity_failure",
+      "action": "Discard or reopen the run-owned document, diagnose plane feasibility, and rerun from a clean source; do not promote the partial result.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Mirror.Execute creates exactly one new closed positive-volume root body without associative relationships or merging.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Mirror.Execute creates exactly one new closed positive-volume root body without associative relationships or merging.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The supplied source remains present with its original volume and bounds within the declared tolerances.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The supplied source remains present with its original volume and bounds within the declared tolerances.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The mirrored body preserves source volume within volume_tolerance_mm3 and passes the closed-solid check.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The mirrored body preserves source volume within volume_tolerance_mm3 and passes the closed-solid check.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-17-host-check.json",
+            "sha256": "cf3ebb5a1e10ff6f570261a1ada0d5ef41e4de7b7e7ab875715a93ae3983e397"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-17-host-check.json",
+            "sha256": "cf3ebb5a1e10ff6f570261a1ada0d5ef41e4de7b7e7ab875715a93ae3983e397"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-17.scscript",
+      "sha256": "ecced88a78af2c7478f54ba8f75a4d500787e945bacc9eeca71ababb31791ba4",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-17.py",
+      "sha256": "2d3fdd73c9fbcec639e95fed806a90438a9f80900f7d5766d9a0ffdf250a91b2",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-17.action.py",
+      "sha256": "7202fd2eefe63ec8e9c630f0e847aa41c010888f1cc1baf40f52ab6e927c96f8",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-17-host-check.json",
+      "sha256": "cf3ebb5a1e10ff6f570261a1ada0d5ef41e4de7b7e7ab875715a93ae3983e397",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+      "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/harness.py",
+      "sha256": "cc9e159049c56f33bd4cb7f59ed74860af3d9965dd55e5e61d4d1b11f1cc10a0",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

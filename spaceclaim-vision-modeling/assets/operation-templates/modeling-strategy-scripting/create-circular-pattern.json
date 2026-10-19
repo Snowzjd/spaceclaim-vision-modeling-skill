@@ -1,0 +1,275 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-circular-pattern",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic create-circular-pattern operation within the MA-19 boundary: One circular array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known axis-rotation matrices to copies after index 0, rejects periodic duplicate angular positions even after wrapped turns, and does not create native associative pattern features, attach bodies, or edit components/occurrences.",
+  "trigger": "Use when the build plan requires create-circular-pattern and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "transient Modeler.Body",
+      "required": true,
+      "description": "A closed nonempty transient source body; attached DesignBody and component/occurrence variants are excluded."
+    },
+    {
+      "name": "axis_origin_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite point on the circular-array axis in millimetres."
+    },
+    {
+      "name": "axis_direction",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite nonzero axis direction; normalized by the shared direction helper."
+    },
+    {
+      "name": "count",
+      "type": "integer >= 2",
+      "required": true,
+      "description": "Finite integer-valued instance count; the source location is included, but every returned instance is an independent copy."
+    },
+    {
+      "name": "step_angle_degrees",
+      "type": "finite number",
+      "required": true,
+      "description": "Signed finite angular increment in degrees; cumulative returned angles are index * step_angle_degrees."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for comparing every copied instance volume with the source volume."
+    }
+  ],
+  "preconditions": [
+    "body passes require_transient/assert_closed.",
+    "axis_origin_mm and axis_direction are finite; axis_direction is nonzero.",
+    "count is a finite integer >= 2 and booleans are rejected.",
+    "step_angle_degrees and volume_tolerance_mm3 are finite; tolerance is nonnegative.",
+    "The cumulative angular positions modulo 360 degrees are pairwise distinct, including positions after more than one turn."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{instances: array<transient Modeler.Body>, angles_degrees: array<number>, source_policy: \"preserved\", association: \"independent\"}; angles include 0 for the copied source location."
+    }
+  ],
+  "postconditions": [
+    "Exactly count independent transient instances are returned, including a copy at zero angle.",
+    "The supplied source body is not transformed or consumed.",
+    "angles_degrees contains count cumulative signed angles [index * step_angle_degrees].",
+    "Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+    "The returned source_policy is preserved and association is independent."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic create-circular-pattern operation within the MA-19 boundary: One circular array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known axis-rotation matrices to copies after index 0, rejects periodic duplicate angular positions even after wrapped turns, and does not create native associative pattern features, attach bodies, or edit components/occurrences. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "Not applicable to unlinked transient copies; callers own any later document attachment or topology refresh."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_circular_array_input",
+      "condition": "Source, axis, count, angle, tolerance, or periodic-duplicate validation raises ValueError before the first Copy call.",
+      "detection": "Source, axis, count, angle, tolerance, or periodic-duplicate validation raises ValueError before the first Copy call.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "copy_or_rotation_failure",
+      "condition": "Copy/Transform raises, a copy aliases the source, or a copy fails closure or volume checks.",
+      "detection": "Copy/Transform raises, a copy aliases the source, or a copy fails closure or volume checks.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_circular_array_input",
+      "action": "Supply a fresh valid transient source and corrected finite parameters; no model mutation has occurred.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "copy_or_rotation_failure",
+      "action": "Discard all partial transient instances and rerun from the unchanged source; no rollback is implemented.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Exactly count independent transient instances are returned, including a copy at zero angle.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly count independent transient instances are returned, including a copy at zero angle.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The supplied source body is not transformed or consumed.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The supplied source body is not transformed or consumed.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: angles_degrees contains count cumulative signed angles [index * step_angle_degrees].",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "angles_degrees contains count cumulative signed angles [index * step_angle_degrees].",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The returned source_policy is preserved and association is independent.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The returned source_policy is preserved and association is independent.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-19-host-check.json",
+            "sha256": "770b8e46419015bb60d58f71b4537a97ef85a50153c86a66af34d1cf0ad7d58d"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-19-host-check.json",
+            "sha256": "770b8e46419015bb60d58f71b4537a97ef85a50153c86a66af34d1cf0ad7d58d"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.scscript",
+      "sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.py",
+      "sha256": "0920cdf8d92d0d23a91ed939a7bebe064e60d9f865dac32f2c6778b9c731cb27",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.action.py",
+      "sha256": "4aa8ac6a89b859c0545b1aa150bbbe37a6e13d4889a5d74495b79e653d702596",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-19-host-check.json",
+      "sha256": "770b8e46419015bb60d58f71b4537a97ef85a50153c86a66af34d1cf0ad7d58d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

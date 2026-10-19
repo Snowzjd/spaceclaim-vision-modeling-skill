@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-08",
+  "input_fields": [
+    {
+      "name": "script_artifact",
+      "type": "object",
+      "description": "Readable .scscript path, SHA-256, package/version metadata, and operation identity."
+    },
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Confirmed SpaceClaim session identity and current idle/document state."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "loaded_script_identity",
+      "type": "object",
+      "description": "Actual loaded path, SHA-256, operation identity, and session/document binding."
+    },
+    {
+      "name": "load_state",
+      "type": "string",
+      "description": "One of loaded, rejected, or needs_manual_review; loaded does not mean executed."
+    }
+  ],
+  "procedure": [
+    "Check readability, .scscript packaging, SHA-256, operation identity, session identity, and active document state.",
+    "Use the target session's script-load command once and observe the loaded script identity.",
+    "Return loaded_script_identity and load_state; keep the run gate closed.",
+    "If an identity check fails, return needs_manual_review without pressing Run."
+  ],
+  "rejection_rules": [
+    "Reject missing/unreadable/archive-invalid scripts or hash mismatch.",
+    "Reject busy/modal/document-mismatched sessions.",
+    "Do not interpret a visible script tab or loaded label as completion."
+  ]
+}

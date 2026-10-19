@@ -9,6 +9,7 @@
 - Treat plain IronPython source as a development or packaging input. Package, load, test, and deliver the executable artifact as a SpaceClaim `.scscript` matched to the target API version.
 - For V21 packages, preserve the native minimal members `_script`, `_apiVersion`, `_smartVariableVersion`, and `[Content_Types].xml`; use `scripts/package_scscript.py` instead of renaming a `.py` file.
 - Import required geometry types from their actual versioned subnamespace. A root wildcard import does not guarantee that types such as `CircleProfile` or `PointUV` are defined.
+- For V21 reusable code, enumerate with `root.GetDescendants[DesignBody]()` and apply the declared root/occurrence scope. Editor-injected extension methods such as `GetAllBodies()` may not exist inside separately compiled script scopes.
 
 ## Coordinate systems and parameters
 
@@ -48,6 +49,7 @@
 - Emit stage markers and measured assertions to a runtime report.
 - Stop before save on critical failure.
 - Treat “script reached the final line,” “output file exists,” and “native model reopens with expected structure” as separate checks.
+- In the observed V21 `DocumentSave.Execute(path)` path, do not require a non-null result or `.Success` property. Check the saved file and active document path separately, then obtain reopen evidence when required. Do not transfer this return convention to unrelated APIs.
 - Never rerun a script on a partially modified model unless the script explicitly supports idempotent recovery.
 
 ## Evidence boundary

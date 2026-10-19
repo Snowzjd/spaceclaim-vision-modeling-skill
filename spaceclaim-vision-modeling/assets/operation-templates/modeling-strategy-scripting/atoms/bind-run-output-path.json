@@ -1,0 +1,196 @@
+{
+  "operation_id": "modeling_strategy_scripting.bind-run-output-path",
+  "template_version": "0.3.1",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "输出路径绑定",
+  "trigger": "绑定一个运行输出路径 when its declared inputs are available.",
+  "inputs": [
+    {
+      "name": "output_role",
+      "type": "object",
+      "description": "Object with required keys `role` and `filename_or_pattern`; the path name must be explicit rather than guessed.",
+      "required": true,
+      "provenance_required": true
+    },
+    {
+      "name": "run_directory",
+      "type": "string",
+      "description": "The explicit run directory under which the output path is to be declared.",
+      "required": true,
+      "provenance_required": true
+    },
+    {
+      "name": "overwrite_policy",
+      "type": "object",
+      "description": "Object with required keys `collision`, `protected_paths`, and `replacement`; it declares policy without performing writes.",
+      "required": true,
+      "provenance_required": true
+    },
+    {
+      "name": "known_paths",
+      "type": "array",
+      "description": "Array of path objects, each with required keys `path`, `role`, and `protected`, used only for collision checks.",
+      "required": true,
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "目录归属与策略明确",
+    "Use only this single-action procedure; source or upstream instance references must be supplied."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "atomic-reasoning-output",
+      "required": true,
+      "description": "One 输出路径绑定 in the common envelope; data fields: output_path_binding, collision_check."
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+    "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+    "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+  },
+  "postconditions": [
+    "路径独立且不覆盖基准或其他角色文件",
+    "The typed result and provenance agree with the declared single-action scope; unsupported required fields withhold a resolved result."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Source interpretation or strategy reasoning; no SpaceClaim runtime.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone deterministic interpreter is claimed. Apply only MS-09 in the hash-bound guidance reference using atomic-reasoning-protocol.md."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Reject missing or guessed filenames, path traversal, ambiguous roots, and any path outside the declared run directory.",
+      "Reject a collision with a protected baseline or another role unless the supplied policy explicitly and safely resolves it.",
+      "Paths declare destinations only: never create, overwrite, delete, move, or otherwise write files in this operation."
+    ],
+    "topology_refresh": "No geometry handles are acquired; declarations do not mutate or refresh application topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "condition": "The declared action inputs cannot support a unique required result.",
+      "detection": "Apply the action rejection rules and inspect raw source evidence.",
+      "safe_state": "Return actionable unresolved fields; retain original evidence and values."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "action": "Supply only the missing source or prerequisite, then repeat this action; do not invent geometry or start application execution.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "One action boundary",
+      "method": "Inspect named inputs, result fields, procedure and rejection rules for MS-09",
+      "expected": "输出路径绑定",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Result structure and supported invariants",
+      "method": "validate_atomic_reasoning.py with an actual source manifest; separately review interpretation against raw material.",
+      "expected": "路径独立且不覆盖基准或其他角色文件",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.3.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/ms-09-design.json",
+            "sha256": "845d349313d23b38552561187ca19234c0ea84d00f6c11fa7c817a3ed03f38ef"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ms-09-host-check.json",
+            "sha256": "2bb740b8cb1886ea95f18abda236da55ae241e4ca9717425aa4a5c90fbebb911"
+          }
+        ],
+        "notes": "Host structure/invariants and bounded independent source evaluation; no automatic promotion."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Candidate. Structural tests cannot establish source interpretation accuracy or any SpaceClaim runtime capability."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ms-09.json",
+      "role": "reference",
+      "sha256": "d40c8c10cb93952a2b88976ee0354996081d582620536c9f78344684762dbcae"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-protocol.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+      "role": "reference",
+      "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+      "role": "evaluation",
+      "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/ms-09-design.json",
+      "role": "evidence",
+      "sha256": "845d349313d23b38552561187ca19234c0ea84d00f6c11fa7c817a3ed03f38ef"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ms-09-host-check.json",
+      "role": "evidence",
+      "sha256": "2bb740b8cb1886ea95f18abda236da55ae241e4ca9717425aa4a5c90fbebb911"
+    },
+    {
+      "path": "tests/test_atomic_reasoning.py",
+      "role": "test",
+      "sha256": "368a780f4e677ecd000769eb8848b6ee4349292a1ecbe21d4db8446c6e1dcc6c"
+    }
+  ]
+}

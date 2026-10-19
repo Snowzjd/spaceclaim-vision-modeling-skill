@@ -1,0 +1,38 @@
+{
+  "catalog_id": "GU-02",
+  "input_fields": [
+    {
+      "name": "source_file_or_text",
+      "type": "object",
+      "description": "需要追溯的原始载体；内容、媒体类型和可用的内容摘要必须来自实际来源。"
+    },
+    {
+      "name": "locator",
+      "type": "object",
+      "description": "路径、URI、页码、区域、段落或其他稳定定位依据；用户给出的定位须保留其来源。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "source_id",
+      "type": "string",
+      "description": "稳定的来源标识；不能建立稳定标识时为 null。"
+    },
+    {
+      "name": "locator",
+      "type": "object",
+      "description": "路径或引用、哈希（若可得）以及页码、区域或段落定位；未知成员为 null。"
+    }
+  ],
+  "procedure": [
+    "从来源中提取可复核的身份线索和定位信息，保留原始字符串或字节摘要，不改写为未经证明的名称。",
+    "将定位拆成 source_id 与 locator 成员，逐项标记 observed、user 或 derived 的 provenance。",
+    "输出可复查的来源身份与位置；任何缺失定位写 null，并在 unresolved 中记录缺失字段及其影响。",
+    "只建立来源追溯记录，不对来源内容作几何解释或尺寸推导。"
+  ],
+  "rejection_rules": [
+    "只有临时路径、屏幕位置或不可复现描述而没有稳定引用时拒绝生成确定 source_id。",
+    "定位与来源内容互相矛盾时拒绝静默选择，保留冲突并追加未决包。",
+    "不得为了补全定位而制造哈希、页码、区域或文件内容。"
+  ]
+}

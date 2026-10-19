@@ -1,0 +1,53 @@
+{
+  "catalog_id": "GU-13",
+  "input_fields": [
+    {
+      "name": "known_dimension_records",
+      "type": "array",
+      "description": "带单位、量纲、来源和稳定标识的已知数值；未知或冲突记录不得作为确定绑定。"
+    },
+    {
+      "name": "geometric_constraints_and_formula",
+      "type": "object",
+      "description": "用户或来源给出的约束与符号公式；表达式必须可审计，不得隐藏函数调用。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "expression",
+      "type": "string",
+      "description": "只含符号、数字、+、-、*、/ 和括号的可复算表达式；不允许函数调用、幂运算或隐含单位转换。"
+    },
+    {
+      "name": "bindings",
+      "type": "object",
+      "description": "表达式符号到已知尺寸、单位、来源和 provenance 的绑定；未绑定符号不得隐藏。"
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "在所有绑定和量纲兼容时的派生数值；不可复算时为 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "结果单位及其量纲依据；单位无法由绑定和公式确定时为 null。"
+    },
+    {
+      "name": "assumptions",
+      "type": "array",
+      "description": "公式成立所需的显式假设及 provenance；不得把未知项写成无条件假设。"
+    }
+  ],
+  "procedure": [
+    "从已知尺寸记录建立符号绑定，逐项保留数值、单位、来源和 provenance；用户公式与模型解析分开。",
+    "校验 expression 只使用符号、数字、+、-、*、/ 和括号，并检查每个符号均有已知绑定且量纲兼容。",
+    "按表达式进行一次可复算的派生，输出 expression、bindings、value、unit 和 assumptions；不能复算时 value 写 null。",
+    "将任何未绑定、冲突或未经确认的假设写入 unresolved，不把派生值标作原始观察。"
+  ],
+  "rejection_rules": [
+    "表达式包含函数调用、幂运算、隐式外部变量或除以未确认的零值时拒绝计算。",
+    "符号缺少绑定、输入尺寸单位/量纲冲突或公式不能唯一解析时拒绝给出 value。",
+    "不得把未知尺寸、案例常数或视觉估计偷偷写入 bindings 或 assumptions。"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "operation_id": "geometry_understanding.identify-view-projection",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-03",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "视图与投影记录",
+    "declared_inputs": [
+      "single_view",
+      "projection_identifier_or_visible_clues"
+    ],
+    "result_fields": [
+      "view_id",
+      "projection_kind",
+      "view_direction"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

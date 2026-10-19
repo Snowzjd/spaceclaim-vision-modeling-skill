@@ -1,0 +1,48 @@
+{
+  "catalog_id": "ER-05",
+  "input_fields": [
+    {
+      "name": "stale_reference_location",
+      "type": "object",
+      "description": "Source location and old reference/collection consumed after mutation."
+    },
+    {
+      "name": "topology_change_point",
+      "type": "object",
+      "description": "Single operation that changed topology and its output identity."
+    },
+    {
+      "name": "consumers",
+      "type": "array",
+      "description": "Downstream consumers; one repair target is required."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "refresh_point",
+      "type": "string",
+      "description": "One copyable enumeration statement/insertion location after mutation."
+    },
+    {
+      "name": "refreshed_reference_binding",
+      "type": "object",
+      "description": "Old consumer binding replaced by current-topology binding."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when mutation/consumer causality or API enumeration is unknown."
+    }
+  ],
+  "procedure": [
+    "Locate mutation and first stale consumer in source order.",
+    "Insert one current enumeration at post-mutation boundary, e.g. bodies = list(GetRootPart().GetAllBodies()) or faces = list(body.Faces).",
+    "Return the exact enumeration point and consumer binding. If selecting one object requires an unavailable selector/helper/tolerance, leave that binding unresolved; do not introduce undefined helpers or hide a selection operation inside refresh.",
+    "If API/boundary is unknown, return needs_manual_review instead of guessing."
+  ],
+  "rejection_rules": [
+    "Reject refresh before mutation, unrelated consumer, or fabricated API.",
+    "Do not change the topology operation.",
+    "Do not claim downstream geometry success before execution/check."
+  ]
+}

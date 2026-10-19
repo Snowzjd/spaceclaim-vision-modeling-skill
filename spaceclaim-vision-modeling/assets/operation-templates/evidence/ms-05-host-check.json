@@ -1,0 +1,81 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.bind-target-api-call",
+  "template_version": "0.3.1",
+  "recorded_on": "2026-09-07",
+  "command": "python -m unittest tests.test_atomic_reasoning -q; validate() on 42 independently emitted records with sources",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 17,
+  "tool": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+  "test": "tests/test_atomic_reasoning.py",
+  "tool_sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c",
+  "test_sha256": "368a780f4e677ecd000769eb8848b6ee4349292a1ecbe21d4db8446c6e1dcc6c",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+      "role": "tool",
+      "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+    },
+    {
+      "path": "tests/test_atomic_reasoning.py",
+      "role": "test",
+      "sha256": "368a780f4e677ecd000769eb8848b6ee4349292a1ecbe21d4db8446c6e1dcc6c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p2-source-evaluation/independent/results.json",
+      "role": "fixture",
+      "sha256": "849eaef714ac07aa04fdf88788d8052b62a1f640c4376c1ec2dd928051a7544b"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p2-source-evaluation/independent/sources.json",
+      "role": "fixture",
+      "sha256": "a91a6a8311ad7718a0b95d8262b24ed325658a031cee32b7594709075ad02792"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p2-source-evaluation/independent/planning-results.json",
+      "role": "fixture",
+      "sha256": "5aac7edb6376f1b75e4d34c8b68128c805e32ce8b3a51ffd9b04cca91d37b660"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p2-source-evaluation/independent/planning-sources.json",
+      "role": "fixture",
+      "sha256": "d32f3986820d2d1c4be1d0ac63ea898f77e37549fa858bdfb632b3457456ff53"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Single-action boundary and explicit unresolved behavior reviewed."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "17 focused framework tests and 42 emitted result records passed; MS-05 is covered. Independent interpretation review is bounded to the supplied synthetic sources."
+    },
+    "spaceclaim_execution": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    },
+    "geometry_measurements": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    },
+    "visual_review": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "Reasoning declaration only; no SpaceClaim runtime, selection, measurement or file persistence action."
+    }
+  },
+  "notes": "See assets/evaluations/p2-source-evaluation/review-summary.md. Both positive and unresolved paths are distinguished. Candidate retained; no automatic promotion or runtime claim."
+}

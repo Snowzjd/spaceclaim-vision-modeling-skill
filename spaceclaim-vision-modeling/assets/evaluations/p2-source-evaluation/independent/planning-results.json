@@ -1,0 +1,71 @@
+[
+  {
+    "contract_version":1,"catalog_id":"MS-03","instance_id":"d-ms03","status":"resolved",
+    "data":{
+      "construction_decision":{
+        "method_id":"closed-profile-extrusion",
+        "reason":"The single feature has a constant closed circular section and needs one capped body; one supplied valid profile and one distance meet the extrusion prerequisites. No second section or loft binding is supplied.",
+        "prerequisites":["SpaceClaim 2022 R1 with V21 scripting API and IronPython 2.7, as supplied.","Caller-supplied valid closed planar circular profile of radius 0.007 m.","Supplied extrusion distance 0.009 m."],
+        "covered_effect":"Create one capped Modeler Body representing the diameter-14 mm, length-9 mm constant circular material addition; no attachment or union to any other body.",
+        "stability_basis":"Simpler available method for this constant-section feature, with supplied version-associated signature facts. This is documented planning support, not measured reliability or live runtime compatibility."
+      },
+      "alternative_conditions":[{"method_id":"section-loft","when_preferred":"If the requested feature instead has different sections and caller supplies at least two sections, matching rules and an appropriate version binding.","tradeoff":"Adds section/matching prerequisites not present or necessary here; not currently eligible."}]
+    },
+    "provenance":[{"fields":["construction_decision","alternative_conditions"],"kind":"derived","source_refs":["d.environment","d.feature","d.methods","api.extrude"],"rationale":"Filter the two explicitly supplied methods against this one feature's prerequisites and select extrusion; preserve supplied documentation-only evidence boundary."}],
+    "unresolved":[]
+  },
+  {
+    "contract_version":1,"catalog_id":"MS-05","instance_id":"d-ms05","status":"resolved",
+    "data":{
+      "api_binding":{
+        "target_version":{"host":"SpaceClaim","spaceclaim_release":"2022 R1","api_version":"V21","runtime":"IronPython 2.7"},
+        "symbol":"SpaceClaim.Api.V21.Modeler.Body.ExtrudeProfile",
+        "argument_mappings":[
+          {"position":1,"parameter":"profile","declared_type":"Profile","semantic_input":"Caller-supplied valid closed planar circular profile, radius 0.007 m; not constructed by this binding."},
+          {"position":2,"parameter":"distance","declared_type":"Double","semantic_input":"Axial extrusion length","value":0.009,"unit":"m","source_length":{"value":9,"unit":"mm"}}
+        ],
+        "return_mapping":{"declared_type":"Modeler Body","semantic_output":"One capped extruded body","boundary":"No attachment/union to another body and no document insertion behavior inferred."},
+        "source_ref":"api.extrude"
+      },
+      "compatibility_notes":["Exact symbol, parameter order/types and return semantics are bound to the supplied V21 signature transcription; installed API documents were not independently read by this evaluator.","Target host/release/runtime are caller-supplied. No API call, model construction, document insertion, attachment/union or runtime compatibility test was performed.","A valid profile is explicitly supplied; the separate CircleProfile signature is not invoked or bundled into this single-action binding."]
+    },
+    "provenance":[{"fields":["api_binding"],"kind":"derived","source_refs":["d.environment","api.extrude","d.feature"],"rationale":"Bind exactly the supplied ExtrudeProfile signature to the supplied profile and 0.009 m distance; no invented overload or additional operation."},{"fields":["compatibility_notes"],"kind":"derived","source_refs":["d","api.extrude","api.circle"],"rationale":"State limits of transcribed source evidence and distinguish the unused profile constructor from the requested single binding."}],
+    "unresolved":[]
+  },
+  {
+    "contract_version":1,"catalog_id":"MS-06","instance_id":"d-ms06","status":"resolved",
+    "data":{
+      "semantic_predicate":{
+        "object_type":"face",
+        "criteria":[
+          {"property":"owning_body","comparison":"is","expected":"newly created body supplied as selection scope","unit":"not_applicable"},
+          {"property":"surface_kind","comparison":"eq","expected":"planar","unit":"not_applicable"},
+          {"property":"supporting_plane_z","comparison":"absolute_difference_le","expected":9,"tolerance":0.001,"unit":"mm"},
+          {"property":"outward_unit_normal","comparison":"each_component_absolute_difference_le","expected":[0,0,1],"tolerance":0.000001,"unit":"dimensionless"},
+          {"property":"face_area","comparison":"absolute_difference_le","expected":153.93804002589985,"tolerance":0.001,"unit":"mm^2"}
+        ],
+        "match_rule":"Within the supplied new body's faces, require every criterion. This defines a candidate test only; accept selection only when exactly one face matches. Expected values are analytic inputs, not measured properties.",
+        "refresh_prerequisite":null
+      },
+      "ambiguity_policy":{"zero_matches":"Stop; report no qualifying positive-end cap and inspect geometry/measurement input. Do not substitute an index.","one_match":"Permit that candidate only after every criterion is measured and satisfied; no live candidate is selected by this declaration.","multiple_matches":"Stop; report candidates and require distinguishing geometry evidence. Do not select by index or creation order."}
+    },
+    "provenance":[{"fields":["semantic_predicate","ambiguity_policy"],"kind":"derived","source_refs":["d.selection"],"rationale":"Use caller's planar end position, outward normal, area and individual tolerances. No intervening topology change or old handle exists, so optional refresh prerequisite is not required and no MS-07 declaration is synthesized."}],
+    "unresolved":[]
+  },
+  {
+    "contract_version":1,"catalog_id":"MS-08","instance_id":"d-ms08","status":"resolved",
+    "data":{
+      "assertion_definition":{
+        "property":{"property_name":"body_volume","expected_value":1385.4423602330984,"relation":"absolute_difference_le_tolerance"},
+        "measurement_method":{"source_ref":"d.assertion","method":"read_volume_mm3(body)","unit":"mm^3","evidence_layer":"Caller-supplied kernel-volume measurement interface contract; implementation untested and no measurement performed."},
+        "units":"mm^3",
+        "tolerance":{"value":0.01,"unit":"mm^3","comparison":"absolute_difference_le"},
+        "pass_rule":"Only a finite measured value V from the supplied adapter can pass, and only if abs(V - 1385.4423602330984) <= 0.01 mm^3.",
+        "fail_rule":"For an available finite measured value V, fail if abs(V - 1385.4423602330984) > 0.01 mm^3. Do not mutate geometry to satisfy the check.",
+        "unknown_measurement_rule":"Unavailable result, adapter failure or non-finite value means unknown/unverified and must not pass; report missing measurement evidence."
+      }
+    },
+    "provenance":[{"fields":["assertion_definition"],"kind":"derived","source_refs":["d.assertion"],"rationale":"Bind one supplied expected volume to the supplied adapter interface, unit, absolute tolerance and unavailable-result boundary. This is an assertion definition, not an assertion result."}],
+    "unresolved":[]
+  }
+]

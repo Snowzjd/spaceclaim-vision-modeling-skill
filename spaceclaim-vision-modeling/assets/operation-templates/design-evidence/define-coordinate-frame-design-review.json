@@ -1,0 +1,37 @@
+{
+  "design_review_version": 1,
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "template_version": "0.2.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Public contract review for one atomic coordinate-frame boundary, provenance separation, case neutrality, and evidence limits.",
+  "checks": [
+    {
+      "name": "atomic_boundary",
+      "status": "passed",
+      "notes": "The operation defines origin, axes, handedness, and unit context; it does not alter geometry or prescribe construction operations."
+    },
+    {
+      "name": "provenance_boundary",
+      "status": "passed",
+      "notes": "Frame cues, user constraints, inferred orientation, and unresolved choices remain explicitly labeled as observation, user, inference, or unresolved."
+    },
+    {
+      "name": "case_neutrality",
+      "status": "passed",
+      "notes": "The contract contains no case identifiers, product labels, recorded aliases, or numeric examples and does not invent missing axes or units."
+    },
+    {
+      "name": "evidence_boundary",
+      "status": "passed",
+      "notes": "Only design intent is reviewed; no implementation, application runtime, geometry measurement, persistence, visual acceptance, or export is claimed."
+    }
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/references/workflow-contracts.md",
+    "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+    "spaceclaim-vision-modeling/references/operation-template-contract.md"
+  ],
+  "notes": "Public design-only review record for the schema-bound 0.2.0 contract; it is not a host-check, source-interpretation accuracy result, or application evidence record."
+}

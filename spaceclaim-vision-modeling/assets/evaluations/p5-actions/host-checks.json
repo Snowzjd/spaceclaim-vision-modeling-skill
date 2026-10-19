@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "format": "p5-host-checks",
+  "evidence_boundary": {
+    "host_helpers": "executed",
+    "cad_operations": "not_performed",
+    "gui_operations": "not_performed",
+    "native_artifact_source": "real included native.scdoc bytes",
+    "va25_reimport": "not_tested"
+  },
+  "provenance": {
+    "native_source": {
+      "path": "runs/p4-live/save-01/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+    },
+    "public_native": {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+    },
+    "save_report": {
+      "path": "runs/p4-live/save-01/report.json",
+      "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f"
+    },
+    "reopen_report": {
+      "path": "runs/p5-live/reopen-01/report.json",
+      "sha256": "938f036e67e98ba302b02ac68a7f3602488ea78918fb9bbd740f8c3bb9501e2a"
+    },
+    "reopen_observation": {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893"
+    }
+  },
+  "cases": [
+    {
+      "catalog_id": "VA-19",
+      "status": "passed",
+      "function": "check_output_file_identity",
+      "inputs": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "expected_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "result": {
+        "action_id": "VA-19",
+        "status": "passed",
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "expected_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "size_bytes": 27575,
+        "evidence_level": "host_checked",
+        "geometry_verified": false
+      }
+    },
+    {
+      "catalog_id": "VA-20",
+      "status": "passed",
+      "function": "check_native_save_result",
+      "inputs": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "expected_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "save_record": {
+          "run_ref": "runs/p4-live/save-01|report_sha256:4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f",
+          "status": "passed",
+          "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+        },
+        "run_ref": "runs/p4-live/save-01|report_sha256:4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f"
+      },
+      "run_ref_basis": "caller_injected run directory plus source save-report SHA-256; no native run_ref field was used",
+      "result": {
+        "action_id": "VA-20",
+        "status": "passed",
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "expected_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "size_bytes": 27575,
+        "evidence_level": "host_checked",
+        "geometry_verified": false,
+        "run_ref": "runs/p4-live/save-01|report_sha256:4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f",
+        "save_record_consistent": true,
+        "native_save_observed": false,
+        "native_reopen": "not_tested"
+      }
+    },
+    {
+      "catalog_id": "VA-23",
+      "status": "passed",
+      "function": "check_observed_property",
+      "inputs": {
+        "observation_path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+        "expected_value": 1001,
+        "expected_artifact_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "absolute_tolerance": 0.1,
+        "action_id": "VA-23"
+      },
+      "result": {
+        "action_id": "VA-23",
+        "status": "passed",
+        "property": "volume_mm3",
+        "object_identity": "unique-solid-at-[0,0,0,7,11,13]-mm",
+        "actual": 1000.9999999999998,
+        "expected": 1001,
+        "absolute_tolerance": 0.1,
+        "observation_ref": "reopen-01/report.json",
+        "artifact_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+        "evidence_level": "host_checked",
+        "runtime_observed": false
+      }
+    },
+    {
+      "catalog_id": "VA-25",
+      "status": "not_tested",
+      "function": "check_observed_property",
+      "result": null,
+      "reason": "No real reimport observation is available; no VA-25 host call was made."
+    }
+  ]
+}

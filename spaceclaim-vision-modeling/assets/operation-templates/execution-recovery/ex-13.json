@@ -1,0 +1,259 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.block-save-after-critical-failure",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Return one critical-failure save-gate decision without ever calling a saver.",
+  "trigger": "Use after a critical assertion failure and before any native save has begun.",
+  "inputs": [
+    {
+      "name": "failure_event",
+      "type": "object or array",
+      "required": false,
+      "description": "Failure input; use this or events or critical_failure."
+    },
+    {
+      "name": "events",
+      "type": "array",
+      "required": false,
+      "description": "Takes precedence over failure_event."
+    },
+    {
+      "name": "critical_failure",
+      "type": "boolean or object",
+      "required": false,
+      "description": "True or explicit critical event takes precedence."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Optional caller run reference."
+    }
+  ],
+  "preconditions": [
+    "Caller verifies events belong to this run and save is still pending; helper does not observe either fact. saver/save_callback compatibility arguments are ignored. EX14 remains responsible for its own model/check/path guards.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "EX-13"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "save_state",
+      "type": "string",
+      "required": true,
+      "description": "blocked_after_critical_failure or eligible_but_not_saved."
+    },
+    {
+      "name": "save_allowed",
+      "type": "boolean",
+      "required": true,
+      "description": "False for a critical event; eligibility is not authority to save."
+    },
+    {
+      "name": "save_called",
+      "type": "boolean",
+      "required": true,
+      "description": "Always false."
+    },
+    {
+      "name": "save_callback_ignored",
+      "type": "boolean",
+      "required": true,
+      "description": "Always true."
+    },
+    {
+      "name": "critical_failure",
+      "type": "object",
+      "required": false,
+      "description": "Present on blocked result."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Present when supplied."
+    }
+  ],
+  "postconditions": [
+    "Return one critical-failure save-gate decision without ever calling a saver.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "Windows host tooling; no SpaceClaim control or geometry mutation is implied.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call block_save_after_critical_failure(**payload), or dispatch(\"EX-13\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. Caller verifies events belong to this run and save is still pending; helper does not observe either fact. saver/save_callback compatibility arguments are ignored. EX14 remains responsible for its own model/check/path guards. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "save_already_started",
+      "condition": "Native save has started or completed.",
+      "detection": "Save-entry observation is true or output bytes changed.",
+      "safe_state": "Do not claim this atom prevented the write."
+    },
+    {
+      "failure_id": "failure_not_critical",
+      "condition": "Assertion is not critical or cannot be tied to run.",
+      "detection": "Criticality or run join fails.",
+      "safe_state": "Leave save gate unchanged."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "save_already_started",
+      "action": "Record already_saved and hand artifact to persistence/failure handling.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "failure_not_critical",
+      "action": "Return not_critical/needs_manual_review; caller decides next gate.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "A pending save yields blocked plus a retained failure/output record.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-13-host-check.json",
+            "sha256": "47200f1fe7a20000806f5dda127e15df1c0979fd40f7f301bb8dc5cacd0b27cc"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-13-host-check.json",
+            "sha256": "47200f1fe7a20000806f5dda127e15df1c0979fd40f7f301bb8dc5cacd0b27cc"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-13.json",
+      "sha256": "abc0e8bbb9af3a674c221f4eec37f2c790db0dfea2a4b08cbd9e1e14cc5ceba2",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-13-host-check.json",
+      "sha256": "47200f1fe7a20000806f5dda127e15df1c0979fd40f7f301bb8dc5cacd0b27cc",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

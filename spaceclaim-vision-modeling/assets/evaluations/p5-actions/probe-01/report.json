@@ -1,0 +1,269 @@
+{
+  "events": [
+    {
+      "returned_status": "passed", 
+      "id": "VA-04", 
+      "archive_sha256": "9696ea87b51c1617782eb39185a6646879509b8a83334bf1b60f45913ba32109", 
+      "status": "executed", 
+      "source_sha256": "3b9c5f4a80a1d525d0ceaec24ebabdcc21c34375cf5220bddb56d0320a300cdb"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-05", 
+      "archive_sha256": "fe456d8498cd1e7d60cb1b9bb2fbc698ee6d6a9458a68b704613781005e82b4e", 
+      "status": "executed", 
+      "source_sha256": "f0a0601aa47935a3cb446c54d8751686edefcf1f0219b2a87dbdc26ab350a5ea"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-06", 
+      "archive_sha256": "1a8b5d93e1e5079d182232f1d56da6eb9c5a957569c10e1a5ac3630735c03b11", 
+      "status": "executed", 
+      "source_sha256": "762cf1b084bf38984a6aa32cb49d1bb5fdebaf26432dd1f74bb2bb8121cbf827"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-07", 
+      "archive_sha256": "64afb05f64affdc6e58520885d6e040e30ec7abf467b169751c46fa58fb5db1a", 
+      "status": "executed", 
+      "source_sha256": "95a72e509b74e4a2157552f7ce11988c5ae619e53b32daa35d98d5b87c3bd542"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-08", 
+      "archive_sha256": "275a17967f74413f00473f2b86974b8c5abf398e26fc3aaac36e47368d0f5385", 
+      "status": "executed", 
+      "source_sha256": "6f45cd1965eedd726c68d5cfed0ba560eda9e850356518ccd8e1825d9879b56f"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-09", 
+      "archive_sha256": "460365cc71776c12a7bae1eeaa8d3990190a63eba5984d8da767d820313b4e6d", 
+      "status": "executed", 
+      "source_sha256": "c6d0e8fc2fd718ddc106391f81640c1d948cfa0b870aafa960fe29846a4482a9"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-10", 
+      "archive_sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92", 
+      "status": "executed", 
+      "source_sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-11", 
+      "archive_sha256": "c2283ab730a83829a1a642c2cb22a18dcc486d53b9fb84ba7eb6b39d6bdeb11b", 
+      "status": "executed", 
+      "source_sha256": "ef560a859278e7e86b921d2d9ab65bd244c81c78a87bd9604395d58eec7396de"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-11", 
+      "archive_sha256": "c2283ab730a83829a1a642c2cb22a18dcc486d53b9fb84ba7eb6b39d6bdeb11b", 
+      "status": "executed", 
+      "source_sha256": "ef560a859278e7e86b921d2d9ab65bd244c81c78a87bd9604395d58eec7396de"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-11", 
+      "archive_sha256": "c2283ab730a83829a1a642c2cb22a18dcc486d53b9fb84ba7eb6b39d6bdeb11b", 
+      "status": "executed", 
+      "source_sha256": "ef560a859278e7e86b921d2d9ab65bd244c81c78a87bd9604395d58eec7396de"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-12", 
+      "archive_sha256": "bdddd3d50cb0a5119eb92a936788dcfdadb0806131c6a8ce3b1cdaf02e61cebd", 
+      "status": "executed", 
+      "source_sha256": "dda4a60c3215aca587e048bd6c02b184eaac8394631c7f56086ca6aa3d78027a"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-13", 
+      "archive_sha256": "b520413c6bc9bb836a1be75ae4c5f9f23bd95b2d10c83028afd1a90bbf2e9a2d", 
+      "status": "executed", 
+      "source_sha256": "af69133678f04df600aeaec68cc43faf34ce1cba3a373f6a1d7cf1bb27714a5f"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-14", 
+      "archive_sha256": "c0dd31d4a97f97e059a7e4308773eedee1a115abc56affb1a42e04af5d844f4d", 
+      "status": "executed", 
+      "source_sha256": "d4bd467e9029629cef29437e0d1303afceba4992b3aaaf0a55ecc4f11b0eda81"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-15", 
+      "archive_sha256": "40790c7a95f6ddcba942f4f7f1784607708388e2d786742ef03dd146e0129981", 
+      "status": "executed", 
+      "source_sha256": "5530750d02cd6f90b58d175e936cdb177de7c0bda486f24a5c17204adde1a095"
+    }, 
+    {
+      "error": "Traceback (most recent call last):\n  File \"91721bba-d513-46b6-adfe-1a90121b7f23\", line 10, in call\n  File \"VA-16::_script\", line 657, in <module>\n  File \"VA-16::_script\", line 559, in operation\n  File \"VA-16::_script\", line 127, in active_root\n  File \"VA-16::_script\", line 82, in required\nValueError: Missing required input: root/current_root/expected_root\n", 
+      "id": "VA-16", 
+      "archive_sha256": "00a652e962c6fbf3c90ad63311d10e1c586ac6270d55f0703de0285424b9a79b", 
+      "status": "failed", 
+      "source_sha256": "0e5eef8e96d1eeb515865ba47064f909eb83c0836d0ad3a9ef0937396b995a6a"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-17", 
+      "archive_sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15", 
+      "status": "executed", 
+      "source_sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c"
+    }, 
+    {
+      "error": "Traceback (most recent call last):\n  File \"91721bba-d513-46b6-adfe-1a90121b7f23\", line 10, in call\n  File \"VA-18::_script\", line 569, in <module>\n  File \"VA-18::_script\", line 532, in operation\n  File \"VA-18::_script\", line 360, in require_group\nValueError: Named group is not a current root-scoped group\n", 
+      "id": "VA-18", 
+      "archive_sha256": "70f451e2b4904a99c4f73d0108853f82f5a572828f45b3864f8f536b3a081a9e", 
+      "status": "failed", 
+      "source_sha256": "e289ee11db0413c87059976493111c9ead394715752942305155511506f4ec7f"
+    }
+  ], 
+  "tests": [
+    {
+      "id": "VA-04", 
+      "status": "passed", 
+      "check": {
+        "count": 4, 
+        "names": [
+          "measurement-block", 
+          "measurement-cylinder", 
+          "measurement-round", 
+          "measurement-cone"
+        ]
+      }
+    }, 
+    {
+      "id": "VA-05", 
+      "status": "passed", 
+      "check": {
+        "count": 6
+      }
+    }, 
+    {
+      "id": "VA-06", 
+      "status": "passed", 
+      "check": {
+        "count": 12
+      }
+    }, 
+    {
+      "id": "VA-07", 
+      "status": "passed", 
+      "check": {
+        "count": 6
+      }
+    }, 
+    {
+      "id": "VA-08", 
+      "status": "passed", 
+      "check": {
+        "bbox": [
+          0.0, 
+          0.0, 
+          0.0, 
+          7.0, 
+          11.0, 
+          13.0
+        ]
+      }
+    }, 
+    {
+      "id": "VA-09", 
+      "status": "passed", 
+      "check": {
+        "volume": 1000.9999999999998
+      }
+    }, 
+    {
+      "id": "VA-10", 
+      "status": "passed", 
+      "check": {
+        "surface_area": 622.0
+      }
+    }, 
+    {
+      "id": "VA-11", 
+      "status": "passed", 
+      "check": {
+        "area": 77.0
+      }
+    }, 
+    {
+      "id": "VA-11", 
+      "status": "passed", 
+      "check": {
+        "center": [
+          3.5, 
+          5.5, 
+          13.0
+        ]
+      }
+    }, 
+    {
+      "id": "VA-11", 
+      "status": "passed", 
+      "check": {
+        "normal": [
+          -0.0, 
+          -0.0, 
+          1.0
+        ]
+      }
+    }, 
+    {
+      "id": "VA-12", 
+      "status": "passed", 
+      "check": {
+        "analytic_type": "Plane"
+      }
+    }, 
+    {
+      "id": "VA-13", 
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"f380571f-110a-40d4-b45d-094d5b156d64\", line 6, in test\n  File \"ebc93e04-bf4f-41f8-9792-4ec269c17ac0\", line 29, in cylinder_check\nTypeError: 'float' object is unsubscriptable\n"
+    }, 
+    {
+      "id": "VA-14", 
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"f380571f-110a-40d4-b45d-094d5b156d64\", line 6, in test\n  File \"ebc93e04-bf4f-41f8-9792-4ec269c17ac0\", line 37, in cone_check\nTypeError: 'float' object is unsubscriptable\n"
+    }, 
+    {
+      "id": "VA-15", 
+      "status": "passed", 
+      "check": {
+        "minor_radius": 1.0
+      }
+    }, 
+    {
+      "id": "VA-16", 
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"f380571f-110a-40d4-b45d-094d5b156d64\", line 5, in test\n  File \"91721bba-d513-46b6-adfe-1a90121b7f23\", line 10, in call\n  File \"VA-16::_script\", line 657, in <module>\n  File \"VA-16::_script\", line 559, in operation\n  File \"VA-16::_script\", line 127, in active_root\n  File \"VA-16::_script\", line 82, in required\nValueError: Missing required input: root/current_root/expected_root\n"
+    }, 
+    {
+      "id": "VA-17", 
+      "status": "passed", 
+      "check": {
+        "matches": true
+      }
+    }, 
+    {
+      "id": "VA-18", 
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"f380571f-110a-40d4-b45d-094d5b156d64\", line 5, in test\n  File \"91721bba-d513-46b6-adfe-1a90121b7f23\", line 10, in call\n  File \"VA-18::_script\", line 569, in <module>\n  File \"VA-18::_script\", line 532, in operation\n  File \"VA-18::_script\", line 360, in require_group\nValueError: Named group is not a current root-scoped group\n"
+    }
+  ], 
+  "status": "failed", 
+  "fixture_after": {
+    "block_volume_mm3": 1000.9999999999998, 
+    "block_bbox_mm": [
+      0.0, 
+      0.0, 
+      0.0, 
+      7.0, 
+      11.0, 
+      13.0
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "format": "p4-independent-guidance-delta-results",
+  "format_version": 1,
+  "evaluated_on": "2026-09-08",
+  "scope": "Only ER-04, ER-05, and ER-08 are recomputed after their guidance rejection-rule updates.",
+  "base_snapshot": {
+    "raw_inputs_path": "runs/p4-independent/raw-inputs.json",
+    "raw_inputs_sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+    "original_results_path": "runs/p4-independent/results.json",
+    "original_results_sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4"
+  },
+  "guidance_snapshot": {
+    "ER-04": {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-04.json",
+      "sha256": "36c62a105b317696c38cbbda6a0155f7391a2dacefaa66e087fadcc9b3fbc562"
+    },
+    "ER-05": {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-05.json",
+      "sha256": "b6088b4020fe6211f15f4490dec3a9317d1ca1da97b94d78ea23b6de822d1465"
+    },
+    "ER-08": {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-08.json",
+      "sha256": "50356b4e638c27d51841a75258c89b7b59fedf94433857f2df6a4657501b8361"
+    }
+  },
+  "evidence_boundary": {
+    "assessment_mode": "offline application of updated guides to unchanged synthetic inputs",
+    "runtime_execution": "not_performed",
+    "gui_control": "not_performed",
+    "host_filesystem_actions": "not_performed",
+    "native_save_or_reopen": "not_performed",
+    "supersession": "These three records supersede only the corresponding cases in results.json; the original results.json and evaluation.md are intentionally unchanged."
+  },
+  "cases": [
+    {
+      "catalog_id": "ER-04",
+      "supersedes_original_case_index": 17,
+      "outcome": "plan_ready",
+      "result": {
+        "corrected_selector": "matches = [c for c in candidate_attributes if c['parent_body'] == target_semantics['parent_body'] and c['geometry_type'] == target_semantics['geometry_type'] and c['bbox_mm'] == target_semantics['bbox_mm']]\nif len(matches) != 1: raise RuntimeError('target is not unique')\ncandidate = matches[0]",
+        "predicate_fields": ["parent_body", "geometry_type", "bbox_mm"],
+        "rejected_candidates": [
+          {"candidate_id": "face-a", "reason": "parent_body and bbox_mm do not match target_semantics"}
+        ],
+        "needs_manual_review": false,
+        "representation_binding": "The snippet indexes the dictionary records supplied by raw-inputs.json; it does not claim that those keys are properties on a SpaceClaim object."
+      },
+      "action_plan": ["Apply the dictionary-bound selector only to the supplied candidate_attributes fixture and retain the uniqueness assertion; obtain a separately verified object API mapping before using it on a SpaceClaim object."],
+      "rejection_reasons": [],
+      "uncertainty": ["No target-version SpaceClaim object accessor is supplied, so no production-object accessor is inferred."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-05",
+      "supersedes_original_case_index": 18,
+      "outcome": "needs_manual_review",
+      "result": {
+        "refresh_point": "Immediately after body.Subtract([tool]) and before the first seed_face consumer.",
+        "refreshed_reference_binding": {
+          "old_reference": "face-17",
+          "current_enumeration": "faces = list(body.Faces)",
+          "consumer": "seed_face",
+          "binding_status": "unresolved",
+          "selected_face": null
+        },
+        "needs_manual_review": true
+      },
+      "action_plan": ["Insert only the current body.Faces enumeration at the post-mutation boundary; stop before binding seed_face until a verified selector/tolerance is supplied."],
+      "rejection_reasons": ["The raw input does not define one usable selector/helper/tolerance for choosing the replacement face. An ordinal selector or undefined one/bbox_matches/tolerance helper would exceed ER-05."],
+      "uncertainty": ["The refresh point and collection are known, but the consumer binding remains intentionally unresolved; no downstream geometry success is claimed."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-08",
+      "supersedes_original_case_index": 21,
+      "outcome": "needs_manual_review",
+      "result": {
+        "naming_resolution": {
+          "target_object_id": "body-02",
+          "target_name": "Body_Final",
+          "conflict_object_id": "body-01",
+          "final_name": null,
+          "conflict_new_name": null,
+          "status": "scope_policy_conflict",
+          "identity_preserved": true
+        },
+        "needs_manual_review": true
+      },
+      "action_plan": [],
+      "rejection_reasons": ["naming_strategy.scope is one result object (body-02), but suffix_policy requires changing the non-target source object (body-01); the updated guide forbids silently choosing one field over the other."],
+      "uncertainty": ["An explicit consistent naming scope/policy is required before any final name or rename call can be emitted."],
+      "runtime_evidence": "not_performed"
+    }
+  ]
+}

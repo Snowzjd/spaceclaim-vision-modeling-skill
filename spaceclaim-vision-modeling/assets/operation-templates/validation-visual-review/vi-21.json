@@ -1,0 +1,198 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.record-visual-occlusion-or-uncertainty",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Record visual occlusion or uncertainty for one feature without treating missing visibility as feature absence.",
+  "trigger": "Use when the target feature, current view, and observed obstruction or uncertainty can be located.",
+  "inputs": [
+    {
+      "name": "target_feature",
+      "type": "object",
+      "description": "One target feature whose visibility or interpretation is unresolved.",
+      "required": true
+    },
+    {
+      "name": "current_view",
+      "type": "object",
+      "description": "Current view identity, camera/projection, and observed image region.",
+      "required": true
+    },
+    {
+      "name": "occlusion_reason",
+      "type": "object",
+      "description": "Observed occlusion/uncertainty reason and the missing evidence needed to resolve it.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "target_feature and current_view are identifiable.",
+    "The observed obstruction or uncertainty can be located without treating missing visibility as absence."
+  ],
+  "outputs": [
+    {
+      "name": "visual_uncertainty_record",
+      "type": "object",
+      "description": "Target, current view, visible symptom, occlusion/uncertainty reason, missing view/evidence, and unresolved status.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The record states why the feature cannot be judged and what view/evidence is needed next.",
+    "No existence/nonexistence or geometry acceptance claim is made from the occluded view."
+  ],
+  "implementation": {
+    "mode": "computer_use",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/vi-21.json",
+    "target_environment": "Authorized SpaceClaim V21 desktop session with the window maximized/full-screen unless a recorded layout exception applies.",
+    "topology_effect": "none",
+    "determinism": "interactive",
+    "notes": "The controller performs one bounded GUI observation/action; it must calibrate the current mapping and must not expand this atom into a view workflow. This operation preserves the evidence boundary for one occluded or indeterminate item."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "position",
+      "geometry_type"
+    ],
+    "ambiguity_checks": [
+      "Resolve the declared target from its supplied identity and semantic properties; do not use arbitrary BodyN/FaceN aliases or return order.",
+      "If the target is not unique or the current topology/view cannot be observed, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "target_unresolved",
+      "condition": "The declared target, scope, or view identity is missing or ambiguous.",
+      "detection": "The supplied identity does not resolve to exactly one current target.",
+      "safe_state": "No validation action is performed and no pass claim is emitted."
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "condition": "The required API, host path, controller gesture, or visible state cannot be observed.",
+      "detection": "The adapter or controller reports unsupported/blocked/unknown state.",
+      "safe_state": "Preserve the current document/view and return needs_manual_review or not_tested."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "target_unresolved",
+      "action": "Strengthen the target identity or stop for manual review; do not substitute a numbered alias.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "action": "Use only a verified equivalent control/API or return needs_manual_review; do not repeat an unsupported gesture.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare this contract's inputs, outputs, procedure boundary, and refusal rules with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Run the exact future script, host check, or calibrated controller action only after target identity and evidence gates pass.",
+      "expected": "The record states why the feature cannot be judged and what view/evidence is needed next.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-21-host-check.json",
+            "sha256": "a1445b462ac24e5021eba792b6fbdfbea2a0e7ce0577a7471f9eb70bffd941a4"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-21-host-check.json",
+            "sha256": "a1445b462ac24e5021eba792b6fbdfbea2a0e7ce0577a7471f9eb70bffd941a4"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-21.json",
+      "sha256": "d80f6b0868a6f2023d72feeb541d50f9c46ba6623cdd7bcc4d3322a45aab51d3",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-21.json",
+      "sha256": "d80f6b0868a6f2023d72feeb541d50f9c46ba6623cdd7bcc4d3322a45aab51d3",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_guidance.py",
+      "sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-21-host-check.json",
+      "sha256": "a1445b462ac24e5021eba792b6fbdfbea2a0e7ce0577a7471f9eb70bffd941a4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    }
+  ]
+}

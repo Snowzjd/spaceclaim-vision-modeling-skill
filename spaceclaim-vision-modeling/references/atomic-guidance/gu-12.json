@@ -1,0 +1,53 @@
+{
+  "catalog_id": "GU-12",
+  "input_fields": [
+    {
+      "name": "original_dimension_record",
+      "type": "object",
+      "description": "带来源的已提取尺寸，必须包含可追溯原值、原单位和量纲语义；未知值保留。"
+    },
+    {
+      "name": "target_unit",
+      "type": "string",
+      "description": "用户或契约明确要求的目标单位；不得由运行环境或默认设置暗定。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "original_value",
+      "type": "number",
+      "description": "原尺寸记录中的数值；缺失或不可信时为 null，并保留未决原因。"
+    },
+    {
+      "name": "original_unit",
+      "type": "string",
+      "description": "原尺寸记录中的单位；不可确认时为 null。"
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "按目标单位换算后的数值；输入未知或量纲不兼容时为 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "目标单位；只接受明确且与量纲兼容的单位。"
+    },
+    {
+      "name": "quantity_kind",
+      "type": "string",
+      "description": "保持原记录的量纲语义，如 length、diameter、radius 或 angle；无法确认时为 null。"
+    }
+  ],
+  "procedure": [
+    "读取原尺寸记录，先确认 original_value、original_unit 和 quantity_kind 的 provenance，再读取目标单位。",
+    "只执行有明确单位换算规则的单一量纲转换，保留原值、原单位、换算因子和来源，不改变原始记录。",
+    "输出 original_value、original_unit、value、unit 和 quantity_kind；任何未知字段写 null，并附 provenance 与 unresolved。",
+    "换算结果仅表示单位标准化，不重新解释尺寸目标或派生新的几何关系。"
+  ],
+  "rejection_rules": [
+    "原单位、目标单位或量纲语义缺失时拒绝生成确定 value。",
+    "单位不兼容、换算规则不受支持或原值冲突时拒绝换算并保留原记录。",
+    "不得用默认工作单位、隐含比例或舍入后的值替代原值和来源。"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "snapshots": {
+    "suite-01": {
+      "original_configured_source_sha256": "470b611b304dd71864f384a418d1c32e14df68ad92cb8cd3036f6b5dd21e91bb",
+      "original_configured_archive_sha256": "112701b9fbb8388a13d4ad653a71f404e432cde78990f47f79e015ba2553b249",
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+        "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990"
+      },
+      "raw_report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+        "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+      },
+      "boundary": "Harness body bytes are identical to the executed snapshot after its configuration prefix. The portable file alone was not executed; supply run-owned paths and package it before a new run."
+    },
+    "suite-advanced-08": {
+      "original_configured_source_sha256": "d4f37dd2422d251dd75e0dd079395c6c39a26f954d30dd0526e2d298f7b5899c",
+      "original_configured_archive_sha256": "8fdfe458b58494f7d2f571d9773acce8148685dda5c0ba32c2c808a62cbe6899",
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/harness.py",
+        "sha256": "cc9e159049c56f33bd4cb7f59ed74860af3d9965dd55e5e61d4d1b11f1cc10a0"
+      },
+      "raw_report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+        "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+      },
+      "boundary": "Harness body bytes are identical to the executed snapshot after its configuration prefix. The portable file alone was not executed; supply run-owned paths and package it before a new run."
+    },
+    "suite-delta-01": {
+      "original_configured_source_sha256": "6ae93c54174fb282dff37260ac6a0fb6b64bc2ed5d13419c5a1ae217bbb1cadb",
+      "original_configured_archive_sha256": "244f0906f8b1c1b4507e4d27c4c96020d06b02c9dc52df9ab9586954db0cd546",
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+        "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9"
+      },
+      "raw_report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+        "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+      },
+      "boundary": "Harness body bytes are identical to the executed snapshot after its configuration prefix. The portable file alone was not executed; supply run-owned paths and package it before a new run."
+    },
+    "suite-import-03": {
+      "original_configured_source_sha256": "71fdcf3cd41cc13422ba869198378b160c3fb00e76bf1fe36caad4e87aa2c8cc",
+      "original_configured_archive_sha256": "7680a2f90aab4119bced73a95b2fb0c6b567bcec8731817a817ca55e91f16a97",
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/harness.py",
+        "sha256": "7355a77648d2d8e0ace409046bbba19bcdf90a648358a33670a1f751601b8c11"
+      },
+      "raw_report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json",
+        "sha256": "2a57e7669b6836d67ddce03bf6dc9755d4d7eeb53578decde719c8532f8dc51a"
+      },
+      "boundary": "Harness body bytes are identical to the executed snapshot after its configuration prefix. The portable file alone was not executed; supply run-owned paths and package it before a new run."
+    }
+  },
+  "import_fixture": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/fixtures/native-loft.scdoc",
+    "sha256": "e779ad946f30b2f2e6d2d20b8b45b622af64de3fdac39289768bef520cd61e7c"
+  },
+  "boundary": "Per-action passed groups only. A source suite can contain unrelated failed groups; the raw result is preserved unchanged."
+}

@@ -11,6 +11,10 @@ Use this reference after desktop control is authorized. Keep the SpaceClaim wind
 
 ## 2. Calibrate navigation before relying on shortcuts
 
+Use [controller-compatibility.md](controller-compatibility.md) for the declared
+controller's input limits and ordinary-control alternatives. This does not add
+another controller dependency or require testing every gesture before modeling.
+
 SpaceClaim navigation themes and custom options can remap spin, pan, zoom, and wheel behavior. At the first visual-control gate of a run:
 
 1. capture the active maximized window;

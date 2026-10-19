@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "run_id": "probe-01",
+      "status": "failed",
+      "report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+        "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f"
+      },
+      "actions": [
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-04.py",
+          "sha256": "3b9c5f4a80a1d525d0ceaec24ebabdcc21c34375cf5220bddb56d0320a300cdb"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-04.scscript",
+          "sha256": "9696ea87b51c1617782eb39185a6646879509b8a83334bf1b60f45913ba32109"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-05.py",
+          "sha256": "f0a0601aa47935a3cb446c54d8751686edefcf1f0219b2a87dbdc26ab350a5ea"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-05.scscript",
+          "sha256": "fe456d8498cd1e7d60cb1b9bb2fbc698ee6d6a9458a68b704613781005e82b4e"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-06.py",
+          "sha256": "762cf1b084bf38984a6aa32cb49d1bb5fdebaf26432dd1f74bb2bb8121cbf827"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-06.scscript",
+          "sha256": "1a8b5d93e1e5079d182232f1d56da6eb9c5a957569c10e1a5ac3630735c03b11"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-07.py",
+          "sha256": "95a72e509b74e4a2157552f7ce11988c5ae619e53b32daa35d98d5b87c3bd542"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-07.scscript",
+          "sha256": "64afb05f64affdc6e58520885d6e040e30ec7abf467b169751c46fa58fb5db1a"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-08.py",
+          "sha256": "6f45cd1965eedd726c68d5cfed0ba560eda9e850356518ccd8e1825d9879b56f"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-08.scscript",
+          "sha256": "275a17967f74413f00473f2b86974b8c5abf398e26fc3aaac36e47368d0f5385"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-09.py",
+          "sha256": "c6d0e8fc2fd718ddc106391f81640c1d948cfa0b870aafa960fe29846a4482a9"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-09.scscript",
+          "sha256": "460365cc71776c12a7bae1eeaa8d3990190a63eba5984d8da767d820313b4e6d"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.py",
+          "sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.scscript",
+          "sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-11.py",
+          "sha256": "ef560a859278e7e86b921d2d9ab65bd244c81c78a87bd9604395d58eec7396de"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-11.scscript",
+          "sha256": "c2283ab730a83829a1a642c2cb22a18dcc486d53b9fb84ba7eb6b39d6bdeb11b"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-12.py",
+          "sha256": "dda4a60c3215aca587e048bd6c02b184eaac8394631c7f56086ca6aa3d78027a"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-12.scscript",
+          "sha256": "bdddd3d50cb0a5119eb92a936788dcfdadb0806131c6a8ce3b1cdaf02e61cebd"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-13.py",
+          "sha256": "af69133678f04df600aeaec68cc43faf34ce1cba3a373f6a1d7cf1bb27714a5f"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-13.scscript",
+          "sha256": "b520413c6bc9bb836a1be75ae4c5f9f23bd95b2d10c83028afd1a90bbf2e9a2d"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-14.py",
+          "sha256": "d4bd467e9029629cef29437e0d1303afceba4992b3aaaf0a55ecc4f11b0eda81"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-14.scscript",
+          "sha256": "c0dd31d4a97f97e059a7e4308773eedee1a115abc56affb1a42e04af5d844f4d"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-15.py",
+          "sha256": "5530750d02cd6f90b58d175e936cdb177de7c0bda486f24a5c17204adde1a095"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-15.scscript",
+          "sha256": "40790c7a95f6ddcba942f4f7f1784607708388e2d786742ef03dd146e0129981"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-16.py",
+          "sha256": "0e5eef8e96d1eeb515865ba47064f909eb83c0836d0ad3a9ef0937396b995a6a"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-16.scscript",
+          "sha256": "00a652e962c6fbf3c90ad63311d10e1c586ac6270d55f0703de0285424b9a79b"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.py",
+          "sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.scscript",
+          "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-18.py",
+          "sha256": "e289ee11db0413c87059976493111c9ead394715752942305155511506f4ec7f"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-18.scscript",
+          "sha256": "70f451e2b4904a99c4f73d0108853f82f5a572828f45b3864f8f536b3a081a9e"
+        }
+      ],
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+        "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391"
+      },
+      "configured_source_sha256": "77c4d407d5405e37922f78c2fef545d388f85967b6aabdc229ce567994a3cca2",
+      "configured_archive_sha256": "1ded99e205056a2e8e84faeee06861540b713c06d09977ef9e64a0686cfa58ae",
+      "normalization": "Only ACTION_DIR/REPORT machine-specific assignment lines removed. Supply these before packaging. Portable derivative not executed."
+    },
+    {
+      "run_id": "delta-01",
+      "status": "passed",
+      "report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+        "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14"
+      },
+      "actions": [
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-13.py",
+          "sha256": "af69133678f04df600aeaec68cc43faf34ce1cba3a373f6a1d7cf1bb27714a5f"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-13.scscript",
+          "sha256": "b520413c6bc9bb836a1be75ae4c5f9f23bd95b2d10c83028afd1a90bbf2e9a2d"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-14.py",
+          "sha256": "d4bd467e9029629cef29437e0d1303afceba4992b3aaaf0a55ecc4f11b0eda81"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-14.scscript",
+          "sha256": "c0dd31d4a97f97e059a7e4308773eedee1a115abc56affb1a42e04af5d844f4d"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-16.py",
+          "sha256": "0e5eef8e96d1eeb515865ba47064f909eb83c0836d0ad3a9ef0937396b995a6a"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-16.scscript",
+          "sha256": "00a652e962c6fbf3c90ad63311d10e1c586ac6270d55f0703de0285424b9a79b"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-18.py",
+          "sha256": "e289ee11db0413c87059976493111c9ead394715752942305155511506f4ec7f"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/actions/va-18.scscript",
+          "sha256": "70f451e2b4904a99c4f73d0108853f82f5a572828f45b3864f8f536b3a081a9e"
+        }
+      ],
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+        "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8"
+      },
+      "configured_source_sha256": "2a7b5623a885c5f78ee898d60efb45419fef0439b9f9eb26123f76c60ca07319",
+      "configured_archive_sha256": "a02300ea730e5653a8d6677cec9f40cf6ee3fbc0d5118e2cd2213ae0b6927ef4",
+      "normalization": "Only ACTION_DIR/REPORT machine-specific assignment lines removed. Supply these before packaging. Portable derivative not executed."
+    },
+    {
+      "run_id": "group-01",
+      "status": "passed",
+      "report": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+        "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e"
+      },
+      "actions": [
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/actions/va-18.py",
+          "sha256": "aff5b05a00abf5e5e508eede126d95b4090a6a0fd5269e325c440a6b11c3e4d7"
+        },
+        {
+          "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/actions/va-18.scscript",
+          "sha256": "3198e726e0547b96bd1d41c8955c791387435533464d08497a802663540208e7"
+        }
+      ],
+      "portable_harness": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+        "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c"
+      },
+      "configured_source_sha256": "71fb96be317cb0c58af13acdea6ebc5ba6ff0195e6126fa7bae736d3a34ca164",
+      "configured_archive_sha256": "e5afa5d757f572f9084e9b0cd01aed1c0207717165b0a6a805a88b4ab7931c97",
+      "normalization": "Only ACTION_DIR/REPORT machine-specific assignment lines removed. Supply these before packaging. Portable derivative not executed."
+    }
+  ],
+  "boundary": "Raw reports and action snapshots are exact bytes. Failed runs retained. No native save or complete visual review of the unsaved measurement fixture is claimed."
+}

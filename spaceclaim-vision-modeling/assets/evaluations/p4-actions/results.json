@@ -1,0 +1,530 @@
+{
+  "format": "p4-independent-guidance-results",
+  "format_version": 1,
+  "evaluated_on": "2026-09-08",
+  "input_snapshot": {
+    "path": "runs/p4-independent/raw-inputs.json",
+    "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+    "case_count": 26
+  },
+  "guidance_snapshot": {
+    "directory": "spaceclaim-vision-modeling/references/atomic-guidance",
+    "file_count": 26,
+    "sha256": {
+      "ER-01": "701f9405c793ace9e51ff770b7cd5d142839bbbbc65c1ae70a9b1043e4818a9f",
+      "ER-02": "6cb10bf12fe187b13a84f544efd14536c9e287aebb0abc5d9f207efc54bf2038",
+      "ER-03": "0d2caec228507fde5b7cd767f9b11a1d107f9f6f2e2aaf57a3217ba7b6223a5c",
+      "ER-04": "5c742eeee599e9325e959a995ef79bddc32a488f85bf3a9e8ef4410e37635c23",
+      "ER-05": "feb2fbcc54754a80be558bde14ab5601aa8714d3371c40872648d5c5f08cc5d2",
+      "ER-06": "a32037af81c9183a1e08bc8ee710e280700d7ad6afcdbd06a6bc82ef18e463e0",
+      "ER-07": "0031dfb7e87cf02b76c83d3dc9ca84e92c10c43fd1f56b560ce2d1146861568f",
+      "ER-08": "1dccfcd0875ba50d6a1d723c6e7769bca8209a3ea3234a954ccaa18078a2c611",
+      "ER-09": "0ec6159491540de51ef6a7bd6daebad984e717c66692d70ffb525bb4ae9f043a",
+      "ER-10": "723b2f55878b18e420335f46c1d230d9c4be8c1c9e83e867a70a49bc5f777c26",
+      "ER-11": "4c1e99a297ef91f50d2c0179b26199ac852450fae7e422fd9424ef2245459aa9",
+      "ER-12": "b278aea28534a8e9bbc57bea87fb66a6438e4b910642777819b9da7c9b0a7638",
+      "EX-01": "4f4a0b4bccd8c45cae05cf55030fc9275594d5023c1957450bf0bf7d93410aaf",
+      "EX-02": "95439cbef1fbd4b63a53b06bae1f463efd579d0698c390a8edffe0db19bb5e62",
+      "EX-03": "ee8c781c0210c4e8ea4d2ddf3f3f5ad0e5a21e0e75ef12f589c9e21b02a8ae89",
+      "EX-04": "335080ce6d2a5e33b72ead032c9e6bf255a3a1ebf2d02cfa2c51e2b6ad417e9d",
+      "EX-05": "50b05dd76349d8d47362ec8ba8098c141da005c3b0bc8c539258c1f69995f95a",
+      "EX-06": "68127c9e7cdc29903e0e7e57c9a039d6c56455ade216332163d3cfaa214adf42",
+      "EX-07": "4d0234b5366211c4fae3c7306466b439cc10c9a020705565b772434dc13cdf49",
+      "EX-08": "72bf409152c35947d79727178d07755c83e87d852cfc0d3c85fb30685f9b950b",
+      "EX-09": "edc31f833e169713ef87c36f6f3796c90172f4092c4f59a1263b0c62658ebca8",
+      "EX-10": "3a15eb475473357fd8fe756dc7182c96c3de698991dd386ff33b10c13c5ead50",
+      "EX-11": "aca6fa15961336c1aa25e1a22f0e2ee9ad151458252760a678e5880cc528ac54",
+      "EX-12": "5c75136855cc33a1dffe3c870d8d36f06f8f19f5701c22afa4ad9e3a6edfc570",
+      "EX-13": "abc0e8bbb9af3a674c221f4eec37f2c790db0dfea2a4b08cbd9e1e14cc5ceba2",
+      "EX-14": "b7c5896b6c9f4d1a022bab0562130749f590d746d6947db98da79d45b4b80a1b"
+    }
+  },
+  "evidence_boundary": {
+    "assessment_mode": "offline application of each atomic guide to frozen synthetic input",
+    "runtime_execution": "not_performed",
+    "gui_control": "not_performed",
+    "host_filesystem_actions": "not_performed",
+    "native_save_or_reopen": "not_performed",
+    "interpretation": "plan_only and observed_in_input describe guidance decisions, not completed desktop or filesystem effects"
+  },
+  "status_legend": {
+    "plan_ready": "The input is sufficient for one bounded action plan; the action remains unexecuted.",
+    "blocked_or_rejected": "A guide precondition or rejection rule prevents the action.",
+    "needs_manual_review": "The guide requires unresolved evidence or a missing signature/identity; no guessed action is emitted.",
+    "uncertain": "The supplied event stream reaches an explicitly unknown state; no retry or success is inferred."
+  },
+  "cases": [
+    {
+      "catalog_id": "EX-01",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-01.json",
+      "input_case_index": 0,
+      "outcome": "needs_manual_review",
+      "result": {
+        "authorization_status": "needs_manual_review",
+        "authorization_basis": {
+          "requested_control": "dispatch one loaded .scscript",
+          "records_found": 0,
+          "missing": ["issuer", "validity", "application", "artifact", "action_scope"]
+        }
+      },
+      "action_plan": [],
+      "rejection_reasons": ["No explicit authorization record; the task scope cannot self-authorize desktop control."],
+      "uncertainty": ["No authorization basis can be reused or compared."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-02",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-02.json",
+      "input_case_index": 1,
+      "outcome": "needs_manual_review",
+      "result": {
+        "target_session": null,
+        "selection_status": "needs_manual_review",
+        "blocking_reason": "Two V21 sessions match the document and title clues."
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Multiple matching sessions remain; no focus or click is allowed."],
+      "uncertainty": ["Stable session identity cannot be chosen from the supplied inventory."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-03",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-03.json",
+      "input_case_index": 2,
+      "outcome": "plan_ready",
+      "result": {
+        "window_state": {
+          "window_id": "window-v21-a",
+          "status": "plan_only",
+          "observed_before": "normal",
+          "planned_action": "maximize once",
+          "observed_after": null
+        },
+        "exception_record": null
+      },
+      "action_plan": ["Verify window-v21-a bounds, issue exactly one maximize action, then re-observe the same window identity."],
+      "rejection_reasons": [],
+      "uncertainty": ["Final maximized state and bounds are not observed because GUI control is out of scope."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-04",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-04.json",
+      "input_case_index": 3,
+      "outcome": "blocked_or_rejected",
+      "result": {
+        "document_state": {
+          "status": "rejected",
+          "reason": "The active document has modified user work and the session is not idle.",
+          "active_document_id": "user-work-01"
+        },
+        "document_identity": null
+      },
+      "action_plan": [],
+      "rejection_reasons": ["A new blank design could overwrite or disrupt modified user work; the busy/non-idle precondition is not met."],
+      "uncertainty": ["No new-document transition should be attempted from this input."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-05",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-05.json",
+      "input_case_index": 4,
+      "outcome": "blocked_or_rejected",
+      "result": {
+        "copy_identity": {
+          "source_path": "C:\\synthetic\\p4\\baseline\\baseline.scdoc",
+          "destination_path": "C:\\synthetic\\p4\\run-001\\baseline-copy.scdoc",
+          "source_sha256_claimed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source_read_status": "not_available",
+          "destination_written": false
+        },
+        "baseline_integrity": "needs_manual_review"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["The fixture explicitly says the source is not available; a supplied hash claim is not a readable-source proof."],
+      "uncertainty": ["Size/hash equality and destination absence cannot be observed offline."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-06",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-06.json",
+      "input_case_index": 5,
+      "outcome": "observed_in_input",
+      "result": {
+        "match_status": "matched",
+        "active_document_identity": {
+          "document_id": "model-blank-01",
+          "document_type": "SpaceClaim model",
+          "path": "C:\\synthetic\\p4\\run-001\\blank.scdoc",
+          "modified": false,
+          "script_label_ignored": true,
+          "hash": null
+        }
+      },
+      "action_plan": [],
+      "rejection_reasons": [],
+      "uncertainty": ["The supplied identity has no document hash; the match is based on document ID/type/path and the modified marker only."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-07",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-07.json",
+      "input_case_index": 6,
+      "outcome": "blocked_or_rejected",
+      "result": {
+        "path_validation": {
+          "status": "rejected",
+          "collisions": [{"path": "C:\\synthetic\\p4\\run-001\\result.scdoc", "roles": ["run_output", "evidence"]}],
+          "ownership": "run_output_and_evidence_share one path",
+          "accepted_paths": []
+        },
+        "accepted_paths": []
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Role collision is present and overwrite is forbidden; no alternate path may be substituted by this atom."],
+      "uncertainty": ["Parent/existing-file checks are not performed; the role collision alone blocks acceptance."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-08",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-08.json",
+      "input_case_index": 7,
+      "outcome": "needs_manual_review",
+      "result": {
+        "loaded_script_identity": null,
+        "load_state": "needs_manual_review"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Readability, archive validity, active-document binding, and hash verification are not observed for the placeholder artifact."],
+      "uncertainty": ["The declared archive hash and prepared flag are input claims only; Run must remain closed."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-09",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-09.json",
+      "input_case_index": 8,
+      "outcome": "needs_manual_review",
+      "result": {
+        "execution_event": null,
+        "launch_status": "needs_manual_review"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Loaded-script session/document binding and idle-state evidence are missing; a single dispatch cannot be confirmed."],
+      "uncertainty": ["The input says loaded and authorized but does not identify the session or loaded-for-document binding."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-10",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-10.json",
+      "input_case_index": 9,
+      "outcome": "uncertain",
+      "result": {
+        "terminal_state": {"run_id": "run-001", "status": "unknown", "reason": "timeout_without_terminal_event", "last_observed_at": "t+30s"},
+        "observation_trace": [
+          {"at": "t+00s", "state": "started"},
+          {"at": "t+10s", "state": "running"},
+          {"at": "t+30s", "state": "timeout"}
+        ]
+      },
+      "action_plan": ["Record unknown state and stop; do not press Run again during or after this wait."],
+      "rejection_reasons": [],
+      "uncertainty": ["Timeout is neither completed nor failed; no geometry or save decision follows from it."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-11",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-11.json",
+      "input_case_index": 10,
+      "outcome": "needs_manual_review",
+      "result": {
+        "executed_artifact_identity": {
+          "path": "C:\\synthetic\\p4\\scripts\\fix-v21.scscript",
+          "archive_sha256_claimed": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "source_sha256_claimed": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "api_version": "V21",
+          "run_id": "run-002",
+          "evidence_status": "supplied_claims_only"
+        },
+        "identity_status": "needs_manual_review"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Actual script bytes are unavailable; a report/event hash alone cannot prove executed artifact identity."],
+      "uncertainty": ["Path/hash agreement is not independently observed in this synthetic evaluation."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-12",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-12.json",
+      "input_case_index": 11,
+      "outcome": "needs_manual_review",
+      "result": {
+        "earliest_failure": null,
+        "chronology_status": "needs_manual_review"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["The error records have chronology but no run_ref/source association required to bind the failure to one run."],
+      "uncertainty": ["e-01 is only an earliest candidate by timestamp; it is not promoted to earliest_failure without run association."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-13",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-13.json",
+      "input_case_index": 12,
+      "outcome": "blocked_or_rejected",
+      "result": {
+        "save_block_status": "blocked",
+        "blocked_output_record": {
+          "run_id": "run-003",
+          "output_path": "C:\\synthetic\\p4\\run-003\\success.scdoc",
+          "failure_reference": "body-count",
+          "save_started": false,
+          "success_output_write_observed": false
+        }
+      },
+      "action_plan": ["Return a blocked decision to the caller's save gate; do not call Document.SaveAs or delete an output."],
+      "rejection_reasons": [],
+      "uncertainty": ["The no-write state is supplied input state, not host filesystem verification."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "EX-14",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/ex-14.json",
+      "input_case_index": 13,
+      "outcome": "needs_manual_review",
+      "result": {
+        "path": null,
+        "sha256": null,
+        "native_save": "not_tested",
+        "native_reopen": "not_tested"
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Required expected_root and run_root identities are absent; the output path ownership claim cannot substitute for them."],
+      "uncertainty": ["No native save or hash can be claimed; critical checks alone do not establish root/path safety."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-01",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-01.json",
+      "input_case_index": 14,
+      "outcome": "needs_manual_review",
+      "result": {
+        "failure_classification": null,
+        "needs_manual_review": true
+      },
+      "action_plan": [],
+      "rejection_reasons": ["Category names are supplied without versioned evidence predicates; classification cannot be made from unversioned definitions."],
+      "uncertainty": ["The error looks API-related, but this atom must not turn that guess into a classification or repair."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-02",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-02.json",
+      "input_case_index": 15,
+      "outcome": "plan_ready",
+      "result": {
+        "corrected_call_snippet": "options = ImportOptions.Create()\nComponent.CreateFromFile(root, source_path, options)",
+        "changed_binding": {
+          "owner": "SpaceClaim.Api.V21.Component",
+          "old_member": "Import",
+          "new_member": "CreateFromFile",
+          "arguments_preserved": ["root", "source_path", "options"],
+          "target_signature_source": "SpaceClaim.Api.V21.xml:22530-22543"
+        },
+        "needs_manual_review": false
+      },
+      "action_plan": ["Replace only the failing Component.Import binding with the one V21 CreateFromFile call; retain surrounding guards and do not execute it here."],
+      "rejection_reasons": [],
+      "uncertainty": ["The correction is static and signature-backed; execution remains untested."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-03",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-03.json",
+      "input_case_index": 16,
+      "outcome": "plan_ready",
+      "result": {
+        "corrected_path_or_encoding": {
+          "expression": "import io\nsource_path = u'C:\\synthetic\\p4\\输入\\基准.scdoc'\nwith io.open(source_path, 'rb') as stream:\n    data = stream.read()",
+          "target_path": "C:\\synthetic\\p4\\输入\\基准.scdoc",
+          "artifact_sha256_preserved": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        },
+        "encoding_choice": "Unicode path value with io.open(..., 'rb') under IronPython 2; no rename or relocation.",
+        "needs_manual_review": false
+      },
+      "action_plan": ["Apply only the Unicode path/reader replacement and re-check the same target identity; do not copy, move, or save the artifact."],
+      "rejection_reasons": [],
+      "uncertainty": ["The path is a synthetic placeholder; interpreter execution and hash equality are not tested here."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-04",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-04.json",
+      "input_case_index": 17,
+      "outcome": "plan_ready",
+      "result": {
+        "corrected_selector": "matches = [c for c in candidates if c.parent_body == 'body-02' and c.geometry_type == 'Plane' and c.bbox_mm == [100, 0, 0, 120, 10, 0]]\nif len(matches) != 1: raise RuntimeError('target is not unique')\ncandidate = matches[0]",
+        "predicate_fields": ["parent_body", "geometry_type", "bbox_mm"],
+        "rejected_candidates": [{"candidate_id": "face-a", "reason": "parent_body and bbox_mm do not match target"}],
+        "needs_manual_review": false
+      },
+      "action_plan": ["Replace the list-index selector with the one semantic predicate and retain its uniqueness assertion."],
+      "rejection_reasons": [],
+      "uncertainty": ["The selector is evaluated against supplied candidate attributes only; no model selection is executed."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-05",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-05.json",
+      "input_case_index": 18,
+      "outcome": "plan_ready",
+      "result": {
+        "refresh_point": "Immediately after the supplied subtract mutation and before the first seed_face consumer.",
+        "refreshed_reference_binding": {
+          "old_reference": "face-17",
+          "replacement": "faces = list(body.Faces); face = one(f for f in faces if bbox_matches(f, [0, 0, 10, 20, 10, 10], tolerance))",
+          "consumer": "seed_face"
+        },
+        "needs_manual_review": false
+      },
+      "action_plan": ["Keep the Boolean operation unchanged; enumerate body.Faces once after it, resolve the supplied semantic replacement, and pass that current face to seed_face."],
+      "rejection_reasons": [],
+      "uncertainty": ["The refreshed face and downstream geometry are not observed until a separate execution/check."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-06",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-06.json",
+      "input_case_index": 19,
+      "outcome": "needs_manual_review",
+      "result": {
+        "corrected_classification_logic": null,
+        "measured_predicate": {"fields_available": ["is_closed", "is_manifold", "piece_count", "bbox_mm", "volume_mm3"], "required_tolerance": null},
+        "selected_result": null,
+        "needs_manual_review": true
+      },
+      "action_plan": [],
+      "rejection_reasons": ["The expected geometry relation has no supplied tolerance; the guide rejects missing tolerance and forbids order-based selection."],
+      "uncertainty": ["Although result-a matches the supplied relation, it cannot be selected under this guide without a tolerance."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-07",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-07.json",
+      "input_case_index": 20,
+      "outcome": "needs_manual_review",
+      "result": {
+        "single_defect_repair": {"mode": "close_single_gap", "target_defect_id": "gap-01", "call": null},
+        "resulting_condition": {"required_check": "body-01 becomes closed/valid after the selected local repair"},
+        "preservation_checks": ["length remains 20.0 mm", "width remains 10.0 mm"],
+        "needs_manual_review": true
+      },
+      "action_plan": [],
+      "rejection_reasons": ["The selected mode has no known target-version repair call/signature in the input; the guide requires manual review and forbids a guessed call."],
+      "uncertainty": ["No generic repair-all or closure claim is emitted."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-08",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-08.json",
+      "input_case_index": 21,
+      "outcome": "plan_ready",
+      "result": {
+        "naming_resolution": {
+          "target_object_id": "body-02",
+          "final_name": "Body_Final",
+          "conflict_object_id": "body-01",
+          "conflict_new_name": "Body_Final_01",
+          "identity_preserved": true,
+          "rename_call": null
+        },
+        "needs_manual_review": false
+      },
+      "action_plan": ["Rename only non-target body-01 to Body_Final_01; retain body-02 as Body_Final and verify uniqueness without changing geometry or membership."],
+      "rejection_reasons": [],
+      "uncertainty": ["No rename API call is claimed; this is a bounded naming decision/plan only."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-09",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-09.json",
+      "input_case_index": 22,
+      "outcome": "plan_ready",
+      "result": {
+        "restored_state": {
+          "mode": "document",
+          "target_document_id": "run-005-model",
+          "planned_action": "activate target document without closing scratch-02",
+          "final_observation": null,
+          "preserve_modified_document": "scratch-02"
+        },
+        "needs_manual_review": false
+      },
+      "action_plan": ["Activate run-005-model only, re-observe document focus, and leave modified scratch-02 open; do not load/run/save."],
+      "rejection_reasons": [],
+      "uncertainty": ["Final focus is not observed because no GUI action is permitted."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-10",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-10.json",
+      "input_case_index": 23,
+      "outcome": "plan_ready",
+      "result": {
+        "repaired_condition": {
+          "kind": "run_owned_parent_directory",
+          "path": "C:\\synthetic\\p4\\run-006\\nested",
+          "status": "plan_only",
+          "artifact_identity_preserved": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "repair_action": "Prepare exactly this run-owned parent directory through an authorized host adapter; do not change ACLs or invoke SaveAs.",
+        "needs_manual_review": false
+      },
+      "action_plan": ["Prepare the single missing parent-directory precondition, then hand persistence to the separate save operation."],
+      "rejection_reasons": [],
+      "uncertainty": ["Directory creation and subsequent save are not performed or verified."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-11",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-11.json",
+      "input_case_index": 24,
+      "outcome": "needs_manual_review",
+      "result": {
+        "cleanup_result": {
+          "target_path": "C:\\synthetic\\p4\\run-007\\failed-output.scdoc",
+          "pre_delete_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "pre_delete_size_bytes": null,
+          "removal_status": "not_executed",
+          "failure_reference": "run-007/critical_assertion"
+        },
+        "needs_manual_review": true
+      },
+      "action_plan": ["Before any cleanup, obtain host-verified size and reparse-safe ownership for this one absolute path; only then remove exactly that file and verify absence."],
+      "rejection_reasons": ["The synthetic input supplies a claimed hash but no pre-delete size or host observation; the guide requires manual review without deletion when a check is unresolved."],
+      "uncertainty": ["No baseline/evidence path is in scope, but ownership and absence are not independently observed."],
+      "runtime_evidence": "not_performed"
+    },
+    {
+      "catalog_id": "ER-12",
+      "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/er-12.json",
+      "input_case_index": 25,
+      "outcome": "plan_ready",
+      "result": {
+        "rerun_event": {
+          "status": "planned_not_executed",
+          "new_run_id": null,
+          "prior_run_id": "run-008",
+          "prior_failure_event_id": "f-08",
+          "corrected_archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "document_id": "blank-08",
+          "dispatch_count": 1
+        },
+        "launch_status": "not_executed"
+      },
+      "action_plan": ["After the supplied clean-entry gates remain true, issue exactly one execution command for fix-v21.scscript, record its new run ID, and hand waiting to EX-10."],
+      "rejection_reasons": [],
+      "uncertainty": ["The gates are synthetic input claims; no rerun command or terminal state is observed."],
+      "runtime_evidence": "not_performed"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "guidance_version": 2,
+  "operations": [
+    {
+      "catalog_id": "MS-01",
+      "path": "references/atomic-guidance/ms-01.json",
+      "sha256": "7fc631daece23ce9a2d120a0f37226b42c13d89c74984f54c16625ffeeea8e9a"
+    },
+    {
+      "catalog_id": "MS-02",
+      "path": "references/atomic-guidance/ms-02.json",
+      "sha256": "2b84a219629b2c0eb768d9b9c3023662cdabfb3d8daaf8854b7899227da7ed8d"
+    },
+    {
+      "catalog_id": "MS-03",
+      "path": "references/atomic-guidance/ms-03.json",
+      "sha256": "f1e21d249eccb7595828191ab34639244dcaf0d823c3fcba6cac54c2f9e45065"
+    },
+    {
+      "catalog_id": "MS-04",
+      "path": "references/atomic-guidance/ms-04.json",
+      "sha256": "5f48fe12dbea89301213251c95b1abf92bf706e0448a596bf14e9b2ec20fc2f2"
+    },
+    {
+      "catalog_id": "MS-05",
+      "path": "references/atomic-guidance/ms-05.json",
+      "sha256": "f404ecb494e37a93b6144dc8b7d429260084fe9a4edbc66501087fb30dcb9700"
+    },
+    {
+      "catalog_id": "MS-06",
+      "path": "references/atomic-guidance/ms-06.json",
+      "sha256": "e3bdb5a63e66a0cb66c7f308d6138791493f2e4aa512334524a249ce9f98c662"
+    },
+    {
+      "catalog_id": "MS-07",
+      "path": "references/atomic-guidance/ms-07.json",
+      "sha256": "2862b45a4071138169e2d9a99d1a34536c292ba2ae9a804229d3a718ee8a3c3a"
+    },
+    {
+      "catalog_id": "MS-08",
+      "path": "references/atomic-guidance/ms-08.json",
+      "sha256": "abdf7497a5cd4b10ddf4721499ea3d2b9879b8c9c7fe67a27603d9549a008a57"
+    },
+    {
+      "catalog_id": "MS-09",
+      "path": "references/atomic-guidance/ms-09.json",
+      "sha256": "d40c8c10cb93952a2b88976ee0354996081d582620536c9f78344684762dbcae"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "contract_kind": "rectangular_prism_execution",
+  "contract_version": 1,
+  "stage": "execution_recovery",
+  "handoff_status": "passed",
+  "build_contract_ref": "../02-modeling-strategy-scripting/build-contract.json",
+  "entry_state_observed": "new_unsaved_design",
+  "executed_artifact_identity": {
+    "path": "../02-modeling-strategy-scripting/output/create-rectangular-prism.scscript",
+    "sha256": "d99e7d0a5df422bba143503c74bce84ae39d0eaa7ed1a60499b8f833358c80ff",
+    "run_count": 1
+  },
+  "stage_events": [
+    {"name": "new_unsaved_design_confirmed", "status": "passed"},
+    {"name": "exact_scscript_loaded", "status": "passed"},
+    {"name": "formal_scscript_run_once", "status": "passed"},
+    {"name": "runtime_report_passed", "status": "passed"},
+    {"name": "native_model_saved", "status": "passed"}
+  ],
+  "runtime_report": {
+    "path": "../04-validation-visual-review/evidence/forward-runtime-report.json",
+    "original_sha256": "44c2482fd288f0efede79e85582b8ea9eda4b4e77366a52dd0e1d5d0914b5b84"
+  },
+  "model_artifact": {
+    "filename": "rectangular-prism.scdoc",
+    "sha256": "d7826c382a811a1a97ee0ceb1afc0e394857cc04d1697f549f3e971bdd4faeba",
+    "repository_bundled": false
+  },
+  "failure_state": null,
+  "recovery_actions": [],
+  "save_state": "passed",
+  "unresolved_runtime_risks": []
+}

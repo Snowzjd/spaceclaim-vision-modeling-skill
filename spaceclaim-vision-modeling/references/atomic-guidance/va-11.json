@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-11",
+  "input_fields": [
+    {
+      "name": "face_reference",
+      "type": "object",
+      "description": "One current face to inspect."
+    },
+    {
+      "name": "requested_property",
+      "type": "string",
+      "description": "Exactly one property or one fixed measurement record, such as area, normal, or center."
+    },
+    {
+      "name": "coordinate_sampling_rule",
+      "type": "object",
+      "description": "Coordinate frame and, for a curved-face normal, the explicit sample point/rule."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "face_measurement",
+      "type": "object",
+      "description": "Requested property value, face identity, coordinate/sampling context, and unit."
+    },
+    {
+      "name": "property_status",
+      "type": "string",
+      "description": "measured, unavailable, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve face_reference and validate the single requested property.",
+    "Apply coordinate_sampling_rule; for a curved normal, use one declared sample point rather than a global normal.",
+    "Read the property once and return face_measurement plus property_status.",
+    "Do not bundle unrelated face properties or modify/select the face."
+  ],
+  "rejection_rules": [
+    "Reject an ambiguous face, multiple requested properties, missing curved-face sample, or incompatible frame.",
+    "Reject a planar/global normal assumption for a curved face.",
+    "Do not infer analytic type from one measured property."
+  ]
+}

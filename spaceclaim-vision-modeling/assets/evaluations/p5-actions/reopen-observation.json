@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "source_report": {
+    "path": "runs/p5-live/reopen-01/report.json",
+    "sha256": "938f036e67e98ba302b02ac68a7f3602488ea78918fb9bbd740f8c3bb9501e2a",
+    "extraction": {
+      "mode": "observation_plus_selected_report_fields",
+      "note": "This derivative is not a full report copy; it extracts the nested observation and selected measured top-level fields.",
+      "fields": [
+        "count",
+        "bbox_mm",
+        "volume_mm3",
+        "status",
+        "source_kind",
+        "artifact_sha256"
+      ]
+    },
+    "redactions": [
+      {
+        "field": "active_path",
+        "action": "removed",
+        "reason": "absolute machine path is not public evidence"
+      }
+    ]
+  },
+  "report_fields": {
+    "count": 1,
+    "bbox_mm": [
+      0.0,
+      0.0,
+      0.0,
+      7.0,
+      11.0,
+      13.0
+    ],
+    "volume_mm3": 1000.9999999999998,
+    "status": "passed",
+    "source_kind": "native_reopen",
+    "artifact_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+  },
+  "observation": {
+    "artifact_sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+    "object_identity": "unique-solid-at-[0,0,0,7,11,13]-mm",
+    "property": "volume_mm3",
+    "source_kind": "native_reopen",
+    "status": "measured",
+    "value": 1000.9999999999998,
+    "observation_ref": "reopen-01/report.json"
+  }
+}

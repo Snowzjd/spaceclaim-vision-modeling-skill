@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "returned_status": "passed", 
+      "id": "VA-18", 
+      "archive_sha256": "3198e726e0547b96bd1d41c8955c791387435533464d08497a802663540208e7", 
+      "status": "executed", 
+      "source_sha256": "aff5b05a00abf5e5e508eede126d95b4090a6a0fd5269e325c440a6b11c3e4d7"
+    }
+  ], 
+  "tests": [
+    {
+      "id": "VA-18", 
+      "status": "passed", 
+      "check": {
+        "actual_count": 1, 
+        "matches": true, 
+        "expected_count": 1
+      }
+    }
+  ], 
+  "status": "passed", 
+  "fixture_after": {
+    "block_volume_mm3": 1000.9999999999998, 
+    "block_bbox_mm": [
+      0.0, 
+      0.0, 
+      0.0, 
+      7.0, 
+      11.0, 
+      13.0
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "operation_id": "modeling_strategy_scripting.declare-operation-dependency",
+  "template_version": "0.3.1",
+  "catalog_id": "MS-04",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "操作依赖边",
+    "declared_inputs": [
+      "upstream_operation",
+      "downstream_operation",
+      "required_artifact_or_state",
+      "existing_dependency_edges"
+    ],
+    "result_fields": [
+      "dependency_edge"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

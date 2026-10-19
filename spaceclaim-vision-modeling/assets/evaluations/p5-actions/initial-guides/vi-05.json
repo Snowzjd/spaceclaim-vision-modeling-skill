@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-05",
+  "input_fields": [
+    {
+      "name": "visible_edge",
+      "type": "object",
+      "description": "One visible edge and intended edge-loop identity."
+    },
+    {
+      "name": "selection_filter",
+      "type": "object",
+      "description": "Edge/loop selection filter or mode."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified double-click mapping or an explicit loop-selection equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "edge_loop_selection",
+      "type": "object",
+      "description": "Selected loop member identities, target edge, and direct/equivalent control used."
+    }
+  ],
+  "procedure": [
+    "Set the edge filter and pre-highlight visible_edge.",
+    "Perform one calibrated double left click, or use one verified loop-selection menu/mode when double-click is unavailable.",
+    "Observe the highlighted loop and return edge_loop_selection with the actual control path.",
+    "If the result is not a loop, stop rather than repeating clicks blindly."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous edge/loop, unsupported double click without equivalent, or a result that spans an unintended topology region.",
+    "Do not assume double click is cross-version invariant.",
+    "Do not edit geometry."
+  ]
+}

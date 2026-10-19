@@ -1,0 +1,198 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.select-complete-body",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Select one complete body deterministically through calibrated input or the available selection filter/menu.",
+  "trigger": "Use when the body is visible, uniquely identified, and triple-click or an equivalent body-selection route is verified.",
+  "inputs": [
+    {
+      "name": "visible_body",
+      "type": "object",
+      "description": "One visible complete body identity.",
+      "required": true
+    },
+    {
+      "name": "selection_filter",
+      "type": "object",
+      "description": "Body/solid selection filter or mode.",
+      "required": true
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified triple-click mapping or a body-selection equivalent.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Body is visible and target identity is unique.",
+    "Triple-click support is verified, or the selection filter/menu can select one body deterministically."
+  ],
+  "outputs": [
+    {
+      "name": "body_selection_state",
+      "type": "object",
+      "description": "Selected complete body identity and direct/equivalent control used.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The selected set corresponds to one complete target body.",
+    "Unsupported triple click is not claimed."
+  ],
+  "implementation": {
+    "mode": "computer_use",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/vi-06.json",
+    "target_environment": "Authorized SpaceClaim V21 desktop session with the window maximized/full-screen unless a recorded layout exception applies.",
+    "topology_effect": "none",
+    "determinism": "interactive",
+    "notes": "The controller performs one bounded GUI observation/action; it must calibrate the current mapping and must not expand this atom into a view workflow. Direct triple-click remains unclaimed until calibrated."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "geometry_type",
+      "topology"
+    ],
+    "ambiguity_checks": [
+      "Resolve the declared target from its supplied identity and semantic properties; do not use arbitrary BodyN/FaceN aliases or return order.",
+      "If the target is not unique or the current topology/view cannot be observed, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "target_unresolved",
+      "condition": "The declared target, scope, or view identity is missing or ambiguous.",
+      "detection": "The supplied identity does not resolve to exactly one current target.",
+      "safe_state": "No validation action is performed and no pass claim is emitted."
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "condition": "The required API, host path, controller gesture, or visible state cannot be observed.",
+      "detection": "The adapter or controller reports unsupported/blocked/unknown state.",
+      "safe_state": "Preserve the current document/view and return needs_manual_review or not_tested."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "target_unresolved",
+      "action": "Strengthen the target identity or stop for manual review; do not substitute a numbered alias.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "action": "Use only a verified equivalent control/API or return needs_manual_review; do not repeat an unsupported gesture.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare this contract's inputs, outputs, procedure boundary, and refusal rules with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Run the exact future script, host check, or calibrated controller action only after target identity and evidence gates pass.",
+      "expected": "The selected set corresponds to one complete target body.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-06-host-check.json",
+            "sha256": "ec9cb22c6ee275893d0938442c19fddec0b6e2fe46f300a6f0ebc3ce26cf5c60"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-06-host-check.json",
+            "sha256": "ec9cb22c6ee275893d0938442c19fddec0b6e2fe46f300a6f0ebc3ce26cf5c60"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-06.json",
+      "sha256": "859ebac4b2a10a253c6860ea4a524bef9e154db016fa3e538f5b88f6b9ff487d",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-06.json",
+      "sha256": "859ebac4b2a10a253c6860ea4a524bef9e154db016fa3e538f5b88f6b9ff487d",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_guidance.py",
+      "sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/vi-06-host-check.json",
+      "sha256": "ec9cb22c6ee275893d0938442c19fddec0b6e2fe46f300a6f0ebc3ce26cf5c60",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    }
+  ]
+}

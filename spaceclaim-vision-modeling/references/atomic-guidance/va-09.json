@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-09",
+  "input_fields": [
+    {
+      "name": "body_reference",
+      "type": "object",
+      "description": "One current body whose kernel volume is requested."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Requested volume unit."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "volume_record",
+      "type": "object",
+      "description": "Measured volume, unit, body identity, and measurement provenance."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, unavailable, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one current body and verify the requested unit.",
+    "Read the kernel volume once and preserve sign/validity information returned by the API.",
+    "Return volume_record and measurement_status; do not replace an unavailable value with zero.",
+    "Leave all topology and persistence state unchanged."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous/invalid body, incompatible unit, or nonfinite volume.",
+    "Reject visual volume estimates or a value copied from another body.",
+    "Do not repair an open body inside this measurement atom."
+  ]
+}

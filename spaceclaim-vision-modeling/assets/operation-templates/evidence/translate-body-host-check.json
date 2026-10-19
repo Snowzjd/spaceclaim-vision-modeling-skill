@@ -1,0 +1,31 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.translate-body",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_atomic_modeling_actions -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 6,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/translate-body.scscript",
+  "test": "tests/test_atomic_modeling_actions.py",
+  "tool_sha256": "32b005c208775f9c13e8c3a5dff24891981106d7ff94a9879488eb3bc5ab6ed5",
+  "test_sha256": "39d7a1e6e588804752e07b811d3117455342dcbe9cd883a679841db2cb376d1b",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/audit_scscript.py", "role": "tool", "sha256": "a33bc2bf6e01cbf1599e38052715c1f226a455e0631bbaac9ab42b58240e0c7f"},
+    {"path": "tests/test_atomic_modeling_actions.py", "role": "test", "sha256": "39d7a1e6e588804752e07b811d3117455342dcbe9cd883a679841db2cb376d1b"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/translate-body.py", "role": "fixture", "sha256": "ddad928c146b89a223f0f77a8d81613d52ca3fede987b16984b499b0b1d798ca"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/translate-body.scscript", "role": "tool", "sha256": "32b005c208775f9c13e8c3a5dff24891981106d7ff94a9879488eb3bc5ab6ed5"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The template was checked for one translation action, semantic body resolution, and observable before/after state."},
+    "host_checked": {"status": "passed", "scope": "Source parsing, exact package embedding, V21 metadata, action isolation, topology refresh, and static audit passed on the host."},
+    "spaceclaim_execution": {"status": "not_tested", "scope": "The extracted atomic template has not been run independently in SpaceClaim."},
+    "geometry_measurements": {"status": "not_tested", "scope": "No runtime displacement or volume was measured for this exact template."},
+    "native_save": {"status": "not_applicable", "scope": "Saving is outside the translation operation."},
+    "native_reopen": {"status": "not_applicable", "scope": "Reopening is outside the translation operation."},
+    "visual_review": {"status": "not_tested", "scope": "No visual review has been performed for this exact template."},
+    "requested_export": {"status": "not_applicable", "scope": "Export is outside the translation operation."}
+  },
+  "notes": "This is host-only evidence for a parameterized atomic translation template. Recorded numbered aliases and composition-case evidence are excluded."
+}

@@ -1,0 +1,182 @@
+{
+  "operation_id": "geometry_understanding.identify-symmetry-relation",
+  "template_version": "0.3.1",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "geometry_understanding",
+  "purpose": "对称轴或平面关系记录",
+  "trigger": "识别一个对称关系 when its declared inputs are available.",
+  "inputs": [
+    {
+      "name": "object_set",
+      "type": "array",
+      "description": "可比较的对象引用集合；每个对象必须有独立来源和身份。",
+      "required": true,
+      "provenance_required": true
+    },
+    {
+      "name": "symmetry_clues",
+      "type": "object",
+      "description": "对称轴、平面、尺寸或重复布局的原始线索；局部可见不等于整体对称。",
+      "required": true,
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "存在可检验的对称候选",
+    "Use only this single-action procedure; source or upstream instance references must be supplied."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "atomic-reasoning-output",
+      "required": true,
+      "description": "One 对称轴或平面关系记录 in the common envelope; data fields: symmetry_kind, axis_or_plane, member_refs."
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+    "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+    "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+  },
+  "postconditions": [
+    "对称对象与轴或平面一致；只见局部时不推定整体对称",
+    "The typed result and provenance agree with the declared single-action scope; unsupported required fields withhold a resolved result."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Source interpretation or strategy reasoning; no SpaceClaim runtime.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone deterministic interpreter is claimed. Apply only GU-09 in the hash-bound guidance reference using atomic-reasoning-protocol.md."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "没有至少一组可检验成员或对称候选时拒绝输出确定对称关系。",
+      "只看到局部重复、边界相似或单一视图时不得推定整体对称。",
+      "轴或平面无法定位、成员不一致或证据冲突时保留未决而非修正对象。"
+    ],
+    "topology_refresh": "No geometry handles are acquired; declarations do not mutate or refresh application topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "condition": "The declared action inputs cannot support a unique required result.",
+      "detection": "Apply the action rejection rules and inspect raw source evidence.",
+      "safe_state": "Return actionable unresolved fields; retain original evidence and values."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "action": "Supply only the missing source or prerequisite, then repeat this action; do not invent geometry or start application execution.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "One action boundary",
+      "method": "Inspect named inputs, result fields, procedure and rejection rules for GU-09",
+      "expected": "对称轴或平面关系记录",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Result structure and supported invariants",
+      "method": "validate_atomic_reasoning.py with an actual source manifest; separately review interpretation against raw material.",
+      "expected": "对称对象与轴或平面一致；只见局部时不推定整体对称",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.3.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/gu-09-design.json",
+            "sha256": "7dfaff6f2672f7f926f71fa54d58f4d1db0a06df7fcbf2db3b6b6a40f6b1ed87"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/gu-09-host-check.json",
+            "sha256": "6e8f226bfb3dae21c690d20ef41e1b8a9c872f2643539a3fc2d5756ca4ce2b5d"
+          }
+        ],
+        "notes": "Host structure/invariants and bounded independent source evaluation; no automatic promotion."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Candidate. Structural tests cannot establish source interpretation accuracy or any SpaceClaim runtime capability."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/gu-09.json",
+      "role": "reference",
+      "sha256": "df50a2ffd4fded57f74103f84df28cf765184e70b350854ff1ffefc7353acd4c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-protocol.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+      "role": "reference",
+      "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+      "role": "evaluation",
+      "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/gu-09-design.json",
+      "role": "evidence",
+      "sha256": "7dfaff6f2672f7f926f71fa54d58f4d1db0a06df7fcbf2db3b6b6a40f6b1ed87"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/gu-09-host-check.json",
+      "role": "evidence",
+      "sha256": "6e8f226bfb3dae21c690d20ef41e1b8a9c872f2643539a3fc2d5756ca4ce2b5d"
+    },
+    {
+      "path": "tests/test_atomic_reasoning.py",
+      "role": "test",
+      "sha256": "368a780f4e677ecd000769eb8848b6ee4349292a1ecbe21d4db8446c6e1dcc6c"
+    }
+  ]
+}

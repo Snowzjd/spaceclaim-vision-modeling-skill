@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-18",
+  "input_fields": [
+    {
+      "name": "reference_plane_or_face",
+      "type": "object",
+      "description": "One uniquely selected plane or planar face with an observed normal."
+    },
+    {
+      "name": "view_side",
+      "type": "string",
+      "description": "One declared front/back side of the reference plane or face."
+    },
+    {
+      "name": "side_convention",
+      "type": "object",
+      "description": "Explicit front/back-to-normal convention used to resolve the requested view direction."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "plane_normal_view",
+      "type": "object",
+      "description": "Reference identity, observed normal, chosen side, resolved view direction, and camera result."
+    }
+  ],
+  "procedure": [
+    "Resolve one plane/planar face and record its normal and side_convention.",
+    "Derive the expected view direction from view_side; do not trust a contradictory raw direction field.",
+    "Activate the verified Plan/Snap command for the selected reference and observe the camera direction.",
+    "Return plane_normal_view only when the observed side and normal agree; otherwise stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject nonplanar/ambiguous reference, missing normal or side convention, contradictory side/direction, or unavailable Plan/Snap control.",
+    "Do not infer a plane normal from silhouette alone.",
+    "Do not alter the reference face or plane."
+  ]
+}

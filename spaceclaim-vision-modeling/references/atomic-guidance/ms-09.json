@@ -1,0 +1,48 @@
+{
+  "catalog_id": "MS-09",
+  "input_fields": [
+    {
+      "name": "output_role",
+      "type": "object",
+      "description": "Object with required keys `role` and `filename_or_pattern`; the path name must be explicit rather than guessed."
+    },
+    {
+      "name": "run_directory",
+      "type": "string",
+      "description": "The explicit run directory under which the output path is to be declared."
+    },
+    {
+      "name": "overwrite_policy",
+      "type": "object",
+      "description": "Object with required keys `collision`, `protected_paths`, and `replacement`; it declares policy without performing writes."
+    },
+    {
+      "name": "known_paths",
+      "type": "array",
+      "description": "Array of path objects, each with required keys `path`, `role`, and `protected`, used only for collision checks."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "output_path_binding",
+      "type": "object",
+      "description": "Object with required keys `role`, `path_or_expression`, `run_directory`, `overwrite_policy`, and `writes_performed`; nullable when the common output envelope records incomplete path policy."
+    },
+    {
+      "name": "collision_check",
+      "type": "object",
+      "description": "Object with required keys `contained`, `collides`, `protected`, and `decision`; it reports lexical checks without probing or changing the filesystem."
+    }
+  ],
+  "procedure": [
+    "Validate the explicit run directory, one output role, and supplied filename or path pattern without creating or probing files.",
+    "Resolve the path lexically under the run directory and reject traversal, protected baseline paths, and ambiguous absolute escapes.",
+    "Compare the declared path with known paths and apply the supplied overwrite policy as a plan, not as a filesystem action.",
+    "Return `output_path_binding` and `collision_check` as action data with `writes_performed=false`, using the common output envelope for status, provenance ownership, and unresolved path policy."
+  ],
+  "rejection_rules": [
+    "Reject missing or guessed filenames, path traversal, ambiguous roots, and any path outside the declared run directory.",
+    "Reject a collision with a protected baseline or another role unless the supplied policy explicitly and safely resolves it.",
+    "Paths declare destinations only: never create, overwrite, delete, move, or otherwise write files in this operation."
+  ]
+}

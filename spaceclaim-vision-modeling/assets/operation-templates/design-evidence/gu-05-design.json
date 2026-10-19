@@ -1,0 +1,21 @@
+{
+  "operation_id": "geometry_understanding.identify-geometric-primitive",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-05",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "单个基元观察记录",
+    "declared_inputs": [
+      "source_region",
+      "observation_scale"
+    ],
+    "result_fields": [
+      "primitive_kind",
+      "boundary",
+      "hidden_geometry_status"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

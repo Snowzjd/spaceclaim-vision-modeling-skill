@@ -1,0 +1,258 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.split-face-parametrically",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic split-face-parametrically operation within the MA-24 boundary: One in-place split of a current face by supplied trimmed curves through SplitFace.ByCurves. Curve construction, face discovery, body separation, and feature naming are caller-owned or separate operations.",
+  "trigger": "Use when the build plan requires split-face-parametrically and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "current root DesignBody",
+      "required": true,
+      "description": "The current body containing the target face."
+    },
+    {
+      "name": "face",
+      "type": "current face owned by body",
+      "required": true,
+      "description": "The current face to split."
+    },
+    {
+      "name": "curves",
+      "type": "nonempty array<ITrimmedCurve>",
+      "required": true,
+      "description": "Trimmed splitting curves supplied in the target-face context."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for preserving parent-body volume."
+    },
+    {
+      "name": "bbox_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for identifying the changed parent body by bounds."
+    }
+  ],
+  "preconditions": [
+    "body is a current root DesignBody and face is a current face owned by it.",
+    "curves is nonempty and contains usable trimmed splitting curves.",
+    "bbox_tolerance_mm and volume_tolerance_mm3 are finite and nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{body: current parent DesignBody, faces: current face array, added_face_count: positive integer}."
+    }
+  ],
+  "postconditions": [
+    "SplitFace.ByCurves succeeds with MakeCurves=false and leaves the target parent body in the current root design.",
+    "The changed parent body is reacquired by matching pre-operation bounds and volume within the supplied tolerances.",
+    "The current face count increases by at least one and the returned added_face_count records the increase."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-24.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "modifies",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic split-face-parametrically operation within the MA-24 boundary: One in-place split of a current face by supplied trimmed curves through SplitFace.ByCurves. Curve construction, face discovery, body separation, and feature naming are caller-owned or separate operations. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "bounding_box",
+      "geometry_type",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Re-enumerate current root bodies and faces after SplitFace.ByCurves; all pre-operation face references must be reacquired."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_split_face_input",
+      "condition": "Body/face ownership, curve nonemptiness, or tolerance validation fails before the split call.",
+      "detection": "Body/face ownership, curve nonemptiness, or tolerance validation fails before the split call.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "split_face_integrity_failure",
+      "condition": "SplitFace.ByCurves reports failure or no changed parent with an increased face count is found.",
+      "detection": "SplitFace.ByCurves reports failure or no changed parent with an increased face count is found.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_split_face_input",
+      "action": "Re-enumerate the current parent and face, supply nonempty compatible trimmed curves, and rerun without a command call.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "split_face_integrity_failure",
+      "action": "Treat the document as potentially partially mutated, reopen a clean run-owned copy, repair curve/face compatibility, and rerun.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: SplitFace.ByCurves succeeds with MakeCurves=false and leaves the target parent body in the current root design.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "SplitFace.ByCurves succeeds with MakeCurves=false and leaves the target parent body in the current root design.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The changed parent body is reacquired by matching pre-operation bounds and volume within the supplied tolerances.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The changed parent body is reacquired by matching pre-operation bounds and volume within the supplied tolerances.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The current face count increases by at least one and the returned added_face_count records the increase.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The current face count increases by at least one and the returned added_face_count records the increase.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-24-host-check.json",
+            "sha256": "8a0f9897f48f8c81ecf44cf27a3a8be342dfb74b85b8993dd18ea3da1d0370b0"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-24-host-check.json",
+            "sha256": "8a0f9897f48f8c81ecf44cf27a3a8be342dfb74b85b8993dd18ea3da1d0370b0"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-24.scscript",
+      "sha256": "69d0cf0b8fec4042a4580b3d078db343c394f6e3721529095c22a4083dc51719",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-24.py",
+      "sha256": "e17cfdd24481306b0a60f3a509b4821ed3def6ef5df65466e1f4596bf1ea3217",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-24.action.py",
+      "sha256": "42a1221cf1a71b28fe65fd1a95b20f1e2a05f9da664a17f532be9819251b4ded",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-24-host-check.json",
+      "sha256": "8a0f9897f48f8c81ecf44cf27a3a8be342dfb74b85b8993dd18ea3da1d0370b0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

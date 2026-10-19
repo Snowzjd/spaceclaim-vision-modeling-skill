@@ -1,0 +1,38 @@
+{
+  "catalog_id": "MS-08",
+  "input_fields": [
+    {
+      "name": "expected_property",
+      "type": "object",
+      "description": "Object with required keys `property_name`, `expected_value`, and `relation` for one observable property."
+    },
+    {
+      "name": "measurement_method",
+      "type": "object",
+      "description": "Object with required keys `source_ref`, `method`, `unit`, and `evidence_layer` for measuring that property."
+    },
+    {
+      "name": "tolerance",
+      "type": "object",
+      "description": "Object with required keys `value`, `unit`, and `comparison` for the acceptance test."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "assertion_definition",
+      "type": "object",
+      "description": "Object with required keys `property`, `measurement_method`, `units`, `tolerance`, `pass_rule`, `fail_rule`, and `unknown_measurement_rule`; nullable when the common output envelope records missing assertion inputs."
+    }
+  ],
+  "procedure": [
+    "Reduce the request to one observable property and verify that its expected condition is stated without hidden geometry assumptions.",
+    "Bind the property to the supplied measurement method, units, tolerance, and evidence layer.",
+    "Define explicit pass, fail, and unavailable-measurement outcomes without changing the model or source data.",
+    "Return `assertion_definition` as action data and place status, provenance ownership, and any unresolved fields in the common output envelope."
+  ],
+  "rejection_rules": [
+    "Reject a non-observable expectation or a bundle of multiple independent properties.",
+    "Reject incompatible units, invalid tolerances, or a measurement method that is not supplied or traceable.",
+    "Do not treat an assertion definition as a measurement result and do not allow the assertion to mutate geometry."
+  ]
+}

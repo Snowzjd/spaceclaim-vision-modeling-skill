@@ -1,0 +1,43 @@
+{
+  "catalog_id": "GU-05",
+  "input_fields": [
+    {
+      "name": "source_region",
+      "type": "object",
+      "description": "单个可定位的图像、绘图或文本区域及其上下文；区域边界必须可追溯。"
+    },
+    {
+      "name": "observation_scale",
+      "type": "string",
+      "description": "用户或来源提供的观察层级/尺度说明；未知时保留 unknown，不把显示比例当真实尺寸。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "primitive_kind",
+      "type": "string",
+      "description": "单个可观察基元类别，如 planar、cylindrical、spherical 或 unknown；不可见部分不作为事实。"
+    },
+    {
+      "name": "boundary",
+      "type": "object",
+      "description": "可见边界、截面或范围及其引用；隐藏边界可为 null。"
+    },
+    {
+      "name": "hidden_geometry_status",
+      "type": "string",
+      "description": "visible、inferred、occluded 或 unknown 等状态，明确区分观察与推断。"
+    }
+  ],
+  "procedure": [
+    "锁定一个来源区域和观察尺度，只提取可见轮廓、曲率或平面线索，并保留 source_ref。",
+    "将基元类别与边界分别判断；直接可见内容标为 observed，遮挡处的解释标为 derived。",
+    "输出 primitive_kind、boundary 和 hidden_geometry_status；未知字段写 null，并附 provenance 与 unresolved。",
+    "只记录一个几何基元的观察，不把多个基元组合成特征或完整零件。"
+  ],
+  "rejection_rules": [
+    "区域无法单独定位或包含不可分离的多个基元时拒绝单基元结论。",
+    "仅凭行业名称、纹理或默认实体形状不得确定隐藏几何。",
+    "观察尺度不足以支持尺寸时不得从像素、显示比例或图框推导数值。"
+  ]
+}

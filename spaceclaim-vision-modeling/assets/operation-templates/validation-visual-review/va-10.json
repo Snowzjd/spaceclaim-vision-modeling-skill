@@ -1,0 +1,418 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.measure-body-surface-area",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Measure one current body's kernel surface area in a declared unit and optionally compare it with expected_area.",
+  "trigger": "Use when the current body, area unit, and any expected value or tolerance are explicit.",
+  "inputs": [
+    {
+      "name": "root",
+      "type": "SpaceClaim.Api.V21.Part",
+      "description": "Live current document root Part.",
+      "required": true
+    },
+    {
+      "name": "body",
+      "type": "SpaceClaim.Api.V21.DesignBody",
+      "description": "Live current direct child body whose kernel surface area is read.",
+      "required": true
+    },
+    {
+      "name": "unit",
+      "type": "enum(mm|m|in)",
+      "description": "Canonical output area unit; the action applies the corresponding scale.",
+      "required": true
+    },
+    {
+      "name": "expected_area",
+      "type": "finite number",
+      "description": "Optional expected body surface area in the selected unit.",
+      "required": false
+    },
+    {
+      "name": "tolerance",
+      "type": "nonnegative number",
+      "description": "Optional absolute area comparison tolerance in the selected unit.",
+      "required": false
+    }
+  ],
+  "preconditions": [
+    "root and body resolve to the live current root Part and direct child body.",
+    "unit is mm, m, or in and the kernel exposes a finite positive surface area."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "Literal validation action identity emitted by the script.",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "enum(passed|failed|needs_manual_review)",
+      "description": "Action status from the script result; no status is inferred when execution is unavailable.",
+      "required": true
+    },
+    {
+      "name": "geometry_modified",
+      "type": "boolean",
+      "description": "Always false for this read-only action.",
+      "required": true
+    },
+    {
+      "name": "gui_interaction",
+      "type": "boolean",
+      "description": "Always false; the action does not drive the GUI.",
+      "required": true
+    },
+    {
+      "name": "runtime_claim",
+      "type": "boolean",
+      "description": "Always false; the result does not by itself promote runtime evidence.",
+      "required": true
+    },
+    {
+      "name": "validation_boundary",
+      "type": "string",
+      "description": "Read-only current-root measurement/check boundary reported by the action.",
+      "required": true
+    },
+    {
+      "name": "body",
+      "type": "SpaceClaim.Api.V21.DesignBody",
+      "description": "The validated current body.",
+      "required": true
+    },
+    {
+      "name": "unit",
+      "type": "enum(mm|m|in)",
+      "description": "Canonical unit used for surface area.",
+      "required": true
+    },
+    {
+      "name": "surface_area",
+      "type": "positive number",
+      "description": "Measured body kernel surface area in unit squared.",
+      "required": true
+    },
+    {
+      "name": "area",
+      "type": "positive number",
+      "description": "Alias of surface_area emitted by the action.",
+      "required": true
+    },
+    {
+      "name": "expected_area",
+      "type": "finite number",
+      "description": "Normalized expected area when supplied.",
+      "required": false
+    },
+    {
+      "name": "tolerance",
+      "type": "nonnegative number",
+      "description": "Applied comparison tolerance when expected_area is supplied.",
+      "required": false
+    },
+    {
+      "name": "matches",
+      "type": "boolean",
+      "description": "Whether area agrees with expected_area within tolerance.",
+      "required": false
+    }
+  ],
+  "postconditions": [
+    "ATOMIC_OUTPUT.surface_area and area are the current body kernel surface area in the canonical unit.",
+    "No face-area substitution, repair, selection workflow, or save occurs."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-10.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper with ATOMIC_INPUT/ATOMIC_OUTPUT; runtime execution remains not_tested in this candidate.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Candidate exact artifact is bound below; consult the exact-version evidence layers for tested variants. Adapt guidance body_reference to ATOMIC_INPUT={root, body, unit, expected_area?:..., tolerance?:...}; do not dispatch surface_area_record as input."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "area"
+    ],
+    "ambiguity_checks": [
+      "Resolve the declared target from its supplied identity and semantic properties; do not use arbitrary BodyN/FaceN aliases or return order.",
+      "If the target is not unique or the current topology/view cannot be observed, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "target_unresolved",
+      "condition": "The declared target, scope, or view identity is missing or ambiguous.",
+      "detection": "The supplied identity does not resolve to exactly one current target.",
+      "safe_state": "No validation action is performed and no pass claim is emitted."
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "condition": "The required API, host path, controller gesture, or visible state cannot be observed.",
+      "detection": "The adapter or controller reports unsupported/blocked/unknown state.",
+      "safe_state": "Preserve the current document/view and return needs_manual_review or not_tested."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "target_unresolved",
+      "action": "Strengthen the target identity or stop for manual review; do not substitute a numbered alias.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "action": "Use only a verified equivalent control/API or return needs_manual_review; do not repeat an unsupported gesture.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare this contract's canonical ATOMIC_INPUT/ATOMIC_OUTPUT fields with the linked action artifact and keep any conceptual guidance-to-script adaptation explicit.",
+      "expected": "Canonical live-object/unit/frame fields match the action boundary; guidance-only aliases are not dispatched without an adapter.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Execute the exact linked .scscript with one injected ATOMIC_INPUT only after target identity and evidence gates pass.",
+      "expected": "ATOMIC_OUTPUT.surface_area and area are the current body kernel surface area in the canonical unit.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-10-host-check.json",
+            "sha256": "b5300c31cfb3d9da2b89e1b63563556432d0f8d7356ff0651c74cd6bc4eddf26"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-10-host-check.json",
+            "sha256": "b5300c31cfb3d9da2b89e1b63563556432d0f8d7356ff0651c74cd6bc4eddf26"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+            "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+            "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+            "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+            "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.py",
+            "sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.scscript",
+            "sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+            "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+            "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+            "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+            "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+            "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+            "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+            "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+            "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.py",
+            "sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.scscript",
+            "sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+            "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+            "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+            "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+            "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-10.scscript",
+      "sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-10.json",
+      "sha256": "baf9bddbdbb435a41d35f84435168e9ebdf1c3ffc1a41de3960fd2105d1244af",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_actions.py",
+      "sha256": "acf8b17ad0af20da68ec17ddc3a04ce3e5fdc384fb4121ee7528fbd3332ec51d",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-10-host-check.json",
+      "sha256": "b5300c31cfb3d9da2b89e1b63563556432d0f8d7356ff0651c74cd6bc4eddf26",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-10.py",
+      "sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+      "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+      "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+      "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+      "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.py",
+      "sha256": "dc8235c9640ed9c9e588b9920f5d656da0b9a6dbd6d3caf506d90db76aef7e58",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-10.scscript",
+      "sha256": "00018a10519e92e8dc3c323dc5eb278ecac5ea56f178c04f695793ac51abdf92",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+      "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+      "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+      "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+      "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c",
+      "role": "evidence"
+    }
+  ]
+}

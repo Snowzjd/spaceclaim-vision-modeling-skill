@@ -1,0 +1,71 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.split-body-with-plane",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "SpaceClaim V21 P3 suite-01/report.json; selected MA-23 event; passed groups: boolean-copy-rotation-split",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 1,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.scscript",
+  "test": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+  "tool_sha256": "c7543d9b14c976998806861b6d10b665e433816c3792d17799874ea0efb7b6f8",
+  "test_sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.scscript",
+      "sha256": "c7543d9b14c976998806861b6d10b665e433816c3792d17799874ea0efb7b6f8",
+      "role": "tool"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The candidate contract and catalog slug were schema-validated before runtime calibration."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Exact action/report/test bindings were checked on the host; passed groups: boolean-copy-rotation-split."
+    },
+    "spaceclaim_execution": {
+      "status": "passed",
+      "scope": "One executed event in spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json matched spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.scscript and its extracted source bytes."
+    },
+    "geometry_measurements": {
+      "status": "passed",
+      "scope": "The independent group(s) boolean-copy-rotation-split passed in the recorded SpaceClaim suite runs/p3-live/suite-01/forward.py."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not save a native document."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not reopen a native document."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "No viewport or screenshot review was part of this action group."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No requested model export was part of this action group."
+    }
+  },
+  "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+}

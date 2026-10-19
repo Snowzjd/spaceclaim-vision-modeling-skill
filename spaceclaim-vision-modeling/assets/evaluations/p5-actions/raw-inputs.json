@@ -1,0 +1,229 @@
+{
+  "format": "p5-independent-raw-inputs",
+  "format_version": 1,
+  "recorded_on": "2026-09-08",
+  "fixture_mode": "synthetic-only",
+  "host_or_gui_execution": "not_performed",
+  "cases": [
+    {
+      "catalog_id": "VA-04",
+      "raw_input": {"document": {"id": "doc-va04", "scope": "root-part", "components": []}, "enumeration_scope": {"kind": "root", "path": "doc-va04/root"}, "observed_entities": [{"id": "body-04-a", "kind": "solid"}, {"id": "body-04-b", "kind": "solid"}]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va04-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-05",
+      "raw_input": {"document_id": "doc-va05", "entity_reference": "occurrence:body-05", "candidate_entities": [{"id": "occ-05-a", "component": "component-a", "faces": 6}, {"id": "occ-05-b", "component": "component-b", "faces": 6}]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va05-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-06",
+      "raw_input": {"document_id": "doc-va06", "entity_reference": "body-06", "entity_snapshot": null, "missing_fields": ["entity_snapshot"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-va06-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-07",
+      "raw_input": {"object_collection": {"ids": ["body-07-a", "body-07-b", "body-07-c"], "declared_count": 2}, "count_basis": "solid-bodies", "count_observation": {"enumerated_count": 3}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-va07-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-08",
+      "raw_input": {"entity_reference": "body-08", "coordinate_frame": "global-mm", "unit": "mm", "bounds": {"min": [-2.0, 0.0, 1.0], "max": [18.0, 10.0, 7.0]}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va08-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-09",
+      "raw_input": {"entity_reference": "body-09", "candidate_entities": [{"id": "body-09-a", "component": "left"}, {"id": "body-09-b", "component": "right"}], "unit": "mm3", "volume_readings": [{"entity": "body-09-a", "value": 1200.0}, {"entity": "body-09-b", "value": 1200.0}]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va09-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-10",
+      "raw_input": {"entity_reference": "body-10", "unit": "mm2", "surface_measurement": null, "available_properties": {"volume_mm3": 640.0}, "missing_fields": ["surface_measurement"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-va10-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-11",
+      "raw_input": {"face_reference": "face-11", "requested_properties": ["area", "normal", "center"], "coordinate_frame": "global-mm", "sampling": {"points": [[2.0, 2.0, 0.0], [8.0, 2.0, 0.0]], "normals": [[0.0, 0.0, 1.0], [0.0, 0.0, -1.0]], "area_mm2": 50.0}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-va11-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-12",
+      "raw_input": {"face_reference": "face-12", "type_criterion": "analytic-surface", "geometry_descriptor": {"kind": "plane", "normal": [0.0, 0.0, 1.0], "origin": [0.0, 0.0, 4.0]}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va12-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-13",
+      "raw_input": {"face_reference": "face-13", "unit": "mm", "span_definition": "trimmed-boundary", "cylinder_candidates": [{"axis": [0.0, 0.0, 1.0], "radius": 5.0, "span": [0.0, 20.0]}, {"axis": [0.0, 1.0, 0.0], "radius": 5.0, "span": [0.0, 20.0]}]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va13-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-14",
+      "raw_input": {"face_reference": "face-14", "angle": 18.0, "angle_basis": null, "unit": "deg", "span_definition": "trimmed-boundary", "missing_fields": ["angle_basis"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-va14-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-15",
+      "raw_input": {"face_reference": "face-15", "surface_type": "toroidal", "fillet_association": {"edge": "edge-15", "kind": "unknown"}, "radii": {"major_mm": 4.0, "minor_mm": 8.0}, "unit": "mm"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-va15-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-16",
+      "raw_input": {"feature_positions": [{"id": "hole-16-a", "center_mm": [0.0, 0.0, 0.0]}, {"id": "hole-16-b", "center_mm": [20.0, 0.0, 0.0]}, {"id": "hole-16-c", "center_mm": [40.0, 0.0, 0.0]}], "repeat_rule": {"kind": "linear", "spacing_mm": 20.0, "axis": [1.0, 0.0, 0.0]}, "tolerance_mm": 0.01},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va16-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-17",
+      "raw_input": {"current_name": "Outlet", "desired_name": "Outlet", "object_candidates": [{"id": "body-17-a", "name": "Outlet"}, {"id": "body-17-b", "name": "Outlet"}]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va17-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-18",
+      "raw_input": {"group_reference": "named-selection-18", "current_members": [{"id": "face-18-a"}, {"id": "face-18-b"}], "requested_members": null, "missing_fields": ["requested_members"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-va18-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-19",
+      "raw_input": {"target_path": "synthetic://run-19/output.scdoc", "declared_role": "native-output", "declared_identity": {"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "size_bytes": 2048}, "observed_identity": {"exists": true, "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "size_bytes": 2048}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-va19-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-20",
+      "raw_input": {"save_event": {"run_ref": "run-va20", "operation": "native-save", "started_at": "2026-09-08T10:20:00Z", "completed_at": "2026-09-08T10:20:02Z", "status": "completed"}, "output_document": {"path": "synthetic://run-va20/model.scdoc", "role": "native-output", "run_ref": "run-va20", "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va20-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-21",
+      "raw_input": {"target_document": {"title": "model.scdoc", "path_hint": "synthetic://run-21/model.scdoc"}, "open_documents": [{"id": "doc-21-a", "title": "model.scdoc", "modified": false}, {"id": "doc-21-b", "title": "model.scdoc", "modified": false}], "unsaved_change_policy": "preserve-all"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va21-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-22",
+      "raw_input": {"native_file": {"path": "synthetic://run-22/model.scdoc", "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "readable": true}, "target_session": null, "missing_fields": ["target_session"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-va22-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-23",
+      "raw_input": {"reopened_document": {"id": "doc-23", "property": "volume_mm3", "value": 1000.0}, "forward_expectation": {"property": "volume_mm3", "value": 1000.0, "tolerance": 0.1}, "reobserved_property": {"property": "volume_mm3", "value": 980.0}, "tolerance": 0.1},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-va23-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-24",
+      "raw_input": {"model_reference": "model-24", "output_format": "step", "output_path": "synthetic://run-24/geometry.step", "options": {"units": "mm", "selection": "whole-model", "overwrite": false}, "request_id": "export-request-24"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-va24-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VA-25",
+      "raw_input": {"imported_objects": [{"id": "import-25-a", "source": "synthetic://run-25/geometry.step", "unit": "mm"}, {"id": "import-25-b", "source": "synthetic://run-25/geometry.step", "unit": "mm"}], "source_identity": {"path": "synthetic://run-25/geometry.step", "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}, "property_check": {"name": "volume_mm3", "tolerance": 0.1}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-va25-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-01",
+      "raw_input": {"target_window": {"window_id": "window-vi01", "maximized": null, "occluded_by": null}, "review_object": {"id": "body-vi01", "visible": null}, "missing_fields": ["maximized", "occluded_by", "visible"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi01-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-02",
+      "raw_input": {"environment": {"product_version": "V21", "settings_profile": "profile-a"}, "help_snapshot": {"navigation": "orbit-middle-drag"}, "controlled_observations": [{"gesture": "middle-drag", "mapping": "orbit"}, {"gesture": "middle-drag", "mapping": "pan"}], "mapping_versions": ["profile-a", "profile-b"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi02-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-03",
+      "raw_input": {"visible_target": {"id": "body-vi03", "screen_bbox": [100, 80, 220, 180], "depth_rank": 1}, "selection_filter": "body", "click": {"x": 150, "y": 120, "button": "left"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-vi03-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-04",
+      "raw_input": {"current_selection": [{"id": "face-vi04-a", "occurrence": "left"}], "target_object": {"semantic_id": "face-vi04", "occurrences": ["left", "right"]}, "navigation_mapping": {"ctrl_left_click": "toggle-selection"}, "click": {"x": 180, "y": 140, "modifier": "ctrl"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-vi04-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-05",
+      "raw_input": {"visible_edge": {"id": "edge-vi05", "screen_points": [[90, 100], [260, 100]]}, "filter": "edge", "navigation_mapping": null, "calibration_record": null, "missing_fields": ["navigation_mapping", "calibration_record"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi05-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-06",
+      "raw_input": {"visible_entity": {"id": "body-vi06", "screen_bbox": [40, 40, 300, 260]}, "filter": "face", "navigation_mapping": {"triple_click": "select-body"}, "mode_state": {"active_filter": "face", "gesture_binding": "body"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi06-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-07",
+      "raw_input": {"preselection_candidates": [{"id": "face-vi07-a", "screen_point": [200, 150]}, {"id": "face-vi07-b", "screen_point": [200, 150]}], "mouse_position": [200, 150], "navigation_mapping": {"ctrl_wheel": "cycle-preselection", "cycle_step": 1}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-vi07-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-08",
+      "raw_input": {"selection_set": [{"id": "body-vi08", "kind": "body"}, {"id": "face-vi08", "kind": "face"}], "clear_operation": {"gesture": "escape", "calibrated": true}, "session_state": {"interactive": true, "running": false}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-vi08-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-09",
+      "raw_input": {"screen_region": null, "selection_direction": "left-to-right", "filter": "body", "missing_fields": ["screen_region"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi09-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-10",
+      "raw_input": {"context_target": {"id": "face-vi10", "screen_point": [220, 130]}, "right_click": {"x": 220, "y": 130}, "focus_target": {"id": "body-vi10"}, "menu_state": {"opened_for": "body-vi10"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi10-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-11",
+      "raw_input": {"viewport_id": "viewport-vi11", "drag_trajectory": [[300, 180], [340, 200], [380, 160]], "navigation_mapping": {"middle_drag": "rotate", "anchor": "center-of-view"}, "model_hash": "1111111111111111111111111111111111111111111111111111111111111111"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-vi11-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-12",
+      "raw_input": {"viewport_id": "viewport-vi12", "drag_trajectory": [[100, 100], [130, 100]], "navigation_mapping_candidates": [{"profile": "a", "shift_middle_drag": "pan"}, {"profile": "b", "shift_middle_drag": "rotate"}], "model_hash": "2222222222222222222222222222222222222222222222222222222222222222"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-vi12-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-13",
+      "raw_input": {"viewport_id": "viewport-vi13", "drag_trajectory": [[200, 200], [200, 240]], "navigation_mapping": null, "missing_fields": ["navigation_mapping"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi13-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-14",
+      "raw_input": {"viewport_id": "viewport-vi14", "wheel_steps": 3, "navigation_mapping": {"wheel_positive": "zoom-in"}, "observed_scale_factor": 0.8, "recorded_scale_factor": 1.25},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi14-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-15",
+      "raw_input": {"target_range": {"kind": "whole-model", "model_id": "model-vi15", "bounds": [-10.0, -5.0, 0.0, 40.0, 25.0, 12.0]}, "fit_command": {"name": "zoom-extents", "available": true}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-vi15-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-16",
+      "raw_input": {"home_settings": [{"profile": "user-a", "direction": [1.0, 0.0, 0.0], "up": [0.0, 0.0, 1.0]}, {"profile": "user-b", "direction": [0.0, 1.0, 0.0], "up": [0.0, 0.0, 1.0]}], "target_session": "session-vi16"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-vi16-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-17",
+      "raw_input": {"standard_direction": "front", "model_coordinate_frame": null, "missing_fields": ["model_coordinate_frame"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi17-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-18",
+      "raw_input": {"reference_plane": {"id": "plane-vi18", "normal": [0.0, 0.0, 1.0]}, "view_side": "back", "requested_view_direction": [0.0, 0.0, 1.0], "side_convention": {"front": [0.0, 0.0, 1.0], "back": [0.0, 0.0, -1.0]}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi18-c01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-19",
+      "raw_input": {"target_feature": {"id": "fillet-vi19", "semantic": "small inner fillet", "bounds": [10.0, 8.0, 2.0, 18.0, 16.0, 6.0]}, "visibility_goal": "feature-and-adjacent-face", "camera_adjustment_allowed": {"orbit": true, "pan": true, "zoom": true}, "model_hash": "3333333333333333333333333333333333333333333333333333333333333333"},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "normal", "fixture_id": "p5-vi19-n01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-20",
+      "raw_input": {"actual_view": {"image_id": "actual-vi20", "camera": {"direction": [0.0, 0.0, -1.0], "projection": "perspective"}}, "reference_view": {"image_id": "reference-vi20", "camera": {"direction": [0.0, 0.0, -1.0], "projection": null}}, "feature_to_check": "slot-vi20", "image_region": [120, 90, 260, 210]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "ambiguous", "fixture_id": "p5-vi20-a01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-21",
+      "raw_input": {"target_feature": "pocket-vi21", "current_view": "view-vi21-front", "occlusion_reason": null, "missing_fields": ["occlusion_reason"]},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "missing", "fixture_id": "p5-vi21-m01", "observation_boundary": "input-only"}
+    },
+    {
+      "catalog_id": "VI-22",
+      "raw_input": {"target_viewport": "viewport-vi22", "model_identity": {"document_id": "doc-vi22", "sha256": "4444444444444444444444444444444444444444444444444444444444444444"}, "view_state": {"camera": "front", "selection": ["face-vi22"]}, "capture_metadata": {"observed_model_sha256": "5555555555555555555555555555555555555555555555555555555555555555", "screen_size": [1920, 1080], "timestamp": "2026-09-08T12:22:00Z"}},
+      "provenance": {"source": "synthetic-hand-authored", "state_class": "contradictory", "fixture_id": "p5-vi22-c01", "observation_boundary": "input-only"}
+    }
+  ]
+}

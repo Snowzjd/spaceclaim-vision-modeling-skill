@@ -1,0 +1,38 @@
+{
+  "design_review_version": 1,
+  "operation_id": "geometry_understanding.extract-geometry-observations",
+  "template_version": "0.2.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Public contract review for one atomic geometry-observation boundary, provenance separation, case neutrality, and evidence limits.",
+  "checks": [
+    {
+      "name": "atomic_boundary",
+      "status": "passed",
+      "notes": "The operation inventories primitives, features, relations, symmetry, and repetition; it does not choose a construction strategy."
+    },
+    {
+      "name": "provenance_boundary",
+      "status": "passed",
+      "notes": "Outputs require observation, user, inference, or unresolved provenance and retain source locators when available."
+    },
+    {
+      "name": "case_neutrality",
+      "status": "passed",
+      "notes": "The contract uses geometry descriptions rather than case identifiers, named products, recorded aliases, or numeric examples."
+    },
+    {
+      "name": "evidence_boundary",
+      "status": "passed",
+      "notes": "Only design intent is reviewed; no implementation, application runtime, model measurement, persistence, visual acceptance, or export is claimed."
+    }
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/prompts/visual_geometry_parser.md",
+    "spaceclaim-vision-modeling/references/workflow-contracts.md",
+    "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+    "spaceclaim-vision-modeling/references/operation-template-contract.md"
+  ],
+  "notes": "Public design-only review record for the schema-bound 0.2.0 contract; it is not a host-check, source-interpretation accuracy result, or application evidence record."
+}

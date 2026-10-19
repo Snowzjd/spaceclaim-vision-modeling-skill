@@ -1,0 +1,207 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.create-unsaved-blank-design",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Create one new unsaved blank SpaceClaim design without overwriting the user's active document.",
+  "trigger": "Use when a no-baseline execution requires a clean document entry state.",
+  "inputs": [
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Confirmed SpaceClaim session identity.",
+      "required": true
+    },
+    {
+      "name": "clean_entry_policy",
+      "type": "object",
+      "description": "No-baseline policy and non-overwrite rule.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "The session is unique, authorized, idle, and free of a blocking dialog.",
+    "No-baseline entry and non-overwrite policy are declared."
+  ],
+  "outputs": [
+    {
+      "name": "document_state",
+      "type": "object",
+      "description": "Observed new-document state, unsaved status, and active-session identity; this atom does not inspect entity counts.",
+      "required": true
+    },
+    {
+      "name": "document_identity",
+      "type": "object",
+      "description": "Stable identity for the new active unsaved document.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "A new unsaved document is active and ready to receive a script.",
+    "The previous user document remains untouched; no geometry or native file is created."
+  ],
+  "implementation": {
+    "mode": "computer_use",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/ex-04.json",
+    "target_environment": "Authorized SpaceClaim V21 desktop session with the target window kept maximized unless a recorded layout exception applies.",
+    "topology_effect": "none",
+    "determinism": "interactive",
+    "notes": "The controller performs one bounded GUI action or observation; it must not expand this contract into a workflow. This establishes entry state only; body-count validation is not bundled."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "user_document_at_risk",
+      "condition": "The action could overwrite or discard user work.",
+      "detection": "Active document is modified and safe transition is not confirmed.",
+      "safe_state": "Leave the active document unchanged."
+    },
+    {
+      "failure_id": "blank_entry_not_observed",
+      "condition": "The new document is not confirmed active and unsaved.",
+      "detection": "Title, marker, or identity remains ambiguous.",
+      "safe_state": "Do not load or run a script."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "user_document_at_risk",
+      "action": "Obtain a safe new-document entry or baseline-copy policy.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "blank_entry_not_observed",
+      "action": "Return needs_manual_review and restart only after entry is known.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "A new unsaved document is active and ready to receive a script.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.confirm-target-spaceclaim-session"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-04-host-check.json",
+            "sha256": "cde8e58229d44b3e23318551e66d5125e6f9087340ae2c5babace043317611b7"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-04-host-check.json",
+            "sha256": "cde8e58229d44b3e23318551e66d5125e6f9087340ae2c5babace043317611b7"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-04.json",
+      "sha256": "b3034f2cc4e5d3c99328438ce22973f0a55ab1e32a206e98b5c55ec1d4d55c89",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-04.json",
+      "sha256": "b3034f2cc4e5d3c99328438ce22973f0a55ab1e32a206e98b5c55ec1d4d55c89",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_guidance.py",
+      "sha256": "f3918ac4379f5488144fab920f60d121aa4e5863ef91808bb4ae04b469601e53",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-04-host-check.json",
+      "sha256": "cde8e58229d44b3e23318551e66d5125e6f9087340ae2c5babace043317611b7",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

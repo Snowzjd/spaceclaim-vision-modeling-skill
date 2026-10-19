@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-16",
+  "input_fields": [
+    {
+      "name": "home_settings",
+      "type": "object",
+      "description": "One known Home-view definition for the target user's/session's navigation settings."
+    },
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Unique maximized SpaceClaim session in which Home is to be restored."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "home_view_state",
+      "type": "object",
+      "description": "Applied Home definition, session identity, observed camera state, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Confirm target_session and record the active Home definition without replacing it.",
+    "Issue one calibrated H/Home action or one verified View-menu Home command.",
+    "Observe the resulting camera orientation/scale and return home_view_state.",
+    "If multiple profiles or an unknown Home definition are present, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous session/profile, unavailable Home command, blocked viewport, or an unobservable camera result.",
+    "Do not infer a universal Home orientation from another user or machine.",
+    "Do not edit model geometry."
+  ]
+}

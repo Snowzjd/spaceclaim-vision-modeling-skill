@@ -1,0 +1,31 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "template_version": "0.2.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_geometry_understanding_outputs -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 9,
+  "tool": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+  "test": "tests/test_geometry_understanding_outputs.py",
+  "tool_sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20",
+  "test_sha256": "7cdf71aa614ed0861a602387ed25f8d7c7b0f2ac9b0ae107dd01b0faa2b930e8",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py", "role": "tool", "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"},
+    {"path": "tests/test_geometry_understanding_outputs.py", "role": "test", "sha256": "7cdf71aa614ed0861a602387ed25f8d7c7b0f2ac9b0ae107dd01b0faa2b930e8"},
+    {"path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json", "role": "schema", "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/fixture-manifest.json", "role": "fixture", "sha256": "929d3848db553fa3bfcbac1a40e7929880db9a092ed45836f60ac725461f9b30"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The 0.2.0 atomic contract and schema linkage were reviewed."},
+    "host_checked": {"status": "passed", "scope": "Schema, provenance, accepted/derived/conflicting status, unresolved-link, and neutral fixture expectations passed on the host."},
+    "spaceclaim_execution": {"status": "not_applicable", "scope": "This reasoning operation does not run SpaceClaim."},
+    "geometry_measurements": {"status": "not_applicable", "scope": "No model geometry is measured."},
+    "native_save": {"status": "not_applicable", "scope": "No native model is saved."},
+    "native_reopen": {"status": "not_applicable", "scope": "No native model is reopened."},
+    "visual_review": {"status": "not_applicable", "scope": "These fixtures do not evaluate source-image interpretation or final visual agreement."},
+    "requested_export": {"status": "not_applicable", "scope": "No geometry export is produced."}
+  },
+  "notes": "Host-only output-contract evidence. Hand-authored fixtures do not prove that unseen source dimensions are read, scoped, or reconciled correctly, so the operation remains candidate."
+}

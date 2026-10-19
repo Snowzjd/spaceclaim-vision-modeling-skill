@@ -1,0 +1,53 @@
+{
+  "$schema": "../../../../../references/rectangular-prism-geometry-contract.schema.json",
+  "contract_kind": "rectangular_prism_geometry",
+  "contract_version": 1,
+  "stage": "geometry_understanding",
+  "handoff_status": "ready",
+  "source_manifest": [
+    {
+      "source_id": "explicit-text-source",
+      "kind": "text",
+      "path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/source/text-requirement.md",
+      "sha256": "d813a5f4c8a3210bb3d009dfc85e1da63e52fcf184e2d1e400935685a172ecd2"
+    }
+  ],
+  "primitive": {
+    "kind": "rectangular_prism",
+    "body_name": "ATOMIC_PRISM",
+    "minimum_corner_mm": [10.0, -5.0, 2.0],
+    "size_mm": [40.0, 30.0, 12.0],
+    "orientation": "axis_aligned_positive_xyz",
+    "provenance": {
+      "body_name": {
+        "kind": "user",
+        "source_ids": ["explicit-text-source"],
+        "locator": "opening sentence"
+      },
+      "minimum_corner_mm": {
+        "kind": "user",
+        "source_ids": ["explicit-text-source"],
+        "locator": "first bullet"
+      },
+      "size_mm": {
+        "kind": "user",
+        "source_ids": ["explicit-text-source"],
+        "locator": "second bullet"
+      },
+      "orientation": {
+        "kind": "user",
+        "source_ids": ["explicit-text-source"],
+        "locator": "opening sentence and second bullet"
+      }
+    }
+  },
+  "expected_geometry": {
+    "body_count": 1,
+    "bbox_min_mm": [10.0, -5.0, 2.0],
+    "bbox_max_mm": [50.0, 25.0, 14.0],
+    "volume_mm3": 14400.0
+  },
+  "assumptions": [],
+  "unresolved_items": [],
+  "confidence": "high"
+}

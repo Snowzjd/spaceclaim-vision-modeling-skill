@@ -1,0 +1,40 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [50.0, 25.0, 14.0],
+      "bbox_min_mm": [10.0, -5.0, 2.0],
+      "name": "ATOMIC_PRISM",
+      "volume_mm3": 14400.000000000002
+    }
+  ],
+  "case_id": "v03-atomic-rectangular-prism",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "not_tested",
+    "native_save": "passed",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [],
+  "generated_at_utc": "2026-09-03T08:53:25Z",
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "rectangular-prism.scdoc",
+    "report_path": "forward-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {"message": "", "name": "parameters_and_paths_validated", "status": "passed"},
+    {"message": "", "name": "clean_design_confirmed", "status": "passed"},
+    {"message": "", "name": "geometry_validated", "status": "passed"},
+    {"message": "", "name": "native_model_saved", "status": "passed"}
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "Sanitized copy of the executed build report. Native reopen and visual review are recorded independently."
+}

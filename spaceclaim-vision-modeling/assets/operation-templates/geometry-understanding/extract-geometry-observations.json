@@ -1,0 +1,283 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "geometry_understanding.extract-geometry-observations",
+  "template_version": "0.2.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "geometry_understanding",
+  "purpose": "Extract a provenance-aware inventory of geometry primitives, features, and spatial relations from visual or textual source material without selecting a construction strategy.",
+  "trigger": "A drawing, image, screenshot, text description, model note, or other source manifest needs a structured geometry interpretation before downstream planning.",
+  "inputs": [
+    {
+      "name": "source_manifest",
+      "type": "structured manifest of visual or textual source material",
+      "required": true,
+      "description": "Source artifacts, viewpoints, locators, and readable statements from which observations can be made; each statement must retain observation, user, inference, or unresolved provenance.",
+      "provenance_required": true
+    },
+    {
+      "name": "user_intent",
+      "type": "textual intent and requested deliverables",
+      "required": false,
+      "description": "User-supplied interpretation goals or acceptance needs, kept distinct from source observations and inferences.",
+      "provenance_required": true
+    },
+    {
+      "name": "supplied_constraints",
+      "type": "structured constraints, tolerances, or unit context",
+      "required": false,
+      "description": "User-provided constraints that may qualify an observation; unknown or conflicting context remains unresolved rather than becoming a default.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "The source manifest identifies at least one readable visual or textual source and a viewpoint or locator when available.",
+    "Source statements can be distinguished from user input; missing geometry values are not replaced with unmarked defaults.",
+    "The operation is limited to geometry description and provenance capture; construction order, application commands, and runtime actions remain outside this boundary."
+  ],
+  "outputs": [
+    {
+      "name": "observed_geometry",
+      "type": "provenance-aware geometry observation object",
+      "required": true,
+      "description": "Structured primitive and feature observations with source locators, confidence, and an explicit observation, user, inference, or unresolved provenance tag.",
+      "provenance_required": true
+    },
+    {
+      "name": "bodies_and_features",
+      "type": "provenance-aware list of bodies, primitives, and features",
+      "required": true,
+      "description": "Case-neutral body and feature descriptions; each item records what is observed, what is user-supplied, what is inferred, and what remains unresolved.",
+      "provenance_required": true
+    },
+    {
+      "name": "spatial_relations",
+      "type": "provenance-aware relation list",
+      "required": true,
+      "description": "Relations such as alignment, containment, contact, offset, or adjacency, with their source support, inference rationale, and unresolved alternatives.",
+      "provenance_required": true
+    },
+    {
+      "name": "symmetry_and_repetition",
+      "type": "provenance-aware symmetry and repetition record",
+      "required": true,
+      "description": "Observed or inferred symmetry and repeated-pattern cues, including confidence and unresolved pattern scope; no silent repetition count is introduced.",
+      "provenance_required": true
+    },
+    {
+      "name": "unresolved_items",
+      "type": "provenance-aware ambiguity list",
+      "required": true,
+      "description": "Missing, conflicting, occluded, or ambiguous geometry statements retained as unresolved items with the reason and needed clarification.",
+      "provenance_required": true
+    },
+    {
+      "name": "confidence",
+      "type": "provenance-aware confidence record",
+      "required": true,
+      "description": "Confidence per observation group plus rationale, source coverage, and uncertainty caused by inference or unresolved evidence.",
+      "provenance_required": true
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+    "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+  },
+  "postconditions": [
+    "Every primitive, feature, relation, symmetry claim, and repetition claim is tagged as observation, user, inference, or unresolved and retains a source locator when available.",
+    "The output separates visible or textual observations from inferred relations and retains competing interpretations instead of selecting an unsupported one.",
+    "The output describes geometry independently of an industry-specific object label and does not choose a construction order or application operation.",
+    "The output includes confidence, source coverage, and unresolved items that a downstream geometry contract can inspect."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Visual/text reasoning only; no SpaceClaim runtime or application control.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone implementation artifact is published; this candidate is a contract-bound reasoning boundary assembled from linked general prompt and reference guidance."
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+    "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No application geometry is selected; source cues are interpreted semantically and ties are retained as unresolved alternatives.",
+      "Audit every reported value and relation for observation, user, inference, or unresolved provenance before emitting the output."
+    ],
+    "topology_refresh": "Not applicable because the operation does not create or modify geometry topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "source_manifest_invalid",
+      "condition": "The source manifest is missing, unreadable, or lacks a usable visual or textual locator.",
+      "detection": "Check source entries, encoding, and locator coverage before extracting observations.",
+      "safe_state": "No geometry observation is accepted; the handoff remains unresolved."
+    },
+    {
+      "failure_id": "competing_interpretations",
+      "condition": "Source evidence supports multiple geometry primitives, relations, or pattern interpretations that change the contract.",
+      "detection": "Record competing hypotheses and compare their supporting source cues and confidence.",
+      "safe_state": "Retain alternatives as unresolved and do not emit a ready geometry handoff."
+    },
+    {
+      "failure_id": "provenance_gap",
+      "condition": "An observation or relation cannot be labeled as observation, user, inference, or unresolved with adequate source context.",
+      "detection": "Run a provenance completeness audit over every output item before handoff.",
+      "safe_state": "Mark the affected item unresolved and keep the complete output out of downstream automatic selection."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "source_manifest_invalid",
+      "action": "Repair or replace the source manifest and rerun extraction from the beginning.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "competing_interpretations",
+      "action": "Request the smallest clarification or add a source locator that distinguishes the hypotheses, then rerun extraction.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "provenance_gap",
+      "action": "Restore the missing source or user provenance and rerun the completeness audit before handoff.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Atomic observation boundary",
+      "method": "Review the template against the geometry-understanding stage contract and its linked general guidance.",
+      "expected": "The operation emits geometry observations and ambiguities only; it does not select a construction strategy or run an application.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Provenance partition and unresolved handling",
+      "method": "Inspect input/output declarations, postconditions, failure modes, and recovery for observation, user, inference, and unresolved paths.",
+      "expected": "Every claim has an explicit provenance class and missing or competing evidence stays unresolved rather than receiving a default.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Case neutrality and evidence boundary",
+      "method": "Review identifiers, wording, artifact links, and evidence states for case-specific names, private data, numeric examples, and unsupported runtime claims.",
+      "expected": "The template is reusable across geometry sources and claims design intent only.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Schema and neutral fixture invariants",
+      "method": "Validate positive, unresolved, and deliberately invalid output fixtures with the bound host checker.",
+      "expected": "Atomic output fields, provenance requirements, local relation references, and blocking-unresolved handoff status are accepted or rejected as declared by the fixture manifest.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.2.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/extract-geometry-observations-design-review.json",
+            "sha256": "cf242f70ff2c8e7f5e4346cc05d9e3c532ccf1f9f96eac31bb89de86068265eb",
+            "notes": "Public design-only review record for this exact candidate template version."
+          }
+        ],
+        "notes": "Atomicity, provenance separation, case neutrality, and the no-runtime boundary were reviewed."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/extract-geometry-observations-host-check.json",
+            "sha256": "7b829cd90a49909e519e32e5ab93537c58f5b8c54dda5c6c09576bf847b6163c",
+            "notes": "Host-only schema and neutral fixture check for this exact candidate version."
+          }
+        ],
+        "notes": "The bound host checker passed structural and deterministic fixture invariants; it did not evaluate unseen-source interpretation accuracy."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This operation does not launch or control SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model is measured; the operation records source interpretation only."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is saved."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is reopened."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This is source interpretation, not final viewport or image acceptance."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No geometry export is produced."
+      }
+    },
+    "notes": "Evidence stops at design_only and host_checked; unseen-source interpretation accuracy and all application, measurement, persistence, visual-acceptance, and export layers remain unclaimed."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/prompts/visual_geometry_parser.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/workflow-contracts.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+      "role": "reference",
+      "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+      "role": "evaluation",
+      "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/fixture-manifest.json",
+      "role": "test",
+      "sha256": "929d3848db553fa3bfcbac1a40e7929880db9a092ed45836f60ac725461f9b30"
+    },
+    {
+      "path": "tests/test_geometry_understanding_outputs.py",
+      "role": "test",
+      "sha256": "7cdf71aa614ed0861a602387ed25f8d7c7b0f2ac9b0ae107dd01b0faa2b930e8"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/extract-geometry-observations-host-check.json",
+      "role": "evidence",
+      "sha256": "7b829cd90a49909e519e32e5ab93537c58f5b8c54dda5c6c09576bf847b6163c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/extract-geometry-observations-design-review.json",
+      "role": "evidence",
+      "sha256": "cf242f70ff2c8e7f5e4346cc05d9e3c532ccf1f9f96eac31bb89de86068265eb"
+    }
+  ]
+}

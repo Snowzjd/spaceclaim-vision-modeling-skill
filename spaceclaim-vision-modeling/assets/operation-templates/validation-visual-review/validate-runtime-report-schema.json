@@ -1,0 +1,126 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.validate-runtime-report-schema",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "active",
+  "stage": "validation_visual_review",
+  "purpose": "Validate the structure and internal invariants of one declared SpaceClaim runtime report on the host.",
+  "trigger": "One structured runtime report is available for a host-side schema check.",
+  "inputs": [
+    {
+      "name": "report_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to one UTF-8 JSON runtime report.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "report_path identifies one readable UTF-8 JSON object within the host input-size limit.",
+    "The caller treats report-declared runtime and geometry states as claims, not independent observations."
+  ],
+  "outputs": [
+    {
+      "name": "schema_validation_result",
+      "type": "object",
+      "required": true,
+      "description": "One passed or failed result with stable structural issue codes."
+    }
+  ],
+  "postconditions": [
+    "Exactly one schema_validation_result is emitted.",
+    "A passed result means only that the report structure and internal invariants are valid.",
+    "No report field is upgraded into independently observed SpaceClaim evidence."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py",
+    "target_environment": "Host Python 3.9 or newer; invoke without --contract and do not launch SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "This operation runs only the report-structure path of the shared validator."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No geometry object is selected; only report fields and internal invariants are checked."
+    ],
+    "topology_refresh": "Not applicable because the operation has no geometry effect."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "report_read_error",
+      "condition": "The report cannot be read, decoded, or parsed as one JSON object.",
+      "detection": "Load report_path with the bounded UTF-8 JSON loader.",
+      "safe_state": "The report remains untrusted and the result is failed."
+    },
+    {
+      "failure_id": "report_structure_invalid",
+      "condition": "The report violates a required field, type, range, uniqueness, path, or evidence-state invariant.",
+      "detection": "Run validate_structure and retain every stable issue code.",
+      "safe_state": "The report remains untrusted and the result is failed."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "report_read_error",
+      "action": "Provide one readable UTF-8 JSON report and rerun this operation.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "report_structure_invalid",
+      "action": "Repair or regenerate the report from its source and rerun this operation.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Runtime-report structure and internal invariants",
+      "method": "Run the targeted report-validator tests over valid and malformed reports without supplying a contract.",
+      "expected": "Valid structure passes and each malformed report returns a stable issue code without an exception.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/validate-runtime-report-schema-host-check.json",
+            "sha256": "5718cd521a9a0ee154fbbc0a32fe025f611eace3b92b274fe9425419fdf1e72c",
+            "notes": "The single-action schema-validation boundary was reviewed."
+          }
+        ],
+        "notes": "The operation validates report structure only."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/validate-runtime-report-schema-host-check.json",
+            "sha256": "5718cd521a9a0ee154fbbc0a32fe025f611eace3b92b274fe9425419fdf1e72c",
+            "notes": "Targeted host tests cover schema-only validation behavior."
+          }
+        ],
+        "notes": "No SpaceClaim process is launched."
+      },
+      "spaceclaim_execution": {"status": "not_applicable", "evidence_refs": [], "notes": "Host-only operation."},
+      "geometry_measurements": {"status": "not_applicable", "evidence_refs": [], "notes": "Declared values are not independently measured."},
+      "native_save": {"status": "not_applicable", "evidence_refs": [], "notes": "No model is saved."},
+      "native_reopen": {"status": "not_applicable", "evidence_refs": [], "notes": "No model is reopened."},
+      "visual_review": {"status": "not_applicable", "evidence_refs": [], "notes": "No viewport or image is reviewed."},
+      "requested_export": {"status": "not_applicable", "evidence_refs": [], "notes": "No geometry is exported."}
+    },
+    "notes": "Evidence stops at design_only and host_checked."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py", "role": "implementation", "sha256": "e1905d09380b35acfe2d12bb24af1c692b4df5c590d2aedc10adfd0c4a6aa079"},
+    {"path": "tests/test_validate_runtime_report.py", "role": "test", "sha256": "29ad6c4d295b3c12d491fbd9f7b4cc859fad3f653768c40e01290e2f39177dac"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/validate-runtime-report-schema-host-check.json", "role": "evidence", "sha256": "5718cd521a9a0ee154fbbc0a32fe025f611eace3b92b274fe9425419fdf1e72c"}
+  ]
+}

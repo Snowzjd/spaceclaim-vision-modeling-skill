@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Snowzjd/spaceclaim-vision-modeling-skill/blob/main/spaceclaim-vision-modeling/references/rectangular-prism-geometry-contract.schema.json",
+  "title": "Axis-aligned rectangular-prism geometry contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_kind",
+    "contract_version",
+    "stage",
+    "handoff_status",
+    "source_manifest",
+    "primitive",
+    "expected_geometry",
+    "assumptions",
+    "unresolved_items",
+    "confidence"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "contract_kind": {"const": "rectangular_prism_geometry"},
+    "contract_version": {"const": 1},
+    "stage": {"const": "geometry_understanding"},
+    "handoff_status": {"enum": ["ready", "requires_clarification"]},
+    "source_manifest": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "kind", "path", "sha256"],
+        "properties": {
+          "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"},
+          "kind": {"enum": ["text", "image", "drawing", "screenshot", "model", "script", "log"]},
+          "path": {"$ref": "#/$defs/repository_path"},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "primitive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "body_name",
+        "minimum_corner_mm",
+        "size_mm",
+        "orientation",
+        "provenance"
+      ],
+      "properties": {
+        "kind": {"const": "rectangular_prism"},
+        "body_name": {"type": "string", "minLength": 1},
+        "minimum_corner_mm": {"$ref": "#/$defs/vector3"},
+        "size_mm": {
+          "allOf": [
+            {"$ref": "#/$defs/vector3"},
+            {"items": {"exclusiveMinimum": 0}}
+          ]
+        },
+        "orientation": {"const": "axis_aligned_positive_xyz"},
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["body_name", "minimum_corner_mm", "size_mm", "orientation"],
+          "properties": {
+            "body_name": {"$ref": "#/$defs/provenance"},
+            "minimum_corner_mm": {"$ref": "#/$defs/provenance"},
+            "size_mm": {"$ref": "#/$defs/provenance"},
+            "orientation": {"$ref": "#/$defs/provenance"}
+          }
+        }
+      }
+    },
+    "expected_geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body_count", "bbox_min_mm", "bbox_max_mm", "volume_mm3"],
+      "properties": {
+        "body_count": {"const": 1},
+        "bbox_min_mm": {"$ref": "#/$defs/vector3"},
+        "bbox_max_mm": {"$ref": "#/$defs/vector3"},
+        "volume_mm3": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "unresolved_items": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "confidence": {"enum": ["high", "medium", "low"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"handoff_status": {"const": "ready"}}},
+      "then": {"properties": {"unresolved_items": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"handoff_status": {"const": "requires_clarification"}}},
+      "then": {"properties": {"unresolved_items": {"minItems": 1}}}
+    }
+  ],
+  "$defs": {
+    "vector3": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "number"},
+        {"type": "number"},
+        {"type": "number"}
+      ],
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "repository_path": {
+      "type": "string",
+      "pattern": "^(?![A-Za-z]:|/|\\\\|.*\\.\\./).+"
+    },
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source_ids", "locator"],
+      "properties": {
+        "kind": {"enum": ["observation", "user", "inference", "unresolved"]},
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"}
+        },
+        "locator": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

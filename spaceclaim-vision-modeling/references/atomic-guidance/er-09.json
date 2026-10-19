@@ -1,0 +1,38 @@
+{
+  "catalog_id": "ER-09",
+  "input_fields": [
+    {
+      "name": "mismatched_state",
+      "type": "object",
+      "description": "One mismatch with mode explicitly window, document, or script_focus."
+    },
+    {
+      "name": "expected_focus_or_document",
+      "type": "object",
+      "description": "Expected target identity for that one mode."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "restored_state",
+      "type": "object",
+      "description": "Mode, target identity, action observation, and final state."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when one-state recovery cannot be safely observed."
+    }
+  ],
+  "procedure": [
+    "Validate mode and target; reject a request mixing window, document, and script focus.",
+    "Perform one mode-specific action: activate target window, activate target document without closing others, or focus script panel.",
+    "Re-observe selected state and return restored_state; do not load/run/save as a side effect.",
+    "If target cannot be observed or recovery risks user work, return needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject composite recovery, ambiguous targets, and actions closing/overwriting unknown documents.",
+    "Reject modal/busy state that prevents safe observation.",
+    "Do not claim geometry/script success after focus restoration."
+  ]
+}

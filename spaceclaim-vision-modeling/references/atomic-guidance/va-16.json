@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-16",
+  "input_fields": [
+    {
+      "name": "feature_positions",
+      "type": "array",
+      "description": "Resolved positions/axes of one repeated feature set in one coordinate frame."
+    },
+    {
+      "name": "expected_repeat_rule",
+      "type": "object",
+      "description": "One spacing, angular, pitch, or bolt-circle rule to check."
+    },
+    {
+      "name": "tolerance",
+      "type": "number",
+      "description": "Nonnegative comparison tolerance in the rule's units."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "placement_result",
+      "type": "object",
+      "description": "Observed pairwise/rule deviations, frame, and feature identities."
+    },
+    {
+      "name": "comparison_status",
+      "type": "string",
+      "description": "matched, mismatched, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve the supplied feature positions in one frame and validate one expected_repeat_rule.",
+    "Compute the rule-specific spacing/angle/pitch deviations against tolerance.",
+    "Return placement_result and comparison_status with each feature identity.",
+    "Do not search for or create additional repeated instances in this atom."
+  ],
+  "rejection_rules": [
+    "Reject mixed frames, duplicate/ambiguous feature identities, negative tolerance, or multiple rules.",
+    "Reject a visual count as proof of placement.",
+    "Do not repair placement or reorder features."
+  ]
+}

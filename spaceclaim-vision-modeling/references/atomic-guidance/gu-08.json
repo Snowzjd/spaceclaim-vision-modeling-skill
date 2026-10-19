@@ -1,0 +1,43 @@
+{
+  "catalog_id": "GU-08",
+  "input_fields": [
+    {
+      "name": "participant_refs",
+      "type": "array",
+      "description": "至少两个已识别对象的稳定引用；引用身份和来源必须可追溯。"
+    },
+    {
+      "name": "spatial_clues",
+      "type": "object",
+      "description": "同轴、平行、垂直、相切、接触或间隔等原始空间线索；关系类型不能由名称猜测。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "relation",
+      "type": "string",
+      "description": "一个空间关系类别；不可确定时为 null。"
+    },
+    {
+      "name": "participant_refs",
+      "type": "array",
+      "description": "关系实际涉及的对象引用；每个引用要能回到来源或用户输入。"
+    },
+    {
+      "name": "basis",
+      "type": "object",
+      "description": "支持关系的线索、测量或推理说明，分开记录 observed、user 和 derived。"
+    }
+  ],
+  "procedure": [
+    "验证参与对象引用各自对应一个可定位对象，并登记空间线索的原始来源。",
+    "只对一个关系类型进行判定，比较方向、位置、邻接或标注证据，并把用户约束和模型推断分开。",
+    "输出 relation、participant_refs 和 basis；关系或引用不能确定时写 null 并追加 unresolved。",
+    "只记录对象之间的空间关系，不把关系转换为几何尺寸、特征或建模顺序。"
+  ],
+  "rejection_rules": [
+    "少于两个可确认参与对象时拒绝建立空间关系。",
+    "同一线索同时支持多个关系且没有区分依据时不得强选，保留歧义。",
+    "不得用对象名称、预期装配方式或默认坐标方向替代空间证据。"
+  ]
+}

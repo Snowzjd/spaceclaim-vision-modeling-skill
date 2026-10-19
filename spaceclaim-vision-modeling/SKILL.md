@@ -7,7 +7,7 @@ description: Convert images, sketches, engineering drawings, CAD screenshots, pr
 
 Turn visual or textual design intent into a reviewable SpaceClaim modeling plan, executable script, and evidence-bounded validation result.
 
-This is the v0.2 version of the SpaceClaim visual modeling skill. Its scope runs from visual or textual geometry intent through SpaceClaim-native construction and final model validation.
+The v0.3 four-stage architecture preserves the complete modeling workflow as the generic fallback. Its scope runs from visual or textual geometry intent through SpaceClaim-native construction and final model validation. Select atomic operations according to their lifecycle, preconditions and recorded evidence.
 
 ## Core rules
 
@@ -31,6 +31,16 @@ Read [references/integration-boundary.md](references/integration-boundary.md) wh
 
 Load only the resources needed for the current stage:
 
+- After installation or an environment change, use [references/installation-and-runtime.md](references/installation-and-runtime.md) and [scripts/check_installation.py](scripts/check_installation.py) with this package's host virtual environment. Use only the declared vision/file tools, Computer Use runtime and SpaceClaim; do not silently rely on other installed Skills/MCPs. A host-ready result is not live operation acceptance.
+- Read [references/architecture.md](references/architecture.md) when checking stage boundaries, handoff contracts, template routing, compatibility, or future composition.
+- Read [references/workflow-integration.md](references/workflow-integration.md) when resuming, handing work between stages, resolving installed template paths, or using the generic fallback without an eligible template. Use [scripts/validate_workflow_handoff.py](scripts/validate_workflow_handoff.py) for host-only contract/artifact integrity and [scripts/resolve_operation_artifact.py](scripts/resolve_operation_artifact.py) for installation-aware paths; neither establishes CAD acceptance.
+- Read [references/operation-catalog-guide.md](references/operation-catalog-guide.md) and the relevant entries in [references/operation-catalog.json](references/operation-catalog.json) when decomposing a request into atomic actions or identifying implementation gaps. Catalog coverage alone does not establish an executable capability.
+- Read [references/operation-template-contract.md](references/operation-template-contract.md) and [references/operation-registry.json](references/operation-registry.json) before creating, promoting, or applying an atomic operation template. Validate new entries against [references/operation-template.schema.json](references/operation-template.schema.json), [references/operation-registry.schema.json](references/operation-registry.schema.json), and the host-check record contract in [references/operation-evidence.schema.json](references/operation-evidence.schema.json). Load only matching active templates; keep this full workflow as the fallback.
+- Read only the current stage library when selecting an atomic operation: [references/geometry-understanding-operations.md](references/geometry-understanding-operations.md), [references/modeling-strategy-scripting-operations.md](references/modeling-strategy-scripting-operations.md), [references/execution-recovery-operations.md](references/execution-recovery-operations.md), or [references/validation-visual-review-operations.md](references/validation-visual-review-operations.md).
+- For a GU or MS reasoning atom, follow [references/atomic-reasoning-protocol.md](references/atomic-reasoning-protocol.md) and only its selected guidance entry; keep the case's ordered handoff outside the atom.
+- Treat the legacy-path bundle `assets/atomic-cases/001-rectangular-prism/` as a v0.3 composition-case record, not an atomic operation, default model, or source of fixed dimensions. Its exact run evidence belongs only to that complete case.
+- Use [scripts/validate_operation_registry.py](scripts/validate_operation_registry.py) after registry or template changes to reject cross-entry mismatches, missing dependencies, path escapes, missing artifacts, template-byte or evidence-version drift, and SHA-256 mismatches on the host.
+- Use [references/geometry-understanding-output.schema.json](references/geometry-understanding-output.schema.json) and [scripts/validate_geometry_understanding_outputs.py](scripts/validate_geometry_understanding_outputs.py) for schema-bound Geometry-understanding outputs. Treat successful fixture checks as host-only contract evidence, not proof that unseen source material was interpreted correctly.
 - Read [references/validated-capability-matrix.md](references/validated-capability-matrix.md) before claiming that an operation or validation layer is supported.
 - Read [references/modeling-patterns.md](references/modeling-patterns.md) when choosing semantic selectors, Boolean strategy, direct-domain construction, or naming logic.
 - Read [references/failure-recovery.md](references/failure-recovery.md) when a replay or model diverges.
@@ -45,11 +55,9 @@ Load only the resources needed for the current stage:
 
 ## Workflow
 
-### 1. Understand the request and references
+### 1. Geometry understanding
 
 Identify whether the task starts from an image, sketch, engineering drawing, CAD screenshot, product photo, patent diagram, text description, existing script, model, or error log. Extract the user's intended geometry, required outputs, supplied dimensions, target version, and unresolved choices before controlling SpaceClaim.
-
-### 2. Build the geometry contract
 
 Record:
 
@@ -61,31 +69,27 @@ Record:
 
 Read [references/workflow-contracts.md](references/workflow-contracts.md) for the parsing, planning, writing, debugging, and review schemas.
 
-### 3. Select the modeling strategy
+### 2. Modeling strategy and scripting
 
 Prefer deterministic parametric construction. Use GUI interaction only for observations or operations that cannot be reproduced reliably through the available API.
-
-### 4. Generate and preflight the script
 
 Apply [references/spaceclaim-scripting-rules.md](references/spaceclaim-scripting-rules.md). Select the no-baseline or verified baseline-copy path policy explicitly; do not reuse a new-path-only script for an existing copy. Keep version-sensitive calls isolated, use semantic selectors, assert critical counts and dimensions, emit a runtime report, and save only after validation passes. Complete relevant host-side checks before starting desktop control; do not repeat unchanged repository or script audits between routine GUI actions.
 
 When the input is a recorded `.scscript`, run the static auditor first. Numbered smart-variable aliases may be acceptable for a same-topology replay, but they are not reusable semantic selection logic.
 
-### 5. Execute in SpaceClaim
+### 3. Execution and recovery
 
 After authorization, follow [references/execution-workflow.md](references/execution-workflow.md). Use the GUI only to establish the intended document, save or open the run-owned model, load the prepared script, and run it once. Let the script perform geometry construction and assertions. Do not insert manual geometry reviews between familiar setup actions; stop at the entry-state gate, the run-result gate, an exception, and any required save/reopen gate.
 
 Preserve a maximized or full-screen SpaceClaim workspace throughout authorized control by default. Use a temporary smaller layout only for a blocking dialog, required comparison, or explicit user request, then restore it. Calibrate one small reversible navigation motion before relying on the default mouse mapping, because user navigation themes can remap spin, pan, zoom, and wheel behavior.
 
-### 6. Review the final model
+Classify failures as syntax/API, object selection, topology mutation, Boolean semantics, invalid geometry, naming, path/encoding, application state, save, reopen, or export. Patch the smallest responsible step and rerun from a clean design or verified baseline copy.
+
+### 4. Validation and visual review
 
 After the run completes, verify operations, body counts, names, bounding boxes, volumes, requested groups, visual agreement, and output existence in proportion to risk. Follow the deterministic viewpoint ladder and per-image screenshot contract in [references/visual-interaction.md](references/visual-interaction.md). Reopen native output when save persistence matters. When screenshots are archived outside the repository, record their path and SHA-256 and state that the repository cannot independently review their pixels.
 
 Do not claim an unperformed validation layer without corresponding evidence.
-
-### 7. Diagnose and repair
-
-Classify failures as syntax/API, object selection, topology mutation, Boolean semantics, invalid geometry, naming, path/encoding, application state, save, reopen, or export. Patch the smallest responsible stage and rerun from a clean copy.
 
 ## Required handoff
 

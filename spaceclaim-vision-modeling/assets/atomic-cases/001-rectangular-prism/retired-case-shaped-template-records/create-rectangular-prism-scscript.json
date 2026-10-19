@@ -1,0 +1,72 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-rectangular-prism-scscript",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Convert one accepted axis-aligned rectangular-prism contract into a parameterized SpaceClaim V21 .scscript build artifact.",
+  "trigger": "A ready rectangular_prism_geometry contract, V21 target, clean-design entry policy, and distinct run-owned output paths are available.",
+  "inputs": [
+    {"name": "geometry_contract", "type": "rectangular_prism_geometry contract", "required": true, "description": "Accepted primitive parameters, provenance, expected bounds, and volume.", "provenance_required": true},
+    {"name": "target_environment", "type": "SpaceClaim release, API, and Python runtime", "required": true, "description": "Must identify SpaceClaim 2022 R1, API V21, and IronPython 2.7 for this candidate."},
+    {"name": "run_directory", "type": "run-owned filesystem path", "required": true, "description": "Destination namespace for distinct model and report outputs."}
+  ],
+  "preconditions": [
+    "The geometry contract passes the bound schema and host checker with handoff_status ready.",
+    "The target is SpaceClaim 2022 R1/API V21/IronPython 2.7 and the entry policy is a new unsaved design with no bodies.",
+    "Source, .scscript, model, and report outputs are distinct and any overwrite is explicitly authorized."
+  ],
+  "outputs": [
+    {"name": "scscript_artifact", "type": "formal .scscript archive", "required": true, "description": "Executable V21 build package bound to the accepted parameters and run-owned paths."},
+    {"name": "editable_source", "type": "UTF-8 IronPython source", "required": true, "description": "Neighbor source used to package the formal artifact; it is not the file loaded for execution."},
+    {"name": "artifact_identity", "type": "paths and SHA-256 digests", "required": true, "description": "Exact identities for downstream execution."}
+  ],
+  "postconditions": [
+    "The formal output is a deterministic .scscript with API metadata 21 and exact UTF-8 neighbor source.",
+    "Parameters are centralized and changing valid inputs regenerates the artifact without editing template logic.",
+    "The generated script starts from a clean design, re-enumerates bodies, validates bounds, volume, face count, edge count, and name before its only native save.",
+    "Static audit passes with BlockBody.Create required and numbered recorded aliases forbidden."
+  ],
+  "implementation": {"mode": "host_tool", "primary_artifact": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "target_environment": "Host Python 3.9 or newer; emits SpaceClaim 2022 R1/API V21/IronPython 2.7 .scscript artifacts and does not launch SpaceClaim.", "topology_effect": "none", "determinism": "deterministic", "notes": "The emitted script creates topology only when a later execution operation runs it."},
+  "semantic_selection": {"required": true, "criteria": ["bounding_box", "volume", "topology"], "ambiguity_checks": ["The generated script requires exactly one body after creation and rejects any mismatch in bounds, volume, face count, edge count, or name."], "topology_refresh": "The generated script re-enumerates all bodies immediately after creation and again after naming."},
+  "failure_modes": [
+    {"failure_id": "contract_invalid", "condition": "The upstream primitive contract is unresolved or numerically inconsistent.", "detection": "Run the bound schema and semantic checker before output creation.", "safe_state": "No source or .scscript is written."},
+    {"failure_id": "target_unsupported", "condition": "The requested target differs from V21/IronPython 2.7.", "detection": "Compare the build target with this candidate's declared environment.", "safe_state": "Use generic planning or another version-matched template."},
+    {"failure_id": "output_collision", "condition": "A generated output already exists without explicit force.", "detection": "Check canonical output paths before writing.", "safe_state": "Existing artifacts remain unchanged."},
+    {"failure_id": "static_audit_failed", "condition": "The generated archive lacks required structure or violates static policy.", "detection": "Run package and audit checks on the exact output.", "safe_state": "Do not hand the artifact to execution."}
+  ],
+  "recovery": [
+    {"failure_id": "contract_invalid", "action": "Return to the geometry contract, repair the responsible value or provenance, and regenerate.", "clean_rerun_required": true},
+    {"failure_id": "target_unsupported", "action": "Select a version-matched generic strategy and keep this candidate unused.", "clean_rerun_required": true},
+    {"failure_id": "output_collision", "action": "Choose a new run-owned destination or explicitly replace only the intended generated output.", "clean_rerun_required": true},
+    {"failure_id": "static_audit_failed", "action": "Repair the generator or accepted parameters, regenerate both source and package, and rerun the audit.", "clean_rerun_required": true}
+  ],
+  "validation": [
+    {"check": "Parameterized source and package", "method": "Run the atomic rectangular-prism host tests with two parameter sets and inspect the exact archive members.", "expected": "Both parameter sets generate parseable sources and deterministic V21 .scscript packages.", "evidence_layer": "host_checked"},
+    {"check": "Static topology and save guards", "method": "Audit the generated build package and inspect source ordering.", "expected": "Creation is semantic, numbered aliases are absent, topology is re-enumerated, and all critical geometry checks precede the single save.", "evidence_layer": "host_checked"}
+  ],
+  "dependencies": ["geometry_understanding.interpret-rectangular-prism"],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/create-rectangular-prism-scscript-design-review.json", "sha256": "f8f1b9e482e5fd2e1b1bf5a3030f50e20fdafb7a3b74b11aaac19a21a49f3ce1"}]},
+      "host_checked": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/create-rectangular-prism-scscript-host-check.json", "sha256": "92827721e06c5d6ebf2fa188907adb9a1e7d99c9cbb609c56e1a82e7ec36c00f"}]},
+      "spaceclaim_execution": {"status": "not_applicable", "evidence_refs": []},
+      "geometry_measurements": {"status": "not_applicable", "evidence_refs": []},
+      "native_save": {"status": "not_applicable", "evidence_refs": []},
+      "native_reopen": {"status": "not_applicable", "evidence_refs": []},
+      "visual_review": {"status": "not_applicable", "evidence_refs": []},
+      "requested_export": {"status": "not_applicable", "evidence_refs": []}
+    },
+    "notes": "Host evidence covers generation and archive policy. The exact case-001 artifact also completed one controlled V21 run, but runtime behavior belongs to the downstream execution and validation templates and does not by itself activate this generator template."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "role": "implementation", "sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/02-modeling-strategy-scripting/output/create-rectangular-prism.scscript", "role": "evaluation", "sha256": "d99e7d0a5df422bba143503c74bce84ae39d0eaa7ed1a60499b8f833358c80ff"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/create-rectangular-prism-scscript-design-review.json", "role": "evidence", "sha256": "f8f1b9e482e5fd2e1b1bf5a3030f50e20fdafb7a3b74b11aaac19a21a49f3ce1"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/create-rectangular-prism-scscript-host-check.json", "role": "evidence", "sha256": "92827721e06c5d6ebf2fa188907adb9a1e7d99c9cbb609c56e1a82e7ec36c00f"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/04-validation-visual-review/evidence/runtime-evidence.json", "role": "evidence", "sha256": "b10d3c39fd88bfe89331ec4c87e9ff89cce53aa40624614cf4494e0f25452703"}
+  ]
+}

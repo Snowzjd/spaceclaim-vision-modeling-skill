@@ -1,0 +1,3257 @@
+{
+  "catalog_version": 1,
+  "architecture_version": "0.3",
+  "stages": [
+    "geometry_understanding",
+    "modeling_strategy_scripting",
+    "execution_recovery",
+    "validation_visual_review"
+  ],
+  "operations": [
+    {
+      "id": "GU-01",
+      "stage": "geometry_understanding",
+      "name": "识别输入来源类型",
+      "operation": "identify-source-type",
+      "inputs": [
+        "来源文件或文本",
+        "来源上下文"
+      ],
+      "output": "来源类型记录",
+      "preconditions": [
+        "输入可访问且可区分其载体"
+      ],
+      "postcondition": "类型有可追溯依据；混合输入保留多类型或未决",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-source-type",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-02",
+      "stage": "geometry_understanding",
+      "name": "建立来源记录",
+      "operation": "record-source-provenance",
+      "inputs": [
+        "来源文件或文本",
+        "定位信息"
+      ],
+      "output": "来源身份与位置记录",
+      "preconditions": [
+        "具备文件内容或稳定的文本引用"
+      ],
+      "postcondition": "可通过路径或引用、哈希及页码或区域定位原始依据",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.record-source-provenance",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-03",
+      "stage": "geometry_understanding",
+      "name": "识别一个视图及投影关系",
+      "operation": "identify-view-projection",
+      "inputs": [
+        "单个视图",
+        "投影标识或可见线索"
+      ],
+      "output": "视图与投影记录",
+      "preconditions": [
+        "视图边界已定位"
+      ],
+      "postcondition": "方向及正投影或透视有依据；不可确定项不强填",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-view-projection",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-04",
+      "stage": "geometry_understanding",
+      "name": "建立两个视图间的对应关系",
+      "operation": "correspond-items-across-views",
+      "inputs": [
+        "两个视图",
+        "待对应结构标识"
+      ],
+      "output": "跨视图对应记录",
+      "preconditions": [
+        "视图身份及投影信息可用"
+      ],
+      "postcondition": "对应对象在两个视图中均有定位依据；歧义保留",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.correspond-items-across-views",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-05",
+      "stage": "geometry_understanding",
+      "name": "识别一个几何基元",
+      "operation": "identify-geometric-primitive",
+      "inputs": [
+        "来源区域",
+        "观察尺度"
+      ],
+      "output": "单个基元观察记录",
+      "preconditions": [
+        "目标区域可辨认"
+      ],
+      "postcondition": "几何类别与可见边界匹配；隐藏部分标明推断",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-geometric-primitive",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-06",
+      "stage": "geometry_understanding",
+      "name": "识别一个平面轮廓",
+      "operation": "identify-planar-profile",
+      "inputs": [
+        "来源区域",
+        "平面线索"
+      ],
+      "output": "平面轮廓记录",
+      "preconditions": [
+        "轮廓所在区域已定位"
+      ],
+      "postcondition": "边界及平面关系有依据；不把投影变形直接当真实轮廓",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-planar-profile",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-07",
+      "stage": "geometry_understanding",
+      "name": "识别一个局部特征",
+      "operation": "identify-local-feature",
+      "inputs": [
+        "目标区域",
+        "主体上下文"
+      ],
+      "output": "局部特征观察记录",
+      "preconditions": [
+        "主体与局部位置可区分"
+      ],
+      "postcondition": "特征位置及增材或减材含义可追溯；深度缺失明确",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-local-feature",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-08",
+      "stage": "geometry_understanding",
+      "name": "识别一个空间关系",
+      "operation": "identify-spatial-relation",
+      "inputs": [
+        "参与对象引用",
+        "空间线索"
+      ],
+      "output": "单个空间关系记录",
+      "preconditions": [
+        "至少两个参与对象身份确定"
+      ],
+      "postcondition": "同轴、平行等关系对应明确对象；观察与推断分开",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-spatial-relation",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-09",
+      "stage": "geometry_understanding",
+      "name": "识别一个对称关系",
+      "operation": "identify-symmetry-relation",
+      "inputs": [
+        "对象集合",
+        "对称线索"
+      ],
+      "output": "对称轴或平面关系记录",
+      "preconditions": [
+        "存在可检验的对称候选"
+      ],
+      "postcondition": "对称对象与轴或平面一致；只见局部时不推定整体对称",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-symmetry-relation",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-10",
+      "stage": "geometry_understanding",
+      "name": "识别一个重复规则",
+      "operation": "identify-repetition-rule",
+      "inputs": [
+        "特征实例",
+        "尺寸或布置线索"
+      ],
+      "output": "重复规则记录",
+      "preconditions": [
+        "实例可区分且范围明确"
+      ],
+      "postcondition": "数量、间距或角度可追溯；不可见实例不直接计数",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-repetition-rule",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-11",
+      "stage": "geometry_understanding",
+      "name": "提取一个尺寸",
+      "operation": "extract-dimension",
+      "inputs": [
+        "尺寸标注或文字",
+        "目标对象引用"
+      ],
+      "output": "带来源的尺寸记录",
+      "preconditions": [
+        "尺寸指向对象可定位"
+      ],
+      "postcondition": "数值、单位及直径或半径等语义一致；未知值保留",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.extract-dimension",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-12",
+      "stage": "geometry_understanding",
+      "name": "统一一个尺寸单位",
+      "operation": "normalize-dimension-unit",
+      "inputs": [
+        "原尺寸记录",
+        "目标单位"
+      ],
+      "output": "标准化尺寸记录",
+      "preconditions": [
+        "原单位已知且量纲兼容"
+      ],
+      "postcondition": "换算保留原值与来源；量纲不兼容时拒绝",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.normalize-dimension-unit",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-13",
+      "stage": "geometry_understanding",
+      "name": "推导一个尺寸",
+      "operation": "derive-dimension",
+      "inputs": [
+        "已知尺寸记录",
+        "几何约束及公式"
+      ],
+      "output": "派生尺寸记录",
+      "preconditions": [
+        "输入尺寸及推导条件成立"
+      ],
+      "postcondition": "公式、输入引用及结果可复算；无依据时返回未决",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.derive-dimension",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-14",
+      "stage": "geometry_understanding",
+      "name": "检查一个尺寸关系",
+      "operation": "check-dimension-relation",
+      "inputs": [
+        "参与尺寸",
+        "待检验约束",
+        "容差"
+      ],
+      "output": "尺寸关系检查结果",
+      "preconditions": [
+        "约束的作用对象与单位一致"
+      ],
+      "postcondition": "明确一致、冲突、冗余或缺失并给出差值或原因",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.check-dimension-relation",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-15",
+      "stage": "geometry_understanding",
+      "name": "定义一个坐标框架",
+      "operation": "define-coordinate-frame",
+      "inputs": [
+        "原点依据",
+        "轴方向依据",
+        "单位"
+      ],
+      "output": "坐标框架记录",
+      "preconditions": [
+        "坐标选择有来源或明确约定"
+      ],
+      "postcondition": "原点与单位明确；轴正交归一且手性满足约定",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.define-coordinate-frame",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-16",
+      "stage": "geometry_understanding",
+      "name": "建立一个视图到坐标系的映射",
+      "operation": "map-view-to-coordinate-frame",
+      "inputs": [
+        "已识别视图",
+        "坐标框架"
+      ],
+      "output": "视图坐标映射记录",
+      "preconditions": [
+        "框架与视图身份已知"
+      ],
+      "postcondition": "视图方向与模型轴对应一致；不暗改坐标框架",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.map-view-to-coordinate-frame",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-17",
+      "stage": "geometry_understanding",
+      "name": "识别一个边缘处理要求",
+      "operation": "identify-edge-treatment",
+      "inputs": [
+        "边缘标注或文字",
+        "边缘位置引用"
+      ],
+      "output": "边缘处理要求记录",
+      "preconditions": [
+        "处理类型和目标边可定位或标为未决"
+      ],
+      "postcondition": "半径或距离角度及作用范围清楚；视觉估计不充当标注",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.identify-edge-treatment",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-18",
+      "stage": "geometry_understanding",
+      "name": "记录一个假设或未决项",
+      "operation": "record-assumption-or-unresolved-item",
+      "inputs": [
+        "缺失或矛盾信息",
+        "影响对象"
+      ],
+      "output": "假设或未决记录",
+      "preconditions": [
+        "问题可定位到来源或决策"
+      ],
+      "postcondition": "说明依据、置信度、影响与是否阻塞；不默认为已解决",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.record-assumption-or-unresolved-item",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-19",
+      "stage": "geometry_understanding",
+      "name": "推导一个预期测量值",
+      "operation": "derive-expected-measurement",
+      "inputs": [
+        "已接受几何参数",
+        "测量类型",
+        "计算规则"
+      ],
+      "output": "单项预期测量记录",
+      "preconditions": [
+        "测量规则适用于当前几何且参数足够"
+      ],
+      "postcondition": "结果及单位可复算；适用假设和容差保留",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.derive-expected-measurement",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "GU-20",
+      "stage": "geometry_understanding",
+      "name": "记录一个交付要求",
+      "operation": "record-deliverable-requirement",
+      "inputs": [
+        "用户交付描述",
+        "目标对象或文件类型"
+      ],
+      "output": "单项交付要求记录",
+      "preconditions": [
+        "用户要求或确认来源可引用"
+      ],
+      "postcondition": "目标、格式或名称及验收条件明确；额外交付不默认加入",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "geometry_understanding.record-deliverable-requirement",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-01",
+      "stage": "modeling_strategy_scripting",
+      "name": "声明一个参数",
+      "operation": "declare-parameter",
+      "inputs": [
+        "参数名",
+        "来源尺寸",
+        "单位及允许范围"
+      ],
+      "output": "参数声明",
+      "preconditions": [
+        "名称未与其他语义冲突"
+      ],
+      "postcondition": "值、单位、范围和来源一致且可被脚本引用",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.declare-parameter",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-02",
+      "stage": "modeling_strategy_scripting",
+      "name": "验证一个参数约束",
+      "operation": "validate-parameter-constraint",
+      "inputs": [
+        "参数声明",
+        "单项约束"
+      ],
+      "output": "参数约束结果",
+      "preconditions": [
+        "约束量纲明确"
+      ],
+      "postcondition": "有效值通过；违规值给出具体约束及错误",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.validate-parameter-constraint",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-03",
+      "stage": "modeling_strategy_scripting",
+      "name": "为一个特征选择构造方法",
+      "operation": "choose-feature-construction-method",
+      "inputs": [
+        "特征描述",
+        "目标环境",
+        "可用方法"
+      ],
+      "output": "单个特征构造决策",
+      "preconditions": [
+        "特征需求已接受且环境约束明确"
+      ],
+      "postcondition": "方法覆盖目标特征并说明适用前提与替代条件",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.choose-feature-construction-method",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-04",
+      "stage": "modeling_strategy_scripting",
+      "name": "声明一个操作依赖",
+      "operation": "declare-operation-dependency",
+      "inputs": [
+        "两个操作实例",
+        "所需产物或状态"
+      ],
+      "output": "操作依赖边",
+      "preconditions": [
+        "两个实例身份明确且依赖有数据或状态理由"
+      ],
+      "postcondition": "边指向实际前置条件；不引入循环或凭空限制顺序",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.declare-operation-dependency",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-05",
+      "stage": "modeling_strategy_scripting",
+      "name": "绑定一个目标API调用",
+      "operation": "bind-target-api-call",
+      "inputs": [
+        "目标版本",
+        "操作语义",
+        "已查证API签名"
+      ],
+      "output": "版本化调用绑定",
+      "preconditions": [
+        "目标API资料或实测依据可用"
+      ],
+      "postcondition": "参数及返回值类型与指定版本匹配；未知兼容性保留",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.bind-target-api-call",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-06",
+      "stage": "modeling_strategy_scripting",
+      "name": "声明一个语义选择条件",
+      "operation": "declare-semantic-selection-condition",
+      "inputs": [
+        "目标对象要求",
+        "几何属性",
+        "选择容差"
+      ],
+      "output": "语义选择谓词",
+      "preconditions": [
+        "所需属性可测且目标类型确定"
+      ],
+      "postcondition": "条件与目标含义匹配并定义无解及多解处理",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.declare-semantic-selection-condition",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-07",
+      "stage": "modeling_strategy_scripting",
+      "name": "声明一个拓扑刷新点",
+      "operation": "declare-topology-refresh-point",
+      "inputs": [
+        "拓扑修改动作",
+        "受影响对象引用"
+      ],
+      "output": "拓扑刷新声明",
+      "preconditions": [
+        "已知动作可能使哪些引用失效"
+      ],
+      "postcondition": "下一次选择前刷新范围明确且旧引用不再被默认使用",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.declare-topology-refresh-point",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-08",
+      "stage": "modeling_strategy_scripting",
+      "name": "声明一个后置断言",
+      "operation": "declare-postcondition-assertion",
+      "inputs": [
+        "期望属性",
+        "测量方式",
+        "容差"
+      ],
+      "output": "后置断言定义",
+      "preconditions": [
+        "属性可观察且期望有依据"
+      ],
+      "postcondition": "通过和失败判据可执行；断言不改变几何",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "interpretation_evaluation"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.declare-postcondition-assertion",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-09",
+      "stage": "modeling_strategy_scripting",
+      "name": "绑定一个运行输出路径",
+      "operation": "bind-run-output-path",
+      "inputs": [
+        "输出角色",
+        "运行目录",
+        "覆盖策略"
+      ],
+      "output": "输出路径绑定",
+      "preconditions": [
+        "目录归属与策略明确"
+      ],
+      "postcondition": "路径独立且不覆盖基准或其他角色文件",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.bind-run-output-path",
+      "implementation_scope": "P2单动作推理模板；结构及来源解释分别验收，无SpaceClaim运行声明。"
+    },
+    {
+      "id": "MS-10",
+      "stage": "modeling_strategy_scripting",
+      "name": "打包一个.scscript",
+      "operation": "package-scscript",
+      "inputs": [
+        "编辑源脚本",
+        "API元数据",
+        "目标路径"
+      ],
+      "output": "SpaceClaim脚本归档",
+      "preconditions": [
+        "源脚本和元数据有效且输出位置可写"
+      ],
+      "postcondition": "归档结构及元数据满足打包合同",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "active",
+      "registry_operation_id": "modeling_strategy_scripting.package-scscript",
+      "implementation_scope": "受关联注册模板的版本、输入范围和已记录证据限制。"
+    },
+    {
+      "id": "MS-11",
+      "stage": "modeling_strategy_scripting",
+      "name": "静态审计一个.scscript",
+      "operation": "audit-scscript",
+      "inputs": [
+        "脚本归档",
+        "审计策略"
+      ],
+      "output": "静态审计报告",
+      "preconditions": [
+        "输入归档可安全读取"
+      ],
+      "postcondition": "结构、版本标志及策略违规有明确结果；不推定运行成功",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "active",
+      "registry_operation_id": "modeling_strategy_scripting.audit-scscript",
+      "implementation_scope": "受关联注册模板的版本、输入范围和已记录证据限制。"
+    },
+    {
+      "id": "MA-01",
+      "stage": "modeling_strategy_scripting",
+      "name": "创建一个参考坐标框架",
+      "operation": "create-reference-frame",
+      "inputs": [
+        "原点",
+        "轴方向",
+        "目标设计"
+      ],
+      "output": "参考坐标框架对象",
+      "preconditions": [
+        "方向有效且目标设计可写"
+      ],
+      "postcondition": "对象原点及方向符合参数",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-reference-frame",
+      "implementation_scope": "Execute the atomic create-reference-frame operation within the MA-01 boundary: One geometry-reference frame only. The current variant does not create or attach a persistent CoordinateSystem and is not a component/occurrence operation."
+    },
+    {
+      "id": "MA-02",
+      "stage": "modeling_strategy_scripting",
+      "name": "创建一个参考平面",
+      "operation": "create-reference-plane",
+      "inputs": [
+        "点及法向或基准偏移",
+        "目标设计"
+      ],
+      "output": "参考平面对象",
+      "preconditions": [
+        "定位参数确定且法向非零"
+      ],
+      "postcondition": "平面位置与法向符合参数",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-reference-plane",
+      "implementation_scope": "Execute the atomic create-reference-plane operation within the MA-02 boundary: One geometry-reference plane only. It does not create or attach a persistent DatumPlane."
+    },
+    {
+      "id": "MA-03",
+      "stage": "modeling_strategy_scripting",
+      "name": "创建一个参考轴",
+      "operation": "create-reference-axis",
+      "inputs": [
+        "轴上点",
+        "轴方向",
+        "目标设计"
+      ],
+      "output": "参考轴对象",
+      "preconditions": [
+        "方向非零且目标设计可写"
+      ],
+      "postcondition": "轴位置与方向符合参数",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-reference-axis",
+      "implementation_scope": "Execute the atomic create-reference-axis operation within the MA-03 boundary: One geometry-reference line only. It does not create or attach a persistent DesignAxis or DatumLine."
+    },
+    {
+      "id": "MA-04",
+      "stage": "modeling_strategy_scripting",
+      "name": "创建一个参数化平面轮廓",
+      "operation": "create-parameterized-planar-profile",
+      "inputs": [
+        "轮廓类型及尺寸",
+        "所在平面"
+      ],
+      "output": "平面轮廓对象",
+      "preconditions": [
+        "该轮廓类型的参数有效"
+      ],
+      "postcondition": "轮廓平面、尺寸及所需闭合性符合合同",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-parameterized-planar-profile",
+      "implementation_scope": "Execute the atomic create-parameterized-planar-profile operation within the MA-04 boundary: One planar profile construction. It does not extrude, sweep, loft, attach, save, or select a target face."
+    },
+    {
+      "id": "MA-05",
+      "stage": "modeling_strategy_scripting",
+      "name": "按包围盒创建一个块体",
+      "operation": "create-block-from-bounds",
+      "inputs": [
+        "最小最大坐标",
+        "目标设计"
+      ],
+      "output": "块体对象",
+      "preconditions": [
+        "每轴最大值大于最小值且单位明确"
+      ],
+      "postcondition": "块体包围盒与体积符合输入",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-block-from-bounds",
+      "implementation_scope": "Execute the atomic create-block-from-bounds operation within the MA-05 boundary: One root-part block created with BlockBody.Create(..., ExtrudeType.ForceIndependent). The current variant is root-only, does not accept a component or name, and does not batch multiple blocks."
+    },
+    {
+      "id": "MA-06",
+      "stage": "modeling_strategy_scripting",
+      "name": "将一个平面轮廓定距拉伸",
+      "operation": "extrude-planar-profile",
+      "inputs": [
+        "平面轮廓",
+        "有符号距离",
+        "目标设计"
+      ],
+      "output": "定距拉伸实体",
+      "preconditions": [
+        "轮廓及距离满足所用版本模板前提"
+      ],
+      "postcondition": "得到一个新实体且拉伸方向与长度正确",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.extrude-planar-profile",
+      "implementation_scope": "Execute the atomic extrude-planar-profile operation within the MA-06 boundary: One fixed-distance transient extrusion. It does not create a profile, attach a DesignBody, perform target-face/up-to logic, or save a document."
+    },
+    {
+      "id": "MA-07",
+      "stage": "modeling_strategy_scripting",
+      "name": "将一个平面轮廓拉伸至目标面",
+      "operation": "extrude-profile-to-face",
+      "inputs": [
+        "平面轮廓",
+        "方向",
+        "目标面"
+      ],
+      "output": "到面拉伸结果",
+      "preconditions": [
+        "目标面唯一且可沿该方向到达"
+      ],
+      "postcondition": "拉伸端部达到目标面且未无故越界",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.extrude-profile-to-face",
+      "implementation_scope": "Execute the atomic extrude-profile-to-face operation within the MA-07 boundary: One root-part target-face extrusion through the V21 ExtrudeFaces.UpTo command. It does not construct a profile, discover faces, attach a transient body, save, or infer source-sheet consumption from command return order."
+    },
+    {
+      "id": "MA-08",
+      "stage": "modeling_strategy_scripting",
+      "name": "旋转一个轮廓形成实体",
+      "operation": "revolve-profile",
+      "inputs": [
+        "轮廓",
+        "旋转轴",
+        "角度"
+      ],
+      "output": "旋转成形实体",
+      "preconditions": [
+        "轮廓轴关系有效且无未处理自交"
+      ],
+      "postcondition": "实体角度、轴及截面符合合同",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.revolve-profile",
+      "implementation_scope": "Execute the atomic revolve-profile operation within the MA-08 boundary: One root-part planar-face revolution through the V21 RevolveFaces.Execute command and an in-memory Line axis. It does not construct a profile, discover faces, attach a transient body, save, or infer source-sheet consumption from command return order."
+    },
+    {
+      "id": "MA-09",
+      "stage": "modeling_strategy_scripting",
+      "name": "沿路径扫掠一个轮廓",
+      "operation": "sweep-profile-along-path",
+      "inputs": [
+        "轮廓",
+        "连续路径",
+        "定向规则"
+      ],
+      "output": "扫掠结果",
+      "preconditions": [
+        "路径连续且截面定向可定义"
+      ],
+      "postcondition": "截面沿路径连续形成目标体且无无效自交",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.sweep-profile-along-path",
+      "implementation_scope": "Execute the atomic sweep-profile-along-path operation within the MA-09 boundary: One transient SweepProfile action with a caller-supplied ordered path. No profile creation, attachment, Boolean, or persistence is included."
+    },
+    {
+      "id": "MA-10",
+      "stage": "modeling_strategy_scripting",
+      "name": "在多个截面间放样",
+      "operation": "loft-between-sections",
+      "inputs": [
+        "有序截面",
+        "导向或匹配约束"
+      ],
+      "output": "放样结果",
+      "preconditions": [
+        "截面顺序及对应规则明确"
+      ],
+      "postcondition": "结果连接指定截面且满足连续性约定",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.loft-between-sections",
+      "implementation_scope": "Execute the atomic loft-between-sections operation within the MA-10 boundary: Current native solid variant: Loft.Create consumes exactly two supplied planar sheet sections. Section creation is caller-owned; periodic lofts, cap construction, profile-loop creation, and persistence are outside this atom."
+    },
+    {
+      "id": "MA-11",
+      "stage": "modeling_strategy_scripting",
+      "name": "对一个实体抽壳",
+      "operation": "shell-body",
+      "inputs": [
+        "实体",
+        "移除面集合",
+        "厚度及方向"
+      ],
+      "output": "抽壳结果",
+      "preconditions": [
+        "厚度可行且移除面解析无歧义"
+      ],
+      "postcondition": "目标壁厚及开口符合合同且实体有效",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.shell-body",
+      "implementation_scope": "Execute the atomic shell-body operation within the MA-11 boundary: One root-part native shell command. A nonempty valid remove_faces set binds to Shell.RemoveFaces; an empty set binds to Shell.ShellBodies. It does not select faces semantically, save, or infer a result from command return order."
+    },
+    {
+      "id": "MA-12",
+      "stage": "modeling_strategy_scripting",
+      "name": "将一个瞬态实体附加到设计树",
+      "operation": "attach-transient-body",
+      "inputs": [
+        "有效瞬态几何",
+        "目标组件"
+      ],
+      "output": "设计树实体对象",
+      "preconditions": [
+        "瞬态几何有效且未被错误重复附加"
+      ],
+      "postcondition": "新增设计实体对应输入几何；无额外变换",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.attach-transient-body",
+      "implementation_scope": "Execute the atomic attach-transient-body operation within the MA-12 boundary: One transient-to-root-Part attachment. Components/occurrences, naming of other objects, and save/reopen are excluded."
+    },
+    {
+      "id": "MA-13",
+      "stage": "modeling_strategy_scripting",
+      "name": "复制一个实体",
+      "operation": "copy-body",
+      "inputs": [
+        "源实体",
+        "目标组件"
+      ],
+      "output": "复制实体",
+      "preconditions": [
+        "源引用有效且目标组件可写"
+      ],
+      "postcondition": "副本几何匹配源且源实体保持原状",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.copy-body",
+      "implementation_scope": "Execute the atomic copy-body operation within the MA-13 boundary: Geometry-copy variant only. It accepts a current DesignBody or transient source, returns a transient copy, and does not translate, rotate, attach, name, or target a component."
+    },
+    {
+      "id": "MA-14",
+      "stage": "modeling_strategy_scripting",
+      "name": "按向量平移一个实体",
+      "operation": "translate-body",
+      "inputs": [
+        "实体选择条件",
+        "位移向量"
+      ],
+      "output": "平移后实体",
+      "preconditions": [
+        "实体唯一且向量单位明确"
+      ],
+      "postcondition": "位置改变对应向量；形状体积不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.translate-body",
+      "implementation_scope": "Execute the atomic translate-body operation within the MA-14 boundary: Root-only current DesignBody translation through Move.Translate. Component/occurrence editing, copy, and rotation are excluded."
+    },
+    {
+      "id": "MA-15",
+      "stage": "modeling_strategy_scripting",
+      "name": "将一个实体平移至目标面",
+      "operation": "translate-body-to-face",
+      "inputs": [
+        "实体",
+        "对齐参考",
+        "目标面",
+        "平移方向"
+      ],
+      "output": "到面平移结果",
+      "preconditions": [
+        "目标面及对齐语义唯一可行"
+      ],
+      "postcondition": "指定参考到达目标面且实体形状不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.translate-body-to-face",
+      "implementation_scope": "Execute the atomic translate-body-to-face operation within the MA-15 boundary: One root-body translation to a supplied planar target face. The current variant translates without rotation or deformation and requires the supplied reference point to project onto both trimmed faces."
+    },
+    {
+      "id": "MA-16",
+      "stage": "modeling_strategy_scripting",
+      "name": "绕指定轴旋转一个实体",
+      "operation": "rotate-body-about-axis",
+      "inputs": [
+        "实体",
+        "轴上点及方向",
+        "角度"
+      ],
+      "output": "旋转后实体",
+      "preconditions": [
+        "实体与旋转轴明确"
+      ],
+      "postcondition": "位置朝向符合旋转变换；形状体积不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.rotate-body-about-axis",
+      "implementation_scope": "Execute the atomic rotate-body-about-axis operation within the MA-16 boundary: One transient rigid rotation using Line.Create and Matrix.CreateRotation. It does not copy, attach, select, or validate orientation beyond volume preservation."
+    },
+    {
+      "id": "MA-17",
+      "stage": "modeling_strategy_scripting",
+      "name": "镜像一个实体或特征",
+      "operation": "mirror-body-or-feature",
+      "inputs": [
+        "目标对象",
+        "镜像平面",
+        "保留策略"
+      ],
+      "output": "镜像结果",
+      "preconditions": [
+        "目标类型受所选实现支持"
+      ],
+      "postcondition": "结果对平面对称且源保留状态符合合同",
+      "topology_effect": "conditional",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.mirror-body-or-feature",
+      "implementation_scope": "Execute the atomic mirror-body-or-feature operation within the MA-17 boundary: One non-associative root-body mirror across a supplied planar face. Relationships and merging are disabled; feature, component, occurrence, and source-consuming variants are outside this atom."
+    },
+    {
+      "id": "MA-18",
+      "stage": "modeling_strategy_scripting",
+      "name": "对一个原型执行线性阵列",
+      "operation": "create-linear-pattern",
+      "inputs": [
+        "原型",
+        "方向",
+        "数量",
+        "间距"
+      ],
+      "output": "线性阵列结果",
+      "preconditions": [
+        "数量间距有效且副本合并策略明确"
+      ],
+      "postcondition": "实例数量位置符合规则",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-linear-pattern",
+      "implementation_scope": "Execute the atomic create-linear-pattern operation within the MA-18 boundary: One linear array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known translation matrices to copies after index 0, and does not create native associative pattern features, attach bodies, or edit components/occurrences."
+    },
+    {
+      "id": "MA-19",
+      "stage": "modeling_strategy_scripting",
+      "name": "对一个原型执行圆周阵列",
+      "operation": "create-circular-pattern",
+      "inputs": [
+        "原型",
+        "轴",
+        "数量",
+        "角度规则"
+      ],
+      "output": "圆周阵列结果",
+      "preconditions": [
+        "轴及角度口径明确且实例计数定义一致"
+      ],
+      "postcondition": "实例数量角位置符合规则且不重复末端",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-circular-pattern",
+      "implementation_scope": "Execute the atomic create-circular-pattern operation within the MA-19 boundary: One circular array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known axis-rotation matrices to copies after index 0, rejects periodic duplicate angular positions even after wrapped turns, and does not create native associative pattern features, attach bodies, or edit components/occurrences."
+    },
+    {
+      "id": "MA-20",
+      "stage": "modeling_strategy_scripting",
+      "name": "合并一组实体",
+      "operation": "union-bodies",
+      "inputs": [
+        "实体集合",
+        "工具保留策略"
+      ],
+      "output": "布尔并结果集合",
+      "preconditions": [
+        "目标实体有效且连接性预期明确"
+      ],
+      "postcondition": "结果覆盖输入并集且按几何识别；数量符合连接性",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.union-bodies",
+      "implementation_scope": "Execute the atomic union-bodies operation within the MA-20 boundary: Transient Boolean union only. It consumes tools, does not copy them, does not attach a DesignBody, and allows a result with more than one piece."
+    },
+    {
+      "id": "MA-21",
+      "stage": "modeling_strategy_scripting",
+      "name": "从一个目标实体切除工具实体",
+      "operation": "subtract-tool-body",
+      "inputs": [
+        "目标实体",
+        "工具实体",
+        "保留策略"
+      ],
+      "output": "布尔差结果集合",
+      "preconditions": [
+        "目标工具明确且交叠符合预期"
+      ],
+      "postcondition": "结果为目标减工具区域且不按返回顺序识别",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.subtract-tool-body",
+      "implementation_scope": "Execute the atomic subtract-tool-body operation within the MA-21 boundary: Transient Boolean subtraction only. It consumes tool bodies, does not attach or copy, and does not force a single connected result."
+    },
+    {
+      "id": "MA-22",
+      "stage": "modeling_strategy_scripting",
+      "name": "求实体交集",
+      "operation": "intersect-bodies",
+      "inputs": [
+        "实体集合",
+        "保留策略"
+      ],
+      "output": "布尔交结果集合",
+      "preconditions": [
+        "参与实体有效且空交集策略明确"
+      ],
+      "postcondition": "结果对应共有区域；空集或多体明确报告",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.intersect-bodies",
+      "implementation_scope": "Execute the atomic intersect-bodies operation within the MA-22 boundary: Transient Boolean intersection only. It consumes tools, does not attach/copy, and accepts only results that remain closed and nonempty under the current checks."
+    },
+    {
+      "id": "MA-23",
+      "stage": "modeling_strategy_scripting",
+      "name": "用一个平面分割实体",
+      "operation": "split-body-with-plane",
+      "inputs": [
+        "目标实体",
+        "切割平面"
+      ],
+      "output": "分割实体集合",
+      "preconditions": [
+        "切割关系及预期片数明确"
+      ],
+      "postcondition": "片体覆盖原实体且切割边界正确",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.split-body-with-plane",
+      "implementation_scope": "Execute the atomic split-body-with-plane operation within the MA-23 boundary: Transient in-place plane split only. It does not attach, call SeparatePieces, or accept an attached DesignBody/component occurrence."
+    },
+    {
+      "id": "MA-24",
+      "stage": "modeling_strategy_scripting",
+      "name": "参数化分割一个面",
+      "operation": "split-face-parametrically",
+      "inputs": [
+        "目标面",
+        "分割曲线或参数"
+      ],
+      "output": "分割面集合",
+      "preconditions": [
+        "分割轨迹有效且目标面唯一"
+      ],
+      "postcondition": "新面边界符合轨迹；母体体积不变",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.split-face-parametrically",
+      "implementation_scope": "Execute the atomic split-face-parametrically operation within the MA-24 boundary: One in-place split of a current face by supplied trimmed curves through SplitFace.ByCurves. Curve construction, face discovery, body separation, and feature naming are caller-owned or separate operations."
+    },
+    {
+      "id": "MA-25",
+      "stage": "modeling_strategy_scripting",
+      "name": "提取一个封闭体积",
+      "operation": "extract-closed-volume",
+      "inputs": [
+        "封闭边界",
+        "种子或区域选择"
+      ],
+      "output": "提取体积对象",
+      "preconditions": [
+        "边界已闭合且区域可唯一识别"
+      ],
+      "postcondition": "提取体对应指定区域；不含封堵或修补流程",
+      "topology_effect": "conditional",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.extract-closed-volume",
+      "implementation_scope": "Execute the atomic extract-closed-volume operation within the MA-25 boundary: One extraction of an already enclosed volume seeded on a current face through VolumeExtract.Create. It does not cap, repair, heal, name, or otherwise prepare an open boundary."
+    },
+    {
+      "id": "MA-26",
+      "stage": "modeling_strategy_scripting",
+      "name": "对选定边应用恒定圆角",
+      "operation": "apply-constant-fillet",
+      "inputs": [
+        "边集合",
+        "半径"
+      ],
+      "output": "圆角处理结果",
+      "preconditions": [
+        "选边有效且半径几何可行"
+      ],
+      "postcondition": "目标边形成恒定半径圆角且几何有效",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.apply-constant-fillet",
+      "implementation_scope": "Execute the atomic apply-constant-fillet operation within the MA-26 boundary: Root-only constant-radius fillet on a supplied current edge set. Variable-radius rounds, component occurrences, edge discovery, and geometry measurement are excluded."
+    },
+    {
+      "id": "MA-27",
+      "stage": "modeling_strategy_scripting",
+      "name": "对选定边应用等距倒角",
+      "operation": "apply-equal-distance-chamfer",
+      "inputs": [
+        "边集合",
+        "等距距离"
+      ],
+      "output": "倒角处理结果",
+      "preconditions": [
+        "选边有效且距离可行"
+      ],
+      "postcondition": "两侧退让距离符合合同；角度由相邻面关系确定",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.apply-equal-distance-chamfer",
+      "implementation_scope": "Execute the atomic apply-equal-distance-chamfer operation within the MA-27 boundary: Root-only equal-distance chamfer on a supplied current edge set. The Boolean option is fixed to False; asymmetrical/angle-driven variants and component occurrences are excluded."
+    },
+    {
+      "id": "MA-28",
+      "stage": "modeling_strategy_scripting",
+      "name": "语义解析一个实体",
+      "operation": "resolve-body-semantically",
+      "inputs": [
+        "当前实体集合",
+        "语义谓词",
+        "容差"
+      ],
+      "output": "唯一实体引用",
+      "preconditions": [
+        "集合来自当前拓扑"
+      ],
+      "postcondition": "唯一匹配才返回；零匹配或多匹配明确失败",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.resolve-body-semantically",
+      "implementation_scope": "Execute the atomic resolve-body-semantically operation within the MA-28 boundary: Root-only semantic body resolver. Supported criteria are name as an optional filter, plus bbox_mm and/or volume_mm3; name alone is rejected. The action does not mutate geometry."
+    },
+    {
+      "id": "MA-29",
+      "stage": "modeling_strategy_scripting",
+      "name": "语义解析一个面",
+      "operation": "resolve-face-semantically",
+      "inputs": [
+        "当前面集合",
+        "语义谓词",
+        "容差"
+      ],
+      "output": "唯一面引用",
+      "preconditions": [
+        "母体身份确定且引用新鲜"
+      ],
+      "postcondition": "匹配类型、位置、法向等条件且无歧义",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.resolve-face-semantically",
+      "implementation_scope": "Execute the atomic resolve-face-semantically operation within the MA-29 boundary: Root-only semantic face resolver supporting a bounded predicate subset: axis-aligned bbox, area, and outward planar normal. It does not support arbitrary adjacency or a host semantic-selector API."
+    },
+    {
+      "id": "MA-30",
+      "stage": "modeling_strategy_scripting",
+      "name": "语义解析一条边",
+      "operation": "resolve-edge-semantically",
+      "inputs": [
+        "当前边集合",
+        "几何及邻接条件",
+        "容差"
+      ],
+      "output": "唯一边引用",
+      "preconditions": [
+        "母体拓扑为当前状态"
+      ],
+      "postcondition": "边几何与邻接匹配且无歧义",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.resolve-edge-semantically",
+      "implementation_scope": "Execute the atomic resolve-edge-semantically operation within the MA-30 boundary: Root-only semantic edge resolver with a bounded predicate subset: required bbox and optional exact geometry type name. It does not implement adjacency, radius, or arbitrary predicates."
+    },
+    {
+      "id": "MA-31",
+      "stage": "modeling_strategy_scripting",
+      "name": "拓扑变化后重新枚举对象",
+      "operation": "reenumerate-after-topology-change",
+      "inputs": [
+        "当前设计或母体",
+        "刷新对象范围"
+      ],
+      "output": "新鲜对象集合",
+      "preconditions": [
+        "拓扑修改已结束"
+      ],
+      "postcondition": "返回对象属于当前拓扑并失效处理旧缓存",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.reenumerate-after-topology-change",
+      "implementation_scope": "Execute the atomic reenumerate-after-topology-change operation within the MA-31 boundary: Root-only topology refresh/enumeration. It does not repair or validate stale references and does not edit component occurrences."
+    },
+    {
+      "id": "MA-32",
+      "stage": "modeling_strategy_scripting",
+      "name": "修改一个对象名称",
+      "operation": "rename-object",
+      "inputs": [
+        "对象引用",
+        "目标名称",
+        "冲突策略"
+      ],
+      "output": "重命名对象",
+      "preconditions": [
+        "对象有效且名称冲突已处理"
+      ],
+      "postcondition": "目标对象名称匹配且其他对象名称不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.rename-object",
+      "implementation_scope": "Execute the atomic rename-object operation within the MA-32 boundary: Root-only body rename through RenameObject.Execute. It does not rename faces, components, named selections, or occurrences."
+    },
+    {
+      "id": "MA-33",
+      "stage": "modeling_strategy_scripting",
+      "name": "创建一个命名选择组",
+      "operation": "create-named-selection",
+      "inputs": [
+        "已解析成员",
+        "目标组名"
+      ],
+      "output": "命名选择组",
+      "preconditions": [
+        "成员有效且名称可用"
+      ],
+      "postcondition": "组名及成员集合与输入一致",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.create-named-selection",
+      "implementation_scope": "Execute the atomic create-named-selection operation within the MA-33 boundary: Root-only create-only face named-selection group. It does not rename the group, select edges/bodies, or edit component occurrences."
+    },
+    {
+      "id": "MA-34",
+      "stage": "modeling_strategy_scripting",
+      "name": "修改一个命名选择组名称",
+      "operation": "rename-named-selection",
+      "inputs": [
+        "组对象",
+        "目标名称"
+      ],
+      "output": "重命名选择组",
+      "preconditions": [
+        "组身份唯一且名称可用"
+      ],
+      "postcondition": "新名称正确且成员集合保持",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.rename-named-selection",
+      "implementation_scope": "Execute the atomic rename-named-selection operation within the MA-34 boundary: Root/current-window named-selection rename only. It does not create a group, change members, or rename bodies."
+    },
+    {
+      "id": "MA-35",
+      "stage": "modeling_strategy_scripting",
+      "name": "受控导入一个几何文件",
+      "operation": "import-geometry-controlled",
+      "inputs": [
+        "源文件",
+        "目标设计",
+        "单位及格式选项"
+      ],
+      "output": "导入对象集合",
+      "preconditions": [
+        "文件格式受目标版本支持且入口明确"
+      ],
+      "postcondition": "对象来源可追溯且导入单位、数量符合约定",
+      "topology_effect": "creates",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "modeling_strategy_scripting.import-geometry-controlled",
+      "implementation_scope": "Execute the atomic import-geometry-controlled operation within the MA-35 boundary: Controlled native .scdoc component import into the currently active root Part using ImportOptions.Create() and Component.CreateFromFile(Part, string, ImportOptions). It accepts only a non-nested native source, does not open or replace the current document, save or overwrite files, rename current bodies, import foreign formats, or apply unit overrides."
+    },
+    {
+      "id": "EX-01",
+      "stage": "execution_recovery",
+      "name": "确认当前控制授权",
+      "operation": "confirm-control-authorization",
+      "inputs": [
+        "用户授权记录",
+        "当前任务范围"
+      ],
+      "output": "本次控制授权状态",
+      "preconditions": [
+        "授权记录可追溯且作用范围明确"
+      ],
+      "postcondition": "给出适用或不适用结果；已有有效授权不重复询问",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.confirm-control-authorization",
+      "implementation_scope": "Validate the shape and scope of an externally established authorization record; this helper does not authenticate its issuer or expiry."
+    },
+    {
+      "id": "EX-02",
+      "stage": "execution_recovery",
+      "name": "确认目标SpaceClaim会话",
+      "operation": "confirm-target-spaceclaim-session",
+      "inputs": [
+        "会话列表",
+        "目标版本和文档线索"
+      ],
+      "output": "目标会话身份记录",
+      "preconditions": [
+        "候选会话可枚举"
+      ],
+      "postcondition": "唯一会话被识别；歧义未消除不操作",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.confirm-target-spaceclaim-session",
+      "implementation_scope": "Identify exactly one controllable SpaceClaim session matching the requested version and document clues."
+    },
+    {
+      "id": "EX-03",
+      "stage": "execution_recovery",
+      "name": "将SpaceClaim保持为最大化",
+      "operation": "maximize-spaceclaim-window",
+      "inputs": [
+        "目标窗口身份",
+        "布局例外要求"
+      ],
+      "output": "最大化窗口状态",
+      "preconditions": [
+        "会话唯一且窗口可操作"
+      ],
+      "postcondition": "目标窗口最大化或明确记录必要布局例外",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.maximize-spaceclaim-window",
+      "implementation_scope": "Set or confirm the target SpaceClaim window's maximized state while recording any necessary layout exception."
+    },
+    {
+      "id": "EX-04",
+      "stage": "execution_recovery",
+      "name": "创建一个未保存的空白设计",
+      "operation": "create-unsaved-blank-design",
+      "inputs": [
+        "目标会话",
+        "无基准入口要求"
+      ],
+      "output": "未保存空白设计状态",
+      "preconditions": [
+        "会话空闲且不覆盖用户当前工作"
+      ],
+      "postcondition": "新设计成为活动文档且可加载脚本；不做多余空实体检查",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.create-unsaved-blank-design",
+      "implementation_scope": "Create one new unsaved blank SpaceClaim design without overwriting the user's active document."
+    },
+    {
+      "id": "EX-05",
+      "stage": "execution_recovery",
+      "name": "创建一个基准模型副本",
+      "operation": "copy-baseline-model",
+      "inputs": [
+        "基准文件",
+        "运行副本路径"
+      ],
+      "output": "基准副本身份记录",
+      "preconditions": [
+        "源文件可读且副本与基准路径独立"
+      ],
+      "postcondition": "副本哈希与基准一致且基准保持原状",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.copy-baseline-model",
+      "implementation_scope": "Copy one file to a new destination and verify source preservation and matching byte hashes."
+    },
+    {
+      "id": "EX-06",
+      "stage": "execution_recovery",
+      "name": "验证当前活动文档",
+      "operation": "verify-active-document",
+      "inputs": [
+        "活动文档状态",
+        "预期文档身份"
+      ],
+      "output": "活动文档匹配结果",
+      "preconditions": [
+        "可读活动文档身份"
+      ],
+      "postcondition": "实际文档与预期匹配；脚本标签不被误作模型文档",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.verify-active-document",
+      "implementation_scope": "Verify that the actual active SpaceClaim document matches the expected identity before script control."
+    },
+    {
+      "id": "EX-07",
+      "stage": "execution_recovery",
+      "name": "验证运行输出路径",
+      "operation": "verify-run-output-path",
+      "inputs": [
+        "输出路径集合",
+        "运行归属",
+        "覆盖策略"
+      ],
+      "output": "路径验证结果",
+      "preconditions": [
+        "路径可解析且角色已声明"
+      ],
+      "postcondition": "路径无角色碰撞且符合运行归属和覆盖策略",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.verify-run-output-path",
+      "implementation_scope": "Check supplied output roles, containment, reserved paths, reparse components and overwrite policy without writing."
+    },
+    {
+      "id": "EX-08",
+      "stage": "execution_recovery",
+      "name": "加载指定.scscript",
+      "operation": "load-scscript",
+      "inputs": [
+        "脚本路径及哈希",
+        "目标会话"
+      ],
+      "output": "已加载脚本身份",
+      "preconditions": [
+        "归档已准备且会话空闲"
+      ],
+      "postcondition": "指定脚本成为待执行脚本；尚未发起运行",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.load-scscript",
+      "implementation_scope": "Load one hash-identified .scscript into the confirmed SpaceClaim session without starting it."
+    },
+    {
+      "id": "EX-09",
+      "stage": "execution_recovery",
+      "name": "执行脚本一次",
+      "operation": "execute-loaded-scscript-once",
+      "inputs": [
+        "已加载脚本身份",
+        "当前设计身份"
+      ],
+      "output": "单次执行事件",
+      "preconditions": [
+        "授权有效且会话空闲、脚本及文档匹配"
+      ],
+      "postcondition": "恰好发起一次执行；不把发起等同完成",
+      "topology_effect": "conditional",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.execute-loaded-scscript-once",
+      "implementation_scope": "Issue exactly one execution command for the already loaded, hash-identified script in the matching design."
+    },
+    {
+      "id": "EX-10",
+      "stage": "execution_recovery",
+      "name": "等待一次运行终态",
+      "operation": "wait-for-run-terminal-state",
+      "inputs": [
+        "运行事件",
+        "状态观测来源",
+        "超时策略"
+      ],
+      "output": "完成、失败或不确定终态",
+      "preconditions": [
+        "关联到唯一已启动运行"
+      ],
+      "postcondition": "终态有事件依据；等待期间不再次启动脚本",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.wait-for-run-terminal-state",
+      "implementation_scope": "Observe one already-started run until a completion, failure, or explicitly unknown terminal state is supported by events."
+    },
+    {
+      "id": "EX-11",
+      "stage": "execution_recovery",
+      "name": "记录执行文件身份",
+      "operation": "record-executed-artifact-identity",
+      "inputs": [
+        "实际执行脚本",
+        "版本元数据",
+        "运行事件"
+      ],
+      "output": "执行工件身份记录",
+      "preconditions": [
+        "已加载工件与本次运行可关联"
+      ],
+      "postcondition": "路径哈希及版本绑定实际执行内容",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.record-executed-artifact-identity",
+      "implementation_scope": "Bind one hash-checked .scscript and numeric API metadata to a supplied run reference, without claiming it was loaded or executed."
+    },
+    {
+      "id": "EX-12",
+      "stage": "execution_recovery",
+      "name": "捕获最早失败状态",
+      "operation": "capture-earliest-failure-state",
+      "inputs": [
+        "错误日志",
+        "阶段事件",
+        "现场状态"
+      ],
+      "output": "最早失败证据记录",
+      "preconditions": [
+        "失败发生且证据可读取"
+      ],
+      "postcondition": "保存首次错误及上下文；不以连带错误替代根源",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.capture-earliest-failure-state",
+      "implementation_scope": "Extract the earliest recorded failure under a complete comparable chronology or explicit input-order assertion."
+    },
+    {
+      "id": "EX-13",
+      "stage": "execution_recovery",
+      "name": "在关键断言失败时阻止保存",
+      "operation": "block-save-after-critical-failure",
+      "inputs": [
+        "关键断言失败事件",
+        "保存入口"
+      ],
+      "output": "失败未保存状态",
+      "preconditions": [
+        "保存尚未发生且失败事件可关联"
+      ],
+      "postcondition": "本次失败模型未写入预定成功输出",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.block-save-after-critical-failure",
+      "implementation_scope": "Return one critical-failure save-gate decision without ever calling a saver."
+    },
+    {
+      "id": "EX-14",
+      "stage": "execution_recovery",
+      "name": "保存一个通过断言的原生模型",
+      "operation": "save-asserted-native-model",
+      "inputs": [
+        "模型文档",
+        "通过的关键断言",
+        "输出路径"
+      ],
+      "output": "原生模型保存结果",
+      "preconditions": [
+        "文档身份正确且关键断言通过"
+      ],
+      "postcondition": "保存成功及工件身份可证实；失败不声称成功",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "native_save"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.save-asserted-native-model",
+      "implementation_scope": "Save one asserted SpaceClaim document to a new run-owned native path without reopening it."
+    },
+    {
+      "id": "ER-01",
+      "stage": "execution_recovery",
+      "name": "分类一个最早失败",
+      "operation": "classify-earliest-failure",
+      "inputs": [
+        "最早失败记录",
+        "错误类别定义"
+      ],
+      "output": "错误分类结果",
+      "preconditions": [
+        "记录包含发生阶段及原始错误"
+      ],
+      "postcondition": "类别有证据且不确定时不猜修复",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.classify-earliest-failure",
+      "implementation_scope": "Assign an evidence-backed category to one captured earliest failure without guessing a repair."
+    },
+    {
+      "id": "ER-02",
+      "stage": "execution_recovery",
+      "name": "修复一个API或命名空间不匹配",
+      "operation": "repair-api-or-namespace-mismatch",
+      "inputs": [
+        "失败调用",
+        "目标版本签名"
+      ],
+      "output": "修正调用片段",
+      "preconditions": [
+        "错误定位到单个调用或命名空间"
+      ],
+      "postcondition": "调用符合目标签名；无关建模策略不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.repair-api-or-namespace-mismatch",
+      "implementation_scope": "Produce one corrected API call snippet for one located API/namespace mismatch in a target-version signature."
+    },
+    {
+      "id": "ER-03",
+      "stage": "execution_recovery",
+      "name": "修复一个路径或编码问题",
+      "operation": "repair-path-or-encoding",
+      "inputs": [
+        "失败路径或文字",
+        "目标解释器约束"
+      ],
+      "output": "修正路径或编码",
+      "preconditions": [
+        "错误源已定位且目标路径含义明确"
+      ],
+      "postcondition": "解析不再触发该错误且目标文件身份未改变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.repair-path-or-encoding",
+      "implementation_scope": "Produce one corrected path or text-encoding expression while preserving target file identity."
+    },
+    {
+      "id": "ER-04",
+      "stage": "execution_recovery",
+      "name": "加强一个语义选择条件",
+      "operation": "strengthen-semantic-selection",
+      "inputs": [
+        "失败选择谓词",
+        "真实候选属性",
+        "目标语义"
+      ],
+      "output": "修正选择谓词",
+      "preconditions": [
+        "可区分候选且目标有依据"
+      ],
+      "postcondition": "唯一选择匹配目标；不以任意编号消除歧义",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.strengthen-semantic-selection",
+      "implementation_scope": "Produce one selector that uniquely identifies a target from observed semantic candidate properties."
+    },
+    {
+      "id": "ER-05",
+      "stage": "execution_recovery",
+      "name": "插入一个拓扑重新枚举点",
+      "operation": "insert-topology-reenumeration",
+      "inputs": [
+        "失效引用位置",
+        "拓扑修改点",
+        "消费者"
+      ],
+      "output": "刷新点修改",
+      "preconditions": [
+        "旧引用失效因果已定位"
+      ],
+      "postcondition": "消费者使用当前拓扑引用",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.insert-topology-reenumeration",
+      "implementation_scope": "Insert one explicit current-topology enumeration after a located mutation and before its stale-reference consumer."
+    },
+    {
+      "id": "ER-06",
+      "stage": "execution_recovery",
+      "name": "修复一个布尔结果识别逻辑",
+      "operation": "repair-boolean-result-classification",
+      "inputs": [
+        "结果对象集合",
+        "预期几何关系"
+      ],
+      "output": "结果分类逻辑修正",
+      "preconditions": [
+        "布尔运算已完成且实际结果可测"
+      ],
+      "postcondition": "分类依赖几何语义而非返回顺序",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked",
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.repair-boolean-result-classification",
+      "implementation_scope": "Replace one Boolean-result classification based on return order with a geometry-semantic predicate."
+    },
+    {
+      "id": "ER-07",
+      "stage": "execution_recovery",
+      "name": "修复一个开放或无效几何条件",
+      "operation": "repair-open-or-invalid-geometry",
+      "inputs": [
+        "单个已定位缺陷",
+        "已选修复方式",
+        "可修改范围"
+      ],
+      "output": "单缺陷修复结果",
+      "preconditions": [
+        "缺陷及局部修复目标明确"
+      ],
+      "postcondition": "该封闭性或有效性前提恢复且不改变确认尺寸",
+      "topology_effect": "modifies",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.repair-open-or-invalid-geometry",
+      "implementation_scope": "Produce one localized repair action for one identified open/invalid defect without changing confirmed dimensions."
+    },
+    {
+      "id": "ER-08",
+      "stage": "execution_recovery",
+      "name": "解决一个命名冲突",
+      "operation": "resolve-naming-conflict",
+      "inputs": [
+        "目标名称",
+        "冲突对象身份",
+        "命名策略"
+      ],
+      "output": "命名冲突解决结果",
+      "preconditions": [
+        "冲突对象归属及期望明确"
+      ],
+      "postcondition": "目标名称唯一且保留成员或实体身份",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.resolve-naming-conflict",
+      "implementation_scope": "Produce one deterministic rename for one conflict while preserving target identity and membership."
+    },
+    {
+      "id": "ER-09",
+      "stage": "execution_recovery",
+      "name": "恢复一个应用或文档状态",
+      "operation": "restore-application-or-document-state",
+      "inputs": [
+        "一个失配状态",
+        "预期焦点或文档"
+      ],
+      "output": "恢复后的状态",
+      "preconditions": [
+        "失配已定位且恢复不会丢失用户工作"
+      ],
+      "postcondition": "指定状态恢复；其余恢复步骤由外部事务组织",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.restore-application-or-document-state",
+      "implementation_scope": "Restore exactly one mismatched application/document/script-focus state without bundling unrelated recovery."
+    },
+    {
+      "id": "ER-10",
+      "stage": "execution_recovery",
+      "name": "修复一个保存、重开或导出条件",
+      "operation": "repair-persistence-or-export-condition",
+      "inputs": [
+        "一个失败前提",
+        "目标工件身份",
+        "修复策略"
+      ],
+      "output": "持久化前提修正",
+      "preconditions": [
+        "失败局限到路径、格式或权限等具体条件"
+      ],
+      "postcondition": "该前提变为有效；不声称保存重开或导出已完成",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.repair-persistence-or-export-condition",
+      "implementation_scope": "Repair one located persistence/export precondition without claiming save, reopen, or export completion."
+    },
+    {
+      "id": "ER-11",
+      "stage": "execution_recovery",
+      "name": "清理一个本次运行拥有的失败产物",
+      "operation": "remove-run-owned-failed-artifact",
+      "inputs": [
+        "失败文件绝对路径",
+        "归属及失败记录"
+      ],
+      "output": "单个失败产物清理结果",
+      "preconditions": [
+        "目标是明确运行自有失败文件且不是基准或证据"
+      ],
+      "postcondition": "只清理指定文件；保留失败原因及清理记录",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.remove-run-owned-failed-artifact",
+      "implementation_scope": "Quarantine by default, or explicitly delete, exactly one hash-bound run-owned failed file."
+    },
+    {
+      "id": "ER-12",
+      "stage": "execution_recovery",
+      "name": "从干净入口重新运行一次",
+      "operation": "rerun-from-clean-entry",
+      "inputs": [
+        "已恢复的干净入口",
+        "已加载修正脚本",
+        "先前失败引用"
+      ],
+      "output": "关联到失败的单次重跑事件",
+      "preconditions": [
+        "入口恢复、脚本加载和授权均已满足"
+      ],
+      "postcondition": "发起一次可追溯重跑；不包含清理、建新文档或等待终态",
+      "topology_effect": "conditional",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "execution_recovery.rerun-from-clean-entry",
+      "implementation_scope": "Start exactly one traceable rerun from a verified clean entry with an already loaded corrected script."
+    },
+    {
+      "id": "VA-01",
+      "stage": "validation_visual_review",
+      "name": "校验结构化运行报告",
+      "operation": "validate-runtime-report-schema",
+      "inputs": [
+        "运行报告"
+      ],
+      "output": "报告结构验证结果",
+      "preconditions": [
+        "报告可读取"
+      ],
+      "postcondition": "结构及内部一致性有效或给出明确错误",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "active",
+      "registry_operation_id": "validation_visual_review.validate-runtime-report-schema",
+      "implementation_scope": "受关联注册模板的版本、输入范围和已记录证据限制。"
+    },
+    {
+      "id": "VA-02",
+      "stage": "validation_visual_review",
+      "name": "将一个报告与一个契约比较",
+      "operation": "compare-runtime-report-to-contract",
+      "inputs": [
+        "结构有效的报告",
+        "预期契约"
+      ],
+      "output": "报告契约比较结果",
+      "preconditions": [
+        "结构校验通过且契约有效"
+      ],
+      "postcondition": "按声明容差比较且每个不匹配可定位",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "active",
+      "registry_operation_id": "validation_visual_review.compare-runtime-report-to-contract",
+      "implementation_scope": "受关联注册模板的版本、输入范围和已记录证据限制。"
+    },
+    {
+      "id": "VA-03",
+      "stage": "validation_visual_review",
+      "name": "比较前向与重开报告",
+      "operation": "compare-forward-and-reopen-reports",
+      "inputs": [
+        "前向报告",
+        "重开报告"
+      ],
+      "output": "持久化差异结果",
+      "preconditions": [
+        "两报告身份独立且结构有效"
+      ],
+      "postcondition": "差异精确对应字段；报告相同不推定独立运行成功",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "active",
+      "registry_operation_id": "validation_visual_review.compare-runtime-reports",
+      "implementation_scope": "受关联注册模板的版本、输入范围和已记录证据限制。"
+    },
+    {
+      "id": "VA-04",
+      "stage": "validation_visual_review",
+      "name": "枚举当前实体",
+      "operation": "enumerate-bodies",
+      "inputs": [
+        "当前文档或组件"
+      ],
+      "output": "当前实体集合",
+      "preconditions": [
+        "文档身份及枚举范围明确"
+      ],
+      "postcondition": "返回范围内当前实体且不修改几何",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.enumerate-bodies",
+      "implementation_scope": "Enumerate the direct DesignBody children of the live root Part and optionally compare their count with expected_count."
+    },
+    {
+      "id": "VA-05",
+      "stage": "validation_visual_review",
+      "name": "枚举一个实体的面",
+      "operation": "enumerate-body-faces",
+      "inputs": [
+        "当前实体引用"
+      ],
+      "output": "实体当前面集合",
+      "preconditions": [
+        "实体引用有效"
+      ],
+      "postcondition": "返回全部当前面且不混入其他实体",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.enumerate-body-faces",
+      "implementation_scope": "Enumerate the faces owned by one current root-scoped DesignBody and optionally compare their count with expected_count."
+    },
+    {
+      "id": "VA-06",
+      "stage": "validation_visual_review",
+      "name": "枚举一个实体的边",
+      "operation": "enumerate-body-edges",
+      "inputs": [
+        "当前实体引用"
+      ],
+      "output": "实体当前边集合",
+      "preconditions": [
+        "实体引用有效"
+      ],
+      "postcondition": "边集合来自当前拓扑且无过期句柄",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.enumerate-body-edges",
+      "implementation_scope": "Enumerate the edges owned by one current root-scoped DesignBody and optionally compare their count with expected_count."
+    },
+    {
+      "id": "VA-07",
+      "stage": "validation_visual_review",
+      "name": "检查一种对象数量",
+      "operation": "check-object-count",
+      "inputs": [
+        "对象集合",
+        "预期数量"
+      ],
+      "output": "数量匹配结果",
+      "preconditions": [
+        "集合范围及计数口径明确"
+      ],
+      "postcondition": "实际数量与期望可对照",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-object-count",
+      "implementation_scope": "Check the count of supplied current root-scoped objects against expected_count after validating their identity and kind."
+    },
+    {
+      "id": "VA-08",
+      "stage": "validation_visual_review",
+      "name": "测量一个实体包围盒",
+      "operation": "measure-body-bounding-box",
+      "inputs": [
+        "实体引用",
+        "坐标框架",
+        "单位"
+      ],
+      "output": "六边界包围盒记录",
+      "preconditions": [
+        "对象及框架明确"
+      ],
+      "postcondition": "所有边界有限、有序且为指定框架下的几何范围",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-body-bounding-box",
+      "implementation_scope": "Measure one current body's bounding box in a declared frame and unit, optionally comparing it with expected bounds."
+    },
+    {
+      "id": "VA-09",
+      "stage": "validation_visual_review",
+      "name": "测量一个实体体积",
+      "operation": "measure-body-volume",
+      "inputs": [
+        "实体引用",
+        "单位"
+      ],
+      "output": "实体体积记录",
+      "preconditions": [
+        "实体有效且体积度量可用"
+      ],
+      "postcondition": "单位正确并绑定被测对象；无法测量明确报错",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-body-volume",
+      "implementation_scope": "Measure one current body's kernel volume in a declared unit and optionally compare it with expected_volume."
+    },
+    {
+      "id": "VA-10",
+      "stage": "validation_visual_review",
+      "name": "测量一个实体表面积",
+      "operation": "measure-body-surface-area",
+      "inputs": [
+        "实体引用",
+        "单位"
+      ],
+      "output": "实体表面积记录",
+      "preconditions": [
+        "实体表面可测"
+      ],
+      "postcondition": "面积单位及对象正确且数值有限",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-body-surface-area",
+      "implementation_scope": "Measure one current body's kernel surface area in a declared unit and optionally compare it with expected_area."
+    },
+    {
+      "id": "VA-11",
+      "stage": "validation_visual_review",
+      "name": "测量一个面的面积、法向或中心",
+      "operation": "measure-face-semantics",
+      "inputs": [
+        "面引用",
+        "所需属性",
+        "坐标与采样规则"
+      ],
+      "output": "单面测量记录",
+      "preconditions": [
+        "面有效且属性定义明确"
+      ],
+      "postcondition": "所选属性对应该面；曲面法向绑定采样点",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-face-semantics",
+      "implementation_scope": "Read one current face semantic property: area, planar normal, or bounding-box center in the requested frame."
+    },
+    {
+      "id": "VA-12",
+      "stage": "validation_visual_review",
+      "name": "识别一个解析面类型",
+      "operation": "classify-analytic-face-type",
+      "inputs": [
+        "面引用",
+        "类型判据"
+      ],
+      "output": "解析面分类",
+      "preconditions": [
+        "面几何可访问"
+      ],
+      "postcondition": "返回解析类型或未知；不强行将自由曲面拟合为解析面",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.classify-analytic-face-type",
+      "implementation_scope": "Classify one current face by its exposed analytic geometry type without fitting, conversion, or mutation."
+    },
+    {
+      "id": "VA-13",
+      "stage": "validation_visual_review",
+      "name": "测量一个圆柱面的半径、轴和跨度",
+      "operation": "measure-cylindrical-face",
+      "inputs": [
+        "圆柱面",
+        "单位与跨度定义"
+      ],
+      "output": "圆柱面测量记录",
+      "preconditions": [
+        "面已确认是圆柱面"
+      ],
+      "postcondition": "半径轴及修剪后跨度符合实际面域",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-cylindrical-face",
+      "implementation_scope": "Measure a current cylindrical face's radius, axis, and trimmed-face bounding-box projected span in the declared unit."
+    },
+    {
+      "id": "VA-14",
+      "stage": "validation_visual_review",
+      "name": "测量一个圆锥面的角度和跨度",
+      "operation": "measure-conical-face",
+      "inputs": [
+        "圆锥面",
+        "角度口径",
+        "单位"
+      ],
+      "output": "圆锥面测量记录",
+      "preconditions": [
+        "面已确认是圆锥面"
+      ],
+      "postcondition": "半角或全角定义明确且跨度反映修剪面域",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-conical-face",
+      "implementation_scope": "Measure a current conical face's declared half/full angle, axis, and trimmed-face bounding-box projected span."
+    },
+    {
+      "id": "VA-15",
+      "stage": "validation_visual_review",
+      "name": "测量一个环面的圆角半径",
+      "operation": "measure-toroidal-fillet-radius",
+      "inputs": [
+        "环面",
+        "圆角关联",
+        "单位"
+      ],
+      "output": "环面圆角半径记录",
+      "preconditions": [
+        "目标确为相关环面圆角"
+      ],
+      "postcondition": "次半径语义正确；非环面圆角返回不适用",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.measure-toroidal-fillet-radius",
+      "implementation_scope": "Read a current toroidal face's minor radius and report only a caller-declared fillet association."
+    },
+    {
+      "id": "VA-16",
+      "stage": "validation_visual_review",
+      "name": "检查一个重复特征的位置关系",
+      "operation": "check-repeated-feature-placement",
+      "inputs": [
+        "特征位置集合",
+        "预期重复规则",
+        "容差"
+      ],
+      "output": "重复布置误差结果",
+      "preconditions": [
+        "特征身份及坐标框架一致"
+      ],
+      "postcondition": "按间距角度或节圆度量报告误差",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-repeated-feature-placement",
+      "implementation_scope": "Compare caller-supplied ordered feature positions with one linear or circular repetition rule in millimetres."
+    },
+    {
+      "id": "VA-17",
+      "stage": "validation_visual_review",
+      "name": "检查一个对象名称",
+      "operation": "check-object-name",
+      "inputs": [
+        "对象当前名称",
+        "期望名称"
+      ],
+      "output": "名称比较结果",
+      "preconditions": [
+        "对象身份已确认"
+      ],
+      "postcondition": "比较绑定目标对象而非任意同名对象",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-object-name",
+      "implementation_scope": "Compare an expected Unicode-safe name with the name of one resolved current body, face, edge, or group."
+    },
+    {
+      "id": "VA-18",
+      "stage": "validation_visual_review",
+      "name": "检查一个命名组成员",
+      "operation": "check-named-selection-members",
+      "inputs": [
+        "组引用",
+        "期望成员集合"
+      ],
+      "output": "组成员比较结果",
+      "preconditions": [
+        "组唯一且成员标识可比较"
+      ],
+      "postcondition": "核对身份及数量；数量相同不自动判成员一致",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-named-selection-members",
+      "implementation_scope": "Compare a current named group's member identities with a complete expected member set, not count alone."
+    },
+    {
+      "id": "VA-19",
+      "stage": "validation_visual_review",
+      "name": "检查一个输出文件身份",
+      "operation": "check-output-file-identity",
+      "inputs": [
+        "目标路径",
+        "期望角色及身份"
+      ],
+      "output": "文件身份检查结果",
+      "preconditions": [
+        "文件路径与本次运行可关联"
+      ],
+      "postcondition": "存在性及哈希与声明匹配；存在本身不证明运行",
+      "topology_effect": "none",
+      "required_evidence": [
+        "host_checked"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-output-file-identity",
+      "implementation_scope": "Hash one existing output file and compare its identity with an expected SHA-256 digest."
+    },
+    {
+      "id": "VA-20",
+      "stage": "validation_visual_review",
+      "name": "检查原生保存结果",
+      "operation": "check-native-save-result",
+      "inputs": [
+        "保存事件",
+        "输出文档身份"
+      ],
+      "output": "原生保存验收结果",
+      "preconditions": [
+        "保存事件已产生"
+      ],
+      "postcondition": "成功由文件及保存终态支持；陈旧文件不当成新输出",
+      "topology_effect": "none",
+      "required_evidence": [
+        "native_save"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-native-save-result",
+      "implementation_scope": "Validate a native save result by reconciling file identity, save record, run reference, and persistence states."
+    },
+    {
+      "id": "VA-21",
+      "stage": "validation_visual_review",
+      "name": "关闭一个原生模型",
+      "operation": "close-native-model",
+      "inputs": [
+        "目标文档身份",
+        "未保存修改处置"
+      ],
+      "output": "已关闭文档状态",
+      "preconditions": [
+        "文档唯一且修改处置已明确"
+      ],
+      "postcondition": "目标文档关闭且未误关其他工作",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.close-native-model",
+      "implementation_scope": "Close one authorized native model while applying an explicit unsaved-change disposition and reporting close state."
+    },
+    {
+      "id": "VA-22",
+      "stage": "validation_visual_review",
+      "name": "重新打开一个原生模型",
+      "operation": "reopen-native-model",
+      "inputs": [
+        "原生文件身份",
+        "目标会话"
+      ],
+      "output": "重开文档状态",
+      "preconditions": [
+        "文件可读且目标会话准备好"
+      ],
+      "postcondition": "打开的实际文档绑定目标文件",
+      "topology_effect": "none",
+      "required_evidence": [
+        "native_reopen"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.reopen-native-model",
+      "implementation_scope": "Reopen one identified native model in one target session and report the resulting document state."
+    },
+    {
+      "id": "VA-23",
+      "stage": "validation_visual_review",
+      "name": "检查一个重开后属性",
+      "operation": "check-reopened-property",
+      "inputs": [
+        "重开文档",
+        "指定属性",
+        "前向预期",
+        "容差"
+      ],
+      "output": "单属性保持性结果",
+      "preconditions": [
+        "实际文档已重新打开"
+      ],
+      "postcondition": "该属性经重新观测后符合预期或报告差异",
+      "topology_effect": "none",
+      "required_evidence": [
+        "native_reopen",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.check-reopened-property",
+      "implementation_scope": "Check one measured property from a native-reopen observation against an expected value and artifact digest."
+    },
+    {
+      "id": "VA-24",
+      "stage": "validation_visual_review",
+      "name": "执行一个请求的几何导出",
+      "operation": "export-requested-geometry",
+      "inputs": [
+        "实际模型",
+        "输出格式路径",
+        "选项"
+      ],
+      "output": "请求的导出结果",
+      "preconditions": [
+        "用户请求明确且格式受支持"
+      ],
+      "postcondition": "指定几何导出成功且文件身份明确",
+      "topology_effect": "none",
+      "required_evidence": [
+        "requested_export"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.export-requested-geometry",
+      "implementation_scope": "Export the authorized active model to an explicit requested geometry format, path, and options."
+    },
+    {
+      "id": "VA-25",
+      "stage": "validation_visual_review",
+      "name": "重新导入并检查一个导出文件",
+      "operation": "reimport-and-check-export",
+      "inputs": [
+        "已重新导入对象及来源",
+        "单项预期属性",
+        "容差"
+      ],
+      "output": "导出保持性检查结果",
+      "preconditions": [
+        "独立重新导入由MA-35完成且单位已确认"
+      ],
+      "postcondition": "对重新导入对象检查一项保持性；不在此原子内组合导入事务",
+      "topology_effect": "none",
+      "required_evidence": [
+        "requested_export",
+        "geometry_measurements"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.reimport-and-check-export",
+      "implementation_scope": "Check one property measured after reimport against an expected value and the source export artifact digest."
+    },
+    {
+      "id": "VI-01",
+      "stage": "validation_visual_review",
+      "name": "确认最大化且无遮挡的视口",
+      "operation": "confirm-unobstructed-maximized-viewport",
+      "inputs": [
+        "目标窗口状态",
+        "审查对象"
+      ],
+      "output": "视口可审查性结果",
+      "preconditions": [
+        "目标会话唯一"
+      ],
+      "postcondition": "记录最大化及遮挡状态；不隐式调整窗口",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.confirm-unobstructed-maximized-viewport",
+      "implementation_scope": "Confirm that the target SpaceClaim viewport is unobstructed and maximized enough for visual review."
+    },
+    {
+      "id": "VI-02",
+      "stage": "validation_visual_review",
+      "name": "校准一次导航映射",
+      "operation": "calibrate-navigation-mapping",
+      "inputs": [
+        "当前设置或帮助",
+        "受控导航观测"
+      ],
+      "output": "导航映射记录",
+      "preconditions": [
+        "新环境、设置变化或已有映射失效"
+      ],
+      "postcondition": "映射绑定版本和设置；未经实测的组合保持未验证",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.calibrate-navigation-mapping",
+      "implementation_scope": "Calibrate the available navigation input mapping from current settings/help and controlled observations."
+    },
+    {
+      "id": "VI-03",
+      "stage": "validation_visual_review",
+      "name": "左键选择一个对象",
+      "operation": "select-one-object",
+      "inputs": [
+        "可见目标",
+        "选择过滤器",
+        "点击位置"
+      ],
+      "output": "单对象选中状态",
+      "preconditions": [
+        "目标可见且无歧义"
+      ],
+      "postcondition": "实际选中对象符合目标身份",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.select-one-object",
+      "implementation_scope": "Select exactly one visible object using the declared selection filter and click position."
+    },
+    {
+      "id": "VI-04",
+      "stage": "validation_visual_review",
+      "name": "Ctrl加左键增删一个对象",
+      "operation": "toggle-one-selection-member",
+      "inputs": [
+        "当前选择集",
+        "目标对象",
+        "导航映射"
+      ],
+      "output": "增删一个成员后的选择集",
+      "preconditions": [
+        "组合操作已校准且目标可见"
+      ],
+      "postcondition": "只有指定成员增删",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.toggle-one-selection-member",
+      "implementation_scope": "Toggle one target object in the current selection set using calibrated navigation input."
+    },
+    {
+      "id": "VI-05",
+      "stage": "validation_visual_review",
+      "name": "双击选择一个边环",
+      "operation": "select-edge-loop",
+      "inputs": [
+        "可见边",
+        "过滤器",
+        "导航映射"
+      ],
+      "output": "边环选择状态",
+      "preconditions": [
+        "已校准双击效果且目标边环可判定"
+      ],
+      "postcondition": "实际选择集合等于目标边环；不默认双击总是边环",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.select-edge-loop",
+      "implementation_scope": "Select the complete loop associated with one visible target edge using the calibrated loop-selection action."
+    },
+    {
+      "id": "VI-06",
+      "stage": "validation_visual_review",
+      "name": "三击选择一个实体",
+      "operation": "select-complete-body",
+      "inputs": [
+        "可见实体",
+        "过滤器",
+        "导航映射"
+      ],
+      "output": "完整实体选中状态",
+      "preconditions": [
+        "当前模式已确认支持该操作"
+      ],
+      "postcondition": "被选实体与目标一致",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.select-complete-body",
+      "implementation_scope": "Select one complete body deterministically through calibrated input or the available selection filter/menu."
+    },
+    {
+      "id": "VI-07",
+      "stage": "validation_visual_review",
+      "name": "Ctrl加滚轮切换重叠候选",
+      "operation": "cycle-overlapping-preselection",
+      "inputs": [
+        "预选候选",
+        "鼠标位置",
+        "导航映射"
+      ],
+      "output": "切换后的预选状态",
+      "preconditions": [
+        "重叠候选存在且组合键效果已确认"
+      ],
+      "postcondition": "预选变化可观察并能确认当前对象",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.cycle-overlapping-preselection",
+      "implementation_scope": "Cycle through overlapping preselection candidates at a fixed cursor position using calibrated navigation input."
+    },
+    {
+      "id": "VI-08",
+      "stage": "validation_visual_review",
+      "name": "清除当前选择",
+      "operation": "clear-selection",
+      "inputs": [
+        "选择集",
+        "已校准清除操作"
+      ],
+      "output": "空选择状态",
+      "preconditions": [
+        "会话可交互且非运行中"
+      ],
+      "postcondition": "选择集为空且几何不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.clear-selection",
+      "implementation_scope": "Clear the current selection through one calibrated control and report the resulting empty-selection state."
+    },
+    {
+      "id": "VI-09",
+      "stage": "validation_visual_review",
+      "name": "执行一次框选",
+      "operation": "box-select",
+      "inputs": [
+        "屏幕区域",
+        "框选方向",
+        "过滤器"
+      ],
+      "output": "框选集合",
+      "preconditions": [
+        "当前选择模式及包含或相交规则已知"
+      ],
+      "postcondition": "集合符合指定方向和过滤条件",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.box-select",
+      "implementation_scope": "Box-select visible objects inside an explicit screen region using the declared direction and selection filter."
+    },
+    {
+      "id": "VI-10",
+      "stage": "validation_visual_review",
+      "name": "右键打开一次上下文菜单",
+      "operation": "open-context-menu",
+      "inputs": [
+        "上下文目标",
+        "右键位置"
+      ],
+      "output": "上下文菜单状态",
+      "preconditions": [
+        "目标焦点明确"
+      ],
+      "postcondition": "菜单对应目标且尚未执行菜单命令",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.open-context-menu",
+      "implementation_scope": "Open the context menu for one explicit visible target at the declared stationary right-click position."
+    },
+    {
+      "id": "VI-11",
+      "stage": "validation_visual_review",
+      "name": "中键拖动旋转视图",
+      "operation": "rotate-view-with-middle-drag",
+      "inputs": [
+        "视口",
+        "拖动轨迹",
+        "导航映射"
+      ],
+      "output": "旋转后的视角",
+      "preconditions": [
+        "旋转手势已校准且不处于几何移动工具"
+      ],
+      "postcondition": "相机方向变化而模型几何不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.rotate-view-with-middle-drag",
+      "implementation_scope": "Rotate the current view along the declared middle-drag path using calibrated navigation input."
+    },
+    {
+      "id": "VI-12",
+      "stage": "validation_visual_review",
+      "name": "Shift加中键平移视图",
+      "operation": "pan-view-with-shift-middle-drag",
+      "inputs": [
+        "视口",
+        "拖动轨迹",
+        "导航映射"
+      ],
+      "output": "平移后的视图",
+      "preconditions": [
+        "平移手势已校准"
+      ],
+      "postcondition": "画面平移且模型几何及方向不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.pan-view-with-shift-middle-drag",
+      "implementation_scope": "Pan the current view along the declared Shift+middle-drag path using calibrated navigation input."
+    },
+    {
+      "id": "VI-13",
+      "stage": "validation_visual_review",
+      "name": "Ctrl加中键缩放视图",
+      "operation": "zoom-view-with-control-middle-drag",
+      "inputs": [
+        "视口",
+        "拖动轨迹",
+        "导航映射"
+      ],
+      "output": "缩放后的视图",
+      "preconditions": [
+        "缩放手势已校准"
+      ],
+      "postcondition": "显示比例变化且模型尺寸不变",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.zoom-view-with-control-middle-drag",
+      "implementation_scope": "Zoom the current view along the declared Ctrl+middle-drag path using calibrated navigation input."
+    },
+    {
+      "id": "VI-14",
+      "stage": "validation_visual_review",
+      "name": "滚轮缩放视图",
+      "operation": "zoom-view-with-wheel",
+      "inputs": [
+        "视口",
+        "滚轮步数",
+        "导航映射"
+      ],
+      "output": "缩放后的视图",
+      "preconditions": [
+        "滚轮效果已校准且鼠标位于视口"
+      ],
+      "postcondition": "显示比例按预期变化",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.zoom-view-with-wheel",
+      "implementation_scope": "Zoom the current view by the declared wheel-step count and direction over the viewport."
+    },
+    {
+      "id": "VI-15",
+      "stage": "validation_visual_review",
+      "name": "执行一次Zoom Extents",
+      "operation": "zoom-extents",
+      "inputs": [
+        "目标范围",
+        "适配命令"
+      ],
+      "output": "完整适配视图",
+      "preconditions": [
+        "目标模型存在且范围明确"
+      ],
+      "postcondition": "目标完整可见且没有被裁切",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.zoom-extents",
+      "implementation_scope": "Fit the viewport to the declared target model or range through the available fit command."
+    },
+    {
+      "id": "VI-16",
+      "stage": "validation_visual_review",
+      "name": "恢复Home视角",
+      "operation": "restore-home-view",
+      "inputs": [
+        "已知Home设置",
+        "目标会话"
+      ],
+      "output": "Home视角状态",
+      "preconditions": [
+        "Home定义已知"
+      ],
+      "postcondition": "恢复当前设置的Home；不推定跨用户方向一致",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.restore-home-view",
+      "implementation_scope": "Restore the authorized target session to its current Home view definition and report the resulting view state."
+    },
+    {
+      "id": "VI-17",
+      "stage": "validation_visual_review",
+      "name": "切换一个标准视角",
+      "operation": "switch-standard-view",
+      "inputs": [
+        "标准方向",
+        "模型坐标框架"
+      ],
+      "output": "标准视角状态",
+      "preconditions": [
+        "方向及框架已确认"
+      ],
+      "postcondition": "相机方向与指定标准视图一致",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.switch-standard-view",
+      "implementation_scope": "Switch the target session to one declared standard view direction in the confirmed model coordinate frame."
+    },
+    {
+      "id": "VI-18",
+      "stage": "validation_visual_review",
+      "name": "切换一个Plan或Snap视角",
+      "operation": "snap-view-normal-to-plane",
+      "inputs": [
+        "参考平面或面",
+        "视向选择"
+      ],
+      "output": "垂直目标平面的视角",
+      "preconditions": [
+        "目标平面法向确定且选择唯一"
+      ],
+      "postcondition": "视向与法向平行并符合正反侧约定",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.snap-view-normal-to-plane",
+      "implementation_scope": "Snap the view normal to one unique reference plane or face using the declared side convention."
+    },
+    {
+      "id": "VI-19",
+      "stage": "validation_visual_review",
+      "name": "建立一个重点局部视角",
+      "operation": "frame-local-feature-view",
+      "inputs": [
+        "目标特征",
+        "可见性目标",
+        "允许相机调整"
+      ],
+      "output": "重点局部视图",
+      "preconditions": [
+        "目标特征身份确定"
+      ],
+      "postcondition": "特征清晰可见且相机调整不修改几何",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.frame-local-feature-view",
+      "implementation_scope": "Frame one uniquely identified local feature in the viewport while honoring the declared camera-adjustment permission."
+    },
+    {
+      "id": "VI-20",
+      "stage": "validation_visual_review",
+      "name": "对一个视角执行视觉比对",
+      "operation": "compare-one-view-visually",
+      "inputs": [
+        "实际视图",
+        "对应参考",
+        "待检查特征"
+      ],
+      "output": "单视角视觉比对记录",
+      "preconditions": [
+        "视图可比且比例投影差异已考虑"
+      ],
+      "postcondition": "列明一致、差异及无法判断项并绑定图像区域",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.compare-one-view-visually",
+      "implementation_scope": "Compare one actual view with one reference view for the declared feature and record the visual result."
+    },
+    {
+      "id": "VI-21",
+      "stage": "validation_visual_review",
+      "name": "记录一个遮挡或不可判定项",
+      "operation": "record-visual-occlusion-or-uncertainty",
+      "inputs": [
+        "目标特征",
+        "当前视角",
+        "遮挡原因"
+      ],
+      "output": "视觉未决记录",
+      "preconditions": [
+        "目标与不可见原因可定位"
+      ],
+      "postcondition": "说明缺失视角或证据；不把不可见当作结构不存在",
+      "topology_effect": "none",
+      "required_evidence": [
+        "interpretation_evaluation",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.record-visual-occlusion-or-uncertainty",
+      "implementation_scope": "Record visual occlusion or uncertainty for one feature without treating missing visibility as feature absence."
+    },
+    {
+      "id": "VI-22",
+      "stage": "validation_visual_review",
+      "name": "捕获一张证据截图",
+      "operation": "capture-evidence-screenshot",
+      "inputs": [
+        "目标视口",
+        "模型身份",
+        "视角及选择状态",
+        "预期和观察"
+      ],
+      "output": "带元数据的截图工件",
+      "preconditions": [
+        "目标模型及审查视角已确认"
+      ],
+      "postcondition": "截图身份哈希及上下文可追溯且实际显示匹配",
+      "topology_effect": "none",
+      "required_evidence": [
+        "spaceclaim_execution",
+        "visual_review"
+      ],
+      "lifecycle": "candidate",
+      "registry_operation_id": "validation_visual_review.capture-evidence-screenshot",
+      "implementation_scope": "Capture an evidence screenshot for the confirmed model, viewport state, and expected-versus-observed claim."
+    }
+  ]
+}

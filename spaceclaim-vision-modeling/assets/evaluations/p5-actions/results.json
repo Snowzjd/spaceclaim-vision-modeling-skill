@@ -1,0 +1,507 @@
+{
+  "format": "p5-independent-results",
+  "format_version": 1,
+  "evaluation_boundary": "Synthetic inputs applied to the matching guidance only; no GUI, SpaceClaim, native file, geometry, save/reopen, or export operation was performed.",
+  "cases": [
+    {
+      "catalog_id": "VA-04",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-04.json",
+      "guidance_sha256": "0733b413b3271f6e6be77995144dbf684e8b1c9007bf4a82f20cc21240d44aca",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Bind the current synthetic document/root scope and enumerate its current bodies once without ordinal selection.",
+      "bounded_output_fields": [
+        "body_collection",
+        "enumeration_scope"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-05",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-05.json",
+      "guidance_sha256": "50b404c625240b25a41f8a56a8a0adfb7393d2779f13ec45f37c0b836535822f",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "The body reference must be made unique before any face enumeration.",
+      "resolution_request": "Provide one current body identity and ownership binding; do not choose between the two occurrence candidates.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-06",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-06.json",
+      "guidance_sha256": "b634449d6768ea760db836242de9a82b2186015d414f9770b2fa95f6eadeef36",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "No edge enumeration is permitted without a current body snapshot.",
+      "resolution_request": "Supply a readable current body reference/ownership record, then re-evaluate.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-07",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-07.json",
+      "guidance_sha256": "00b1bcff5bd75dec76c279dcfe83d4f6cdd090c188def1fbfda729daa85976fe",
+      "input_state": "contradictory",
+      "disposition": "plan_only",
+      "single_action_plan": "Count the supplied collection once and compare the declared count under the stated solid-body scope.",
+      "bounded_output_fields": [
+        "count_result",
+        "comparison_status"
+      ],
+      "uncertainty": "The synthetic collection carries three IDs and a declared count of two; no runtime count or comparison was performed."
+    },
+    {
+      "catalog_id": "VA-08",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-08.json",
+      "guidance_sha256": "3db92ad1ac013d8bb615725158e6a6a2cfe561453750d01bfb89867793666a15",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Resolve body-08 in global-mm and read its six kernel bounds once.",
+      "bounded_output_fields": [
+        "bounding_box_record",
+        "measurement_status"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-09",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-09.json",
+      "guidance_sha256": "acee31c32d1741006a2f99f075b694543d773d02c304ee3699c26c0f36b6fc26",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "The body reference resolves to two candidate bodies, so a volume cannot be bound to one object.",
+      "resolution_request": "Provide one current body identity and its measurement unit.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-10",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-10.json",
+      "guidance_sha256": "baf9bddbdbb435a41d35f84435168e9ebdf1c3ffc1a41de3960fd2105d1244af",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The body surface-area measurement is absent; no value may be substituted from volume or a face.",
+      "resolution_request": "Provide one current body and a kernel surface-area observation in a compatible unit.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-11",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-11.json",
+      "guidance_sha256": "c1142f9420db619b26d854157f673c6700b94534e6740c11172393d395537608",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The request combines area, normal, and center, and the supplied normal samples disagree; the guide permits one property/record only.",
+      "resolution_request": "Select one property with one compatible sampling rule, then re-evaluate.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-12",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-12.json",
+      "guidance_sha256": "e8ae7d59d251dec710cacde7585beeb8deae0a05d55a638ccf4eec4c589e20d9",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Read the underlying geometry type of face-12 once and compare it with the analytic-type criterion.",
+      "bounded_output_fields": [
+        "face_type",
+        "classification_status"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-13",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-13.json",
+      "guidance_sha256": "981a794664f7cb94131b2c85a1ae769e1cc3590886adb2435f9ff5f91783da21",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two cylinder-axis candidates are supplied for one face, so radius/axis/span cannot be bound uniquely.",
+      "resolution_request": "Provide one cylindrical face identity and one resolved axis/span interpretation.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-14",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-14.json",
+      "guidance_sha256": "8c785e2b409f4316b718e308350303a37a4f3d69114b935fe439bec72257b961",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The conical angle convention is absent; half-angle versus full-angle cannot be inferred.",
+      "resolution_request": "Supply one explicit angle convention and measurement frame.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-15",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-15.json",
+      "guidance_sha256": "d2ec3ffc6f8511e73a8d67e503a248e620a7bb5ec1d12057ef43a1bec90414a9",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The torus association is unresolved and the supplied major/minor radii are physically inconsistent for the requested fillet radius.",
+      "resolution_request": "Provide one relevant toroidal fillet association and a finite radius record.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-16",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-16.json",
+      "guidance_sha256": "66fe3604c8afaf18feb84104c5a03f877d89c78f428c1599b5c79ef9e640d4d4",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Compare the three supplied feature positions against the one linear 20-mm rule in the common global frame.",
+      "bounded_output_fields": [
+        "placement_result",
+        "comparison_status"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-17",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-17.json",
+      "guidance_sha256": "747950d02c2e2ced80bf6dbcb4290ff6a94e910589cde8373971c1afeb27f81b",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two objects have the same observed name and no unique target identity is supplied.",
+      "resolution_request": "Provide one object identity independent of the name.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-18",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-18.json",
+      "guidance_sha256": "af43f1c94f786f1ea06999f431ee16bb56e0df8b2abb2d7b01495756d6894c89",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The expected member identity set is absent; count-only comparison is prohibited.",
+      "resolution_request": "Supply the complete expected member identity set.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-19",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-19.json",
+      "guidance_sha256": "0921fd10ce206d461059aaad7745d3ba682fb031fa5550b475841c5d0815b597",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The declared and observed hashes differ, and the synthetic URI is not an observed absolute regular file path.",
+      "resolution_request": "Provide one observed file identity and resolve the hash/path conflict; do not replace the declared hash.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-20",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-20.json",
+      "guidance_sha256": "667ff1a09a43b94e7e91dc253c1ac0b4da5f4274b6feba21e99f587bd90be626",
+      "input_state": "normal",
+      "disposition": "refuse",
+      "refusal_reason": "The input has a completed-looking save event but lacks the guide's explicit passed save_record/hash binding and uses a synthetic path.",
+      "resolution_request": "Provide a matching run_ref, passed save_record, expected hash, and observed file identity; no native-save observation is inferred.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-21",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-21.json",
+      "guidance_sha256": "8dd17372d04de5f6ca33d7ec3bb9d548999c3eab1fe65ae5c34ce061d1904737",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two open documents match the supplied title/path clues, so one close target cannot be selected safely.",
+      "resolution_request": "Provide one unique document identity and an explicit save/discard/cancel disposition.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-22",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-22.json",
+      "guidance_sha256": "9f8b49a2b04672f1876cdbcfe9672d5f71b4f16f8f5e01bbd17c7819cda0a52f",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The target SpaceClaim session is absent, so one native file cannot be bound to one opening session.",
+      "resolution_request": "Provide one unique prepared target session.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-23",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-23.json",
+      "guidance_sha256": "f5864441726ef71dd0c79ed515246eed96431e1f9260c10524e196dd78fee079",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The raw input lacks the required single native_reopen observation and artifact hash, while the supplied property values differ.",
+      "resolution_request": "Provide one bound observation, artifact hash, scalar/vector reference, and tolerance; do not infer reopen evidence.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-24",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-24.json",
+      "guidance_sha256": "f53dfcf0ba3061f60dc8290f9365c03156cdabf29b5c930622ecbbdd77d64f3b",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Verify the supplied model, STEP path, and explicit options, then issue one visible export request only.",
+      "bounded_output_fields": [
+        "export_result",
+        "export_status"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VA-25",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/va-25.json",
+      "guidance_sha256": "0db0ae37aefcafa89bf19bd65960271e05fc4b67167b56efc7ad20e48b102764",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two reimported objects share the source and no single measured observation/reference value/artifact hash is supplied.",
+      "resolution_request": "Select one imported object and provide one bound property observation, reference value, artifact hash, tolerance, and action identity.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-01",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-01.json",
+      "guidance_sha256": "228a6ba702429c9e2e20921013f75e096fef52fc385fa6469178c932c0b977e4",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "Maximized/unobstructed window state and review-object visibility are missing.",
+      "resolution_request": "Supply one observed target window state and review-object visibility record; do not resize the window in this atom.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-02",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-02.json",
+      "guidance_sha256": "a30e5e0dabb98c9c1003cc0dc30b70b3d0653ccf03f41157d0c141ac71691273",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The controlled mapping contains both orbit/pan results for the same middle-drag gesture and two profiles.",
+      "resolution_request": "Repeat no gesture; provide one current settings/profile and one bound reversible observation.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-03",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-03.json",
+      "guidance_sha256": "67116fd7d90f85f72dd1b1c45ee3f08cfdfadf898e5f9b437ba8e35ccfd69bf1",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Set the body filter, use the supplied pre-highlighted point, and issue one ordinary left click.",
+      "bounded_output_fields": [
+        "selection_state"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-04",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-04.json",
+      "guidance_sha256": "3a7e8b5507070e947788bfb7484246c47abf8818c41f7a8d65b7c191db5ca6f3",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "The target semantic object has two occurrences, so a Ctrl-toggle cannot be bound to one visible target.",
+      "resolution_request": "Provide one occurrence identity and a bound current selection set.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-05",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-05.json",
+      "guidance_sha256": "14483f8e9465f52a2b68e404b1d7bfc583db9ec3dd34df6cac9db0ce261c432e",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The double-click mapping/calibration is absent, so the loop gesture is not safe to issue.",
+      "resolution_request": "Provide one calibrated double-click or verified loop-selection equivalent.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-06",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-06.json",
+      "guidance_sha256": "859ebac4b2a10a253c6860ea4a524bef9e154db016fa3e538f5b88f6b9ff487d",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The active filter says face while the gesture binding says complete body; one body-selection mode must be resolved first.",
+      "resolution_request": "Provide one body/solid filter and one verified triple-click/equivalent mapping.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-07",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-07.json",
+      "guidance_sha256": "3561e5202776d819396b9318cd0faa06cb89a937ccd56223900e1c644c88783f",
+      "input_state": "normal",
+      "disposition": "refuse",
+      "refusal_reason": "Two candidates overlap at the cursor, but the input does not identify the currently preselected candidate/order.",
+      "resolution_request": "Provide the observed preselection state before one cycle; do not click or commit selection.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-08",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-08.json",
+      "guidance_sha256": "8ee286f6949489abf9ff8dfcf2040b779690cdb85ea19cc51cacf6fe78ce8c49",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "The clear control is calibrated, but the supplied selection set is not bound to an observed active session state.",
+      "resolution_request": "Provide one current observed selection set and session state before clearing once.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-09",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-09.json",
+      "guidance_sha256": "ce7a7ed1175c5991a879ddcc8bc889f76a4ab3bc7093fe5fea4ab925ca87ed1d",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The viewport rectangle is absent, so a box drag cannot be bounded.",
+      "resolution_request": "Supply one screen-region rectangle and retain the declared direction/filter.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-10",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-10.json",
+      "guidance_sha256": "42ac17b94c3765cc998f7d102fc0f6114fdd7498aa91bfbbaf28a9218dc60156",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The context target is face-vi10 but the focus/menu state identifies body-vi10.",
+      "resolution_request": "Resolve one focus/context identity before issuing a stationary right click.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-11",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-11.json",
+      "guidance_sha256": "f65db1cb289f027a4bb66baeb1780b6961971d25ce62dc4ea22603be6e68b5bc",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Verify the empty maximized viewport and middle-drag Spin mapping, then perform one short rotation drag.",
+      "bounded_output_fields": [
+        "rotated_view"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-12",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-12.json",
+      "guidance_sha256": "130e0d9f424f0e11d7f5072aae51336dfeed315b940896ee309b6016054a6666",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two navigation profiles map the same lateral drag to different actions.",
+      "resolution_request": "Bind one current navigation mapping or verified Pan equivalent before any drag.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-13",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-13.json",
+      "guidance_sha256": "5b53ec37e56b68d9c8ec73c11c43a1fa72081eadc7c388d3cd6f7c78336bafdc",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The Ctrl+middle Zoom mapping/equivalent is absent.",
+      "resolution_request": "Provide one calibrated mapping or Zoom-tool equivalent and a declared drag direction.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-14",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-14.json",
+      "guidance_sha256": "7ede1694b8b1814d55eaed26c5feb8c7c4a9ade7217b8c20b7bd240f3e4e97ec",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The wheel mapping says positive steps zoom in while the supplied observed/recorded scale factors conflict.",
+      "resolution_request": "Resolve the current calibrated direction and one observation before issuing one wheel action.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-15",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-15.json",
+      "guidance_sha256": "a4a8fc1587606bd3b72dd75915195bf055214fd155ae65c188343a48c2ec28f7",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Resolve the whole-model range and issue one verified Zoom Extents/fit command.",
+      "bounded_output_fields": [
+        "fitted_view"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-16",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-16.json",
+      "guidance_sha256": "66d5ee1fd9caef7f9ede4e1f89897f5949fce70878b1d576bfc8fa17f09ff7e5",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "Two Home definitions are supplied for the target session.",
+      "resolution_request": "Select one session-bound Home definition before issuing one Home action.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-17",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-17.json",
+      "guidance_sha256": "0f6a511bec6c93232ab1983803d376fa8b1e35074079144f477f8104374b8ebd",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "The model coordinate frame is absent, so a standard direction cannot be interpreted exactly.",
+      "resolution_request": "Supply the confirmed model coordinate frame.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-18",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-18.json",
+      "guidance_sha256": "7ca1967cd670b7c0173f0b6847a0d869ccb622869580299ec5519d780722ee2f",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The declared back side and raw +normal view direction conflict with the supplied front/back convention.",
+      "resolution_request": "Resolve the side convention and derived direction; do not trust the contradictory raw direction.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-19",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-19.json",
+      "guidance_sha256": "a01f987c80a43f8fccc5ca2354bfb82d263fb35945ceca5fdf66a5333eee2190",
+      "input_state": "normal",
+      "disposition": "plan_only",
+      "single_action_plan": "Resolve fillet-vi19 and use only the permitted calibrated camera adjustments to create one focused local view.",
+      "bounded_output_fields": [
+        "local_feature_view"
+      ],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-20",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-20.json",
+      "guidance_sha256": "f48cae4c50d1930bd7246ef3a9a88f2a1e996e4f18c31c98bfed20dd7afb0144",
+      "input_state": "ambiguous",
+      "disposition": "refuse",
+      "refusal_reason": "The reference projection is null, so actual/reference views are not yet comparable despite matching direction.",
+      "resolution_request": "Provide comparable projection/scale context and one corresponding reference image region.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-21",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-21.json",
+      "guidance_sha256": "d80f6b0868a6f2023d72feeb541d50f9c46ba6623cdd7bcc4d3322a45aab51d3",
+      "input_state": "missing",
+      "disposition": "refuse",
+      "refusal_reason": "No occlusion/uncertainty reason is supplied.",
+      "resolution_request": "Record the visible symptom and smallest missing view/evidence before creating the uncertainty record.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    },
+    {
+      "catalog_id": "VI-22",
+     "guidance_file": "spaceclaim-vision-modeling/references/atomic-guidance/vi-22.json",
+      "guidance_sha256": "704ea3221a7a8534c98f944141404c40bde158920e302bea7d68c691baf232b7",
+      "input_state": "contradictory",
+      "disposition": "refuse",
+      "refusal_reason": "The model hashes conflict, expected_and_observed metadata is absent, and maximized/selection-ready viewport state is not established.",
+      "resolution_request": "Return to EX-03/VI-08 for preparation, then provide matching model identity and expected_and_observed metadata; VI-22 itself must only capture one ready viewport.",
+      "bounded_output_fields": [],
+      "uncertainty": "Synthetic input only; no SpaceClaim session, GUI gesture, native file, geometry measurement, save/reopen, or export was observed."
+    }
+  ]
+}

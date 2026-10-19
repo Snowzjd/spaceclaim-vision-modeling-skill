@@ -1,0 +1,22 @@
+{
+  "operation_id": "modeling_strategy_scripting.bind-run-output-path",
+  "template_version": "0.3.1",
+  "catalog_id": "MS-09",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "输出路径绑定",
+    "declared_inputs": [
+      "output_role",
+      "run_directory",
+      "overwrite_policy",
+      "known_paths"
+    ],
+    "result_fields": [
+      "output_path_binding",
+      "collision_check"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

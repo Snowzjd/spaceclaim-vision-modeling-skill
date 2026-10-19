@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-02",
+  "input_fields": [
+    {
+      "name": "current_settings_or_help",
+      "type": "object",
+      "description": "Installed navigation theme/options or relevant help reference."
+    },
+    {
+      "name": "controlled_navigation_observation",
+      "type": "object",
+      "description": "One small reversible motion on empty viewport with controller capability and observed result."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Version/settings-bound mapping for the tested intent and supported equivalent controls."
+    },
+    {
+      "name": "calibration_status",
+      "type": "string",
+      "description": "verified, unsupported, mismatched, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Record installed version/navigation settings and place the cursor over empty viewport space.",
+    "Check controller capability before trying the requested gesture; do not claim a combined input from configuration alone.",
+    "Perform one short reversible motion, observe the actual camera/selection effect, and bind it to the tested intent.",
+    "If unsupported or mismatched, return calibration_status accordingly and record Spin/Pan/Zoom tool or View-menu equivalent without claiming the original gesture."
+  ],
+  "rejection_rules": [
+    "Reject calibration on selected geometry, a blocked viewport, or an unobservable result.",
+    "Do not repeatedly retry an unsupported shortcut/gesture.",
+    "Do not mark untested combinations verified from documentation alone."
+  ]
+}

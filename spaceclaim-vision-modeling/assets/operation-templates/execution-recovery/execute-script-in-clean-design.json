@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.execute-script-in-clean-design",
+  "template_version": "0.1.1",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Execute one exact prepared .scscript once in an authorized clean SpaceClaim design and record the earliest success or failure state.",
+  "trigger": "A hash-bound .scscript, matching build contract, current desktop authorization, clean-design entry policy, and run-owned output paths are available.",
+  "inputs": [
+    {"name": "scscript_artifact", "type": "path and SHA-256", "required": true, "description": "The exact formal artifact to load and run.", "provenance_required": true},
+    {"name": "build_contract", "type": "accepted build contract", "required": true, "description": "Target environment, entry state, expected outputs, checkpoints, and safe-stop rules."},
+    {"name": "desktop_authorization", "type": "current-run authorization record", "required": true, "description": "Permission to control the user's SpaceClaim session for this run."}
+  ],
+  "preconditions": [
+    "SpaceClaim is in the declared target environment, its window is maximized, and no blocking dialog is present.",
+    "The active document is a new unsaved design with no bodies because no baseline model was supplied.",
+    "The exact .scscript digest is recorded and its run-owned outputs do not exist.",
+    "The user has authorized desktop control for this run."
+  ],
+  "outputs": [
+    {"name": "execution_contract", "type": "structured execution record", "required": true, "description": "Observed entry state, exact artifact identity, stage events, outputs, failure state, recovery actions, and save state."},
+    {"name": "runtime_report", "type": "run-owned JSON or null", "required": true, "description": "The report emitted by the exact script when available; it remains declared runtime data until independently checked."},
+    {"name": "model_artifact", "type": "native model identity or null", "required": true, "description": "The saved model path and digest only when the script reaches its save checkpoint."}
+  ],
+  "postconditions": [
+    "The exact artifact is run no more than once in the observed clean entry state.",
+    "Success records the exact output identities and stage result; failure records the earliest incorrect state.",
+    "A critical assertion failure does not produce an accepted saved model.",
+    "Uncertain completion or partial geometry requires a safe stop and clean rerun rather than another Run click."
+  ],
+  "implementation": {"mode": "computer_use", "primary_artifact": null, "target_environment": "Authorized SpaceClaim desktop session matching the build contract; keep the active window maximized during operation.", "topology_effect": "creates", "determinism": "interactive", "notes": "The controller sequence is defined by the linked execution workflow; no standalone controller implementation is published in this candidate."},
+  "semantic_selection": {"required": false, "criteria": [], "ambiguity_checks": ["Confirm the application, document, script identity, blocking-dialog state, and output ownership before the single Run action."], "topology_refresh": "The executed script, not the controller, owns geometry re-enumeration after creation."},
+  "failure_modes": [
+    {"failure_id": "wrong_entry_state", "condition": "The active document is not the required clean design.", "detection": "Observe document identity and absence of bodies before loading the script.", "safe_state": "Do not run the artifact."},
+    {"failure_id": "load_or_run_error", "condition": "The formal script cannot be loaded or reports an immediate runtime error.", "detection": "Capture the exact dialog, console, or script error before any retry.", "safe_state": "Stop without accepting or saving partial geometry."},
+    {"failure_id": "uncertain_completion", "condition": "The controller cannot determine whether the script is still running or has finished.", "detection": "No final report, error, or stable post-run state is observable.", "safe_state": "Do not press Run again; preserve the current state for diagnosis."},
+    {"failure_id": "incomplete_output", "condition": "The script finishes without the required report or native model checkpoint.", "detection": "Compare run-owned outputs with the build contract.", "safe_state": "Mark the run failed and do not infer success from visible geometry alone."}
+  ],
+  "recovery": [
+    {"failure_id": "wrong_entry_state", "action": "Create the required new design, then repeat the entry gate before loading the script.", "clean_rerun_required": true},
+    {"failure_id": "load_or_run_error", "action": "Record the error, remove only run-owned failed outputs, repair the responsible upstream artifact, and restart from a new design.", "clean_rerun_required": true},
+    {"failure_id": "uncertain_completion", "action": "Wait for a meaningful completion signal or diagnose the current run; never issue a second Run action to probe state.", "clean_rerun_required": true},
+    {"failure_id": "incomplete_output", "action": "Classify the earliest missing checkpoint, repair that stage, and rerun from a new design.", "clean_rerun_required": true}
+  ],
+  "validation": [
+    {"check": "Execution transaction design", "method": "Review the candidate against the clean-design workflow and recovery contract.", "expected": "The entry gate, single-run rule, earliest-failure capture, safe stop, and clean rerun are explicit.", "evidence_layer": "design_only"},
+    {"check": "Exact artifact execution", "method": "Observe a controlled SpaceClaim run and bind the result to the .scscript SHA-256.", "expected": "The exact artifact runs once and produces the declared terminal state.", "evidence_layer": "spaceclaim_execution"}
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.1",
+    "layers": {
+      "design_only": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/execute-script-in-clean-design-design-review.json", "sha256": "4d7caf3665d220c2b9b48ce0d77fa1f3113b1a7d175c00a1097a5a31067649ad"}]},
+      "host_checked": {"status": "not_tested", "evidence_refs": []},
+      "spaceclaim_execution": {"status": "not_tested", "evidence_refs": []},
+      "geometry_measurements": {"status": "not_tested", "evidence_refs": []},
+      "native_save": {"status": "not_tested", "evidence_refs": []},
+      "native_reopen": {"status": "not_tested", "evidence_refs": []},
+      "visual_review": {"status": "not_tested", "evidence_refs": []},
+      "requested_export": {"status": "not_applicable", "evidence_refs": []}
+    },
+    "notes": "This operation accepts any exact prepared .scscript that satisfies its build contract. Composition-case runtime evidence is not inherited; reusable controller runtime layers remain not_tested."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/references/execution-workflow.md", "role": "reference"},
+    {"path": "spaceclaim-vision-modeling/references/failure-recovery.md", "role": "reference"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/execute-script-in-clean-design-design-review.json", "role": "evidence", "sha256": "4d7caf3665d220c2b9b48ce0d77fa1f3113b1a7d175c00a1097a5a31067649ad"}
+  ]
+}

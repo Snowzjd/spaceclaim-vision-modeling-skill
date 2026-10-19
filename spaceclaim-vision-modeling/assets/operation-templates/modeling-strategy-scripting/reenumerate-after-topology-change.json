@@ -1,0 +1,202 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.reenumerate-after-topology-change",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic reenumerate-after-topology-change operation within the MA-31 boundary: Root-only topology refresh/enumeration. It does not repair or validate stale references and does not edit component occurrences.",
+  "trigger": "Use when the build plan requires reenumerate-after-topology-change and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "current_design",
+      "type": "active root design context",
+      "required": false,
+      "description": "Implicit active root design enumerated by the action; no explicit operation parameter is consumed."
+    }
+  ],
+  "preconditions": [
+    "A readable root part/document context is available."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{bodies: list<DesignBody>, faces: list<face>, edges: list<edge>} freshly enumerated from the root part."
+    }
+  ],
+  "postconditions": [
+    "The returned lists come from a new current_bodies() enumeration and flatten each body's current Faces and Edges collections."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-31.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic reenumerate-after-topology-change operation within the MA-31 boundary: Root-only topology refresh/enumeration. It does not repair or validate stale references and does not edit component occurrences. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "Explicitly reacquires root DesignBodies, faces, and edges; callers must discard previous cached references."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "enumeration_failure",
+      "condition": "Root descendant enumeration or topology access raises.",
+      "detection": "Root descendant enumeration or topology access raises.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "enumeration_failure",
+      "action": "Stop and diagnose document/runtime state; rerun after the document is stable.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: The returned lists come from a new current_bodies() enumeration and flatten each body's current Faces and Edges collections.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The returned lists come from a new current_bodies() enumeration and flatten each body's current Faces and Edges collections.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-31-host-check.json",
+            "sha256": "d8150242c7b2ba2f8b409a21e8142b6ef554a7c6786aac87b3cd7932abfb8443"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-31-host-check.json",
+            "sha256": "d8150242c7b2ba2f8b409a21e8142b6ef554a7c6786aac87b3cd7932abfb8443"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-31.scscript",
+      "sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-31.py",
+      "sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-31.action.py",
+      "sha256": "f47151530126a3900345402989766daaa3835dd7acdf19db761eb1d9026b1b73",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-31-host-check.json",
+      "sha256": "d8150242c7b2ba2f8b409a21e8142b6ef554a7c6786aac87b3cd7932abfb8443",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

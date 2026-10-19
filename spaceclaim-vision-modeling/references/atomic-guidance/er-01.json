@@ -1,0 +1,38 @@
+{
+  "catalog_id": "ER-01",
+  "input_fields": [
+    {
+      "name": "earliest_failure",
+      "type": "object",
+      "description": "Captured first error, stage, source location, run reference, and observed state."
+    },
+    {
+      "name": "error_category_definitions",
+      "type": "array",
+      "description": "Versioned category definitions and evidence predicates."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "failure_classification",
+      "type": "object",
+      "description": "One category, supporting fields, confidence, and unresolved items."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when evidence does not distinguish one category."
+    }
+  ],
+  "procedure": [
+    "Compare stage, API/source location, state, and message against category predicates.",
+    "Return one classification with supporting references and confidence; retain competing categories when unresolved.",
+    "Set needs_manual_review when two categories remain plausible or no definition matches.",
+    "Keep repair selection outside this classification atom."
+  ],
+  "rejection_rules": [
+    "Reject missing chronology, unversioned definitions, or classification from a later cascade error.",
+    "Do not convert a category guess into a repair.",
+    "Do not hide missing evidence in a generic category."
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "status": "passed", 
+  "schema_version": 1, 
+  "suite_id": "p3-actions-import", 
+  "tests": [
+    {
+      "status": "passed", 
+      "id": "negative-source-hash", 
+      "actions": [
+        "MA-35"
+      ], 
+      "checks": {
+        "component_count_unchanged": true, 
+        "hash_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-source-extension", 
+      "actions": [
+        "MA-35"
+      ], 
+      "checks": {
+        "component_count_unchanged": true, 
+        "extension_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "positive-native-import", 
+      "actions": [
+        "MA-35"
+      ], 
+      "checks": {
+        "component_count_after": 1, 
+        "measurements": [
+          {
+            "bbox_mm": [
+              346.0, 
+              -4.0, 
+              0.0, 
+              354.0, 
+              4.0, 
+              12.000000000000002
+            ], 
+            "volume_mm3": 448.00000000000045
+          }
+        ], 
+        "new_component_count": 1, 
+        "source_sha256": "e779ad946f30b2f2e6d2d20b8b45b622af64de3fdac39289768bef520cd61e7c", 
+        "body_count": 1
+      }
+    }
+  ], 
+  "events": [
+    {
+      "status": "rejected", 
+      "archive_sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0", 
+      "id": "MA-35", 
+      "source_sha256": "2a6ddbe5e5c1691999da767dd1dcb1184aff8196eb418ab2eedff0c4a141f24f", 
+      "reason": "Traceback (most recent call last):\n  File \"f9ddfbb6-dacf-42a0-b2ab-6cce074a2891\", line 14, in _call\n  File \"MA-35::_script\", line 252, in <module>\n  File \"MA-35::_script\", line 188, in operation\nValueError: source_sha256 does not match source_path\n"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0", 
+      "id": "MA-35", 
+      "source_sha256": "2a6ddbe5e5c1691999da767dd1dcb1184aff8196eb418ab2eedff0c4a141f24f", 
+      "reason": "Traceback (most recent call last):\n  File \"f9ddfbb6-dacf-42a0-b2ab-6cce074a2891\", line 14, in _call\n  File \"MA-35::_script\", line 252, in <module>\n  File \"MA-35::_script\", line 144, in operation\nValueError: Only native .scdoc sources are supported\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0", 
+      "id": "MA-35", 
+      "source_sha256": "2a6ddbe5e5c1691999da767dd1dcb1184aff8196eb418ab2eedff0c4a141f24f"
+    }
+  ]
+}

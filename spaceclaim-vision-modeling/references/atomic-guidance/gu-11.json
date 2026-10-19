@@ -1,0 +1,48 @@
+{
+  "catalog_id": "GU-11",
+  "input_fields": [
+    {
+      "name": "dimension_annotation_or_text",
+      "type": "object",
+      "description": "原始尺寸标注、文本或用户明确给出的数值及其 source_ref；原值和单位不可丢失。"
+    },
+    {
+      "name": "target_object_ref",
+      "type": "string",
+      "description": "尺寸指向的对象稳定引用；不能由邻近位置猜测目标。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "原始来源支持的数值；无法读取或存在冲突时为 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "原始单位或用户明确单位；未知时为 null，不默认使用工作单位。"
+    },
+    {
+      "name": "quantity_kind",
+      "type": "string",
+      "description": "length、diameter、radius、angle、count 或其他明确量纲语义；不确定时为 null。"
+    },
+    {
+      "name": "target_ref",
+      "type": "string",
+      "description": "实际被标注对象的引用；目标不清时为 null。"
+    }
+  ],
+  "procedure": [
+    "定位一条尺寸标注或一段尺寸文字，逐字保留原始数值、单位、符号和 source_ref。",
+    "将标注指向与 quantity_kind 分开确认；来源直接给出时标为 observed，用户补充标为 user，解析语义标为 derived。",
+    "输出 value、unit、quantity_kind 和 target_ref；任一项不能可靠确定时写 null，并附 provenance 与 unresolved。",
+    "只提取一个尺寸，不进行单位换算、公式推导或尺寸关系检查。"
+  ],
+  "rejection_rules": [
+    "标注对象无法定位、文字不可读或数值与单位冲突时拒绝给出确定尺寸。",
+    "直径、半径、弧长、角度等语义不清时不得用邻近符号或常识补全。",
+    "不得将图像像素、显示比例或未标注的几何估计当作原始尺寸。"
+  ]
+}

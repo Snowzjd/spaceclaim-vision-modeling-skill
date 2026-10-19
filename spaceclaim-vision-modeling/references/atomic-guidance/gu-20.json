@@ -1,0 +1,48 @@
+{
+  "catalog_id": "GU-20",
+  "input_fields": [
+    {
+      "name": "user_deliverable_description",
+      "type": "string",
+      "description": "用户明确提出的交付内容、格式、名称或验收要求；原文和确认状态必须保留。"
+    },
+    {
+      "name": "target_object_or_file_type",
+      "type": "string",
+      "description": "交付针对的对象引用、文件类型或载体；不把默认输出当作用户要求。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "requirement_id",
+      "type": "string",
+      "description": "单项交付要求的稳定标识；无法建立标识时为 null。"
+    },
+    {
+      "name": "target_ref",
+      "type": "string",
+      "description": "要求作用的对象或文件类型引用；目标不明确时为 null。"
+    },
+    {
+      "name": "deliverable_format",
+      "type": "string",
+      "description": "用户明确要求的格式、载体或命名约束；未说明时为 null。"
+    },
+    {
+      "name": "acceptance_conditions",
+      "type": "array",
+      "description": "用户给出的可检查验收条件；条件未知或含糊时保留未决项。"
+    }
+  ],
+  "procedure": [
+    "逐句读取用户交付描述，提取一个目标、一个格式/名称约束和可检查的验收条件，并保留原文引用。",
+    "将用户明确内容标为 user，将来源中已有要求标为 observed，任何解释性补充标为 derived。",
+    "输出 requirement_id、target_ref、deliverable_format 和 acceptance_conditions；未明确字段写 null，并附 provenance 与 unresolved。",
+    "只记录一个单项交付要求，不把工程惯例、默认文件或后续工作步骤加入用户要求。"
+  ],
+  "rejection_rules": [
+    "没有可引用的用户要求、来源要求或目标对象时拒绝创建确定交付要求。",
+    "格式、名称或验收条件互相冲突时不得选择一个默认解释，应保留冲突和未决包。",
+    "不得把模型建议、模板默认值或内部工作产物声称为用户要求。"
+  ]
+}

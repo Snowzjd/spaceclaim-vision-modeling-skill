@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-03",
+  "input_fields": [
+    {
+      "name": "target_window",
+      "type": "object",
+      "description": "Stable target window identity and observed current state."
+    },
+    {
+      "name": "layout_exception",
+      "type": "object",
+      "description": "Declared reason and bounds for an exception that prevents maximization."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "window_state",
+      "type": "object",
+      "description": "Observed final maximized state, bounds, and window identity."
+    },
+    {
+      "name": "exception_record",
+      "type": "object",
+      "description": "Empty when maximized; otherwise explicit exception reason and affected interaction."
+    }
+  ],
+  "procedure": [
+    "Verify target identity and current bounds before sending a maximize command.",
+    "Apply one maximize action only when not already maximized; otherwise record the observed state.",
+    "If a declared exception is necessary, preserve its bounds and reason instead of forcing maximize.",
+    "Re-observe and return window_state plus exception_record."
+  ],
+  "rejection_rules": [
+    "Reject a non-unique or non-controllable window.",
+    "Reject an undeclared exception; do not reduce the window for convenience.",
+    "Do not bundle document activation, script loading, or visual review."
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "template_version": "0.2.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "geometry_understanding",
+  "purpose": "Define a provenance-aware coordinate frame from source cues and user constraints while keeping unsupported orientation or unit choices unresolved.",
+  "trigger": "A geometry contract lacks a usable origin, axis orientation, handedness, or unit context needed to describe spatial relations consistently.",
+  "inputs": [
+    {
+      "name": "geometry_observations",
+      "type": "provenance-aware geometry observation context",
+      "required": true,
+      "description": "Observed primitives, features, relations, and coordinate cues from visual or textual sources; each item retains observation, user, inference, or unresolved provenance.",
+      "provenance_required": true
+    },
+    {
+      "name": "frame_constraints",
+      "type": "user-supplied coordinate and unit constraints",
+      "required": false,
+      "description": "Optional user input for origin, axes, handedness, or units, kept distinct from source observations and inferred orientation.",
+      "provenance_required": true
+    },
+    {
+      "name": "source_locators",
+      "type": "optional source viewpoint and locator record",
+      "required": false,
+      "description": "Locations of axis marks, datums, annotations, or other frame cues used to support the definition; missing cues remain unresolved.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "The geometry observation context identifies the features or cues that could anchor an origin or axis, with source locators when available.",
+    "Any user frame constraint is explicitly identified as user input and no missing orientation, handedness, or unit is replaced by a silent default.",
+    "The operation is limited to coordinate-frame description and does not modify geometry, reconcile dimensions, or prescribe construction operations."
+  ],
+  "outputs": [
+    {
+      "name": "coordinate_system",
+      "type": "provenance-aware coordinate-frame record",
+      "required": true,
+      "description": "Origin, axes, handedness, unit context, and reference cues with explicit observation, user, inference, or unresolved provenance for each component.",
+      "provenance_required": true
+    },
+    {
+      "name": "frame_assumptions",
+      "type": "provenance-aware frame-assumption list",
+      "required": true,
+      "description": "Assumptions used to complete the frame, each with rationale, source support, confidence, and unresolved alternatives where applicable.",
+      "provenance_required": true
+    },
+    {
+      "name": "unresolved_items",
+      "type": "provenance-aware frame ambiguity list",
+      "required": true,
+      "description": "Missing or conflicting origin, axis, handedness, or unit cues retained as unresolved items with the smallest clarification needed.",
+      "provenance_required": true
+    },
+    {
+      "name": "frame_confidence",
+      "type": "provenance-aware confidence record",
+      "required": true,
+      "description": "Confidence and rationale for each frame component, distinguishing direct observation, user input, inference, and unresolved uncertainty.",
+      "provenance_required": true
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+    "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+  },
+  "postconditions": [
+    "Origin, axes, handedness, and unit context are each labeled observation, user, inference, or unresolved and retain supporting source cues when available.",
+    "The coordinate system is usable only when its required components are supported; conflicting or missing components remain unresolved rather than receiving defaults.",
+    "Frame assumptions and orientation decisions are traceable and do not change geometry, dimensional values, or construction order.",
+    "The output exposes confidence and clarification needs for the downstream geometry contract."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Visual/text reasoning only; no SpaceClaim runtime or application control.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone implementation artifact is published; this candidate is a contract-bound reasoning boundary assembled from linked general reference guidance."
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+    "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No application geometry is selected; frame anchors are matched to semantic feature descriptions and source locators.",
+      "Audit origin, axes, handedness, units, and assumptions for observation, user, inference, or unresolved provenance before handoff."
+    ],
+    "topology_refresh": "Not applicable because the operation does not create or modify geometry topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "frame_cues_insufficient",
+      "condition": "The source and user constraints do not support a usable origin, axis orientation, handedness, or unit context.",
+      "detection": "Check required frame components and supporting locators before accepting the coordinate system.",
+      "safe_state": "Keep unsupported components unresolved and do not emit a ready geometry handoff."
+    },
+    {
+      "failure_id": "orientation_conflict",
+      "condition": "Observed cues and user constraints imply incompatible origins, axis directions, handedness, or units.",
+      "detection": "Compare each cue and constraint with its provenance and record incompatible alternatives.",
+      "safe_state": "Preserve the competing frames as unresolved and make no automatic orientation choice."
+    },
+    {
+      "failure_id": "provenance_gap",
+      "condition": "A frame component or assumption cannot be labeled as observation, user, inference, or unresolved with adequate source context.",
+      "detection": "Run a provenance completeness audit over the coordinate system and assumptions.",
+      "safe_state": "Mark the affected component unresolved and withhold a ready handoff."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "frame_cues_insufficient",
+      "action": "Add the smallest missing datum, axis cue, unit statement, or user constraint and rerun frame definition.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "orientation_conflict",
+      "action": "Request an explicit user choice or clarifying source evidence, then rerun from the original cues.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "provenance_gap",
+      "action": "Restore source or user provenance for the affected component and rerun the completeness audit.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Atomic coordinate-frame boundary",
+      "method": "Review the template against the geometry-understanding stage contract and linked general guidance.",
+      "expected": "The operation defines a frame description only; it does not reconcile dimensions, alter geometry, choose a construction order, or run an application.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Frame provenance and unresolved handling",
+      "method": "Inspect input/output declarations, postconditions, failure modes, and recovery for observation, user, inference, and unresolved paths.",
+      "expected": "Each frame component is traceable and unsupported or conflicting cues remain unresolved rather than receiving defaults.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Case neutrality and evidence boundary",
+      "method": "Review identifiers, wording, artifact links, and evidence states for case-specific names, private data, numeric examples, and unsupported runtime claims.",
+      "expected": "The template is reusable across source types and claims design intent only.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Schema and neutral fixture invariants",
+      "method": "Validate resolved, underdetermined, and deliberately inconsistent frame outputs with the bound host checker.",
+      "expected": "Resolved axes are finite, normalized, orthogonal, handedness-consistent, source-view mapped, and blocking frame gaps cannot be marked ready.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.2.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/define-coordinate-frame-design-review.json",
+            "sha256": "8ecaa46423e22c0f7dab27abfdf92132a78f0436b2269263975459f3db228a53",
+            "notes": "Public design-only review record for this exact candidate template version."
+          }
+        ],
+        "notes": "Atomicity, provenance separation, case neutrality, and the no-runtime boundary were reviewed."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/define-coordinate-frame-host-check.json",
+            "sha256": "ba6df6094c16eae8a147d49e63179f289dcdbbc66607876a903b1af1ce0ac73a",
+            "notes": "Host-only schema and neutral fixture check for this exact candidate version."
+          }
+        ],
+        "notes": "The bound host checker passed structural and deterministic frame invariants; it did not evaluate unseen-source frame interpretation accuracy."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This operation does not launch or control SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model is measured; the operation records source frame interpretation only."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is saved."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is reopened."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This is source-frame reasoning, not final viewport or image acceptance."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No geometry export is produced."
+      }
+    },
+    "notes": "Evidence stops at design_only and host_checked; unseen-source frame-mapping accuracy and all application, measurement, persistence, visual-acceptance, and export layers remain unclaimed."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/workflow-contracts.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+      "role": "reference",
+      "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+      "role": "evaluation",
+      "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/fixture-manifest.json",
+      "role": "test",
+      "sha256": "929d3848db553fa3bfcbac1a40e7929880db9a092ed45836f60ac725461f9b30"
+    },
+    {
+      "path": "tests/test_geometry_understanding_outputs.py",
+      "role": "test",
+      "sha256": "7cdf71aa614ed0861a602387ed25f8d7c7b0f2ac9b0ae107dd01b0faa2b930e8"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/define-coordinate-frame-host-check.json",
+      "role": "evidence",
+      "sha256": "ba6df6094c16eae8a147d49e63179f289dcdbbc66607876a903b1af1ce0ac73a"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/define-coordinate-frame-design-review.json",
+      "role": "evidence",
+      "sha256": "8ecaa46423e22c0f7dab27abfdf92132a78f0436b2269263975459f3db228a53"
+    }
+  ]
+}

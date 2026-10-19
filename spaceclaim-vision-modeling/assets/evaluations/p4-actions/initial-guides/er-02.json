@@ -1,0 +1,43 @@
+{
+  "catalog_id": "ER-02",
+  "input_fields": [
+    {
+      "name": "failed_call",
+      "type": "object",
+      "description": "One failing call expression, source location, error, and unchanged surrounding context."
+    },
+    {
+      "name": "target_version_signature",
+      "type": "object",
+      "description": "Target API owner, namespace/member, argument names/types, and authoritative reference."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "corrected_call_snippet",
+      "type": "string",
+      "description": "One copyable replacement call, not a workflow."
+    },
+    {
+      "name": "changed_binding",
+      "type": "object",
+      "description": "Old/new namespace/member/argument binding and reason."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when target signature or one-call boundary is unproven."
+    }
+  ],
+  "procedure": [
+    "Parse owner, member, arguments, and error location; preserve unrelated arguments and strategy.",
+    "Compare with target_version_signature and replace only the mismatched binding.",
+    "Emit one corrected_call_snippet plus changed_binding and source references.",
+    "If signature cannot be verified, emit needs_manual_review=true and an empty snippet."
+  ],
+  "rejection_rules": [
+    "Reject multiple calls, missing target signature, or changes that alter geometry strategy.",
+    "Reject arbitrary namespace renaming from another version.",
+    "Do not claim corrected call executed."
+  ]
+}

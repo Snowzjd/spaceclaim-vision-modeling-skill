@@ -1,0 +1,22 @@
+{
+  "fixture_manifest_version": 1,
+  "schema_path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+  "schema_sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d",
+  "operation_template_versions": {
+    "geometry_understanding.extract-geometry-observations": "0.2.0",
+    "geometry_understanding.reconcile-dimensions": "0.2.0",
+    "geometry_understanding.define-coordinate-frame": "0.2.0"
+  },
+  "fixtures": [
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/extract-ready.json", "sha256": "2840f148badf91025f8e0fbeded49aa11b65089e9f27ecc232a42032b251091e", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/extract-ambiguous.json", "sha256": "3d7dbce3e86537c4da65571770a22ae77a9cb3e70b486e621a9b28ddd16160fa", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/extract-invalid-blocking-ready.json", "sha256": "43cdc39222f20b2ac29064ee938cdbc021002457ffc8b6af6ab6469f2bb8b8bf", "expected_valid": false, "expected_issue_codes": ["blocking_unresolved_requires_clarification"]},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/dimensions-ready.json", "sha256": "a620b301d11afee9cda0ee6df0f00f64348736fd6276866144f2441711dbdaa7", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/dimensions-conflict.json", "sha256": "8a416f5806e308a6fcc2b30b59f565c4b4d414af5380605925f295d91d44be85", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/dimensions-invalid-derived.json", "sha256": "a4ae8e011bc264ac27d88fbe6f25a2e4ad334ef989ca99e8dc3fea2604bfab9b", "expected_valid": false, "expected_issue_codes": ["derived_dimension_missing_derivation", "resolved_dimension_missing_value_or_unit"]},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/frame-ready.json", "sha256": "8d32233ff2cfbb85e68314e230e19f3f9ec5d6a59e67bbc390d4d9fd0dd651d0", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/frame-underdetermined.json", "sha256": "d43637b05968e9dc05c10902083d8546a6535bf1c5552438fac9df714832d520", "expected_valid": true, "expected_issue_codes": []},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/frame-invalid-axes.json", "sha256": "550ec68e0fb41ddd9c9b34652fc5d941eee8a76b0fd4444cd3aa7fb8e11b7c4a", "expected_valid": false, "expected_issue_codes": ["axes_not_orthogonal", "handedness_mismatch"]}
+  ],
+  "evidence_boundary": "Fixtures exercise contract structure and deterministic invariants only. They do not test whether unseen source material is interpreted correctly."
+}

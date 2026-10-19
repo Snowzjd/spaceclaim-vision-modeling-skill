@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../../references/geometry-understanding-output.schema.json",
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.extract-geometry-observations",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-mixed-source",
+  "observed_geometry": [
+    {"id": "observation-primary-volume", "statement": "A single prismatic primary volume is visible.", "category": "primitive", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "central silhouette", "modality": "image"}]}, "confidence": "high"}
+  ],
+  "bodies_and_features": [
+    {"id": "body-primary", "statement": "One primary solid body is required.", "category": "body", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "body count statement", "modality": "user_input"}]}, "confidence": "high"},
+    {"id": "feature-opening", "statement": "A through opening is shown inside the primary body.", "category": "feature", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "interior closed contour", "modality": "image"}]}, "confidence": "medium"}
+  ],
+  "spatial_relations": [
+    {"id": "relation-contained", "relation": "feature-opening is contained by body-primary", "participant_refs": ["body-primary", "feature-opening"], "provenance": {"kind": "inference", "source_refs": [{"source_id": "view-a", "locator": "nested contours", "modality": "image"}], "rationale": "The opening contour is fully enclosed by the outer silhouette."}, "confidence": "medium"}
+  ],
+  "symmetry_and_repetition": [],
+  "unresolved_items": [],
+  "confidence": {"level": "medium", "coverage": "complete", "rationale": "All contract-relevant visible cues have explicit provenance."}
+}

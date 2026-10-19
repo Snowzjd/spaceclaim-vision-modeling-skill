@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-22",
+  "input_fields": [
+    {
+      "name": "native_file_identity",
+      "type": "object",
+      "description": "Readable native file path/hash and expected document identity."
+    },
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Unique maximized SpaceClaim session prepared to open one file."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "reopened_document_state",
+      "type": "object",
+      "description": "Actual opened document identity, path/hash, and active session."
+    },
+    {
+      "name": "reopen_status",
+      "type": "string",
+      "description": "opened, blocked, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Verify file path/hash and target session before invoking open.",
+    "Open exactly one native file and wait for the active-document identity to settle.",
+    "Re-observe active path/hash and return reopened_document_state and reopen_status.",
+    "Do not measure, save, export, or compare geometry here."
+  ],
+  "rejection_rules": [
+    "Reject unreadable/mismatched file, ambiguous session, existing unknown prompt, or multiple open targets.",
+    "Do not treat a window title alone as file identity.",
+    "Do not proceed when the actual document cannot be bound to the requested file."
+  ]
+}

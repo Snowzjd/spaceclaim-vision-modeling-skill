@@ -1,0 +1,27 @@
+{
+  "authorization_scope": "preparation_only",
+  "desktop_or_cad_execution_performed": false,
+  "evaluation_id": "p6-fallback-evaluation",
+  "recorded_on": "2026-09-08",
+  "requests": [
+    {
+      "baseline": null,
+      "evaluation_limit": "preparation-only; no desktop/CAD execution",
+      "request_id": "A",
+      "requested_execution": "after explicit desktop authorization",
+      "target_api_version": "V21",
+      "target_spaceclaim_release": "2022 R1",
+      "text": "Prepare a SpaceClaim V21 model from text: right-triangular prism; XY cross-section vertices (0,0), (19,0), (0,13) mm; extrusion height 7 mm along +Z; translate whole solid by (4,-3,2) mm; no baseline. Native model and final visual review requested after authorization."
+    },
+    {
+      "baseline": null,
+      "evaluation_limit": "preparation-only; return clarification for unresolved geometry",
+      "request_id": "B",
+      "requested_execution": "not authorized in this evaluation",
+      "target_api_version": "not supplied",
+      "target_spaceclaim_release": "not supplied",
+      "text": "Prepare a bracket: front outline 40 mm x 30 mm; upper-right notch 10 mm wide; thickness and notch depth unspecified; no baseline; preparation-only."
+    }
+  ],
+  "schema_version": 1
+}

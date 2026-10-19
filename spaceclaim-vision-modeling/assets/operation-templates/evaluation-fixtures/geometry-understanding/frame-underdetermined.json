@@ -1,0 +1,24 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "handoff_status": "requires_clarification",
+  "source_manifest_ref": "source-manifest:neutral-underdetermined-frame",
+  "coordinate_system": {
+    "origin": {"status": "resolved", "value": [0.0, 0.0, 0.0], "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "datum point", "modality": "image"}]}},
+    "x_axis": {"status": "resolved", "value": [1.0, 0.0, 0.0], "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "horizontal cue", "modality": "image"}]}},
+    "y_axis": {"status": "resolved", "value": [0.0, 1.0, 0.0], "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "vertical cue", "modality": "image"}]}},
+    "z_axis": {"status": "unresolved", "value": null, "provenance": {"kind": "unresolved", "source_refs": [{"source_id": "view-a", "locator": "single planar view", "modality": "image"}], "rationale": "The positive normal direction is not marked."}},
+    "handedness": {"status": "unresolved", "value": null, "provenance": {"kind": "unresolved", "source_refs": [], "rationale": "No handedness convention is supplied."}},
+    "unit_context": {"status": "resolved", "value": "millimeter", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "unit statement", "modality": "user_input"}]}},
+    "source_view_mapping": [
+      {"source_ref": {"source_id": "view-a", "locator": "entire view", "modality": "image"}, "mapping": "view horizontal maps to +X and view vertical maps to +Y; normal sign unresolved", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "in-plane cues", "modality": "image"}]}}
+    ]
+  },
+  "frame_assumptions": [],
+  "unresolved_items": [
+    {"id": "unresolved-normal-orientation", "description": "The positive normal and handedness are not determined.", "reason": "ambiguous", "blocks_handoff": true, "clarification_needed": "Supply a normal-direction or handedness constraint.", "source_refs": [{"source_id": "view-a", "locator": "single planar view", "modality": "image"}], "related_refs": ["coordinate_system.z_axis", "coordinate_system.handedness"]}
+  ],
+  "frame_confidence": {"level": "low", "coverage": "partial", "rationale": "The in-plane frame is known but its normal orientation is unresolved."}
+}

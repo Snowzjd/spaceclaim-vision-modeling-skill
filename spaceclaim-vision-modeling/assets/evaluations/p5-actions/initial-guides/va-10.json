@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-10",
+  "input_fields": [
+    {
+      "name": "body_reference",
+      "type": "object",
+      "description": "One current body whose kernel surface area is requested."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Requested area unit."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "surface_area_record",
+      "type": "object",
+      "description": "Measured surface area, unit, body identity, and provenance."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, unavailable, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one current body and validate the requested area unit.",
+    "Read the kernel surface area once and preserve the measured value/provenance.",
+    "Return surface_area_record and measurement_status; do not substitute a value from a face or screenshot.",
+    "Leave topology and document state unchanged."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous/invalid body, incompatible unit, or nonfinite area.",
+    "Reject a face area sum when the declared target is the body's kernel area.",
+    "Do not repair geometry inside this measurement atom."
+  ]
+}

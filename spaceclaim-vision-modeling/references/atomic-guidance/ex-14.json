@@ -1,0 +1,58 @@
+{
+  "catalog_id": "EX-14",
+  "input_fields": [
+    {
+      "name": "expected_root",
+      "type": "object",
+      "description": "Expected current root Part identity and binding."
+    },
+    {
+      "name": "run_root",
+      "type": "string",
+      "description": "Absolute run-owned directory; not a baseline, evidence, or existing-output ancestor."
+    },
+    {
+      "name": "output_path",
+      "type": "string",
+      "description": "New .scdoc path under run_root; it must not already exist."
+    },
+    {
+      "name": "critical_checks",
+      "type": "array",
+      "description": "Checks with id and status; every critical check must be passed."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Exact saved native-model path."
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "SHA-256 of the saved native-model bytes."
+    },
+    {
+      "name": "native_save",
+      "type": "string",
+      "description": "passed only after native save and hash succeed."
+    },
+    {
+      "name": "native_reopen",
+      "type": "string",
+      "description": "Always not_tested for this save-only operation."
+    }
+  ],
+  "procedure": [
+    "Validate expected_root, run_root ownership, extension, new-output condition, and every critical_checks status.",
+    "Invoke the formal save artifact once for the current root Part and output_path.",
+    "Hash the native file and return path, SHA-256, native_save, and native_reopen=not_tested.",
+    "Do not open/reopen the saved file; reopen evidence belongs to a separate operation."
+  ],
+  "rejection_rules": [
+    "Reject existing output, path outside run_root, reparse/ancestor collision, root mismatch, failed/missing check, or save error.",
+    "Reject any native reopen claim from EX-14.",
+    "Do not overwrite baseline/evidence or substitute another path."
+  ]
+}

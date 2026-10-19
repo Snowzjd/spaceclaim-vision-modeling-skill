@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-09",
+  "input_fields": [
+    {
+      "name": "loaded_script_identity",
+      "type": "object",
+      "description": "Exact loaded script identity, hash, session, and document binding."
+    },
+    {
+      "name": "current_design_identity",
+      "type": "object",
+      "description": "Active design identity and clean/baseline-copy entry state."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "execution_event",
+      "type": "object",
+      "description": "One run identifier, launch time, script hash, session/document identity, and command observation."
+    },
+    {
+      "name": "launch_status",
+      "type": "string",
+      "description": "One of launched, rejected, or needs_manual_review; not a completion result."
+    }
+  ],
+  "procedure": [
+    "Recheck loaded hash, active design identity, authorization, and idle state.",
+    "Issue one Run command and record the run identifier and launch observation.",
+    "Return execution_event with launch_status=launched; hand completion to EX-10.",
+    "If the command or identity cannot be confirmed, return needs_manual_review and do not press Run again."
+  ],
+  "rejection_rules": [
+    "Reject script/document/session mismatch, expired authorization, busy/modal state, or an already-running event.",
+    "Reject duplicate or uncertain launch events.",
+    "Do not equate button activation or a UI pause with completion."
+  ]
+}

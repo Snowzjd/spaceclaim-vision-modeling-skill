@@ -1,0 +1,43 @@
+{
+  "catalog_id": "ER-03",
+  "input_fields": [
+    {
+      "name": "failed_path_or_text",
+      "type": "object",
+      "description": "One failing path/text value, source representation, error, and intended target identity."
+    },
+    {
+      "name": "interpreter_constraints",
+      "type": "object",
+      "description": "Target interpreter/version, filesystem rules, encoding expectations, and allowed path APIs."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "corrected_path_or_encoding",
+      "type": "object",
+      "description": "One corrected path expression or encoding choice with target identity."
+    },
+    {
+      "name": "encoding_choice",
+      "type": "string",
+      "description": "Explicit encoding/literal strategy or needs_manual_review."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when path meaning or target identity is not proven."
+    }
+  ],
+  "procedure": [
+    "Separate path parsing/escaping from file identity and preserve target basename/role.",
+    "Emit one canonical expression with explicit separators/joining and interpreter-supported text encoding.",
+    "Check normalization does not escape run root or change file role.",
+    "If target or encoding remains ambiguous, set needs_manual_review=true and emit no replacement."
+  ],
+  "rejection_rules": [
+    "Reject missing identity, ambiguous base, unsafe traversal/reparse path, or unknown encoding.",
+    "Do not rename/copy/move/substitute the file.",
+    "Do not call path repair successful save/export."
+  ]
+}

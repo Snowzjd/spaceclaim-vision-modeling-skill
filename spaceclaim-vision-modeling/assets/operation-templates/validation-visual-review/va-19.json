@@ -1,0 +1,242 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.check-output-file-identity",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Hash one existing output file and compare its identity with an expected SHA-256 digest.",
+  "trigger": "Use after an output file exists at an authorized absolute regular path and its expected digest is known.",
+  "inputs": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Positional path argument: absolute path to one existing output file.",
+      "required": true
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Positional expected_sha256 argument: expected SHA-256 digest for that file.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Call check_output_file_identity(path, expected_sha256) with both arguments positionally.",
+    "path is absolute, regular, existing, and has no symlink/reparse component.",
+    "expected_sha256 is a valid SHA-256 digest."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-19 host action identity.",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed when file hash equals expected_sha256, otherwise failed.",
+      "required": true
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Resolved output path.",
+      "required": true
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "Observed file hash.",
+      "required": true
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Normalized expected hash.",
+      "required": true
+    },
+    {
+      "name": "size_bytes",
+      "type": "number",
+      "description": "Observed file size.",
+      "required": true
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for file identity only.",
+      "required": true
+    },
+    {
+      "name": "geometry_verified",
+      "type": "boolean",
+      "description": "Always false; file identity is not geometry verification.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The returned hash/status is for this exact path.",
+    "geometry_verified remains false and no SpaceClaim/runtime claim is made."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+    "target_environment": "Windows host-side Python helper; it reads one file and never opens or controls SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call validation_host_actions.check_output_file_identity(path, expected_sha256) with positional arguments. Invalid path or digest inputs raise ValidationInputError, a ValueError subclass; a hash mismatch returns status=failed. The helper checks file identity only and does not make geometry, save, or runtime claims."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "This host helper does not resolve CAD objects or views; the caller must supply the exact path and expected digest.",
+      "If the file identity or evidence scope is unavailable, return needs_manual_review rather than infer geometry or runtime state."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_input",
+      "condition": "The path is relative, missing, nonregular, reparse/symlinked, or the digest is malformed.",
+      "detection": "check_output_file_identity raises ValidationInputError, which is a ValueError subclass.",
+      "safe_state": "No pass/fail runtime claim is emitted; preserve the host-only boundary and return needs_manual_review to the caller."
+    },
+    {
+      "failure_id": "hash_mismatch",
+      "condition": "The observed file hash differs from expected_sha256.",
+      "detection": "The helper returns a flat result with status=failed; it does not replace the expected digest.",
+      "safe_state": "Retain the failed identity result and do not promote geometry, save, or execution evidence."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_input",
+      "action": "Catch ValidationInputError/ValueError, correct the caller-supplied path or digest, and retry only with explicit identity; otherwise return needs_manual_review.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "hash_mismatch",
+      "action": "Investigate the exact file and expected digest; do not rewrite the expected hash or infer a successful export.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare the exact positional host-call interface, flat result fields, and ValidationInputError/ValueError boundary with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Call validation_host_actions.check_output_file_identity(path, expected_sha256) only after the caller has supplied the explicit path and digest.",
+      "expected": "The returned hash/status is for this exact path.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-19-host-check.json",
+            "sha256": "e3a423ffbbcd79a883d5eecda1b46abab6c6370fd3d619eb4270a602de7d11de"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-19-host-check.json",
+            "sha256": "e3a423ffbbcd79a883d5eecda1b46abab6c6370fd3d619eb4270a602de7d11de"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+      "sha256": "34bc54d851e7de76ef6fc1ed0f3cabde58195ad4c618ab9b2379958b4be78827",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-19.json",
+      "sha256": "0921fd10ce206d461059aaad7745d3ba682fb031fa5550b475841c5d0815b597",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_host_actions.py",
+      "sha256": "de28c18795efd37a0795855fbede3ea42ce023454bce96418f96972ff20bc9a9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-19-host-check.json",
+      "sha256": "e3a423ffbbcd79a883d5eecda1b46abab6c6370fd3d619eb4270a602de7d11de",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/host-checks.json",
+      "sha256": "f0a2f11840051c995b2cb6f021efa2544921ea721a62799a68634626262618f5",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "evidence"
+    }
+  ]
+}

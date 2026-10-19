@@ -1,0 +1,265 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.verify-run-output-path",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Check supplied output roles, containment, reserved paths, reparse components and overwrite policy without writing.",
+  "trigger": "Use before creating a runtime report, native model, or other run output.",
+  "inputs": [
+    {
+      "name": "output_paths",
+      "type": "path, object or array",
+      "required": true,
+      "description": "Role->path mapping or records {role,path,overwrite}; one unique role per path."
+    },
+    {
+      "name": "run_root",
+      "type": "path",
+      "required": true,
+      "description": "Existing caller-owned root."
+    },
+    {
+      "name": "baseline_path",
+      "type": "path",
+      "required": false,
+      "description": "Protected baseline path."
+    },
+    {
+      "name": "evidence_paths",
+      "type": "array",
+      "required": false,
+      "description": "Protected evidence files/directories."
+    },
+    {
+      "name": "overwrite_policy",
+      "type": "string",
+      "required": false,
+      "description": "new_only default; run_owned requires per-path overwrite=true and owned_paths membership."
+    },
+    {
+      "name": "owned_paths",
+      "type": "array",
+      "required": false,
+      "description": "Explicit paths the caller owns and may replace."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Optional run reference."
+    }
+  ],
+  "preconditions": [
+    "This helper does not probe parent writability or create a directory. The later writer must validate its immediate parent and permissions. Path acceptance is not successful save/export evidence.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "EX-07"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "run_root",
+      "type": "string",
+      "required": true,
+      "description": "Resolved run root."
+    },
+    {
+      "name": "outputs",
+      "type": "array",
+      "required": true,
+      "description": "Checked role/path/exists/overwrite records."
+    },
+    {
+      "name": "overwrite_policy",
+      "type": "string",
+      "required": true,
+      "description": "Normalized policy."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Present when supplied."
+    }
+  ],
+  "postconditions": [
+    "Check supplied output roles, containment, reserved paths, reparse components and overwrite policy without writing.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "Windows host tooling; no SpaceClaim control or geometry mutation is implied.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call verify_run_output_path(**payload), or dispatch(\"EX-07\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. This helper does not probe parent writability or create a directory. The later writer must validate its immediate parent and permissions. Path acceptance is not successful save/export evidence. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "path_role_collision",
+      "condition": "Path collides with baseline, evidence, or another role.",
+      "detection": "Canonical comparison finds an unsafe collision.",
+      "safe_state": "No path is accepted."
+    },
+    {
+      "failure_id": "path_not_writable",
+      "condition": "Parent or file cannot satisfy overwrite policy.",
+      "detection": "Permission, existence, or policy check fails.",
+      "safe_state": "Preserve existing artifacts."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "path_role_collision",
+      "action": "Choose a distinct run-owned path and rerun validation.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "path_not_writable",
+      "action": "Use a declared writable run-owned location; do not alter permissions here.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "No accepted path collides with baseline, evidence, or another role.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-07-host-check.json",
+            "sha256": "7bdd3be2c2c5d4b23640d5b0610a453ee5034084d0f171d445aefb1741746c27"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-07-host-check.json",
+            "sha256": "7bdd3be2c2c5d4b23640d5b0610a453ee5034084d0f171d445aefb1741746c27"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-07.json",
+      "sha256": "4d0234b5366211c4fae3c7306466b439cc10c9a020705565b772434dc13cdf49",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-07-host-check.json",
+      "sha256": "7bdd3be2c2c5d4b23640d5b0610a453ee5034084d0f171d445aefb1741746c27",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

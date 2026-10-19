@@ -1,0 +1,43 @@
+{
+  "catalog_id": "MS-01",
+  "input_fields": [
+    {
+      "name": "parameter_name",
+      "type": "string",
+      "description": "The case-neutral name for one parameter."
+    },
+    {
+      "name": "source_dimension",
+      "type": "object",
+      "description": "Object with required keys `value`, `unit`, `provenance`, and `source_ref`; value is one supplied parameter value and provenance identifies its source kind."
+    },
+    {
+      "name": "unit_and_allowed_range",
+      "type": "object",
+      "description": "Object with required key `unit`; optional keys `lower`, `upper`, and `allowed_values` declare one range without evaluating whether the value satisfies it."
+    },
+    {
+      "name": "existing_parameter_names",
+      "type": "array",
+      "description": "Names already declared in the same build contract, used only for conflict detection."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "parameter_declaration",
+      "type": "object",
+      "description": "Object with required keys `name`, `value`, `unit`, `allowed_range`, and `provenance`; nullable when the common output envelope records an unresolved declaration."
+    }
+  ],
+  "procedure": [
+    "Normalize the supplied name, value, unit, range representation, and provenance without adding a default value or evaluating the range constraint.",
+    "Check the name against existing declarations and check only name, source value, unit, and range representation coherence.",
+    "Construct one parameter declaration containing name, value, unit, allowed range, and provenance; leave constraint satisfaction to MS-02.",
+    "Return `parameter_declaration` as action data and place status, provenance ownership, and any unresolved fields in the common output envelope."
+  ],
+  "rejection_rules": [
+    "Reject a missing, ambiguous, or conflicting parameter name.",
+    "Reject a value with unknown dimensionality, incompatible units, or a malformed range representation; do not infer a value or decide whether it satisfies the range.",
+    "Do not bundle multiple parameters or a construction recipe into one declaration."
+  ]
+}

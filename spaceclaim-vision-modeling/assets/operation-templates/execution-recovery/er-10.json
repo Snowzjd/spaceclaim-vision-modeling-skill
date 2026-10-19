@@ -1,0 +1,219 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.repair-persistence-or-export-condition",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Repair one located persistence/export precondition without claiming save, reopen, or export completion.",
+  "trigger": "Use when failure is isolated to one path, format, permission, or other declared condition.",
+  "inputs": [
+    {
+      "name": "failed_precondition",
+      "type": "object",
+      "description": "One failed persistence/export precondition, exact error, and affected artifact.",
+      "required": true
+    },
+    {
+      "name": "target_artifact_identity",
+      "type": "object",
+      "description": "Expected path, format, role, and run ownership.",
+      "required": true
+    },
+    {
+      "name": "repair_strategy",
+      "type": "object",
+      "description": "One selected strategy such as new writable path or supported format.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Failure is limited to one precondition and target artifact is known.",
+    "Repair strategy is selected before emitting a change."
+  ],
+  "outputs": [
+    {
+      "name": "repaired_condition",
+      "type": "object",
+      "description": "One corrected path/format/permission precondition and scope.",
+      "required": true
+    },
+    {
+      "name": "repair_action",
+      "type": "string",
+      "description": "One preparation action or needs_manual_review; no persistence command.",
+      "required": true
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when cause or strategy is not specific enough.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The emitted preparation action addresses exactly one precondition and preserves the declared artifact role/identity; repair execution is not claimed.",
+    "No save/reopen/export completion is claimed."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/er-10.json",
+    "target_environment": "SpaceClaim V21-compatible contract reasoning; no host execution is performed by this operation.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "The reusable artifact is this candidate guidance contract; no executable implementation is claimed. Preparation only; EX-14 or a dedicated export/reopen atom performs actual persistence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "persistence_cause_ambiguous",
+      "condition": "More than one precondition may explain failure.",
+      "detection": "Evidence does not isolate path/format/permission.",
+      "safe_state": "No preparation change is authorized."
+    },
+    {
+      "failure_id": "repair_changes_artifact_identity",
+      "condition": "Preparation changes target role or identity.",
+      "detection": "Path/format no longer matches target.",
+      "safe_state": "Keep original identity and stop."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "persistence_cause_ambiguous",
+      "action": "Return needs_manual_review and isolate one cause.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "repair_changes_artifact_identity",
+      "action": "Choose same-role run-owned target and recheck.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Exactly one precondition is repaired and artifact role/identity is preserved.",
+      "evidence_layer": "design_only"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.capture-earliest-failure-state"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-10-host-check.json",
+            "sha256": "a0d6021cba54e913f22bd451b71d7e14984df948768414a34d6467916d54257b"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-10-host-check.json",
+            "sha256": "a0d6021cba54e913f22bd451b71d7e14984df948768414a34d6467916d54257b"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-10.json",
+      "sha256": "723b2f55878b18e420335f46c1d230d9c4be8c1c9e83e867a70a49bc5f777c26",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-10.json",
+      "sha256": "723b2f55878b18e420335f46c1d230d9c4be8c1c9e83e867a70a49bc5f777c26",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_guidance.py",
+      "sha256": "f3918ac4379f5488144fab920f60d121aa4e5863ef91808bb4ae04b469601e53",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-10-host-check.json",
+      "sha256": "a0d6021cba54e913f22bd451b71d7e14984df948768414a34d6467916d54257b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

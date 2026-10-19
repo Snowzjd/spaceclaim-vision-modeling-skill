@@ -1,0 +1,38 @@
+{
+  "catalog_id": "ER-11",
+  "input_fields": [
+    {
+      "name": "failed_file_absolute_path",
+      "type": "string",
+      "description": "Absolute path to one failed run-owned file."
+    },
+    {
+      "name": "ownership_and_failure_record",
+      "type": "object",
+      "description": "Run ownership, failure reference, exclusions, and cleanup reason."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "cleanup_result",
+      "type": "object",
+      "description": "Target path, pre-delete hash/size, removal status, and preserved failure reference."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when ownership, file type, or association is unproven."
+    }
+  ],
+  "procedure": [
+    "Resolve absolute path without following unsafe reparse target and verify ownership/exclusions.",
+    "Record size/SHA-256, remove exactly that one file through the host adapter, and verify absence.",
+    "Return cleanup_result with failure reference and pre-delete identity; do not remove parents/siblings.",
+    "Return needs_manual_review without deletion when any check is unresolved."
+  ],
+  "rejection_rules": [
+    "Reject baseline/evidence/outside-root/directory/reparse/unlinked paths.",
+    "Reject wildcard/multi-file requests.",
+    "Do not delete because a filename merely looks failed."
+  ]
+}

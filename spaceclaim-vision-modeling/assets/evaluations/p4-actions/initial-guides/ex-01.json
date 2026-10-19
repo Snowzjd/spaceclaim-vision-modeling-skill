@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-01",
+  "input_fields": [
+    {
+      "name": "authorization_record",
+      "type": "object",
+      "description": "User or task authorization with issuer, scope, validity, and restrictions."
+    },
+    {
+      "name": "task_scope",
+      "type": "object",
+      "description": "Requested application, documents, controls, outputs, and destructive-action boundaries."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "authorization_status",
+      "type": "string",
+      "description": "One of applicable, expired, out_of_scope, or needs_manual_review."
+    },
+    {
+      "name": "authorization_basis",
+      "type": "object",
+      "description": "Matched scope, validity interval, and unresolved fields; never inferred consent."
+    }
+  ],
+  "procedure": [
+    "Parse issuer, validity, application, artifact, and action scope without adding implied consent.",
+    "Compare each requested control with the explicit authorization; reuse an existing valid authorization instead of asking again.",
+    "Return authorization_status and authorization_basis, preserving missing or conflicting fields as unresolved.",
+    "Do not click, open, save, delete, or run anything as part of this operation."
+  ],
+  "rejection_rules": [
+    "Reject missing, expired, revoked, or out-of-scope authorization; return needs_manual_review rather than assuming permission.",
+    "Reject a task scope that hides destructive actions behind a general run phrase.",
+    "Do not treat a prior unrelated session or controller default as authorization."
+  ]
+}

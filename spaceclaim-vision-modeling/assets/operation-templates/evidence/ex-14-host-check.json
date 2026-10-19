@@ -1,0 +1,106 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "execution_recovery.save-asserted-native-model",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_native_save_atom -v; controlled SpaceClaim save-01",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 5,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/execution-recovery/save-asserted-native-model.scscript",
+  "tool_sha256": "76cf79f45107d9222fab98a29f65fe8235e3fae678f4bc5ffa5d54da3f779f9f",
+  "test": "tests/test_native_save_atom.py",
+  "test_sha256": "294d06d9cebebfb7b23a5cd078769ad0b43ca24804b2431808975f33a4b11862",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/execution-recovery/save-asserted-native-model.scscript",
+      "sha256": "76cf79f45107d9222fab98a29f65fe8235e3fae678f4bc5ffa5d54da3f779f9f",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_native_save_atom.py",
+      "sha256": "294d06d9cebebfb7b23a5cd078769ad0b43ca24804b2431808975f33a4b11862",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-report.json",
+      "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-evidence.json",
+      "sha256": "72a686d8c8a66527dfe40e7732256aed494bc67b4e95c1d8595cf218cba1c1e0",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-test.py",
+      "sha256": "279b8d869a5b542032ed1aad692b76eda9d65b4612d9ea057b6385ee00a92ae8",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Five isolated host guard tests passed."
+    },
+    "spaceclaim_execution": {
+      "status": "passed",
+      "scope": "Five host input guards and exact V21 save-01 critical-save-block/native-save checks passed. Save-only new-output variant; reopen and complete visual review not performed."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "passed",
+      "scope": "Five host input guards and exact V21 save-01 critical-save-block/native-save checks passed. Save-only new-output variant; reopen and complete visual review not performed."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Five host input guards and exact V21 save-01 critical-save-block/native-save checks passed. Save-only new-output variant; reopen and complete visual review not performed."
+}

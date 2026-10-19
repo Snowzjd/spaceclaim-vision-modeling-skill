@@ -1,0 +1,29 @@
+{
+  "contract_kind": "rectangular_prism_build",
+  "contract_version": 1,
+  "stage": "modeling_strategy_scripting",
+  "handoff_status": "ready",
+  "geometry_contract_ref": "../01-geometry-understanding/geometry-contract.json",
+  "target_environment": {
+    "spaceclaim_release": "2022 R1",
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7"
+  },
+  "entry_state_policy": "new_unsaved_design_with_no_bodies",
+  "construction_strategy": "Create one independent axis-aligned body from the accepted minimum and maximum corners with BlockBody.Create.",
+  "topology_dependencies": [],
+  "semantic_selection_plan": "Re-enumerate all bodies after creation; require exactly one body and match it by bounding box and volume before naming.",
+  "failure_checkpoints": [
+    "validate geometry contract and output paths before packaging",
+    "verify clean design before creation",
+    "verify body count, bounding box, volume, faces, edges, and name before save"
+  ],
+  "output_policy": "Use distinct run-owned model and report paths and refuse overwrite.",
+  "formal_artifact": "output/create-rectangular-prism.scscript",
+  "editable_source": "output/create-rectangular-prism.py",
+  "artifact_identity": {
+    "formal_artifact_sha256": "d99e7d0a5df422bba143503c74bce84ae39d0eaa7ed1a60499b8f833358c80ff",
+    "editable_source_sha256": "1ef4f38c42b183c2a3d780fcbc034e781cbde8e74bb8dd7f65f7fb5be713c50c"
+  },
+  "host_preflight_result": "passed_static_host_checks_only"
+}

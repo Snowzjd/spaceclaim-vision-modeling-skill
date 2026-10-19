@@ -1,0 +1,93 @@
+{
+  "catalog_id": "VA-20",
+  "input_fields": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Path to one native .scdoc output."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Expected SHA-256 digest."
+    },
+    {
+      "name": "save_record",
+      "type": "object",
+      "description": "Caller-supplied save record with matching run_ref, status=passed, and sha256."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "description": "Current run reference."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-20 host action identity."
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed/failed based on supplied record and file identity."
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Resolved native path."
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "Observed file hash."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Normalized expected hash."
+    },
+    {
+      "name": "size_bytes",
+      "type": "number",
+      "description": "Observed file size."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "description": "Run identity used to bind save_record."
+    },
+    {
+      "name": "save_record_consistent",
+      "type": "boolean",
+      "description": "Whether record/run/hash/status agree."
+    },
+    {
+      "name": "native_save_observed",
+      "type": "boolean",
+      "description": "Always false; this host check does not observe the save event."
+    },
+    {
+      "name": "native_reopen",
+      "type": "string",
+      "description": "Always not_tested."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for consistency/file identity only."
+    }
+  ],
+  "procedure": [
+    "Validate .scdoc suffix, nonempty run_ref, and save_record.run_ref equality.",
+    "Require save_record.status=passed and save_record.sha256 equal expected_sha256 before reading the output.",
+    "Read the file through the VA-19 identity check and return the flat VA-20 result.",
+    "Do not reopen the model or convert file consistency into direct native-save observation."
+  ],
+  "rejection_rules": [
+    "Reject wrong extension, missing/mismatched run_ref, failed/inconsistent save record, malformed hash, or missing/reparse file.",
+    "Reject zero-byte output as passed.",
+    "Do not claim native_reopen or direct save observation."
+  ]
+}

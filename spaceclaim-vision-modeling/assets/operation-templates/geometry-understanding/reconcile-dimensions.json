@@ -1,0 +1,265 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "template_version": "0.2.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "geometry_understanding",
+  "purpose": "Reconcile dimension statements and dimensional relations into a provenance-aware set of accepted, derived, conflicting, and unresolved values.",
+  "trigger": "Multiple views, notes, source artifacts, or user constraints contain dimensional statements that must be compared before a geometry contract is handed downstream.",
+  "inputs": [
+    {
+      "name": "dimension_statements",
+      "type": "provenance-tagged dimension statement list",
+      "required": true,
+      "description": "Observed or user-supplied values, units, tolerances, scope, and source locators; each statement retains observation, user, inference, or unresolved provenance.",
+      "provenance_required": true
+    },
+    {
+      "name": "geometry_observations",
+      "type": "provenance-aware geometry observation context",
+      "required": true,
+      "description": "Geometry primitives, features, and relations that identify what each dimensional statement refers to without relying on product-specific labels.",
+      "provenance_required": true
+    },
+    {
+      "name": "user_constraints",
+      "type": "optional user-supplied dimensional constraints and priorities",
+      "required": false,
+      "description": "User input used to resolve precedence or tolerance policy; it remains distinct from observed and inferred values.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "Each dimension statement has a readable source locator or is explicitly marked as user input.",
+    "Units, reference features, and scope are recorded when known; unknown context remains unresolved instead of receiving a default.",
+    "The operation is limited to reconciling dimensional information and does not define a coordinate frame, construction order, or application operation."
+  ],
+  "outputs": [
+    {
+      "name": "dimensions_with_provenance",
+      "type": "provenance-aware reconciled dimension table",
+      "required": true,
+      "description": "Accepted and derived dimensional values with units, tolerance, scope, source support, and explicit observation, user, inference, or unresolved provenance.",
+      "provenance_required": true
+    },
+    {
+      "name": "dimension_relations",
+      "type": "provenance-aware dimensional relation list",
+      "required": true,
+      "description": "Equality, difference, ratio, dependency, or reference relations used in reconciliation, including rationale and source support.",
+      "provenance_required": true
+    },
+    {
+      "name": "unresolved_items",
+      "type": "provenance-aware dimensional ambiguity list",
+      "required": true,
+      "description": "Conflicting units, scope, tolerance, or placement statements retained as unresolved items with the smallest clarification needed.",
+      "provenance_required": true
+    },
+    {
+      "name": "reconciliation_confidence",
+      "type": "provenance-aware confidence record",
+      "required": true,
+      "description": "Confidence and rationale for each accepted or derived value, including uncertainty caused by inference or unresolved source evidence.",
+      "provenance_required": true
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+    "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+  },
+  "postconditions": [
+    "Every retained or derived value records units, reference scope, source support, and an observation, user, inference, or unresolved provenance tag.",
+    "Conflicting or incomparable statements remain visible as unresolved; no silent default, forced conversion, or priority is introduced.",
+    "Dimensional relations are traceable to the statements that support them and do not alter geometry or choose a construction sequence.",
+    "The output exposes confidence and clarification needs for the downstream geometry contract."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Visual/text reasoning only; no SpaceClaim runtime or application control.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone implementation artifact is published; this candidate is a contract-bound reasoning boundary assembled from linked general reference guidance."
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+    "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No application geometry is selected; dimension references are matched to case-neutral feature descriptions and source locators.",
+      "Audit every value and relation for observation, user, inference, or unresolved provenance, including unit and scope context."
+    ],
+    "topology_refresh": "Not applicable because the operation does not create or modify geometry topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "dimension_scope_unclear",
+      "condition": "A dimensional statement does not identify the referenced feature, extent, or view scope well enough for comparison.",
+      "detection": "Check each statement for feature reference, scope, unit context, and source locator before reconciliation.",
+      "safe_state": "Keep the statement unresolved and do not emit it as an accepted dimension."
+    },
+    {
+      "failure_id": "dimension_conflict",
+      "condition": "Two or more supported statements conflict beyond their declared tolerance or cannot be safely compared.",
+      "detection": "Compare normalized values only when units and scope are compatible and retain each mismatch with its sources.",
+      "safe_state": "Preserve all conflicting statements as unresolved and withhold a ready handoff."
+    },
+    {
+      "failure_id": "provenance_gap",
+      "condition": "A value, conversion, relation, or precedence decision cannot be labeled as observation, user, inference, or unresolved.",
+      "detection": "Run a provenance completeness audit over the reconciled table and relation list.",
+      "safe_state": "Mark the affected result unresolved and make no automatic acceptance decision."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "dimension_scope_unclear",
+      "action": "Add the smallest missing feature, view, unit, or source locator and rerun reconciliation.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "dimension_conflict",
+      "action": "Request clarification or an explicit user precedence/tolerance rule, then rerun from the original statements.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "provenance_gap",
+      "action": "Restore source or user provenance for the affected value and rerun the completeness audit.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Atomic reconciliation boundary",
+      "method": "Review the template against the geometry-understanding stage contract and linked general guidance.",
+      "expected": "The operation reconciles dimension statements only; it does not extract unrelated geometry, define a frame, or run an application.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Provenance, unit, and scope preservation",
+      "method": "Inspect input/output declarations, postconditions, failure modes, and recovery for observation, user, inference, and unresolved paths.",
+      "expected": "Accepted, derived, conflicting, and missing values retain explicit provenance and no unmarked default or conversion is introduced.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Case neutrality and evidence boundary",
+      "method": "Review identifiers, wording, artifact links, and evidence states for case-specific names, private data, numeric examples, and unsupported runtime claims.",
+      "expected": "The template is reusable across source types and claims design intent only.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Schema and neutral fixture invariants",
+      "method": "Validate accepted, conflicting, derived, and deliberately invalid dimension outputs with the bound host checker.",
+      "expected": "Resolved values require units, derivations are explicit, conflicts remain linked to unresolved items, and blocking uncertainty cannot be marked ready.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.2.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/reconcile-dimensions-design-review.json",
+            "sha256": "fb438f8c190102035851d300596123c3655e78db6d48c1290227ee899a18dd29",
+            "notes": "Public design-only review record for this exact candidate template version."
+          }
+        ],
+        "notes": "Atomicity, provenance separation, case neutrality, and the no-runtime boundary were reviewed."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/reconcile-dimensions-host-check.json",
+            "sha256": "18edc3b38fadf3ced8a8cff6c77a4b169aa78db418169d42d237bac8f66a9475",
+            "notes": "Host-only schema and neutral fixture check for this exact candidate version."
+          }
+        ],
+        "notes": "The bound host checker passed structural and deterministic fixture invariants; it did not evaluate unseen-source dimension reading or scoping accuracy."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This operation does not launch or control SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model is measured; dimensional statements are reconciled as source data only."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is saved."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is reopened."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "This is source-data reconciliation, not final viewport or image acceptance."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No geometry export is produced."
+      }
+    },
+    "notes": "Evidence stops at design_only and host_checked; unseen-source reconciliation accuracy and all application, measurement, persistence, visual-acceptance, and export layers remain unclaimed."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/workflow-contracts.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-operations.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/geometry-understanding-output.schema.json",
+      "role": "reference",
+      "sha256": "b1c74e1cd6f3af3aee33030862a46f358b8bb7514bd814533118957355c4f69d"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_geometry_understanding_outputs.py",
+      "role": "evaluation",
+      "sha256": "1fb78b0cdc159e2ab8e9cb740b545cb60c403ac6a3cb745c311eeab5f92b6e20"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evaluation-fixtures/geometry-understanding/fixture-manifest.json",
+      "role": "test",
+      "sha256": "929d3848db553fa3bfcbac1a40e7929880db9a092ed45836f60ac725461f9b30"
+    },
+    {
+      "path": "tests/test_geometry_understanding_outputs.py",
+      "role": "test",
+      "sha256": "7cdf71aa614ed0861a602387ed25f8d7c7b0f2ac9b0ae107dd01b0faa2b930e8"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/reconcile-dimensions-host-check.json",
+      "role": "evidence",
+      "sha256": "18edc3b38fadf3ced8a8cff6c77a4b169aa78db418169d42d237bac8f66a9475"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/reconcile-dimensions-design-review.json",
+      "role": "evidence",
+      "sha256": "fb438f8c190102035851d300596123c3655e78db6d48c1290227ee899a18dd29"
+    }
+  ]
+}

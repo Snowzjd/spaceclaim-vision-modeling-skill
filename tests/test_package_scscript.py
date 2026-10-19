@@ -89,6 +89,15 @@ class PackageScscriptTests(unittest.TestCase):
                 PACKAGER.package_scscript(source, output, api_version="V21")
             self.assertFalse(output.exists())
 
+    def test_nondefault_numeric_api_metadata_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "model.py"
+            output = Path(directory) / "model.scscript"
+            source.write_text("print('model')\n", encoding="utf-8")
+            PACKAGER.package_scscript(source, output, api_version="22")
+            with zipfile.ZipFile(output) as archive:
+                self.assertEqual(b"22", archive.read("_apiVersion"))
+
     def test_same_source_and_output_path_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = self.write_source(directory, "same.scscript")

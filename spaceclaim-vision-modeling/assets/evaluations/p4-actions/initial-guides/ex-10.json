@@ -1,0 +1,43 @@
+{
+  "catalog_id": "EX-10",
+  "input_fields": [
+    {
+      "name": "execution_event",
+      "type": "object",
+      "description": "Unique run ID, launch time, script hash, and session/document binding."
+    },
+    {
+      "name": "status_observation_source",
+      "type": "object",
+      "description": "Allowed UI/log/report source and observation timestamps."
+    },
+    {
+      "name": "timeout_policy",
+      "type": "object",
+      "description": "Bounded wait, polling interval, and unknown-state rule."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "terminal_state",
+      "type": "object",
+      "description": "Completed, failed, or unknown state with event evidence and run ID."
+    },
+    {
+      "name": "observation_trace",
+      "type": "array",
+      "description": "Ordered status observations and timestamps."
+    }
+  ],
+  "procedure": [
+    "Bind observations to the supplied run ID and script/session identity.",
+    "Poll the declared source until completed, failed, or timeout; record meaningful transitions.",
+    "Return completed/failed only with a terminal event; return unknown with last observation and reason.",
+    "Never press Run again during the wait, including after a transient UI stall."
+  ],
+  "rejection_rules": [
+    "Reject missing/duplicate run ID, missing timeout policy, or an unbound observation source.",
+    "Reject timeout as success; unknown remains unknown.",
+    "Do not save or inspect geometry while waiting."
+  ]
+}

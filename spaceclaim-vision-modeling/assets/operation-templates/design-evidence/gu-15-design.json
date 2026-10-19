@@ -1,0 +1,23 @@
+{
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-15",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "坐标框架记录",
+    "declared_inputs": [
+      "origin_basis",
+      "axis_direction_basis",
+      "unit"
+    ],
+    "result_fields": [
+      "origin",
+      "axes",
+      "handedness",
+      "unit"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "Replaces frame-only portion of unregistered 0.2.0 draft; view mapping is GU-16. No legacy evidence inherited."
+  }
+}

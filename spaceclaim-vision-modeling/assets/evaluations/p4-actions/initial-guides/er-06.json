@@ -1,0 +1,47 @@
+{
+  "catalog_id": "ER-06",
+  "input_fields": [
+    {
+      "name": "result_object_set",
+      "type": "array",
+      "description": "Actual Boolean result objects with type/topology/volume/bounds properties."
+    },
+    {
+      "name": "expected_geometry_relation",
+      "type": "object",
+      "description": "One expected result relation and tolerances."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "corrected_classification_logic",
+      "type": "string",
+      "description": "One copyable result-classification predicate."
+    },
+    {
+      "name": "measured_predicate",
+      "type": "object",
+      "description": "Semantic fields, tolerances, and expected relation."
+    },
+    {
+      "name": "selected_result",
+      "type": "object",
+      "description": "Unique result identity or null when unresolved."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when results cannot distinguish one semantic result."
+    }
+  ],
+  "procedure": [
+    "Measure results using expected type, closure, volume, bounds, centroid, adjacency, or topology relation.",
+    "Emit one predicate with a uniqueness assertion; never use result[0].",
+    "Return selected_result, measured_predicate, tolerance, and rejected candidates.",
+    "If relation does not distinguish one result, return needs_manual_review and choose none."
+  ],
+  "rejection_rules": [
+    "Reject incomplete result set, missing/negative tolerance, order-based classification, or zero/multiple matches.",
+    "Do not relabel an arbitrary result to hide a failed Boolean."
+  ]
+}

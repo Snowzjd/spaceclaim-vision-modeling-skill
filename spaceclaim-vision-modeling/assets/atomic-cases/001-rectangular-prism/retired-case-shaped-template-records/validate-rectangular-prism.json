@@ -1,0 +1,75 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.validate-rectangular-prism",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Accept or reject one rectangular-prism model against its contract using independent read-only measurements, persistence records, and sufficient standard views.",
+  "trigger": "A matching geometry, build, and execution chain identifies one rectangular-prism native model and exact acceptance criteria.",
+  "inputs": [
+    {"name": "contract_chain", "type": "geometry, build, and execution contracts", "required": true, "description": "Hash-consistent upstream identities and expected primitive geometry."},
+    {"name": "native_model", "type": "native model path and SHA-256", "required": true, "description": "The exact artifact under review.", "provenance_required": true},
+    {"name": "acceptance_criteria", "type": "single-body bounds, volume, topology, name, tolerances, and view plan", "required": true, "description": "The criteria derived from the accepted geometry contract."}
+  ],
+  "preconditions": [
+    "Geometry, build, execution, model, and report identities refer to the same parameter set and exact artifact chain.",
+    "The runtime report passes structural validation before its declarations are interpreted.",
+    "A read-only V21 validation .scscript and overview, top, front, and right view plan are available.",
+    "No validation action modifies or saves geometry."
+  ],
+  "outputs": [
+    {"name": "acceptance_contract", "type": "structured independent acceptance record", "required": true, "description": "Body, bounds, volume, topology, name, persistence, visual, export, evidence, and overall states."},
+    {"name": "validation_runtime_report", "type": "read-only measurement report", "required": true, "description": "Measurements from the exact currently open model, kept separate from persistence and visual evidence."},
+    {"name": "visual_evidence", "type": "view records and screenshots or not_tested", "required": true, "description": "Each view records orientation, selection state, expected feature, observed agreement, occlusion, path, and digest."}
+  ],
+  "postconditions": [
+    "The model has exactly one body with the required name, six faces, twelve edges, accepted bounds, and accepted volume.",
+    "The validation script performs no geometry creation, rename, named-selection creation, save, or export.",
+    "Native save, native reopen, read-only measurements, visual agreement, and requested export are reported independently.",
+    "Overview, top, front, and right views expose the three axis extents or record any unresolved occlusion."
+  ],
+  "implementation": {"mode": "hybrid", "primary_artifact": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "target_environment": "Host Python 3.9 or newer generates the read-only package; measurement execution and visual review require an authorized SpaceClaim 2022 R1/API V21 session.", "topology_effect": "none", "determinism": "interactive", "notes": "The generator emits the formal read-only .scscript; application measurements and view review remain separate runtime evidence."},
+  "semantic_selection": {"required": true, "criteria": ["bounding_box", "volume", "topology"], "ambiguity_checks": ["Require exactly one body and match name, bounds, volume, face count, and edge count; any extra body or mismatch fails acceptance."], "topology_refresh": "Re-enumerate all bodies when the native model is opened or reopened before applying measurements."},
+  "failure_modes": [
+    {"failure_id": "artifact_identity_mismatch", "condition": "Upstream contracts, script, report, or model do not belong to the same artifact chain.", "detection": "Compare paths, parameters, and SHA-256 identities before measurement.", "safe_state": "Do not combine or accept the evidence."},
+    {"failure_id": "measurement_mismatch", "condition": "Body count, name, bounds, volume, faces, or edges differ from the contract.", "detection": "Run the exact read-only validation package and compare within declared tolerances.", "safe_state": "Mark geometry acceptance failed and return to the responsible upstream stage."},
+    {"failure_id": "persistence_mismatch", "condition": "Forward and reopened model evidence differ or reopen was not completed.", "detection": "Compare independent forward and reopen identities and measurements.", "safe_state": "Keep native persistence failed or not_tested; do not infer it from file existence."},
+    {"failure_id": "visual_occluded", "condition": "Required geometry cannot be seen in the planned views.", "detection": "Record view, selection state, expected feature, and occluded item.", "safe_state": "Keep visual agreement unresolved rather than assuming conformity."}
+  ],
+  "recovery": [
+    {"failure_id": "artifact_identity_mismatch", "action": "Restore a consistent exact-run artifact chain before any acceptance comparison.", "clean_rerun_required": true},
+    {"failure_id": "measurement_mismatch", "action": "Return to the earliest incorrect geometry or script stage, repair it, and create a new clean run.", "clean_rerun_required": true},
+    {"failure_id": "persistence_mismatch", "action": "Repeat save and reopen only from a passed clean run and retain separate forward and reopen evidence.", "clean_rerun_required": true},
+    {"failure_id": "visual_occluded", "action": "Change to a standard or focused view without modifying geometry and record the new view state.", "clean_rerun_required": false}
+  ],
+  "validation": [
+    {"check": "Read-only validation artifact", "method": "Generate, parse, package, and audit the validation .scscript with creation, rename, and save operations forbidden.", "expected": "The formal validation artifact passes host checks and contains only read-only model enumeration and measurements.", "evidence_layer": "host_checked"},
+    {"check": "Exact model measurements", "method": "Run the read-only package against the exact native model and compare bounds, volume, name, faces, and edges.", "expected": "Every required property matches within tolerance.", "evidence_layer": "geometry_measurements"},
+    {"check": "Multi-view agreement", "method": "Review overview, top, front, and right views with selection state and occlusion recorded.", "expected": "The visible rectangular solid agrees with the accepted contract in all exposed directions.", "evidence_layer": "visual_review"}
+  ],
+  "dependencies": ["execution_recovery.execute-script-in-clean-design"],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/validate-rectangular-prism-design-review.json", "sha256": "f2c0dca2cb429730d8678922089a4a091cd41b4f3cb115919e83901c01487ca3"}]},
+      "host_checked": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/validate-rectangular-prism-host-check.json", "sha256": "145c8da72f49bdf8345ece8ec9032d6c0d27bd67050365f1504d089ff78d0899"}]},
+      "spaceclaim_execution": {"status": "not_tested", "evidence_refs": []},
+      "geometry_measurements": {"status": "not_tested", "evidence_refs": []},
+      "native_save": {"status": "not_tested", "evidence_refs": []},
+      "native_reopen": {"status": "not_tested", "evidence_refs": []},
+      "visual_review": {"status": "not_tested", "evidence_refs": []},
+      "requested_export": {"status": "not_applicable", "evidence_refs": []}
+    },
+    "notes": "Case 001 completed read-only V21 measurement after native reopen plus overview/top/front/right review. These are case-instance results; template-level runtime layers remain not_tested until independent reuse evaluation."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "role": "implementation", "sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/04-validation-visual-review/output/validate-rectangular-prism.scscript", "role": "evaluation", "sha256": "17cf13aa9b1acb9eb5ae73dacd23770e156779066a5e517368df4ef019380554"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/validate-rectangular-prism-design-review.json", "role": "evidence", "sha256": "f2c0dca2cb429730d8678922089a4a091cd41b4f3cb115919e83901c01487ca3"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/validate-rectangular-prism-host-check.json", "role": "evidence", "sha256": "145c8da72f49bdf8345ece8ec9032d6c0d27bd67050365f1504d089ff78d0899"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/04-validation-visual-review/evidence/runtime-evidence.json", "role": "evidence", "sha256": "b10d3c39fd88bfe89331ec4c87e9ff89cce53aa40624614cf4494e0f25452703"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/04-validation-visual-review/evidence/validation-runtime-report.json", "role": "evidence", "sha256": "9ba7f7436e34a1df9886d46f71c826ceeff4eba72c2c8638ede5ab8605b6d1eb"}
+  ]
+}

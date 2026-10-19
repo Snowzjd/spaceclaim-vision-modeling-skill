@@ -1,0 +1,97 @@
+{
+  "tests": [
+    {
+      "id": "VA-13", 
+      "status": "passed", 
+      "check": {
+        "radius": 5.0, 
+        "axis": [
+          0.0, 
+          0.0, 
+          1.0
+        ], 
+        "span": 20.0
+      }
+    }, 
+    {
+      "id": "VA-14", 
+      "status": "passed", 
+      "check": {
+        "angle_deg": 18.434948822922024, 
+        "span": 6.0
+      }
+    }, 
+    {
+      "id": "VA-16", 
+      "status": "passed", 
+      "check": {
+        "matches": true
+      }
+    }, 
+    {
+      "id": "VA-16", 
+      "status": "passed", 
+      "check": {
+        "matches": true
+      }
+    }
+  ], 
+  "root_type": "SpaceClaim.Api.V21.Part", 
+  "group_diagnostic": [
+    {
+      "Parent": {
+        "type": "SpaceClaim.Api.V21.DocObject", 
+        "text": "<SpaceClaim.Api.V21.DocObject object at 0x00000000000003D8 [SpaceClaim.Api.V21.DocObject]>"
+      }, 
+      "Items": {
+        "error": "'Group' object has no attribute 'Items'"
+      }, 
+      "Name": {
+        "type": "System.String", 
+        "text": "\u7ec41"
+      }, 
+      "Members": {
+        "values": [
+          {
+            "type": "SpaceClaim.Api.V21.DesignFace", 
+            "text": "<SpaceClaim.Api.V21.DesignFace object at 0x00000000000003D9 [SpaceClaim.Api.V21.DesignFace]>"
+          }
+        ], 
+        "type": "SpaceClaim.Api.V21.IDocObject[]", 
+        "text": "Array[IDocObject]((<SpaceClaim.Api.V21.DesignFace object at 0x00000000000003D9 [SpaceClaim.Api.V21.DesignFace]>))"
+      }, 
+      "type": "SpaceClaim.Api.V21.Group"
+    }
+  ], 
+  "status": "passed", 
+  "events": [
+    {
+      "returned_status": "passed", 
+      "id": "VA-13", 
+      "archive_sha256": "b520413c6bc9bb836a1be75ae4c5f9f23bd95b2d10c83028afd1a90bbf2e9a2d", 
+      "status": "executed", 
+      "source_sha256": "af69133678f04df600aeaec68cc43faf34ce1cba3a373f6a1d7cf1bb27714a5f"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-14", 
+      "archive_sha256": "c0dd31d4a97f97e059a7e4308773eedee1a115abc56affb1a42e04af5d844f4d", 
+      "status": "executed", 
+      "source_sha256": "d4bd467e9029629cef29437e0d1303afceba4992b3aaaf0a55ecc4f11b0eda81"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-16", 
+      "archive_sha256": "00a652e962c6fbf3c90ad63311d10e1c586ac6270d55f0703de0285424b9a79b", 
+      "status": "executed", 
+      "source_sha256": "0e5eef8e96d1eeb515865ba47064f909eb83c0836d0ad3a9ef0937396b995a6a"
+    }, 
+    {
+      "returned_status": "passed", 
+      "id": "VA-16", 
+      "archive_sha256": "00a652e962c6fbf3c90ad63311d10e1c586ac6270d55f0703de0285424b9a79b", 
+      "status": "executed", 
+      "source_sha256": "0e5eef8e96d1eeb515865ba47064f909eb83c0836d0ad3a9ef0937396b995a6a"
+    }
+  ]
+}

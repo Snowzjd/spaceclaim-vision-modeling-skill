@@ -1,0 +1,279 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.check-reopened-property",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Check one measured property from a native-reopen observation against an expected value and artifact digest.",
+  "trigger": "Use when a measured native-reopen observation, expected value, artifact SHA-256, and any tolerance are available.",
+  "inputs": [
+    {
+      "name": "observation",
+      "type": "object",
+      "description": "Positional caller-supplied measured property record from an already completed native_reopen observation; this helper does not obtain it.",
+      "required": true
+    },
+    {
+      "name": "expected_value",
+      "type": "finite scalar|string|boolean|flat numeric vector",
+      "description": "Positional expected finite scalar, nonempty text, boolean, or nonempty flat finite numeric vector.",
+      "required": true
+    },
+    {
+      "name": "expected_artifact_sha256",
+      "type": "string",
+      "description": "Positional expected hash of the reopened native artifact.",
+      "required": true
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Keyword-only absolute_tolerance; optional and defaults to 0.0; must be finite and nonnegative.",
+      "required": false
+    },
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "Keyword-only action_id; optional for this contract because the host default is exactly VA-23.",
+      "required": false
+    }
+  ],
+  "preconditions": [
+    "Call check_observed_property(observation, expected_value, expected_artifact_sha256, *, absolute_tolerance=0.0, action_id='VA-23'); the first three arguments are positional and the final two are keyword-only.",
+    "observation source_kind is native_reopen and status is measured.",
+    "expected_artifact_sha256 is a valid SHA-256 digest and action_id, when supplied, is VA-23.",
+    "The caller supplies property, object_identity, observation_ref, artifact hash, and one supported value type; the helper does not reopen or measure an artifact."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-23 host action identity.",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed or failed comparison.",
+      "required": true
+    },
+    {
+      "name": "property",
+      "type": "string",
+      "description": "Compared property name.",
+      "required": true
+    },
+    {
+      "name": "object_identity",
+      "type": "string",
+      "description": "Observed object identity.",
+      "required": true
+    },
+    {
+      "name": "actual",
+      "type": "finite scalar|string|boolean|flat numeric vector",
+      "description": "Observed property value copied from the caller-supplied flat observation.",
+      "required": true
+    },
+    {
+      "name": "expected",
+      "type": "finite scalar|string|boolean|flat numeric vector",
+      "description": "Expected property value compared with the caller-supplied observation.",
+      "required": true
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Applied tolerance.",
+      "required": true
+    },
+    {
+      "name": "observation_ref",
+      "type": "string",
+      "description": "Caller observation reference.",
+      "required": true
+    },
+    {
+      "name": "artifact_sha256",
+      "type": "string",
+      "description": "Expected reopened artifact hash echoed after artifact binding.",
+      "required": true
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for supplied-observation comparison only.",
+      "required": true
+    },
+    {
+      "name": "runtime_observed",
+      "type": "boolean",
+      "description": "Always false; host helper does not observe SpaceClaim.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "Exactly one supplied property is compared within absolute_tolerance.",
+    "runtime_observed=false and no native_reopen runtime observation is claimed."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+    "target_environment": "Windows host-side Python helper; it compares one caller-supplied observation and never opens or controls SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call validation_host_actions.check_observed_property(observation, expected_value, expected_artifact_sha256, absolute_tolerance=..., action_id='VA-23'). The first three arguments are positional and the final two are keyword-only. The native_reopen observation is caller-supplied; invalid inputs raise ValidationInputError, a ValueError subclass, and no reopen, measurement, or geometry check is performed here."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "This host helper does not select or reopen CAD objects; the caller must supply one explicit observation identity and artifact hash.",
+      "If the native_reopen observation cannot be independently obtained, return needs_manual_review rather than invoke the comparison with guessed values."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_observation",
+      "condition": "The action ID/source kind, observation fields, artifact digest, tolerance, or value representation is invalid.",
+      "detection": "check_observed_property raises ValidationInputError, which is a ValueError subclass.",
+      "safe_state": "No reopen or runtime claim is emitted; preserve the host-only boundary and return needs_manual_review to the caller."
+    },
+    {
+      "failure_id": "property_mismatch",
+      "condition": "The supplied observed property is outside absolute_tolerance from expected_value.",
+      "detection": "The helper returns a flat result with status=failed; it does not acquire another measurement.",
+      "safe_state": "Retain the failed comparison and do not promote native_reopen or geometry evidence."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_observation",
+      "action": "Catch ValidationInputError/ValueError, obtain or correct the caller-supplied native_reopen record, and retry only with explicit evidence; otherwise return needs_manual_review.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "property_mismatch",
+      "action": "Inspect the independent reopened measurement and expected value; do not coerce tolerance or treat a failed comparison as runtime success.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare the positional/keyword-only host-call interface, flat result fields, and ValidationInputError/ValueError boundary with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Call validation_host_actions.check_observed_property(observation, expected_value, expected_artifact_sha256, absolute_tolerance=..., action_id='VA-23') only after the caller has independently obtained the native_reopen observation.",
+      "expected": "Exactly one supplied property is compared within absolute_tolerance.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-23-host-check.json",
+            "sha256": "0e3ece06e29c7bb6b7848ed6828f9e5a3a342ede3fee5693e04c0cced7ea2bbf"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-23-host-check.json",
+            "sha256": "0e3ece06e29c7bb6b7848ed6828f9e5a3a342ede3fee5693e04c0cced7ea2bbf"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+      "sha256": "34bc54d851e7de76ef6fc1ed0f3cabde58195ad4c618ab9b2379958b4be78827",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-23.json",
+      "sha256": "f5864441726ef71dd0c79ed515246eed96431e1f9260c10524e196dd78fee079",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_host_actions.py",
+      "sha256": "de28c18795efd37a0795855fbede3ea42ce023454bce96418f96972ff20bc9a9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-23-host-check.json",
+      "sha256": "0e3ece06e29c7bb6b7848ed6828f9e5a3a342ede3fee5693e04c0cced7ea2bbf",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/host-checks.json",
+      "sha256": "f0a2f11840051c995b2cb6f021efa2544921ea721a62799a68634626262618f5",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "evidence"
+    }
+  ]
+}

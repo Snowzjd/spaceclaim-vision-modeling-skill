@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-13",
+  "input_fields": [
+    {
+      "name": "critical_assertion_failure",
+      "type": "object",
+      "description": "Failure identity, critical status, run identity, and intended output path."
+    },
+    {
+      "name": "save_entry",
+      "type": "object",
+      "description": "Pending save gate, output path, and whether a native save has begun."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "save_block_status",
+      "type": "string",
+      "description": "One of blocked, already_saved, not_critical, or needs_manual_review."
+    },
+    {
+      "name": "blocked_output_record",
+      "type": "object",
+      "description": "Run/output identity, failure reference, and observation that no success output was written."
+    }
+  ],
+  "procedure": [
+    "Verify failure identity, criticality, run identity, output path, and pending-save state.",
+    "Return one blocked/permit decision to the caller's save gate; do not call a saver or write/delete any artifact.",
+    "Record blocked output status and preserve failure evidence; do not manufacture a success artifact.",
+    "Return already_saved or needs_manual_review if save was not still pending."
+  ],
+  "rejection_rules": [
+    "Reject a non-critical/unassociated failure as a reason to block another run.",
+    "Reject a block claim after native writing began.",
+    "Do not delete an existing output or retroactively label it failed without ownership evidence."
+  ]
+}

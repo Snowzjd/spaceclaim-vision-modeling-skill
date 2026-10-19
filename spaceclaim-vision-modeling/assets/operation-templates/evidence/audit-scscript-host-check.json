@@ -1,0 +1,61 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.audit-scscript",
+  "template_version": "0.1.1",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest discover -s tests -p test_audit_scscript.py -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 22,
+  "tool": "spaceclaim-vision-modeling/scripts/audit_scscript.py",
+  "test": "tests/test_audit_scscript.py",
+  "tool_sha256": "a33bc2bf6e01cbf1599e38052715c1f226a455e0631bbaac9ab42b58240e0c7f",
+  "test_sha256": "7bba236f3f75cabe19ff5d6a93c6cbec66132c4eafbe4d8b32f593f1d84dc822",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/audit_scscript.py",
+      "role": "tool",
+      "sha256": "a33bc2bf6e01cbf1599e38052715c1f226a455e0631bbaac9ab42b58240e0c7f"
+    },
+    {
+      "path": "tests/test_audit_scscript.py",
+      "role": "test",
+      "sha256": "7bba236f3f75cabe19ff5d6a93c6cbec66132c4eafbe4d8b32f593f1d84dc822"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The atomic static-audit contract and its policy checks were reviewed."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Twenty-two repository unit tests passed for archive structure, metadata, token policy, collision protection, and safety checks."
+    },
+    "spaceclaim_execution": {
+      "status": "not_applicable",
+      "scope": "No SpaceClaim process was launched."
+    },
+    "geometry_measurements": {
+      "status": "not_applicable",
+      "scope": "The static auditor does not measure or inspect model geometry."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was saved."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was reopened."
+    },
+    "visual_review": {
+      "status": "not_applicable",
+      "scope": "No application viewport or image was reviewed."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No model export was requested or produced by this host operation."
+    }
+  },
+  "notes": "The check is a static archive and policy audit only; it does not prove SpaceClaim execution or geometry correctness."
+}

@@ -1,0 +1,20 @@
+{
+  "design_review_version": 1,
+  "operation_id": "validation_visual_review.validate-rectangular-prism",
+  "template_version": "0.1.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Review independent read-only numerical and multi-view acceptance of one rectangular prism.",
+  "checks": [
+    {"name": "single_purpose", "status": "passed", "notes": "The operation accepts or rejects one rectangular-prism artifact against its geometry contract."},
+    {"name": "read_only", "status": "passed", "notes": "The generated validation source contains no creation, rename, save, or named-selection command."},
+    {"name": "separate_layers", "status": "passed", "notes": "Measurements, native save, native reopen, and visual agreement remain independent results."},
+    {"name": "evidence_boundary", "status": "passed", "notes": "Host checks cover validation-script generation and static policy only."}
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/references/validation-visual-review-operations.md",
+    "spaceclaim-vision-modeling/references/visual-interaction.md"
+  ],
+  "notes": "No runtime, persistence, or visual acceptance is claimed for the new artifact."
+}

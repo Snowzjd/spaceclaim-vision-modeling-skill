@@ -1,0 +1,43 @@
+{
+  "catalog_id": "GU-06",
+  "input_fields": [
+    {
+      "name": "source_region",
+      "type": "object",
+      "description": "包含一个候选轮廓的可定位原始区域；可见边界和遮挡范围必须保留。"
+    },
+    {
+      "name": "planar_clues",
+      "type": "object",
+      "description": "平面标注、共面线索或视图证据；不能把投影轮廓自动视为真实平面轮廓。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "boundary",
+      "type": "array",
+      "description": "轮廓边界的有序观测项或引用；不可见段可为 null。"
+    },
+    {
+      "name": "supporting_plane",
+      "type": "object",
+      "description": "平面关系、法向依据和来源；只能从证据支持的平面关系填写。"
+    },
+    {
+      "name": "profile_status",
+      "type": "string",
+      "description": "complete、partial、projected、inferred 或 unknown 等轮廓状态。"
+    }
+  ],
+  "procedure": [
+    "定位一个候选轮廓，按原始线条或文本记录边界段，并标出不可见或被遮挡部分。",
+    "独立判断平面线索与边界闭合状态；用户标注为 user，几何一致性判断为 derived。",
+    "输出 boundary、supporting_plane 和 profile_status；不能确认的成员写 null，并附 provenance 和 unresolved。",
+    "只描述一个平面轮廓，不把投影变形、默认平面或后续拉伸假设写入轮廓记录。"
+  ],
+  "rejection_rules": [
+    "轮廓区域不可定位或存在多个未分离轮廓时拒绝合并为一个 profile。",
+    "开放边界、遮挡边界或平面线索冲突时不得静默闭合或补面。",
+    "不得用后续建模意图反向证明来源轮廓是真实平面轮廓。"
+  ]
+}

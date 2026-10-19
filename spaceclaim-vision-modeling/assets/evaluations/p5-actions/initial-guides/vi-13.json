@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-13",
+  "input_fields": [
+    {
+      "name": "viewport",
+      "type": "object",
+      "description": "Maximized unobstructed viewport and empty drag region."
+    },
+    {
+      "name": "drag_path",
+      "type": "object",
+      "description": "One short zoom drag path and declared direction."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified Ctrl+middle-drag Zoom mapping or Zoom-tool equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "zoomed_view",
+      "type": "object",
+      "description": "Before/after apparent scale, camera orientation, drag/control path, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Place the cursor in empty viewport space and check modifier/middle-button support.",
+    "Use one short calibrated Ctrl+middle drag, or activate Zoom and use one ordinary left drag as the recorded equivalent.",
+    "Observe apparent scale change and unchanged model geometry/orientation, then return zoomed_view.",
+    "If neither control is verifiable, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject selected geometry under the drag, uncalibrated mapping, unsupported Ctrl+middle drag without a Zoom equivalent, or no observable scale change.",
+    "Do not infer zoom from cursor motion alone.",
+    "Do not modify model dimensions."
+  ]
+}

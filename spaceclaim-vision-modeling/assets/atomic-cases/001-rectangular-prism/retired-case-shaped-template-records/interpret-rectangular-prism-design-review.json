@@ -1,0 +1,20 @@
+{
+  "design_review_version": 1,
+  "operation_id": "geometry_understanding.interpret-rectangular-prism",
+  "template_version": "0.1.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Review one primitive-recognition boundary for an explicit axis-aligned rectangular prism.",
+  "checks": [
+    {"name": "single_purpose", "status": "passed", "notes": "The operation emits one primitive parameter contract and does not choose a construction method."},
+    {"name": "case_neutral", "status": "passed", "notes": "Dimensions, body names, source paths, and run paths are inputs rather than template constants."},
+    {"name": "ambiguity_gate", "status": "passed", "notes": "Missing extents, units, orientation, or additional features prevent a ready handoff."},
+    {"name": "evidence_boundary", "status": "passed", "notes": "Host checks validate declarations and derivations only, not the correctness of source interpretation."}
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/references/operation-template-contract.md",
+    "spaceclaim-vision-modeling/references/rectangular-prism-geometry-contract.schema.json"
+  ],
+  "notes": "This is a design record for a candidate operation, not source-interpretation or application evidence."
+}

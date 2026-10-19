@@ -1,0 +1,43 @@
+{
+  "catalog_id": "GU-09",
+  "input_fields": [
+    {
+      "name": "object_set",
+      "type": "array",
+      "description": "可比较的对象引用集合；每个对象必须有独立来源和身份。"
+    },
+    {
+      "name": "symmetry_clues",
+      "type": "object",
+      "description": "对称轴、平面、尺寸或重复布局的原始线索；局部可见不等于整体对称。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "symmetry_kind",
+      "type": "string",
+      "description": "axis、plane、rotational、reflection 或 unknown 等对称类别；只填写有依据的类别。"
+    },
+    {
+      "name": "axis_or_plane",
+      "type": "object",
+      "description": "对称轴或平面的位置与方向依据；无法确定时为 null。"
+    },
+    {
+      "name": "member_refs",
+      "type": "array",
+      "description": "被比较并支持对称关系的对象引用；未确认的成员不得直接计入。"
+    }
+  ],
+  "procedure": [
+    "筛选可比较的对象集合，记录每个对象的来源、可见范围和对称候选线索。",
+    "单独检查成员配对与轴/平面一致性；直接标注为 observed 或 user，扩展到隐藏区域的判断为 derived。",
+    "输出 symmetry_kind、axis_or_plane 和 member_refs；局部证据不足时写 null 并追加 unresolved。",
+    "只记录一个可检验的对称关系，不把对称假设扩展为未观察到的整个主体。"
+  ],
+  "rejection_rules": [
+    "没有至少一组可检验成员或对称候选时拒绝输出确定对称关系。",
+    "只看到局部重复、边界相似或单一视图时不得推定整体对称。",
+    "轴或平面无法定位、成员不一致或证据冲突时保留未决而非修正对象。"
+  ]
+}

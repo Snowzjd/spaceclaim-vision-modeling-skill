@@ -1,0 +1,38 @@
+{
+  "catalog_id": "MS-07",
+  "input_fields": [
+    {
+      "name": "topology_modifying_action",
+      "type": "object",
+      "description": "Object with required keys `action_id`, `topology_effect`, and `operation_boundary`; topology_effect must describe the supplied action."
+    },
+    {
+      "name": "affected_object_references",
+      "type": "array",
+      "description": "Array of reference objects, each with required keys `reference_id`, `reference_kind`, and `selection_scope`, that may become stale."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "topology_refresh_declaration",
+      "type": "object",
+      "description": "Object with required keys `action_id`, `affected_references`, `refresh_before_next_selection`, and `refresh_scope`; nullable when the common output envelope records unknown topology impact."
+    },
+    {
+      "name": "invalidated_references",
+      "type": "array",
+      "description": "Array of reference IDs marked unusable after the topology-changing action; it may be empty."
+    }
+  ],
+  "procedure": [
+    "Classify the supplied action as topology-modifying and identify its boundary in the operation plan.",
+    "Enumerate the supplied references that may be stale after the action and mark them invalid beyond that boundary.",
+    "Declare re-enumeration or semantic re-selection before the next selection, with a conservative scope when impact is uncertain.",
+    "Return `topology_refresh_declaration` and `invalidated_references` as action data, using the common output envelope for status, provenance ownership, and unresolved topology impact."
+  ],
+  "rejection_rules": [
+    "Reject a refresh point without an identified action or affected reference scope.",
+    "Do not preserve stale references, infer stable identity from numbering, or hide the refresh inside a later operation.",
+    "This operation declares a refresh boundary only; it must not perform the refresh or mutate geometry."
+  ]
+}

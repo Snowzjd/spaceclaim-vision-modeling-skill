@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-09",
+  "input_fields": [
+    {
+      "name": "screen_region",
+      "type": "object",
+      "description": "One viewport rectangle with start/end screen coordinates."
+    },
+    {
+      "name": "box_direction",
+      "type": "string",
+      "description": "left_to_right for fully enclosed objects or right_to_left for touched objects."
+    },
+    {
+      "name": "selection_filter",
+      "type": "object",
+      "description": "Object type/filter active during the box selection."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "box_selection_set",
+      "type": "object",
+      "description": "Selected identities, direction, filter, and observed enclosure/intersection rule."
+    }
+  ],
+  "procedure": [
+    "Set selection_filter and confirm screen_region does not include unintended panels.",
+    "Drag one box in the declared direction; use left-to-right for fully enclosed or right-to-left for touched candidates.",
+    "Observe selected identities and return box_selection_set.",
+    "Do not add Ctrl/Shift modifiers unless a separate calibrated toggle/add action is explicitly requested."
+  ],
+  "rejection_rules": [
+    "Reject invalid/ambiguous region, unknown direction semantics, or a box crossing a blocking dialog.",
+    "Do not infer membership from pixel overlap without observing the selection set.",
+    "Do not combine box select with subsequent toggles."
+  ]
+}

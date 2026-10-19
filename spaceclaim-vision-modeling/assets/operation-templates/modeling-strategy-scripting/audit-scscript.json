@@ -1,0 +1,256 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.audit-scscript",
+  "template_version": "0.1.1",
+  "contract_version": 1,
+  "status": "active",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Audit a SpaceClaim .scscript archive for package structure, metadata, operation tokens, and unsafe recorded aliases.",
+  "trigger": "A .scscript archive is available for read-only host checks before it is handed to a SpaceClaim environment.",
+  "inputs": [
+    {
+      "name": "archive_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to the .scscript ZIP archive to inspect.",
+      "provenance_required": true
+    },
+    {
+      "name": "require_api",
+      "type": "string",
+      "required": false,
+      "description": "Optional API metadata value that must match the archive."
+    },
+    {
+      "name": "forbid_numbered_aliases",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether recorded BodyN, FaceN, EdgeN, or similar numbered aliases must fail the audit."
+    },
+    {
+      "name": "required_operations",
+      "type": "array of dotted operation names",
+      "required": false,
+      "description": "Optional operation tokens that must occur in executable script text."
+    },
+    {
+      "name": "forbidden_operations",
+      "type": "array of dotted operation names",
+      "required": false,
+      "description": "Optional operation tokens that must not occur in executable script text."
+    },
+    {
+      "name": "report_path",
+      "type": "filesystem path",
+      "required": false,
+      "description": "Optional path for the JSON audit result emitted by the command-line interface.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "archive_path identifies a file that can be opened for read-only inspection.",
+    "Any required or forbidden operation tokens are complete dotted identifiers and are case-sensitive.",
+    "report_path, when supplied, is writable and is not the input archive."
+  ],
+  "outputs": [
+    {
+      "name": "audit_result",
+      "type": "object",
+      "required": true,
+      "description": "Structured host audit result with status, members, metadata, token counts, aliases, and issues."
+    },
+    {
+      "name": "report_path",
+      "type": "filesystem path",
+      "required": false,
+      "description": "The optional JSON report file when report_path was supplied."
+    }
+  ],
+  "postconditions": [
+    "audit_result is emitted even when an input check fails and contains a machine-readable status and issue list.",
+    "A passed audit has all required archive members, valid content-type declarations, non-empty metadata, and no error-level policy findings.",
+    "When report_path is supplied, the file contains the same structured audit result that is emitted to standard output."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/audit_scscript.py",
+    "target_environment": "Host Python 3.9 or newer; reads a .scscript ZIP archive without launching SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Numbered aliases and policy tokens are inspected as text; no geometry object is resolved and no application execution is observed."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No geometry objects are selected; archive member names and executable token text are the only inspected structures."
+    ],
+    "topology_refresh": "Not applicable because the operation has no geometry topology effect."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "archive_missing",
+      "condition": "archive_path does not identify a readable file.",
+      "detection": "Check the path before opening the ZIP archive.",
+      "safe_state": "No archive contents are trusted and status is failed."
+    },
+    {
+      "failure_id": "unsafe_archive",
+      "condition": "The ZIP has unsafe member names, encryption, excessive size, corruption, or duplicate members.",
+      "detection": "Apply archive safety limits and CRC/member checks before reading executable content.",
+      "safe_state": "The archive remains unopened for execution and status is failed."
+    },
+    {
+      "failure_id": "invalid_package_metadata",
+      "condition": "Required members, content-type overrides, script text, or version metadata are missing or invalid.",
+      "detection": "Check required members and metadata after safe archive loading.",
+      "safe_state": "The audit result records the failure and does not approve the package."
+    },
+    {
+      "failure_id": "policy_violation",
+      "condition": "A required operation is absent, a forbidden operation is present, or forbidden numbered aliases are found.",
+      "detection": "Tokenize executable text after masking comments and strings, then evaluate declared policy.",
+      "safe_state": "The archive is not promoted for the requested policy."
+    },
+    {
+      "failure_id": "report_path_collision",
+      "condition": "The optional report_path resolves to the input archive.",
+      "detection": "Compare canonical real paths before writing the JSON report.",
+      "safe_state": "The archive remains byte-for-byte unchanged, the result is emitted to standard output, and status is failed."
+    },
+    {
+      "failure_id": "report_write_error",
+      "condition": "The optional report_path cannot be written.",
+      "detection": "Handle the filesystem error when persisting the JSON result.",
+      "safe_state": "The in-memory/stdout result remains the only available result and write failure is reported."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "archive_missing",
+      "action": "Provide a readable archive path and rerun the audit.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "unsafe_archive",
+      "action": "Regenerate or repair the archive and rerun the safety audit before any execution attempt.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "invalid_package_metadata",
+      "action": "Repair the package members or metadata and rerun the audit on the clean archive.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "policy_violation",
+      "action": "Resolve the reported token or alias issue, or revise the declared policy with explicit review, then rerun.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "report_path_collision",
+      "action": "Choose a report destination that does not resolve to the input archive and rerun without changing the archive.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "report_write_error",
+      "action": "Choose a writable report destination and rerun without changing the archive.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Archive structure and content-type declarations",
+      "method": "Run repository audit_scscript host tests against valid and malformed archives.",
+      "expected": "Required members, ZIP safety limits, CRC checks, and required content-type overrides are enforced.",
+      "evidence_layer": "host_checked"
+    },
+    {
+      "check": "Executable operation and alias policy",
+      "method": "Run repository audit_scscript host tests covering required/forbidden tokens, comments and strings, and numbered aliases.",
+      "expected": "Only executable dotted tokens are counted and policy violations produce the documented status and issue.",
+      "evidence_layer": "host_checked"
+    },
+    {
+      "check": "Report output cannot overwrite the input archive",
+      "method": "Run the command-line host test with report_path equal to archive_path.",
+      "expected": "The command fails with report_path_collision and preserves the original archive bytes.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/audit-scscript-host-check.json",
+            "sha256": "042bffbcb76a925ff7d2e4c3377e1cf12f04cb6c562f51e1179e34364427fb8c",
+            "notes": "Public contract review record; no private model or host path is included."
+          }
+        ],
+        "notes": "The contract is case-neutral and limited to deterministic static archive checks."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/audit-scscript-host-check.json",
+            "sha256": "042bffbcb76a925ff7d2e4c3377e1cf12f04cb6c562f51e1179e34364427fb8c",
+            "notes": "Twenty-two repository unit tests passed for this exact tool and contract revision."
+          }
+        ],
+        "notes": "Host static-audit checks only; no SpaceClaim process was launched."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "The auditor never launches SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "The auditor does not inspect model geometry."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is saved."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is reopened."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No viewport or image is reviewed."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model export is produced."
+      }
+    },
+    "notes": "Formal evidence stops at design_only and host_checked for this host-only operation."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/audit_scscript.py",
+      "role": "implementation",
+      "sha256": "a33bc2bf6e01cbf1599e38052715c1f226a455e0631bbaac9ab42b58240e0c7f"
+    },
+    {
+      "path": "tests/test_audit_scscript.py",
+      "role": "test",
+      "sha256": "7bba236f3f75cabe19ff5d6a93c6cbec66132c4eafbe4d8b32f593f1d84dc822"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/audit-scscript-host-check.json",
+      "role": "evidence",
+      "sha256": "042bffbcb76a925ff7d2e4c3377e1cf12f04cb6c562f51e1179e34364427fb8c"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "case_id": "v03-atomic-rectangular-prism",
+  "recorded_on": "2026-09-03",
+  "target": {
+    "spaceclaim_release": "2022 R1",
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7"
+  },
+  "exact_artifacts": {
+    "build_scscript": {
+      "path": "stages/02-modeling-strategy-scripting/output/create-rectangular-prism.scscript",
+      "sha256": "d99e7d0a5df422bba143503c74bce84ae39d0eaa7ed1a60499b8f833358c80ff"
+    },
+    "validation_scscript": {
+      "path": "stages/04-validation-visual-review/output/validate-rectangular-prism.scscript",
+      "sha256": "17cf13aa9b1acb9eb5ae73dacd23770e156779066a5e517368df4ef019380554"
+    },
+    "native_model": {
+      "filename": "rectangular-prism.scdoc",
+      "sha256": "d7826c382a811a1a97ee0ceb1afc0e394857cc04d1697f549f3e971bdd4faeba",
+      "repository_bundled": false
+    },
+    "original_forward_report_sha256": "44c2482fd288f0efede79e85582b8ea9eda4b4e77366a52dd0e1d5d0914b5b84",
+    "original_validation_report_sha256": "a3395297f357710101761e19aa215da0a083224b75960ce7096fa1682970e96d"
+  },
+  "execution": {
+    "entry_state": "new_unsaved_design",
+    "build_scscript_run_count": 1,
+    "build_status": "passed",
+    "native_save": "passed",
+    "native_close_and_reopen": "passed",
+    "read_only_validation_status": "passed"
+  },
+  "measurements": {
+    "body_count": 1,
+    "body_name": "ATOMIC_PRISM",
+    "bbox_min_mm": [10.0, -5.0, 2.0],
+    "bbox_max_mm": [50.0, 25.0, 14.0],
+    "volume_mm3": 14400.000000000002,
+    "face_count": 6,
+    "edge_count": 12,
+    "status": "passed"
+  },
+  "visual_review": {
+    "status": "passed",
+    "selection_state": "none",
+    "captures": [
+      {"view": "overview", "filename": "overview.png", "sha256": "82317ddfa767fed89557224e550d77294c90ffd3ad705bab9c70f379226e58c6"},
+      {"view": "top", "filename": "top.png", "sha256": "abfddbb54001e8eaa0924bc8b0899c9f555dde4f008bf89fa437c5397cb5769a"},
+      {"view": "front", "filename": "front.png", "sha256": "68aaa3f78d95784ffd843e17106550c1f3f671971cc1be9f61e9421bba5ae90f"},
+      {"view": "right", "filename": "right.png", "sha256": "92287c36c7f571aa2c4f6344debcb7bee6d6dcbf3d9be9f635ee9a7942cc3738"}
+    ]
+  },
+  "evidence_layers": {
+    "spaceclaim_execution": "passed",
+    "geometry_measurements": "passed",
+    "native_save": "passed",
+    "native_reopen": "passed",
+    "visual_review": "passed",
+    "requested_export": "not_applicable"
+  },
+  "evidence_boundary": "Supports one exact SpaceClaim 2022 R1/API V21 parameter set. The native model and screenshot binaries remain external; repository evidence records their hashes and reviewed observations. This does not establish cross-version compatibility or generic-template activation."
+}

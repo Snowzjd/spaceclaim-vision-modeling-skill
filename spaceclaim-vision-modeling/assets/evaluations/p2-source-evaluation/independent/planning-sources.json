@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {"id":"d","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; whole planning-only request"},
+    {"id":"d.environment","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; target environment: SpaceClaim 2022 R1, V21 scripting API, IronPython 2.7"},
+    {"id":"api.extrude","kind":"api_reference","locator":"runs/p2-evaluation/raw/planning-d.md; transcribed V21 local API XML signature facts for SpaceClaim.Api.V21.Modeler.Body.ExtrudeProfile(Profile profile, Double distance); original installed documentation not accessed by this evaluator"},
+    {"id":"api.circle","kind":"api_reference","locator":"runs/p2-evaluation/raw/planning-d.md; transcribed V21 local API XML signature facts for SpaceClaim.Api.V21.Geometry.CircleProfile(Plane plane, Double radius, PointUV location, Double angle); original installed documentation not accessed by this evaluator"},
+    {"id":"d.feature","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; requested constant closed circular material addition diameter 14 mm, axial length 9 mm; supplied valid circle profile radius 0.007 m and distance 0.009 m; no attachment/union target supplied"},
+    {"id":"d.methods","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; available conceptual methods closed-profile-extrusion and section-loft with prerequisites"},
+    {"id":"d.selection","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; positive-end cap selection paragraph, expected analytic geometry and caller tolerances; no topology change/previous handle"},
+    {"id":"d.assertion","kind":"text","locator":"runs/p2-evaluation/raw/planning-d.md; expected volume and caller-supplied read_volume_mm3(body) measurement-interface contract; tolerance and unavailable-result policy"}
+  ]
+}

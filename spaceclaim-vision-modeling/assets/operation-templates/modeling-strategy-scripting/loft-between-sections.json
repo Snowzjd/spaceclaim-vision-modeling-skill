@@ -1,0 +1,255 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.loft-between-sections",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic loft-between-sections operation within the MA-10 boundary: Current native solid variant: Loft.Create consumes exactly two supplied planar sheet sections. Section creation is caller-owned; periodic lofts, cap construction, profile-loop creation, and persistence are outside this atom.",
+  "trigger": "Use when the build plan requires loft-between-sections and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "section_faces",
+      "type": "array<current planar DesignFace>",
+      "required": true,
+      "description": "Exactly two distinct current faces, each the only face of one planar sheet body."
+    },
+    {
+      "name": "ruled",
+      "type": "boolean",
+      "required": true,
+      "description": "Selects ruled versus smooth native Loft behavior."
+    },
+    {
+      "name": "section_policy",
+      "type": "enum(consume)",
+      "required": true,
+      "description": "The current atom requires native loft consumption of both supplied sheet sections."
+    }
+  ],
+  "preconditions": [
+    "section_faces contains exactly two distinct current planar faces.",
+    "Each section face is the only face of a distinct current open sheet body.",
+    "ruled is boolean and section_policy is exactly consume."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "DesignBody",
+      "required": true,
+      "description": "A newly detected closed, manifold, positive-volume current root DesignBody; the two sheet sections are consumed."
+    }
+  ],
+  "postconditions": [
+    "Loft.Create is called with the two face selections, ForceIndependent, the supplied ruled value, and PeriodicBlend=false.",
+    "Exactly one new current root DesignBody is detected with closed positive volume, and both source sheet bodies are consumed.",
+    "The loft result is manifold and passes the closed-solid assertion."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-10.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic loft-between-sections operation within the MA-10 boundary: Current native solid variant: Loft.Create consumes exactly two supplied planar sheet sections. Section creation is caller-owned; periodic lofts, cap construction, profile-loop creation, and persistence are outside this atom. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "geometry_type",
+      "topology"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Root bodies are enumerated before and after Loft.Create; all pre-operation section references are stale after the consuming mutation."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_loft_sections",
+      "condition": "Section count, distinctness, planar-sheet ownership, ruled type, or consume policy validation fails before Loft.Create.",
+      "detection": "Section count, distinctness, planar-sheet ownership, ruled type, or consume policy validation fails before Loft.Create.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "loft_creation_or_solid_failure",
+      "condition": "Loft.Create reports failure, no unique new closed positive-volume body is found, or the result is not manifold.",
+      "detection": "Loft.Create reports failure, no unique new closed positive-volume body is found, or the result is not manifold.",
+      "safe_state": "Stop downstream use and retain only a clean run-owned state."
+    },
+    {
+      "failure_id": "section_consumption_mismatch",
+      "condition": "Either source sheet body survives after the native Loft.Create call.",
+      "detection": "Either source sheet body survives after the native Loft.Create call.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_loft_sections",
+      "action": "Re-enumerate current sheet faces and supply exactly two distinct planar sections with a boolean ruled value and consume policy.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "loft_creation_or_solid_failure",
+      "action": "Discard or reopen the run-owned document, diagnose section compatibility/order, and rerun from clean sheet sections; do not claim a solid loft.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "section_consumption_mismatch",
+      "action": "Stop and record the observed kernel lifecycle; rerun only after the declared consume policy is confirmed for the exact action version.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Loft.Create is called with the two face selections, ForceIndependent, the supplied ruled value, and PeriodicBlend=false.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Loft.Create is called with the two face selections, ForceIndependent, the supplied ruled value, and PeriodicBlend=false.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Exactly one new current root DesignBody is detected with closed positive volume, and both source sheet bodies are consumed.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly one new current root DesignBody is detected with closed positive volume, and both source sheet bodies are consumed.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The loft result is manifold and passes the closed-solid assertion.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The loft result is manifold and passes the closed-solid assertion.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-10-host-check.json",
+            "sha256": "f0ee7b2bb0c4da8ad5787ae5a32bbb6b4141d481f7136e6bfb8a9ba71c1fb01b"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-10-host-check.json",
+            "sha256": "f0ee7b2bb0c4da8ad5787ae5a32bbb6b4141d481f7136e6bfb8a9ba71c1fb01b"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-10.scscript",
+      "sha256": "2acfd1af5df27de0b7609f705be768d40f49d03c3c68fdde074a8e7006dcf568",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-10.py",
+      "sha256": "4505bec8924a1ce125ef751fc128a071db32d8d615fe7bf608014e501d6f1b83",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-10.action.py",
+      "sha256": "be4840dbe47eb699d5fb7f0356211e84303e6f2926780852726a6ae7d54fbc21",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-10-host-check.json",
+      "sha256": "f0ee7b2bb0c4da8ad5787ae5a32bbb6b4141d481f7136e6bfb8a9ba71c1fb01b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

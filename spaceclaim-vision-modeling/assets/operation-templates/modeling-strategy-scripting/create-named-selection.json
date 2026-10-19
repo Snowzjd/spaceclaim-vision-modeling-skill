@@ -1,0 +1,222 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-named-selection",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic create-named-selection operation within the MA-33 boundary: Root-only create-only face named-selection group. It does not rename the group, select edges/bodies, or edit component occurrences.",
+  "trigger": "Use when the build plan requires create-named-selection and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "faces",
+      "type": "array<current face>",
+      "required": true,
+      "description": "Nonempty distinct current root-part face references to place in one named-selection group."
+    }
+  ],
+  "preconditions": [
+    "faces is nonempty, distinct, and every face belongs to the refreshed current root-body face collections."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "NamedSelection",
+      "required": true,
+      "description": "The CreatedNamedSelection returned by NamedSelection.Create; it may have a generated name until MA-34."
+    }
+  ],
+  "postconditions": [
+    "NamedSelection.Create(FaceSelection.Create(*faces), Selection.Empty()) does not report failure.",
+    "CreatedNamedSelection is not None and is returned."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-33.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic create-named-selection operation within the MA-33 boundary: Root-only create-only face named-selection group. It does not rename the group, select edges/bodies, or edit component occurrences. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "topology"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Current root faces are enumerated before creation; callers must refresh topology after any later mutation."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "stale_or_invalid_faces",
+      "condition": "Empty, duplicate, or noncurrent face references raise ValueError.",
+      "detection": "Empty, duplicate, or noncurrent face references raise ValueError.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "group_creation_failure",
+      "condition": "NamedSelection reports failure or returns no CreatedNamedSelection.",
+      "detection": "NamedSelection reports failure or returns no CreatedNamedSelection.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "stale_or_invalid_faces",
+      "action": "Re-enumerate current faces and supply a distinct valid member set.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "group_creation_failure",
+      "action": "Stop and inspect group state; discard any partial group if present and rerun cleanly.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: NamedSelection.Create(FaceSelection.Create(*faces), Selection.Empty()) does not report failure.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "NamedSelection.Create(FaceSelection.Create(*faces), Selection.Empty()) does not report failure.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: CreatedNamedSelection is not None and is returned.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "CreatedNamedSelection is not None and is returned.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-33-host-check.json",
+            "sha256": "8237417f58fa446c06370b574a51a470e917da0a689a742a832e8a120cbb2cbb"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-33-host-check.json",
+            "sha256": "8237417f58fa446c06370b574a51a470e917da0a689a742a832e8a120cbb2cbb"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-33.scscript",
+      "sha256": "9c7dd62f59f7e4800852d8b12a48f1a3390c56ce0fc69f6582d3da58b0aad80f",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-33.py",
+      "sha256": "acf09570d257efd125dd51a1f3d696964dbd49f277ffd319b586181ade8ebf3d",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-33.action.py",
+      "sha256": "cf9c393f7a94cc48d4f5011272eaa953642b90b6ecb8ae15ca51239b106f9dbb",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-33-host-check.json",
+      "sha256": "8237417f58fa446c06370b574a51a470e917da0a689a742a832e8a120cbb2cbb",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

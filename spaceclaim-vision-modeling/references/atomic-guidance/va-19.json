@@ -1,0 +1,68 @@
+{
+  "catalog_id": "VA-19",
+  "input_fields": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Absolute path to one existing output file."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Expected SHA-256 digest for that file."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-19 host action identity."
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed when file hash equals expected_sha256, otherwise failed."
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Resolved output path."
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "Observed file hash."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "description": "Normalized expected hash."
+    },
+    {
+      "name": "size_bytes",
+      "type": "number",
+      "description": "Observed file size."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for file identity only."
+    },
+    {
+      "name": "geometry_verified",
+      "type": "boolean",
+      "description": "Always false; file identity is not geometry verification."
+    }
+  ],
+  "procedure": [
+    "Resolve the absolute path and reject symlink/reparse components before reading.",
+    "Read the file once, compute SHA-256 and size, and compare with expected_sha256.",
+    "Return the flat host result including geometry_verified=false.",
+    "Do not open the file in SpaceClaim or infer save/runtime success from existence."
+  ],
+  "rejection_rules": [
+    "Reject relative paths, missing/nonregular files, reparse/symlink paths, or malformed digests.",
+    "Reject a hash mismatch as failed rather than substituting a new expected hash.",
+    "Do not claim geometry, native save, or execution evidence."
+  ]
+}

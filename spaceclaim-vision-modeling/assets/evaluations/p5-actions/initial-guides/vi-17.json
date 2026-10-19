@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-17",
+  "input_fields": [
+    {
+      "name": "standard_direction",
+      "type": "string",
+      "description": "One requested standard direction such as front, back, left, right, top, bottom, isometric, or trimetric."
+    },
+    {
+      "name": "model_coordinate_frame",
+      "type": "object",
+      "description": "Confirmed model coordinate frame used to interpret the standard direction."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "standard_view_state",
+      "type": "object",
+      "description": "Requested direction, coordinate frame, observed camera orientation, and geometry-unchanged state."
+    }
+  ],
+  "procedure": [
+    "Validate standard_direction and bind it to model_coordinate_frame; do not use an unlabelled pixel direction.",
+    "Issue one verified View-control/orientation-indicator standard-view command.",
+    "Observe the camera direction/indicator and return standard_view_state.",
+    "If the view label or coordinate-frame relation is ambiguous, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject an unknown standard direction, missing coordinate frame, unavailable View control, or a camera state that cannot be observed.",
+    "Do not treat a visually similar direction as exact agreement.",
+    "Do not rotate model geometry to obtain a view."
+  ]
+}

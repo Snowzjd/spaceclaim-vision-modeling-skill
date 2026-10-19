@@ -1,0 +1,24 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-datum-frame",
+  "coordinate_system": {
+    "origin": {"status": "resolved", "value": [0.0, 0.0, 0.0], "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "origin constraint", "modality": "user_input"}]}},
+    "x_axis": {"status": "resolved", "value": [1.0, 0.0, 0.0], "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "horizontal datum arrow", "modality": "drawing"}]}},
+    "y_axis": {"status": "resolved", "value": [0.0, 1.0, 0.0], "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "vertical datum arrow", "modality": "drawing"}]}},
+    "z_axis": {"status": "resolved", "value": [0.0, 0.0, 1.0], "provenance": {"kind": "inference", "source_refs": [{"source_id": "view-a", "locator": "orthographic view marker", "modality": "drawing"}], "rationale": "The normal follows from the two resolved axes and stated right-handed convention."}},
+    "handedness": {"status": "resolved", "value": "right_handed", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "handedness constraint", "modality": "user_input"}]}},
+    "unit_context": {"status": "resolved", "value": "millimeter", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "drawing unit note", "modality": "drawing"}]}},
+    "source_view_mapping": [
+      {"source_ref": {"source_id": "view-a", "locator": "entire view", "modality": "drawing"}, "mapping": "view horizontal maps to +X and view vertical maps to +Y", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "datum arrows", "modality": "drawing"}]}}
+    ]
+  },
+  "frame_assumptions": [
+    {"id": "assumption-derived-normal", "statement": "The positive normal is derived from the resolved right-handed convention.", "provenance": {"kind": "inference", "source_refs": [], "rationale": "Cross-product orientation follows from the two supplied in-plane axes."}, "confidence": "high"}
+  ],
+  "unresolved_items": [],
+  "frame_confidence": {"level": "high", "coverage": "complete", "rationale": "All core frame components are resolved and numerically consistent."}
+}

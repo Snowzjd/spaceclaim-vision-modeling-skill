@@ -1,0 +1,58 @@
+{
+  "catalog_id": "GU-19",
+  "input_fields": [
+    {
+      "name": "accepted_geometry_parameters",
+      "type": "array",
+      "description": "已明确接受、带单位、量纲、来源和引用的几何参数；派生参数必须标 provenance。"
+    },
+    {
+      "name": "measurement_type",
+      "type": "string",
+      "description": "要预期的单项测量类别及量纲，例如 length、area、volume 或 angle。"
+    },
+    {
+      "name": "calculation_rule",
+      "type": "object",
+      "description": "用户或契约给出的可审计规则与适用假设；只能使用符号算术，不隐藏函数调用。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "expression",
+      "type": "string",
+      "description": "只含符号、数字、+、-、*、/ 和括号的预期测量表达式；不允许函数调用、幂运算或隐含变量。"
+    },
+    {
+      "name": "bindings",
+      "type": "object",
+      "description": "表达式变量到接受参数、单位、来源和 provenance 的绑定；未绑定变量不得隐藏。"
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "description": "在规则适用且所有参数可复算时的预期数值；否则为 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "预期测量单位及其量纲依据；无法确定时为 null。"
+    },
+    {
+      "name": "assumptions",
+      "type": "array",
+      "description": "测量规则、适用几何和容差所需的显式假设及 provenance。"
+    }
+  ],
+  "procedure": [
+    "选择一个测量类型，检查已接受参数的来源、单位、量纲和与该测量的适用关系。",
+    "从计算规则生成只含符号、数字、+、-、*、/ 和括号的 expression，并建立可追溯 bindings。",
+    "在参数充分且规则适用时计算 value 和 unit，输出 expression、bindings、value、unit 和 assumptions；否则 value 写 null。",
+    "将适用性不足、未绑定变量或未知假设写入 provenance 与 unresolved，不把预期值称为已测量事实。"
+  ],
+  "rejection_rules": [
+    "表达式包含函数调用、幂运算、隐藏常数或未声明变量时拒绝生成预期值。",
+    "参数单位/量纲不兼容、测量类型不适用或输入不是已接受参数时拒绝计算。",
+    "不得把预期值、用户目标或视觉估计当作 SpaceClaim 实际测量结果。"
+  ]
+}

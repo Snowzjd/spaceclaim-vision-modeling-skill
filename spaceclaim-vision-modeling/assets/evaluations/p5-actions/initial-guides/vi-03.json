@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-03",
+  "input_fields": [
+    {
+      "name": "visible_target",
+      "type": "object",
+      "description": "One visible, semantically identified object and expected object type."
+    },
+    {
+      "name": "selection_filter",
+      "type": "object",
+      "description": "Current selection filter/object mode."
+    },
+    {
+      "name": "click_position",
+      "type": "object",
+      "description": "One pre-highlighted click location in the viewport."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "selection_state",
+      "type": "object",
+      "description": "One selected object identity, observed type, and selection evidence."
+    }
+  ],
+  "procedure": [
+    "Set/verify selection_filter and move to click_position until pre-highlight identifies visible_target.",
+    "Issue one ordinary left click.",
+    "Observe highlight/status-bar object type and return selection_state.",
+    "If pre-highlight is ambiguous, clear/stop rather than selecting by pixel proximity."
+  ],
+  "rejection_rules": [
+    "Reject hidden/ambiguous target, wrong filter, unsupported click observation, or a click location over overlapping candidates.",
+    "Do not use Ctrl/Shift modifiers in this atom.",
+    "Do not treat a highlight without identity evidence as a successful selection."
+  ]
+}

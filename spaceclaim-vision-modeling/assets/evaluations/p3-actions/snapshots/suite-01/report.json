@@ -1,0 +1,1002 @@
+{
+  "status": "failed", 
+  "schema_version": 1, 
+  "suite_id": "p3-actions-forward", 
+  "tests": [
+    {
+      "status": "passed", 
+      "id": "blank-design", 
+      "actions": [
+        "MA-31"
+      ], 
+      "checks": {
+        "body_count": 0
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "frame-profile-translate", 
+      "actions": [
+        "MA-01", 
+        "MA-02", 
+        "MA-03", 
+        "MA-04", 
+        "MA-06", 
+        "MA-12", 
+        "MA-28", 
+        "MA-14", 
+        "MA-31"
+      ], 
+      "checks": {
+        "plane": {
+          "origin_mm": [
+            0.0, 
+            0.0, 
+            0.0
+          ], 
+          "z_axis": [
+            0.0, 
+            0.0, 
+            1.0
+          ], 
+          "y_axis": [
+            0.0, 
+            1.0, 
+            0.0
+          ], 
+          "x_axis": [
+            1.0, 
+            0.0, 
+            0.0
+          ]
+        }, 
+        "translation": {
+          "bbox_mm": [
+            2.999999999999999, 
+            -2.0, 
+            4.999999999999999, 
+            20.0, 
+            8.999999999999998, 
+            13.0
+          ], 
+          "volume_mm3": 748.0
+        }, 
+        "frame": {
+          "origin_mm": [
+            0.0, 
+            0.0, 
+            0.0
+          ], 
+          "z_axis": [
+            0.0, 
+            0.0, 
+            1.0
+          ], 
+          "y_axis": [
+            0.0, 
+            1.0, 
+            0.0
+          ], 
+          "x_axis": [
+            1.0, 
+            0.0, 
+            0.0
+          ]
+        }, 
+        "line": {
+          "direction": [
+            0.0, 
+            0.0, 
+            -1.0
+          ], 
+          "origin_mm": [
+            4.0, 
+            5.0, 
+            6.0
+          ]
+        }, 
+        "extrusion": {
+          "bbox_mm": [
+            0.0, 
+            0.0, 
+            0.0, 
+            17.0, 
+            10.999999999999998, 
+            8.0
+          ], 
+          "volume_mm3": 748.0
+        }, 
+        "reverse_extrusion": {
+          "bbox_mm": [
+            0.0, 
+            0.0, 
+            -8.0, 
+            17.0, 
+            10.999999999999998, 
+            0.0
+          ], 
+          "volume_mm3": 748.0
+        }, 
+        "body_count": 1
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "boolean-copy-rotation-split", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-20", 
+        "MA-21", 
+        "MA-22", 
+        "MA-16", 
+        "MA-23"
+      ], 
+      "checks": {
+        "copy": {
+          "bbox_mm": [
+            0.0, 
+            0.0, 
+            0.0, 
+            12.0, 
+            8.0, 
+            6.0
+          ], 
+          "volume_mm3": 576.00000000000011
+        }, 
+        "subtract": {
+          "piece_count": 1, 
+          "measurement": {
+            "bbox_mm": [
+              0.0, 
+              0.0, 
+              0.0, 
+              6.0, 
+              8.0, 
+              6.0
+            ], 
+            "volume_mm3": 288.00000000000006
+          }
+        }, 
+        "intersect": {
+          "piece_count": 1, 
+          "measurement": {
+            "bbox_mm": [
+              6.0, 
+              0.0, 
+              0.0, 
+              12.0, 
+              8.0, 
+              6.0
+            ], 
+            "volume_mm3": 288.00000000000006
+          }
+        }, 
+        "split": {
+          "piece_count": 2, 
+          "measurement": {
+            "bbox_mm": [
+              0.0, 
+              0.0, 
+              0.0, 
+              12.0, 
+              8.0, 
+              6.0
+            ], 
+            "volume_mm3": 576.00000000000011
+          }
+        }, 
+        "reverse_rotation": {
+          "bbox_mm": [
+            0.0, 
+            -12.0, 
+            0.0, 
+            8.0, 
+            4.898425415289509e-16, 
+            6.0
+          ], 
+          "volume_mm3": 576.00000000000011
+        }, 
+        "rotation": {
+          "bbox_mm": [
+            -8.0, 
+            0.0, 
+            0.0, 
+            7.3476381229342635e-16, 
+            12.0, 
+            6.0
+          ], 
+          "volume_mm3": 576.00000000000011
+        }, 
+        "union": {
+          "piece_count": 1, 
+          "measurement": {
+            "bbox_mm": [
+              0.0, 
+              0.0, 
+              0.0, 
+              18.0, 
+              8.0, 
+              6.0
+            ], 
+            "volume_mm3": 864.0
+          }
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "topology-round-chamfer-group", 
+      "actions": [
+        "MA-05", 
+        "MA-30", 
+        "MA-27", 
+        "MA-26", 
+        "MA-32", 
+        "MA-29", 
+        "MA-33", 
+        "MA-34", 
+        "MA-31"
+      ], 
+      "checks": {
+        "chamfer": {
+          "measurement": {
+            "bbox_mm": [
+              -1.6263032587282567e-15, 
+              19.999999999999996, 
+              0.0, 
+              12.0, 
+              28.0, 
+              6.0
+            ], 
+            "volume_mm3": 573.00000000000011
+          }, 
+          "area_mm2": 8.485281374238575, 
+          "bbox_mm": [
+            -1.6263032587282567e-15, 
+            19.999999999999996, 
+            0.0, 
+            1.0, 
+            21.0, 
+            6.0
+          ]
+        }, 
+        "round": {
+          "measurement": {
+            "bbox_mm": [
+              20.0, 
+              20.0, 
+              0.0, 
+              32.0, 
+              28.0, 
+              6.0
+            ], 
+            "volume_mm3": 574.71253829981617
+          }, 
+          "area_mm2": 9.424777960769379, 
+          "bbox_mm": [
+            20.0, 
+            20.0, 
+            0.0, 
+            21.0, 
+            21.0, 
+            6.0
+          ]
+        }, 
+        "group": {
+          "member_count": 1, 
+          "member_area_mm2": 48.0, 
+          "name": "P3_FACE_GROUP", 
+          "member_bbox_mm": [
+            40.0, 
+            20.0, 
+            0.0, 
+            40.0, 
+            28.0, 
+            6.0
+          ]
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "sweep", 
+      "actions": [
+        "MA-04", 
+        "MA-09"
+      ], 
+      "checks": {
+        "rectangle": {
+          "bbox_mm": [
+            -3.0, 
+            -2.0, 
+            0.0, 
+            3.0, 
+            2.0, 
+            15.0
+          ], 
+          "volume_mm3": 360.0
+        }, 
+        "circle": {
+          "bbox_mm": [
+            -2.0, 
+            -2.0, 
+            0.0, 
+            2.0, 
+            2.0, 
+            15.0
+          ], 
+          "volume_mm3": 188.49555921538754
+        }
+      }
+    }, 
+    {
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"347a0d9e-fe82-47ba-87fe-c4bb1c606500\", line 5, in _group\n  File \"8312c26e-582e-4a37-9b9a-dcd600245e10\", line 7, in _test_loft\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-10::_script\", line 164, in <module>\n  File \"MA-10::_script\", line 160, in operation\n  File \"MA-10::_script\", line 80, in assert_closed\nRuntimeError: Expected a nonempty closed solid\n", 
+      "id": "loft-solid", 
+      "actions": [
+        "MA-10"
+      ]
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-empty-path", 
+      "actions": [
+        "MA-04", 
+        "MA-09"
+      ], 
+      "checks": {
+        "empty_path_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-loft-sections", 
+      "actions": [
+        "MA-10"
+      ], 
+      "checks": {
+        "insufficient_sections_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-unknown-body-predicate", 
+      "actions": [
+        "MA-05", 
+        "MA-28"
+      ], 
+      "checks": {
+        "unknown_predicate_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-bbox-no-match", 
+      "actions": [
+        "MA-05", 
+        "MA-28"
+      ], 
+      "checks": {
+        "bbox_no_match_rejected": true
+      }
+    }, 
+    {
+      "status": "failed", 
+      "error": "Traceback (most recent call last):\n  File \"347a0d9e-fe82-47ba-87fe-c4bb1c606500\", line 5, in _group\n  File \"773a83ae-0503-462a-ab64-c25732d3283d\", line 3, in _test_name_only\nUnicodeEncodeError: ('unknown', '\\x00', 0, 1, '')\n", 
+      "id": "negative-name-only", 
+      "actions": [
+        "MA-05", 
+        "MA-28"
+      ]
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-duplicate-name", 
+      "actions": [
+        "MA-05", 
+        "MA-32", 
+        "MA-31"
+      ], 
+      "checks": {
+        "duplicate_name_rejected": true, 
+        "body_count": 11
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-block-tolerance", 
+      "actions": [
+        "MA-31", 
+        "MA-05", 
+        "MA-31"
+      ], 
+      "checks": {
+        "body_count_unchanged": true, 
+        "negative_block_tolerance_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-translate-tolerance", 
+      "actions": [
+        "MA-05", 
+        "MA-31", 
+        "MA-14", 
+        "MA-31"
+      ], 
+      "checks": {
+        "body_position_unchanged": true, 
+        "negative_translate_tolerance_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-nonfinite-block", 
+      "actions": [
+        "MA-31", 
+        "MA-05", 
+        "MA-31"
+      ], 
+      "checks": {
+        "body_count_unchanged": true, 
+        "nonfinite_block_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-nonfinite-translate", 
+      "actions": [
+        "MA-05", 
+        "MA-31", 
+        "MA-14", 
+        "MA-31"
+      ], 
+      "checks": {
+        "nonfinite_translate_rejected": true, 
+        "body_position_unchanged": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-nonfinite-rotation", 
+      "actions": [
+        "MA-05", 
+        "MA-31", 
+        "MA-13", 
+        "MA-16", 
+        "MA-31"
+      ], 
+      "checks": {
+        "nonfinite_rotation_rejected": true, 
+        "body_position_unchanged": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-nonunique-face", 
+      "actions": [
+        "MA-05", 
+        "MA-31", 
+        "MA-29", 
+        "MA-31"
+      ], 
+      "checks": {
+        "matching_opposite_faces": 2, 
+        "nonunique_area_face_rejected": true
+      }
+    }
+  ], 
+  "events": [
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "64a3fb345109c09ba35a287407fbd48552c56cf1adcfda1966cbe9054ab84533", 
+      "id": "MA-01", 
+      "source_sha256": "1ba6b70476d47c7d746f6cc71fc72892707ed67849f118a1ef6a9b6f1808ca95"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "ae962074ed69c8ac56a7e1b14d0392157ea23551ffa8695d86d9f867d743f12e", 
+      "id": "MA-02", 
+      "source_sha256": "a3e81a9f70584d33d20b8cd6e55dd430ebb61365c6eafbf0f69453972249f58c"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "bb0706fc31bbace05cedd17be08a39d72dfdb5833f0854b724ff8836a6982a6c", 
+      "id": "MA-03", 
+      "source_sha256": "fe32da189c7a95d1a7a78b7fc4d37db480157903a90085be89f3ed08afb77788"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "ba092c201ba5d0dfd81f49545061e872e70933381fb50f1e0e0555e77b7f1bae", 
+      "id": "MA-04", 
+      "source_sha256": "eb29def0fde4d4b10bf671ecd721c810d60f155e7f9ca83a9a1953ab7dfd2d38"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "a00d433084e5c07eedd46d47b4523093b2da16642e2bdcaf59cca8301aeb84dc", 
+      "id": "MA-06", 
+      "source_sha256": "c515cb461e723a4f1099adf87bc80a153ba08eeb9560833628aaa204617940de"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "a00d433084e5c07eedd46d47b4523093b2da16642e2bdcaf59cca8301aeb84dc", 
+      "id": "MA-06", 
+      "source_sha256": "c515cb461e723a4f1099adf87bc80a153ba08eeb9560833628aaa204617940de"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "1d6d1d451a224872cc51bb1ec76ab10f7e48d9127f43b5e5b02ced0d4ed400d4", 
+      "id": "MA-12", 
+      "source_sha256": "a617872d1ea02814150e879ea8867e44f7615d155848a5626e11355c61d823e2"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "9cf30d9af1e5333c1f50fbf0fa209ceec32e7426649a9b15eb23ce7954e75c4a", 
+      "id": "MA-28", 
+      "source_sha256": "ba14d336c7666b9a43804ae57584e59faeb7f3a31762d236f9bb036147b23e90"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d2adfc72e0e18e2d811241b65bd67add2169b153764c7e6047770dec16d84ef3", 
+      "id": "MA-14", 
+      "source_sha256": "a63322923e0b0863e2d36085080b384677f7161ff6484b3737348e0216b93ca9"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "334bf92d84b7f17c154483b4c8f6dcbed19aa2a790b8444bffa4d0948b9870e7", 
+      "id": "MA-20", 
+      "source_sha256": "39a1a3a290b62071b4d071185847079e8dc85be0577693f5cb567683621113bf"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "86c006c46ebef4bcdf131a1b5fae5049ac1093a38606bfde08128e277da167f7", 
+      "id": "MA-21", 
+      "source_sha256": "32066f5cb59256b06d6dfe620f43ff0b27a0b4b798c3a7146a23156477063214"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "557cb10911f61715390106416347bc69e7eadbd588017de9f94c854f24f0fed6", 
+      "id": "MA-22", 
+      "source_sha256": "7262811d7e63157cce51e3c7b1618a521cde7681841547e004d12a13fa657af9"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "274559a363a460032c82470f93a6a78d82179eeb41ea87bf18f80ea66cfde69b", 
+      "id": "MA-16", 
+      "source_sha256": "663ae0b5d8412de9b44d038c23d0911a9c9f6e7f9bfd2690af871807b848721f"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "274559a363a460032c82470f93a6a78d82179eeb41ea87bf18f80ea66cfde69b", 
+      "id": "MA-16", 
+      "source_sha256": "663ae0b5d8412de9b44d038c23d0911a9c9f6e7f9bfd2690af871807b848721f"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "c7543d9b14c976998806861b6d10b665e433816c3792d17799874ea0efb7b6f8", 
+      "id": "MA-23", 
+      "source_sha256": "ce7e846ff5078bee6c598bfdc56b769bdd4ae904c7760f46df643f20eafd8fea"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "1477306218c7932227b088ec27fd194263cc36e5721f45fc686b962392168480", 
+      "id": "MA-30", 
+      "source_sha256": "c711d63d6d900a34be86942d90dc7faabcb902488ffd0e06a5af390aa6c79bc7"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "c6beed6fc20e2dc9791ce4a0ef434f2c58a2bed57005c26288acc2d604f8fb18", 
+      "id": "MA-27", 
+      "source_sha256": "4a86af3e0f1decb25c8c5f7efeab92d564d8e06d977a3e389d4d26f38bd32853"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "1477306218c7932227b088ec27fd194263cc36e5721f45fc686b962392168480", 
+      "id": "MA-30", 
+      "source_sha256": "c711d63d6d900a34be86942d90dc7faabcb902488ffd0e06a5af390aa6c79bc7"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "1c3a134bdf17007ca8edeb0fa3758d49212c5c2082eca11faafd26317e2fd1db", 
+      "id": "MA-26", 
+      "source_sha256": "5f9c95bd1961e77a92731c1acec9d3fca442a3a974ff5ef07be5d87b5c504659"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "221a895aebfabbef138e21a6a00bfdd5d86288cfcc8fae56bd2c525521b73daa", 
+      "id": "MA-32", 
+      "source_sha256": "0747fb36c50bf80bf5740d34a791461298847a01d42082f5dd03d745805b750f"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "9c7dd62f59f7e4800852d8b12a48f1a3390c56ce0fc69f6582d3da58b0aad80f", 
+      "id": "MA-33", 
+      "source_sha256": "acf09570d257efd125dd51a1f3d696964dbd49f277ffd319b586181ade8ebf3d"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "b09b76681a26b3b14bd1d1e873c95620b78fc45e7c6113daf89ac13514cd14e0", 
+      "id": "MA-34", 
+      "source_sha256": "e7734f9b12fb8a5e1c22db442e2999f0c38c9d353683daf0ffd07000c2dc171e"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "ba092c201ba5d0dfd81f49545061e872e70933381fb50f1e0e0555e77b7f1bae", 
+      "id": "MA-04", 
+      "source_sha256": "eb29def0fde4d4b10bf671ecd721c810d60f155e7f9ca83a9a1953ab7dfd2d38"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "c241b90a931e5cb885091c93d382aff3584144512b86636ec3e639aa35782eee", 
+      "id": "MA-09", 
+      "source_sha256": "6de8a4f9007258d2449cddfac0526906da93786cf27ee17968e06a5601056c48"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "ba092c201ba5d0dfd81f49545061e872e70933381fb50f1e0e0555e77b7f1bae", 
+      "id": "MA-04", 
+      "source_sha256": "eb29def0fde4d4b10bf671ecd721c810d60f155e7f9ca83a9a1953ab7dfd2d38"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "c241b90a931e5cb885091c93d382aff3584144512b86636ec3e639aa35782eee", 
+      "id": "MA-09", 
+      "source_sha256": "6de8a4f9007258d2449cddfac0526906da93786cf27ee17968e06a5601056c48"
+    }, 
+    {
+      "status": "failed", 
+      "archive_sha256": "17d8025d5c5042b19cb15a6ed34f248b3f7cc460b863569e7985512b6d2e9a1b", 
+      "id": "MA-10", 
+      "source_sha256": "1dd0ce01e1516460427ce9f7970a7cbbaa081863641bbc0a1f5dae3890f593c0", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-10::_script\", line 164, in <module>\n  File \"MA-10::_script\", line 160, in operation\n  File \"MA-10::_script\", line 80, in assert_closed\nRuntimeError: Expected a nonempty closed solid\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "ba092c201ba5d0dfd81f49545061e872e70933381fb50f1e0e0555e77b7f1bae", 
+      "id": "MA-04", 
+      "source_sha256": "eb29def0fde4d4b10bf671ecd721c810d60f155e7f9ca83a9a1953ab7dfd2d38"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "c241b90a931e5cb885091c93d382aff3584144512b86636ec3e639aa35782eee", 
+      "id": "MA-09", 
+      "source_sha256": "6de8a4f9007258d2449cddfac0526906da93786cf27ee17968e06a5601056c48", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-09::_script\", line 141, in <module>\n  File \"MA-09::_script\", line 136, in operation\nValueError: Require a nonempty ordered path of trimmed curves\n"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "17d8025d5c5042b19cb15a6ed34f248b3f7cc460b863569e7985512b6d2e9a1b", 
+      "id": "MA-10", 
+      "source_sha256": "1dd0ce01e1516460427ce9f7970a7cbbaa081863641bbc0a1f5dae3890f593c0", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-10::_script\", line 164, in <module>\n  File \"MA-10::_script\", line 144, in operation\nValueError: Insufficient loft profiles\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "9cf30d9af1e5333c1f50fbf0fa209ceec32e7426649a9b15eb23ce7954e75c4a", 
+      "id": "MA-28", 
+      "source_sha256": "ba14d336c7666b9a43804ae57584e59faeb7f3a31762d236f9bb036147b23e90", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-28::_script\", line 151, in <module>\n  File \"MA-28::_script\", line 135, in operation\nValueError: Unsupported body criterion; do not silently weaken selection\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "9cf30d9af1e5333c1f50fbf0fa209ceec32e7426649a9b15eb23ce7954e75c4a", 
+      "id": "MA-28", 
+      "source_sha256": "ba14d336c7666b9a43804ae57584e59faeb7f3a31762d236f9bb036147b23e90", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-28::_script\", line 151, in <module>\n  File \"MA-28::_script\", line 147, in operation\n  File \"MA-28::_script\", line 73, in one\nValueError: Expected one semantic body, found 0\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "221a895aebfabbef138e21a6a00bfdd5d86288cfcc8fae56bd2c525521b73daa", 
+      "id": "MA-32", 
+      "source_sha256": "0747fb36c50bf80bf5740d34a791461298847a01d42082f5dd03d745805b750f"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "221a895aebfabbef138e21a6a00bfdd5d86288cfcc8fae56bd2c525521b73daa", 
+      "id": "MA-32", 
+      "source_sha256": "0747fb36c50bf80bf5740d34a791461298847a01d42082f5dd03d745805b750f", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-32::_script\", line 144, in <module>\n  File \"MA-32::_script\", line 136, in operation\nValueError: Body name collision\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-05::_script\", line 147, in <module>\n  File \"MA-05::_script\", line 136, in operation\n  File \"MA-05::_script\", line 48, in tolerance\nValueError: Tolerance cannot be negative\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "d2adfc72e0e18e2d811241b65bd67add2169b153764c7e6047770dec16d84ef3", 
+      "id": "MA-14", 
+      "source_sha256": "a63322923e0b0863e2d36085080b384677f7161ff6484b3737348e0216b93ca9", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-14::_script\", line 149, in <module>\n  File \"MA-14::_script\", line 135, in operation\n  File \"MA-14::_script\", line 48, in tolerance\nValueError: Tolerance cannot be negative\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-05::_script\", line 147, in <module>\n  File \"MA-05::_script\", line 133, in operation\n  File \"MA-05::_script\", line 22, in vector3\n  File \"MA-05::_script\", line 15, in finite\nValueError: max_mm must be finite\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "d2adfc72e0e18e2d811241b65bd67add2169b153764c7e6047770dec16d84ef3", 
+      "id": "MA-14", 
+      "source_sha256": "a63322923e0b0863e2d36085080b384677f7161ff6484b3737348e0216b93ca9", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-14::_script\", line 149, in <module>\n  File \"MA-14::_script\", line 134, in operation\n  File \"MA-14::_script\", line 22, in vector3\n  File \"MA-14::_script\", line 15, in finite\nValueError: delta_mm must be finite\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "274559a363a460032c82470f93a6a78d82179eeb41ea87bf18f80ea66cfde69b", 
+      "id": "MA-16", 
+      "source_sha256": "663ae0b5d8412de9b44d038c23d0911a9c9f6e7f9bfd2690af871807b848721f", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-16::_script\", line 146, in <module>\n  File \"MA-16::_script\", line 137, in operation\n  File \"MA-16::_script\", line 15, in finite\nValueError: angle must be finite\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97", 
+      "reason": "Traceback (most recent call last):\n  File \"38231e4a-46c4-4b34-9df6-89daab05f9ff\", line 14, in _call\n  File \"MA-29::_script\", line 155, in <module>\n  File \"MA-29::_script\", line 151, in operation\n  File \"MA-29::_script\", line 73, in one\nValueError: Expected one semantic face, found 2\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }
+  ]
+}

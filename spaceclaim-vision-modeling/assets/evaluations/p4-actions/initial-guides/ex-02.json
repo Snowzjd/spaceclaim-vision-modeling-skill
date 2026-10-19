@@ -1,0 +1,43 @@
+{
+  "catalog_id": "EX-02",
+  "input_fields": [
+    {
+      "name": "session_inventory",
+      "type": "array",
+      "description": "Observed processes/windows with stable IDs, version, document identity, modal state, and busy state."
+    },
+    {
+      "name": "target_version_and_document",
+      "type": "object",
+      "description": "Required SpaceClaim version plus path, title, hash, or other document identity clues."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Single selected session and stable window/process identity, or null when unresolved."
+    },
+    {
+      "name": "selection_status",
+      "type": "string",
+      "description": "One of unique, none, ambiguous, blocked, or needs_manual_review."
+    },
+    {
+      "name": "blocking_reason",
+      "type": "string",
+      "description": "Exact mismatch, modal, busy, or identity reason when not unique."
+    }
+  ],
+  "procedure": [
+    "Enumerate process/window identities and record version, active document identity, modal dialogs, and busy indicators.",
+    "Filter by exact version, then compare path/hash/title clues; do not identify by title alone.",
+    "Require one remaining candidate, record its stable identity, and report modal/busy state.",
+    "If identity remains ambiguous, return needs_manual_review without focusing or clicking a candidate."
+  ],
+  "rejection_rules": [
+    "Reject zero or multiple matching sessions, version mismatch, missing document identity, or a blocking modal.",
+    "Do not select by screen position, recency, or truncated title.",
+    "Do not close, activate, or alter a candidate while unresolved."
+  ]
+}

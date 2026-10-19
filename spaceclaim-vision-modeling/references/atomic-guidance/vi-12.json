@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-12",
+  "input_fields": [
+    {
+      "name": "viewport",
+      "type": "object",
+      "description": "Maximized unobstructed viewport and empty drag region."
+    },
+    {
+      "name": "drag_path",
+      "type": "object",
+      "description": "One short lateral pan drag path."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified Shift+middle-drag Pan mapping or Pan-tool equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "panned_view",
+      "type": "object",
+      "description": "Before/after camera position, orientation, drag/control path, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Place the cursor in empty viewport space and check modifier/middle-button support.",
+    "Use one short calibrated Shift+middle drag, or activate Pan and use one ordinary left drag as the recorded equivalent.",
+    "Observe lateral movement with unchanged orientation and return panned_view.",
+    "If neither control is verifiable, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject selected geometry under the drag, an uncalibrated mapping, unsupported Shift+middle drag without a Pan equivalent, or no observable lateral movement.",
+    "Do not repeatedly retry uncertain gestures.",
+    "Do not pan by editing model coordinates."
+  ]
+}

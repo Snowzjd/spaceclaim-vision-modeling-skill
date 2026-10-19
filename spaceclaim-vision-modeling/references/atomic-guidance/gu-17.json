@@ -1,0 +1,59 @@
+{
+  "catalog_id": "GU-17",
+  "input_fields": [
+    {
+      "name": "edge_annotation_or_text",
+      "type": "object",
+      "description": "圆角、倒角、半径、距离或角度等原始标注和文字；视觉估计必须另标 provenance。"
+    },
+    {
+      "name": "edge_location_ref",
+      "type": "string",
+      "description": "目标边缘的稳定引用或可复查区域；不可定位时为 null。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "treatment_kind",
+      "type": "string",
+      "description": "fillet、chamfer、round、bevel 或 unknown 等处理类别；类别不清时为 null。"
+    },
+    {
+      "name": "magnitude",
+      "type": "number",
+      "description": "有标注依据的半径、距离或其他单值；视觉估计或缺失时为 null。"
+    },
+    {
+      "name": "angle",
+      "type": "number",
+      "description": "有标注依据的角度；未知时为 null，不用常见角度默认。"
+    },
+    {
+      "name": "target_edge_ref",
+      "type": "string",
+      "description": "实际作用边缘的引用；目标不确定时为 null。"
+    },
+    {
+      "name": "scope",
+      "type": "object",
+      "description": "作用范围、连续边或例外边的记录；范围不确定时保留 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Explicit length unit of magnitude; angle is expressed in degrees when applicable."
+    }
+  ],
+  "procedure": [
+    "定位一条边缘处理标注或文字，保留原始值、符号、单位和 source_ref。",
+    "将 treatment_kind、target_edge_ref、magnitude、angle 和 scope 分开核对；用户说明标为 user，视觉解释标为 derived。",
+    "输出处理要求记录；没有标注依据的数值写 null，并附 provenance 与 unresolved，而不是把视觉估计当标注。",
+    "只描述一个边缘处理要求，不对边缘执行建模或把同类边缘自动扩展到整个主体。",
+    "magnitude 保留 unit；圆角的 angle 或仅声明等距倒角而不单独约束角度时 angle 可标 not_applicable，注明原因；未知必需角度不可这样处理。"
+  ],
+  "rejection_rules": [
+    "处理类型或目标边缘无法定位时拒绝给出确定作用范围。",
+    "仅凭视觉圆角/倒角外观不得填写 magnitude 或 angle。",
+    "标注范围与可见边界冲突时不得静默扩展或缩小作用边集合。"
+  ]
+}

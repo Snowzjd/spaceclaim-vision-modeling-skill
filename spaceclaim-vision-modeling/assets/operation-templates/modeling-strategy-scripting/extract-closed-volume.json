@@ -1,0 +1,245 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.extract-closed-volume",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic extract-closed-volume operation within the MA-25 boundary: One extraction of an already enclosed volume seeded on a current face through VolumeExtract.Create. It does not cap, repair, heal, name, or otherwise prepare an open boundary.",
+  "trigger": "Use when the build plan requires extract-closed-volume and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "source_body",
+      "type": "current root DesignBody",
+      "required": true,
+      "description": "The current closed source body whose enclosed region is extracted."
+    },
+    {
+      "name": "seed_face",
+      "type": "current face owned by source_body",
+      "required": true,
+      "description": "The current face containing the supplied seed point."
+    },
+    {
+      "name": "seed_point_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite seed point in millimetres; it must lie on seed_face within tolerance."
+    },
+    {
+      "name": "position_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for projecting the seed point onto the trimmed seed face."
+    }
+  ],
+  "preconditions": [
+    "source_body is a current closed positive-volume root DesignBody and seed_face belongs to it.",
+    "seed_point_mm projects onto the supplied trimmed seed face within position_tolerance_mm.",
+    "position_tolerance_mm is finite and nonnegative; the enclosed region is already valid for native extraction."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "DesignBodyGeneral occurrence",
+      "required": true,
+      "description": "The unique closed positive-volume DesignBodyGeneral occurrence in the new direct-root extraction component's Content.Bodies; source_body remains a preserved root DesignBody."
+    }
+  ],
+  "postconditions": [
+    "VolumeExtract.Create succeeds with share topology, imprint capping edges, and merge-created-volume options disabled.",
+    "Exactly one new direct-root extraction Component is detected; its Content.Bodies contains one closed positive-volume DesignBodyGeneral occurrence, and the source root DesignBody remains present."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-25.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic extract-closed-volume operation within the MA-25 boundary: One extraction of an already enclosed volume seeded on a current face through VolumeExtract.Create. It does not cap, repair, heal, name, or otherwise prepare an open boundary. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "geometry_type",
+      "position",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Root components and bodies are enumerated before and after VolumeExtract.Create; the new component's Content.Bodies is reacquired before downstream use."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_volume_extract_input",
+      "condition": "Source/face ownership or seed-point projection validation fails before extraction.",
+      "detection": "Source/face ownership or seed-point projection validation fails before extraction.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "volume_extract_failure",
+      "condition": "VolumeExtract.Create reports failure or no unique new closed positive-volume body is found.",
+      "detection": "VolumeExtract.Create reports failure or no unique new closed positive-volume body is found.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_volume_extract_input",
+      "action": "Re-enumerate current topology, supply a seed on the current face, and rerun only for an already enclosed region; no extraction call is expected.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "volume_extract_failure",
+      "action": "Treat the root document as potentially partially mutated, reopen a clean run-owned copy, and diagnose enclosure/seed feasibility before rerunning.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: VolumeExtract.Create succeeds with share topology, imprint capping edges, and merge-created-volume options disabled.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "VolumeExtract.Create succeeds with share topology, imprint capping edges, and merge-created-volume options disabled.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Exactly one new direct-root extraction Component is detected; its Content.Bodies contains one closed positive-volume DesignBodyGeneral occurrence, and the source root DesignBody remains present.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly one new direct-root extraction Component is detected; its Content.Bodies contains one closed positive-volume DesignBodyGeneral occurrence, and the source root DesignBody remains present.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-25-host-check.json",
+            "sha256": "ab40df724eaebb474f6571832d7cc4886a67e28a484c1210c0ac5ac2d47d18d7"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-25-host-check.json",
+            "sha256": "ab40df724eaebb474f6571832d7cc4886a67e28a484c1210c0ac5ac2d47d18d7"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-25.scscript",
+      "sha256": "8c11ffbf04cf4e64765635931a1edd2d88918db5e1d62b2f52adb5c20fe1d150",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-25.py",
+      "sha256": "6aa64b7ffd11f80dea92d2f296945da668be566cb42729cae70fc9e1fe7a29b0",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-25.action.py",
+      "sha256": "0ffc8b4df9e350916dbc2415d5e2b689efa913997e5f5e07a08a4c866a7f7c62",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-25-host-check.json",
+      "sha256": "ab40df724eaebb474f6571832d7cc4886a67e28a484c1210c0ac5ac2d47d18d7",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+      "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/harness.py",
+      "sha256": "cc9e159049c56f33bd4cb7f59ed74860af3d9965dd55e5e61d4d1b11f1cc10a0",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

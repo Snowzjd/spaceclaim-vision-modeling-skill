@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "model": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+    "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+  },
+  "configured_source_sha256": "d1f5acb248203b8f3b445361aa69338e593c1371b0ddbcff271e6a51b5207161",
+  "configured_archive_sha256": "01cbdfef8f6f47802c7cca6f909235e11e3d3c7b3c5f9ba6a1034b216f13c28f",
+  "original_report_sha256": "938f036e67e98ba302b02ac68a7f3602488ea78918fb9bbd740f8c3bb9501e2a",
+  "portable_harness": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-test.py",
+    "sha256": "97c7a2ce420c485a543678d9116f50ca83708f909b0c6366d98f00d4d9d3871b"
+  },
+  "normalization": "Only EXPECTED/REPORT assignment lines removed. Original report remains local; reopen-observation.json is the explicitly redacted public derivative.",
+  "controller_observations": [
+    {
+      "catalog_id": "VA-21",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-21.json",
+        "sha256": "8dd17372d04de5f6ca33d7ec3bb9d548999c3eab1fe65ae5c34ce061d1904737"
+      },
+      "variant": "Close one already-saved unchanged native tab; no save/discard prompt appeared.",
+      "status": "closed",
+      "other_documents": "Retained, none closed or discarded."
+    },
+    {
+      "catalog_id": "VA-22",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-22.json",
+        "sha256": "9f8b49a2b04672f1876cdbcfe9672d5f71b4f16f8f5e01bbd17c7819cda0a52f"
+      },
+      "variant": "Open the same native file in maximized V21 session; active path and file hash confirmed by separate read-only observer.",
+      "status": "opened"
+    }
+  ],
+  "boundary": "Native reopen observed. Independent count/bbox/volume read-only check passed for this synthetic block only. No save during reopen, no requested export."
+}

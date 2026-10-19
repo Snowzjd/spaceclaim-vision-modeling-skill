@@ -1,0 +1,105 @@
+{
+  "guidance_version": 2,
+  "operations": [
+    {
+      "catalog_id": "GU-01",
+      "path": "references/atomic-guidance/gu-01.json",
+      "sha256": "12831a2492ea491df11e136d54990fbdb446533934d5d2a1ffba0f598d9cba00"
+    },
+    {
+      "catalog_id": "GU-02",
+      "path": "references/atomic-guidance/gu-02.json",
+      "sha256": "dfa1e139b64da3d8fc4871c4e9d434497862a6a12646263cf63712413393e060"
+    },
+    {
+      "catalog_id": "GU-03",
+      "path": "references/atomic-guidance/gu-03.json",
+      "sha256": "89d3f644156031f9500c524939435f87ca1402a96dd26d46d9c66acaf04cf228"
+    },
+    {
+      "catalog_id": "GU-04",
+      "path": "references/atomic-guidance/gu-04.json",
+      "sha256": "89e513196696bb093ab3a25b1e35ab2cf85ed33f1664719bbd98076525007141"
+    },
+    {
+      "catalog_id": "GU-05",
+      "path": "references/atomic-guidance/gu-05.json",
+      "sha256": "ed25eb7995a65c076131dbd0ec6dce1710fc802a3668454611fc893b12efa8bd"
+    },
+    {
+      "catalog_id": "GU-06",
+      "path": "references/atomic-guidance/gu-06.json",
+      "sha256": "09a4be57a40c15a0ea0cfb4074e2713df77c4531f5199f993c25d82cd4bfb11c"
+    },
+    {
+      "catalog_id": "GU-07",
+      "path": "references/atomic-guidance/gu-07.json",
+      "sha256": "c10f87a82a6de27f70149f992f3ab62c2f21184e40fa73c76fb9338e8bdf1a34"
+    },
+    {
+      "catalog_id": "GU-08",
+      "path": "references/atomic-guidance/gu-08.json",
+      "sha256": "acce9214ca5e6ceae8f639ebea880994f63b0f383f831dbf0d0c18d9d14b2888"
+    },
+    {
+      "catalog_id": "GU-09",
+      "path": "references/atomic-guidance/gu-09.json",
+      "sha256": "df50a2ffd4fded57f74103f84df28cf765184e70b350854ff1ffefc7353acd4c"
+    },
+    {
+      "catalog_id": "GU-10",
+      "path": "references/atomic-guidance/gu-10.json",
+      "sha256": "800c1ac00b6d638255381d8676f7441c31704d5fac17a43b9b9d52ee097770d4"
+    },
+    {
+      "catalog_id": "GU-11",
+      "path": "references/atomic-guidance/gu-11.json",
+      "sha256": "2620d59d776d64242b7affc45a13587ab93e243911fb763be1ac69f2d506550c"
+    },
+    {
+      "catalog_id": "GU-12",
+      "path": "references/atomic-guidance/gu-12.json",
+      "sha256": "f2c6ff6ae734bfd56fdfb2e3d450cfb4567d836c5e6183c2acab3999c0afa915"
+    },
+    {
+      "catalog_id": "GU-13",
+      "path": "references/atomic-guidance/gu-13.json",
+      "sha256": "c7be8be58be06a8bfdf7f434646350c6c6f4fe7e982d528f56bbcc407d7e7a0d"
+    },
+    {
+      "catalog_id": "GU-14",
+      "path": "references/atomic-guidance/gu-14.json",
+      "sha256": "127994df65697521e66ed99e7883c6b85ce4405aa744a7b71a567b20630402c8"
+    },
+    {
+      "catalog_id": "GU-15",
+      "path": "references/atomic-guidance/gu-15.json",
+      "sha256": "af0e884246323fa4bda85a27f55a57211254b42c7beffaa5242add1466c40b15"
+    },
+    {
+      "catalog_id": "GU-16",
+      "path": "references/atomic-guidance/gu-16.json",
+      "sha256": "e52d3c719dd5fc55e700fa6b92ee191f474df791d83b64300ac320833a73c732"
+    },
+    {
+      "catalog_id": "GU-17",
+      "path": "references/atomic-guidance/gu-17.json",
+      "sha256": "79a4cd38c895caf836e9a893a4ae6a1eb595128adb86e205c89a03cff9f2071e"
+    },
+    {
+      "catalog_id": "GU-18",
+      "path": "references/atomic-guidance/gu-18.json",
+      "sha256": "c026161aee77e9ad44237d4877af221620c1393805c0f9db2f78bb2955316dd8"
+    },
+    {
+      "catalog_id": "GU-19",
+      "path": "references/atomic-guidance/gu-19.json",
+      "sha256": "104c5bc03edc03be8aa6c2808798b42c5e79518549ebcd592f70b89fd55d6667"
+    },
+    {
+      "catalog_id": "GU-20",
+      "path": "references/atomic-guidance/gu-20.json",
+      "sha256": "9a88acf19013e628d3ec84cdf6b6bc9c145971742f240c5bacf3b2e0259db406"
+    }
+  ]
+}

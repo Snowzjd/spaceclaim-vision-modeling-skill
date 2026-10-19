@@ -1,0 +1,707 @@
+{
+  "format": "p4-independent-raw-inputs",
+  "format_version": 1,
+  "recorded_on": "2026-09-08",
+  "scope": {
+    "catalog_ids": [
+      "EX-01", "EX-02", "EX-03", "EX-04", "EX-05", "EX-06", "EX-07",
+      "EX-08", "EX-09", "EX-10", "EX-11", "EX-12", "EX-13", "EX-14",
+      "ER-01", "ER-02", "ER-03", "ER-04", "ER-05", "ER-06", "ER-07",
+      "ER-08", "ER-09", "ER-10", "ER-11", "ER-12"
+    ],
+    "fixture_mode": "synthetic-only",
+    "host_or_gui_execution": "not_performed",
+    "private_model_policy": "No private models, credentials, recordings, or user-specific artifacts are used.",
+    "artifact_policy": "All paths and hashes below identify placeholders only; this input file does not create, open, save, delete, or execute any artifact."
+  },
+  "shared_api_context": {
+    "product": "Ansys SpaceClaim",
+    "api_version": "V21",
+    "assembly": "SpaceClaim.Api.V21",
+    "signature_provenance": "Installed SpaceClaim.Api.V21 XML metadata; signature records are fixtures, not runtime evidence.",
+    "interpreter_constraint": "IronPython 2-compatible snippets where code is supplied",
+    "runtime_claim": "none"
+  },
+  "cases": [
+    {
+      "catalog_id": "EX-01",
+      "operation": "confirm-control-authorization",
+      "raw_input": {
+        "user_authorization_records": [],
+        "task_scope": {
+          "requested_action": "dispatch one loaded .scscript",
+          "target_catalog_id": "EX-09",
+          "allowed_artifacts": ["synthetic event record", "synthetic evaluation output"],
+          "forbidden_actions": ["control a desktop GUI", "run SpaceClaim", "overwrite user files"]
+        }
+      },
+      "semantic_attributes": {
+        "authorization_state": "missing",
+        "scope_traceable": false,
+        "control_request_present": true,
+        "do_not_self_authorize": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "authorization_check_requested", "source": "synthetic_task_record"}
+      ],
+      "evaluation_focus": ["Missing authorization must remain missing; task wording is not authorization."]
+    },
+    {
+      "catalog_id": "EX-02",
+      "operation": "confirm-target-spaceclaim-session",
+      "raw_input": {
+        "session_candidates": [
+          {"session_id": "sc-v21-a", "process": "SpaceClaim.exe", "api_version": "V21", "active_document_id": "blank-01", "window_title": "SpaceClaim"},
+          {"session_id": "sc-v21-b", "process": "SpaceClaim.exe", "api_version": "V21", "active_document_id": "blank-01", "window_title": "SpaceClaim"}
+        ],
+        "target_clues": {"api_version": "V21", "document_id": "blank-01", "title_hint": "SpaceClaim"}
+      },
+      "semantic_attributes": {
+        "candidate_count": 2,
+        "identity_ambiguous": true,
+        "document_clue_matches_multiple": true,
+        "arbitrary_candidate_selection_forbidden": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "session_candidates_enumerated", "count": 2, "source": "synthetic_session_snapshot"}
+      ],
+      "evaluation_focus": ["Do not select either session while uniqueness is unresolved."]
+    },
+    {
+      "catalog_id": "EX-03",
+      "operation": "maximize-spaceclaim-window",
+      "raw_input": {
+        "target_session": {"session_id": "sc-v21-a", "api_version": "V21", "document_id": "blank-01"},
+        "target_window": {"window_id": "window-v21-a", "state": "normal", "visible": true, "owner": "sc-v21-a"},
+        "layout_exception": null,
+        "authorization_ref": "auth-maximize-synthetic-01"
+      },
+      "semantic_attributes": {
+        "session_unique": true,
+        "window_unique": true,
+        "window_can_be_controlled": true,
+        "current_state": "not_maximized",
+        "geometry_effect": "none"
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "target_window_confirmed", "window_id": "window-v21-a"},
+        {"seq": 2, "at": "t+01s", "event": "maximize_request_ready", "window_state_before": "normal"}
+      ],
+      "evaluation_focus": ["Keep a required layout exception explicit if one is supplied; do not silently alter geometry."]
+    },
+    {
+      "catalog_id": "EX-04",
+      "operation": "create-unsaved-blank-design",
+      "raw_input": {
+        "target_session": {"session_id": "sc-v21-a", "idle": false},
+        "active_document": {"document_id": "user-work-01", "path": null, "modified": true, "has_user_geometry": true, "unsaved_changes": true},
+        "baseline_entry_requirement": "none",
+        "request": "create a blank design without overwriting current work"
+      },
+      "semantic_attributes": {
+        "session_idle": false,
+        "active_user_work_present": true,
+        "safe_to_replace_active_document": false,
+        "document_identity_risk": "high"
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Document.Create", "signature": "SpaceClaim.Api.V21.Document.Create() -> Document", "source_ref": "SpaceClaim.Api.V21.xml:23622-23626"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "requested_creation_call", "language": "python", "source": "new_document = Document.Create()", "status": "input_only"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "modified_user_document_observed", "document_id": "user-work-01"},
+        {"seq": 2, "at": "t+01s", "event": "blank_design_request_received"}
+      ],
+      "evaluation_focus": ["Do not replace or close a modified user document merely to obtain a blank entry."]
+    },
+    {
+      "catalog_id": "EX-05",
+      "operation": "copy-baseline-model",
+      "raw_input": {
+        "baseline_file": {"path": "C:\\synthetic\\p4\\baseline\\baseline.scdoc", "artifact_id": "public-fixture-baseline-01", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "exists_in_fixture": false},
+        "run_copy": {"path": "C:\\synthetic\\p4\\run-001\\baseline-copy.scdoc", "artifact_id": "run-001-baseline-copy", "parent_is_distinct": true},
+        "copy_policy": "byte-preserving; source read-only"
+      },
+      "semantic_attributes": {
+        "source_role": "baseline",
+        "destination_role": "run_owned_copy",
+        "paths_independent": true,
+        "expected_hash_relation": "equal",
+        "private_artifact": false
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "copy_intent", "language": "text", "source": "copy baseline.scdoc to run-owned path; do not edit source", "status": "input_only"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "baseline_hash_recorded", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+        {"seq": 2, "at": "t+01s", "event": "independent_destination_declared", "path": "C:\\synthetic\\p4\\run-001\\baseline-copy.scdoc"}
+      ],
+      "evaluation_focus": ["Preserve baseline identity and keep source and run copy roles separate."]
+    },
+    {
+      "catalog_id": "EX-06",
+      "operation": "verify-active-document",
+      "raw_input": {
+        "active_document_state": {"document_id": "model-blank-01", "document_type": "SpaceClaim model", "path": "C:\\synthetic\\p4\\run-001\\blank.scdoc", "modified": false},
+        "visible_script_label": "ma-25.scscript",
+        "expected_document": {"document_id": "model-blank-01", "document_type": "SpaceClaim model", "path": "C:\\synthetic\\p4\\run-001\\blank.scdoc"}
+      },
+      "semantic_attributes": {
+        "document_match_fields": ["document_id", "document_type", "path"],
+        "script_label_is_document_identity": false,
+        "active_document_matches_expected": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "active_document_observed", "document_id": "model-blank-01"},
+        {"seq": 2, "at": "t+01s", "event": "script_label_observed", "label": "ma-25.scscript"}
+      ],
+      "evaluation_focus": ["A script/archive label cannot substitute for the active model document identity."]
+    },
+    {
+      "catalog_id": "EX-07",
+      "operation": "verify-run-output-path",
+      "raw_input": {
+        "output_paths": [
+          {"role": "run_output", "path": "C:\\synthetic\\p4\\run-001\\result.scdoc"},
+          {"role": "baseline", "path": "C:\\synthetic\\p4\\baseline.scdoc"},
+          {"role": "evidence", "path": "C:\\synthetic\\p4\\run-001\\result.scdoc"}
+        ],
+        "run_ownership": {"run_id": "p4-independent-001", "owned_prefix": "C:\\synthetic\\p4\\run-001\\"},
+        "overwrite_policy": "never"
+      },
+      "semantic_attributes": {
+        "path_collision_present": true,
+        "collision_roles": ["run_output", "evidence"],
+        "baseline_outside_owned_prefix": true,
+        "overwrite_allowed": false
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "paths_normalized", "path_count": 3},
+        {"seq": 2, "at": "t+01s", "event": "role_collision_detected", "roles": ["run_output", "evidence"]}
+      ],
+      "evaluation_focus": ["Reject role collisions and do not repair by silently enabling overwrite."]
+    },
+    {
+      "catalog_id": "EX-08",
+      "operation": "load-scscript",
+      "raw_input": {
+        "script_artifact": {"path": "C:\\synthetic\\p4\\scripts\\ex09.scscript", "archive_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "catalog_id": "EX-09", "api_version": "V21"},
+        "target_session": {"session_id": "sc-v21-a", "api_version": "V21", "idle": true},
+        "load_policy": "load exactly this archive; do not dispatch it during load"
+      },
+      "semantic_attributes": {
+        "archive_prepared": true,
+        "session_idle": true,
+        "script_loaded_before_input": false,
+        "execution_requested": false
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "archive_header", "language": "python", "source": "# API Version = V21\n# catalog_id = EX-09\n# archive_sha256 = bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "status": "synthetic_archive_metadata"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "archive_identity_verified", "archive_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        {"seq": 2, "at": "t+01s", "event": "load_requested", "script_path": "C:\\synthetic\\p4\\scripts\\ex09.scscript"}
+      ],
+      "evaluation_focus": ["Loading ends before execution; no run event may be invented."]
+    },
+    {
+      "catalog_id": "EX-09",
+      "operation": "execute-loaded-scscript-once",
+      "raw_input": {
+        "loaded_script": {"catalog_id": "EX-09", "path": "C:\\synthetic\\p4\\scripts\\ex09.scscript", "archive_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "loaded": true},
+        "current_design": {"document_id": "blank-01", "api_version": "V21", "modified": false},
+        "authorization": {"authorization_id": "auth-run-one-01", "scope": "EX-09 on blank-01 exactly once", "valid": true},
+        "prior_runs": [],
+        "dispatch_budget": 1
+      },
+      "semantic_attributes": {
+        "script_document_match": true,
+        "authorization_valid": true,
+        "session_idle": true,
+        "prior_dispatch_count": 0,
+        "allowed_dispatch_count": 1
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "loaded_contract", "language": "text", "source": "loaded_archive=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb; document=blank-01; dispatch_count=0", "status": "input_only"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "loaded_script_confirmed"},
+        {"seq": 2, "at": "t+01s", "event": "authorization_confirmed", "authorization_id": "auth-run-one-01"},
+        {"seq": 3, "at": "t+02s", "event": "dispatch_slot_open", "remaining": 1}
+      ],
+      "evaluation_focus": ["Issue exactly one dispatch; dispatch is not completion evidence."]
+    },
+    {
+      "catalog_id": "EX-10",
+      "operation": "wait-for-run-terminal-state",
+      "raw_input": {
+        "run_event": {"run_id": "run-001", "script_archive_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "started_at": "t+00s", "dispatch_count": 1},
+        "observation_source": {"kind": "synthetic_event_stream", "last_observed_at": "t+30s", "terminal_state": null},
+        "timeout_policy": {"timeout_seconds": 30, "on_timeout": "record_uncertain_without_rerun"}
+      },
+      "semantic_attributes": {
+        "associated_run_unique": true,
+        "terminal_observed": false,
+        "rerun_during_wait_forbidden": true,
+        "state_after_timeout": "uncertain"
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "run_started", "run_id": "run-001"},
+        {"seq": 2, "at": "t+10s", "event": "status_observed", "state": "running"},
+        {"seq": 3, "at": "t+30s", "event": "wait_timeout", "terminal_state": null}
+      ],
+      "evaluation_focus": ["A timeout is not success or failure and must not trigger a second dispatch."]
+    },
+    {
+      "catalog_id": "EX-11",
+      "operation": "record-executed-artifact-identity",
+      "raw_input": {
+        "actual_executed_script": {"path": "C:\\synthetic\\p4\\scripts\\fix-v21.scscript", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "source_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"},
+        "declared_script": {"path": "C:\\synthetic\\p4\\scripts\\fix-v21.scscript", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+        "version_metadata": {"api_version": "V21", "catalog_id": "ER-02", "source_revision": "synthetic-revision-01"},
+        "run_event": {"run_id": "run-002", "script_archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "started_at": "t+02s"}
+      },
+      "semantic_attributes": {
+        "actual_declared_path_match": true,
+        "archive_hash_match": true,
+        "source_hash_available": true,
+        "version_bound_to_actual_content": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "artifact_header", "language": "python", "source": "# API Version = V21\n# source_sha256 = dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "status": "synthetic_archive_metadata"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+01s", "event": "script_loaded", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+        {"seq": 2, "at": "t+02s", "event": "run_started", "run_id": "run-002"}
+      ],
+      "evaluation_focus": ["Bind identity to the content actually associated with the run, not a stale filename or title."]
+    },
+    {
+      "catalog_id": "EX-12",
+      "operation": "capture-earliest-failure-state",
+      "raw_input": {
+        "error_log": [
+          {"event_id": "e-01", "at": "t+04s", "stage": "load", "kind": "AttributeError", "message": "Component has no attribute Import"},
+          {"event_id": "e-02", "at": "t+05s", "stage": "assertion", "kind": "RuntimeError", "message": "expected one body"},
+          {"event_id": "e-03", "at": "t+10s", "stage": "wait", "kind": "TimeoutError", "message": "no terminal state"}
+        ],
+        "stage_events": ["archive_verified", "load_failed", "assertion_skipped", "wait_skipped"],
+        "scene": {"document_id": "blank-01", "script_archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}
+      },
+      "semantic_attributes": {
+        "earliest_error_id": "e-01",
+        "downstream_errors_present": true,
+        "root_stage": "load",
+        "first_error_is_actionable": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+04s", "event": "load_failed", "error_id": "e-01"},
+        {"seq": 2, "at": "t+05s", "event": "dependent_assertion_failed", "error_id": "e-02"},
+        {"seq": 3, "at": "t+10s", "event": "wait_timeout", "error_id": "e-03"}
+      ],
+      "evaluation_focus": ["Capture the first error with context; do not replace it with a later symptom."]
+    },
+    {
+      "catalog_id": "EX-13",
+      "operation": "block-save-after-critical-failure",
+      "raw_input": {
+        "critical_failure": {"run_id": "run-003", "assertion_id": "body-count", "expected": 2, "observed": 1, "at": "t+06s"},
+        "save_entry": {"kind": "Document.SaveAs", "path": "C:\\synthetic\\p4\\run-003\\success.scdoc", "available": true},
+        "save_state": {"started": false, "completed": false},
+        "output_policy": "failed models must not occupy success output"
+      },
+      "semantic_attributes": {
+        "critical_assertion_passed": false,
+        "save_started": false,
+        "success_path_reserved": true,
+        "save_must_be_blocked": true
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Document.SaveAs", "signature": "SpaceClaim.Api.V21.Document.SaveAs(System.String) -> void", "source_ref": "SpaceClaim.Api.V21.xml:23671-23677"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "unsafe_observed_branch", "language": "python", "source": "if not critical_ok:\n    document.SaveAs(output_path)", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+06s", "event": "critical_assertion_failed", "assertion_id": "body-count"},
+        {"seq": 2, "at": "t+07s", "event": "save_entry_still_available", "save_started": false}
+      ],
+      "evaluation_focus": ["Failure must stop the success save; no save result may be inferred."]
+    },
+    {
+      "catalog_id": "EX-14",
+      "operation": "save-asserted-native-model",
+      "raw_input": {
+        "model_document": {"document_id": "model-blank-01", "document_type": "SpaceClaim model", "api_version": "V21", "modified": true},
+        "critical_assertions": [
+          {"id": "body-count", "status": "passed", "observed": 1, "expected": 1},
+          {"id": "volume", "status": "passed", "observed_mm3": 1000.0, "expected_mm3": 1000.0}
+        ],
+        "output_path": {"path": "C:\\synthetic\\p4\\run-004\\asserted.scdoc", "extension": ".scdoc", "owned_by_run": true, "exists_before": false}
+      },
+      "semantic_attributes": {
+        "document_identity_verified": true,
+        "all_critical_assertions_passed": true,
+        "native_extension": true,
+        "output_collision": false,
+        "save_completion_observed": false
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Document.SaveAs", "signature": "SpaceClaim.Api.V21.Document.SaveAs(System.String) -> void", "source_ref": "SpaceClaim.Api.V21.xml:23671-23677"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "save_intent", "language": "python", "source": "document.SaveAs(r'C:\\synthetic\\p4\\run-004\\asserted.scdoc')", "status": "input_only"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "document_identity_verified", "document_id": "model-blank-01"},
+        {"seq": 2, "at": "t+01s", "event": "critical_assertions_verified", "count": 2},
+        {"seq": 3, "at": "t+02s", "event": "save_ready", "output_path": "C:\\synthetic\\p4\\run-004\\asserted.scdoc"}
+      ],
+      "evaluation_focus": ["A save plan is not a completed save; preserve the distinction until an event and artifact verify it."]
+    },
+    {
+      "catalog_id": "ER-01",
+      "operation": "classify-earliest-failure",
+      "raw_input": {
+        "earliest_failure": {"event_id": "f-01", "at": "t+04s", "stage": "load", "call": "Component.Import", "exception": "AttributeError", "message": "Component has no attribute Import", "api_version": "V21"},
+        "error_categories": ["api_or_namespace_mismatch", "path_or_encoding", "semantic_selection", "document_state", "geometry"],
+        "later_events": [{"at": "t+05s", "message": "no geometry output"}]
+      },
+      "semantic_attributes": {
+        "original_error_available": true,
+        "stage_known": true,
+        "single_best_category": "api_or_namespace_mismatch",
+        "uncertainty_should_be_preserved": false
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+04s", "event": "earliest_failure_recorded", "event_id": "f-01"},
+        {"seq": 2, "at": "t+05s", "event": "downstream_no_output_observed"}
+      ],
+      "evaluation_focus": ["Classification must use the earliest raw error, not the absence of later geometry."]
+    },
+    {
+      "catalog_id": "ER-02",
+      "operation": "repair-api-or-namespace-mismatch",
+      "raw_input": {
+        "failed_call": {"namespace": "SpaceClaim.Api.V21", "expression": "Component.Import(root, source_path, options)", "exception": "AttributeError", "message": "Component has no attribute Import"},
+        "target_version": "V21",
+        "call_scope": "replace this one import call only; preserve import strategy and path guards"
+      },
+      "semantic_attributes": {
+        "defect_count": 1,
+        "defect_kind": "api_or_namespace_mismatch",
+        "strategy_change_allowed": false,
+        "target_signature_required": true
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Component.CreateFromFile", "signature": "SpaceClaim.Api.V21.Component.CreateFromFile(SpaceClaim.Api.V21.Part,System.String,SpaceClaim.Api.V21.ImportOptions) -> void", "source_ref": "SpaceClaim.Api.V21.xml:22530-22543"},
+          {"name": "ImportOptions.Create", "signature": "SpaceClaim.Api.V21.ImportOptions.Create() -> ImportOptions", "source_ref": "SpaceClaim.Api.V21.xml:19409-19416"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "failing_snippet", "language": "python", "source": "options = ImportOptions.Create()\nComponent.Import(root, source_path, options)", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+04s", "event": "api_call_failed", "call": "Component.Import"},
+        {"seq": 2, "at": "t+05s", "event": "target_v21_signature_supplied", "name": "Component.CreateFromFile"}
+      ],
+      "evaluation_focus": ["Return one corrected call; do not redesign the import or add unrelated recovery steps."]
+    },
+    {
+      "catalog_id": "ER-03",
+      "operation": "repair-path-or-encoding",
+      "raw_input": {
+        "failed_path": {"text": "C:\\synthetic\\p4\\输入\\基准.scdoc", "intended_path": "C:\\synthetic\\p4\\输入\\基准.scdoc", "artifact_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+        "failure": {"exception": "UnicodeEncodeError", "interpreter": "IronPython 2.7", "operation": "open(path, 'rb')"},
+        "target_interpreter_constraints": {"python_major": 2, "path_must_remain_same": true, "filesystem_encoding": "unicode-capable"}
+      },
+      "semantic_attributes": {
+        "path_identity_known": true,
+        "encoding_defect_is_local": true,
+        "renaming_artifact_forbidden": true,
+        "hash_must_remain_equal": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "failing_snippet", "language": "python2", "source": "source_path = u'C:\\synthetic\\p4\\输入\\基准.scdoc'\nwith open(source_path, 'rb') as stream:\n    data = stream.read()", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "path_identity_recorded", "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+        {"seq": 2, "at": "t+01s", "event": "encoding_failure_observed", "exception": "UnicodeEncodeError"}
+      ],
+      "evaluation_focus": ["Repair representation/encoding only; preserve the path meaning and artifact hash."]
+    },
+    {
+      "catalog_id": "ER-04",
+      "operation": "strengthen-semantic-selection",
+      "raw_input": {
+        "failed_predicate": {"code": "candidate = candidates[0]", "reason": "two candidates returned"},
+        "candidate_attributes": [
+          {"candidate_id": "face-a", "name": "Face<12>", "parent_body": "body-01", "geometry_type": "Plane", "bbox_mm": [0, 0, 0, 20, 10, 0]},
+          {"candidate_id": "face-b", "name": "Face<13>", "parent_body": "body-02", "geometry_type": "Plane", "bbox_mm": [100, 0, 0, 120, 10, 0]}
+        ],
+        "target_semantics": {"parent_body": "body-02", "geometry_type": "Plane", "bbox_mm": [100, 0, 0, 120, 10, 0]}
+      },
+      "semantic_attributes": {
+        "candidate_count": 2,
+        "target_unique_by_supplied_attributes": true,
+        "ordinal_selection_allowed": false,
+        "semantic_predicate_required": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "failing_snippet", "language": "python", "source": "candidate = candidates[0]", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+02s", "event": "candidate_set_observed", "count": 2},
+        {"seq": 2, "at": "t+03s", "event": "target_semantics_available", "parent_body": "body-02"}
+      ],
+      "evaluation_focus": ["Use attributes that establish the target; do not choose by enumeration order."]
+    },
+    {
+      "catalog_id": "ER-05",
+      "operation": "insert-topology-reenumeration",
+      "raw_input": {
+        "stale_reference": {"object_id": "face-17", "owner_body": "body-01", "status_after_topology_change": "deleted", "consumer": "seed_face"},
+        "topology_modification": {"operation": "subtract", "body_id": "body-01", "at": "t+02s"},
+        "replacement_semantics": {"geometry_type": "Plane", "bbox_mm": [0, 0, 10, 20, 10, 10], "expected_count": 1}
+      },
+      "semantic_attributes": {
+        "old_reference_invalidated": true,
+        "consumer_requires_current_reference": true,
+        "refresh_scope": "one body face collection",
+        "repair_must_not_change_boolean_strategy": true
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "IDocObject.GetDescendants", "signature": "SpaceClaim.Api.V21.IDocObject.GetDescendants[TDocObject]() -> IEnumerable[TDocObject]", "source_ref": "SpaceClaim.Api.V21.xml:24601-24609"},
+          {"name": "Modeler.Body.Subtract", "signature": "SpaceClaim.Api.V21.Modeler.Body.Subtract(System.Collections.Generic.ICollection[SpaceClaim.Api.V21.Modeler.Body])", "source_ref": "SpaceClaim.Api.V21.xml:11904-11918"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "stale_consumer", "language": "python", "source": "face = body.Faces[0]\nbody.Subtract([tool])\nuse(face)", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+01s", "event": "face_reference_captured", "object_id": "face-17"},
+        {"seq": 2, "at": "t+02s", "event": "topology_modified", "operation": "subtract"},
+        {"seq": 3, "at": "t+03s", "event": "stale_reference_detected", "object_id": "face-17"}
+      ],
+      "evaluation_focus": ["Insert one re-enumeration at the causal boundary and feed the refreshed object to the one consumer."]
+    },
+    {
+      "catalog_id": "ER-06",
+      "operation": "repair-boolean-result-classification",
+      "raw_input": {
+        "boolean_operation": {"kind": "subtract", "target_id": "body-target", "tool_id": "body-tool", "status": "completed"},
+        "result_objects": [
+          {"object_id": "result-b", "is_closed": true, "is_manifold": true, "piece_count": 1, "bbox_mm": [20, 0, 0, 30, 10, 10], "volume_mm3": 1000.0},
+          {"object_id": "result-a", "is_closed": true, "is_manifold": true, "piece_count": 1, "bbox_mm": [0, 0, 0, 20, 10, 10], "volume_mm3": 2000.0}
+        ],
+        "expected_geometry_relation": {"remaining_target_bbox_mm": [0, 0, 0, 20, 10, 10], "remaining_target_volume_mm3": 2000.0}
+      },
+      "semantic_attributes": {
+        "result_order_is_untrusted": true,
+        "classification_key": "geometry_relation",
+        "expected_unique_match": true,
+        "ordinal_result_selection_forbidden": true
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Modeler.Body.Subtract", "signature": "SpaceClaim.Api.V21.Modeler.Body.Subtract(System.Collections.Generic.ICollection[SpaceClaim.Api.V21.Modeler.Body])", "source_ref": "SpaceClaim.Api.V21.xml:11904-11918"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "failing_classifier", "language": "python", "source": "remaining = result_objects[0]", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+01s", "event": "boolean_completed", "operation": "subtract"},
+        {"seq": 2, "at": "t+02s", "event": "results_enumerated", "count": 2},
+        {"seq": 3, "at": "t+03s", "event": "ordinal_classification_disputed"}
+      ],
+      "evaluation_focus": ["Resolve the result by measured geometry semantics, never by returned order."]
+    },
+    {
+      "catalog_id": "ER-07",
+      "operation": "repair-open-or-invalid-geometry",
+      "raw_input": {
+        "defect": {"body_id": "body-01", "defect_id": "gap-01", "kind": "open_edge_loop", "location": "face-boundary-z10", "gap_mm": 0.02},
+        "selected_repair": {"kind": "close_single_gap", "target_defect_id": "gap-01", "max_scope": "one local edge loop"},
+        "modifiable_scope": {"body_ids": ["body-01"], "confirmed_dimensions_mm": {"length": 20.0, "width": 10.0}}
+      },
+      "semantic_attributes": {
+        "defect_count_in_scope": 1,
+        "repair_method_preselected": true,
+        "global_heal_forbidden": true,
+        "confirmed_dimensions_must_remain": true,
+        "topology_effect": "modifies"
+      },
+      "versioned_api": {"signatures": [], "repair_signature_status": "selected repair is a fixture input; no generic V21 repair call is assumed"},
+      "code_snippets": [
+        {"label": "overbroad_repair", "language": "python", "source": "repair_everything(body)", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "single_defect_diagnosed", "defect_id": "gap-01"},
+        {"seq": 2, "at": "t+01s", "event": "repair_method_selected", "method": "close_single_gap"}
+      ],
+      "evaluation_focus": ["One invocation addresses the selected defect only; do not broaden to a general healing strategy."]
+    },
+    {
+      "catalog_id": "ER-08",
+      "operation": "resolve-naming-conflict",
+      "raw_input": {
+        "target_name": "Body_Final",
+        "conflict_objects": [
+          {"object_id": "body-01", "current_name": "Body_Final", "role": "source", "preserve_identity": true},
+          {"object_id": "body-02", "current_name": "Body_Final", "role": "result", "preserve_identity": true}
+        ],
+        "naming_strategy": {"scope": "one result object", "suffix_policy": "append _01 to conflicting non-target only", "target_object_id": "body-02"}
+      },
+      "semantic_attributes": {
+        "conflict_count": 2,
+        "target_identity_known": true,
+        "topology_change_allowed": false,
+        "member_identity_must_be_preserved": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "ambiguous_rename", "language": "python", "source": "objects[0].Name = target_name", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "duplicate_name_detected", "name": "Body_Final", "count": 2},
+        {"seq": 2, "at": "t+01s", "event": "target_object_confirmed", "object_id": "body-02"}
+      ],
+      "evaluation_focus": ["Rename only the selected conflict according to the supplied strategy; do not merge or replace objects."]
+    },
+    {
+      "catalog_id": "ER-09",
+      "operation": "restore-application-or-document-state",
+      "raw_input": {
+        "mismatch": {"kind": "document_focus", "actual_document_id": "scratch-02", "expected_document_id": "run-005-model", "window_id": "window-v21-a"},
+        "expected_state": {"active_document_id": "run-005-model", "active_script_panel": "none"},
+        "user_work_guard": {"scratch-02_modified": true, "discard_allowed": false},
+        "recovery_scope": "document focus only"
+      },
+      "semantic_attributes": {
+        "one_state_kind_selected": true,
+        "modified_non_target_work_present": true,
+        "data_loss_forbidden": true,
+        "compound_recovery_not_requested": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "wrong_document_focus_observed", "actual": "scratch-02"},
+        {"seq": 2, "at": "t+01s", "event": "expected_document_confirmed", "expected": "run-005-model"}
+      ],
+      "evaluation_focus": ["Restore only the selected focus state; do not close or discard an unsaved non-target document."]
+    },
+    {
+      "catalog_id": "ER-10",
+      "operation": "repair-persistence-or-export-condition",
+      "raw_input": {
+        "failed_precondition": {"kind": "missing_parent_directory", "path": "C:\\synthetic\\p4\\run-006\\nested\\result.scdoc", "operation": "native_save"},
+        "artifact_identity": {"document_id": "model-006", "intended_format": "scdoc", "expected_extension": ".scdoc", "content_hash_before_repair": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"},
+        "repair_strategy": {"kind": "prepare_one_run_owned_parent_directory", "directory": "C:\\synthetic\\p4\\run-006\\nested", "does_not_save": true}
+      },
+      "semantic_attributes": {
+        "failure_scope": "path precondition only",
+        "artifact_identity_known": true,
+        "save_completion_not_claimed": true,
+        "repair_scope_single_precondition": true
+      },
+      "versioned_api": {
+        "signatures": [
+          {"name": "Document.SaveAs", "signature": "SpaceClaim.Api.V21.Document.SaveAs(System.String) -> void", "source_ref": "SpaceClaim.Api.V21.xml:23671-23677"}
+        ]
+      },
+      "code_snippets": [
+        {"label": "failed_save_intent", "language": "python", "source": "document.SaveAs(r'C:\\synthetic\\p4\\run-006\\nested\\result.scdoc')", "status": "input_failure_fixture"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "save_precondition_failed", "kind": "missing_parent_directory"},
+        {"seq": 2, "at": "t+01s", "event": "single_repair_selected", "kind": "prepare_parent_directory"}
+      ],
+      "evaluation_focus": ["Repair only the stated persistence precondition; do not claim save, reopen, or export completion."]
+    },
+    {
+      "catalog_id": "ER-11",
+      "operation": "remove-run-owned-failed-artifact",
+      "raw_input": {
+        "failed_artifact": {"absolute_path": "C:\\synthetic\\p4\\run-007\\failed-output.scdoc", "run_id": "run-007", "artifact_role": "failed_output", "exists": true, "sha256": "1111111111111111111111111111111111111111111111111111111111111111"},
+        "ownership_record": {"owned_paths": ["C:\\synthetic\\p4\\run-007\\failed-output.scdoc"], "baseline_paths": ["C:\\synthetic\\p4\\baseline.scdoc"], "evidence_paths": ["C:\\synthetic\\p4\\run-007\\failure.json"]},
+        "failure_record": {"run_id": "run-007", "status": "failed", "reason": "critical_assertion"}
+      },
+      "semantic_attributes": {
+        "target_is_run_owned": true,
+        "target_is_baseline": false,
+        "target_is_evidence": false,
+        "deletion_scope": "one explicit file",
+        "failure_record_must_remain": true
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "failed_artifact_resolved", "path": "C:\\synthetic\\p4\\run-007\\failed-output.scdoc"},
+        {"seq": 2, "at": "t+01s", "event": "ownership_checked", "run_id": "run-007"}
+      ],
+      "evaluation_focus": ["Only the explicit run-owned failed file is in scope; preserve the failure record and evidence."]
+    },
+    {
+      "catalog_id": "ER-12",
+      "operation": "rerun-from-clean-entry",
+      "raw_input": {
+        "clean_entry": {"session_id": "sc-v21-a", "document_id": "blank-08", "active_document_verified": true, "stale_run_state_cleared": true, "user_work_present": false},
+        "corrected_script": {"path": "C:\\synthetic\\p4\\scripts\\fix-v21.scscript", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "loaded": true, "loaded_for_document": "blank-08"},
+        "prior_failure": {"run_id": "run-008", "event_id": "f-08", "category": "api_or_namespace_mismatch", "repair_id": "repair-08"},
+        "authorization": {"authorization_id": "auth-rerun-one-08", "scope": "one rerun of run-008 after repair-08", "valid": true}
+      },
+      "semantic_attributes": {
+        "entry_clean": true,
+        "script_loaded": true,
+        "authorization_valid": true,
+        "prior_failure_linked": true,
+        "rerun_count": 0,
+        "cleanup_or_new_document_or_wait_in_scope": false
+      },
+      "versioned_api": {"signatures": []},
+      "code_snippets": [
+        {"label": "rerun_contract", "language": "text", "source": "rerun prior_run=run-008 with archive=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc exactly once", "status": "input_only"}
+      ],
+      "event_sequence": [
+        {"seq": 1, "at": "t+00s", "event": "clean_entry_confirmed", "document_id": "blank-08"},
+        {"seq": 2, "at": "t+01s", "event": "corrected_script_loaded", "archive_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+        {"seq": 3, "at": "t+02s", "event": "prior_failure_linked", "event_id": "f-08"}
+      ],
+      "evaluation_focus": ["Dispatch one traceable rerun only; do not fold cleanup, document creation, or waiting into this action."]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-08",
+  "input_fields": [
+    {
+      "name": "body_reference",
+      "type": "object",
+      "description": "One current body to measure."
+    },
+    {
+      "name": "coordinate_frame",
+      "type": "object",
+      "description": "Explicit frame in which bounds are requested."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Requested length unit for the six bounds."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "bounding_box_record",
+      "type": "object",
+      "description": "Minimum/maximum coordinates, frame, unit, and measured body identity."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve body_reference and coordinate_frame without changing the active model.",
+    "Read the kernel bounds once and convert only to the declared unit.",
+    "Check each minimum is no greater than its corresponding maximum and return bounding_box_record.",
+    "Do not use the box to substitute for volume, surface, or visual checks."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous body/frame, incompatible unit, nonfinite bounds, or reversed min/max.",
+    "Reject bounds estimated from a screenshot when kernel bounds are required.",
+    "Do not alter the model to make the bounds pass."
+  ]
+}

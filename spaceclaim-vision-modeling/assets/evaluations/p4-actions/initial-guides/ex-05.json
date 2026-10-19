@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-05",
+  "input_fields": [
+    {
+      "name": "baseline_file",
+      "type": "object",
+      "description": "Readable baseline path, size, source hash, and ownership classification."
+    },
+    {
+      "name": "run_copy_path",
+      "type": "object",
+      "description": "Independent run-owned destination path and overwrite policy."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "copy_identity",
+      "type": "object",
+      "description": "Source/destination paths, sizes, hashes, and copy timestamp."
+    },
+    {
+      "name": "baseline_integrity",
+      "type": "string",
+      "description": "One of preserved, mismatch, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve source/destination paths without an unsafe alias or overwrite collision.",
+    "Read source hash, copy bytes to the run-owned destination, then hash the destination.",
+    "Return both identities and compare size/SHA-256; preserve mismatch as failed copy.",
+    "Do not open, edit, save, or delete a native model."
+  ],
+  "rejection_rules": [
+    "Reject missing/unreadable source, destination collision with baseline/evidence, or unowned destination.",
+    "Reject a post-copy hash mismatch.",
+    "Do not delete or overwrite a path with unclear ownership."
+  ]
+}

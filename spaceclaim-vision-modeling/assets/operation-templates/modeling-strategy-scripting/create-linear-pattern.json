@@ -1,0 +1,269 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.create-linear-pattern",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic create-linear-pattern operation within the MA-18 boundary: One linear array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known translation matrices to copies after index 0, and does not create native associative pattern features, attach bodies, or edit components/occurrences.",
+  "trigger": "Use when the build plan requires create-linear-pattern and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "transient Modeler.Body",
+      "required": true,
+      "description": "A closed nonempty transient source body; attached DesignBody and component/occurrence variants are excluded."
+    },
+    {
+      "name": "direction",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite nonzero linear-array direction; normalized by the shared direction helper."
+    },
+    {
+      "name": "spacing_mm",
+      "type": "positive number",
+      "required": true,
+      "description": "Positive distance between consecutive instance locations in millimetres."
+    },
+    {
+      "name": "count",
+      "type": "integer >= 2",
+      "required": true,
+      "description": "Finite integer-valued instance count; the source location is included, but every returned instance is an independent copy."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for comparing every copied instance volume with the source volume."
+    }
+  ],
+  "preconditions": [
+    "body passes require_transient/assert_closed.",
+    "direction is finite and nonzero.",
+    "spacing_mm is finite and positive.",
+    "count is a finite integer >= 2 and booleans are rejected.",
+    "volume_tolerance_mm3 is finite and nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{instances: array<transient Modeler.Body>, offsets_mm: array<number[3]>, source_policy: \"preserved\", association: \"independent\"}; offsets include [0,0,0] for the copied source location."
+    }
+  ],
+  "postconditions": [
+    "Exactly count independent transient instances are returned, including a copy at the source location.",
+    "The supplied source body is not transformed or consumed.",
+    "offsets_mm contains count cumulative offsets [index * spacing_mm * normalized direction] in millimetres.",
+    "Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+    "The returned source_policy is preserved and association is independent."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-18.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic create-linear-pattern operation within the MA-18 boundary: One linear array effect for unlinked transient body instances. It copies the supplied body count times, preserves the source, applies known translation matrices to copies after index 0, and does not create native associative pattern features, attach bodies, or edit components/occurrences. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "Not applicable to unlinked transient copies; callers own any later document attachment or topology refresh."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_linear_array_input",
+      "condition": "Source, direction, spacing, count, or tolerance validation raises ValueError before the first Copy call.",
+      "detection": "Source, direction, spacing, count, or tolerance validation raises ValueError before the first Copy call.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "copy_or_translation_failure",
+      "condition": "Copy/Transform raises, a copy aliases the source, or a copy fails closure or volume checks.",
+      "detection": "Copy/Transform raises, a copy aliases the source, or a copy fails closure or volume checks.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_linear_array_input",
+      "action": "Supply a fresh valid transient source and corrected finite parameters; no model mutation has occurred.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "copy_or_translation_failure",
+      "action": "Discard all partial transient instances and rerun from the unchanged source; no rollback is implemented.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Exactly count independent transient instances are returned, including a copy at the source location.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly count independent transient instances are returned, including a copy at the source location.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The supplied source body is not transformed or consumed.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The supplied source body is not transformed or consumed.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: offsets_mm contains count cumulative offsets [index * spacing_mm * normalized direction] in millimetres.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "offsets_mm contains count cumulative offsets [index * spacing_mm * normalized direction] in millimetres.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Every returned instance passes require_transient/assert_closed and preserves source volume within volume_tolerance_mm3.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The returned source_policy is preserved and association is independent.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The returned source_policy is preserved and association is independent.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-18-host-check.json",
+            "sha256": "cdda1d6f42dde5b2b403d4dc847897a7c9ebd21650d019b8038a9bf65f446b1a"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-18-host-check.json",
+            "sha256": "cdda1d6f42dde5b2b403d4dc847897a7c9ebd21650d019b8038a9bf65f446b1a"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-18.scscript",
+      "sha256": "b9a468aa1de5f85991f3b5d65a112d13625d9cca59c8037284a23249e9faa3f6",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-18.py",
+      "sha256": "68eebe217589152aadbcd1cf849effec6e307dd5153ac3402f492f3a3eb75cdc",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-18.action.py",
+      "sha256": "569b5c38fb153bf79d9006a1937dbe779726c71ec43ad22ecadd6aa1ca7ead76",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-18-host-check.json",
+      "sha256": "cdda1d6f42dde5b2b403d4dc847897a7c9ebd21650d019b8038a9bf65f446b1a",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

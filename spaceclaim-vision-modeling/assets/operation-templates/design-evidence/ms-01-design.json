@@ -1,0 +1,21 @@
+{
+  "operation_id": "modeling_strategy_scripting.declare-parameter",
+  "template_version": "0.3.1",
+  "catalog_id": "MS-01",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "参数声明",
+    "declared_inputs": [
+      "parameter_name",
+      "source_dimension",
+      "unit_and_allowed_range",
+      "existing_parameter_names"
+    ],
+    "result_fields": [
+      "parameter_declaration"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

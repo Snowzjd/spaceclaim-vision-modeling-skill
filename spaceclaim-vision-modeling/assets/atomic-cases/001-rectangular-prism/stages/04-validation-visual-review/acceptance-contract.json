@@ -1,0 +1,86 @@
+{
+  "contract_kind": "rectangular_prism_acceptance",
+  "contract_version": 1,
+  "stage": "validation_visual_review",
+  "handoff_status": "passed",
+  "geometry_contract_ref": "../01-geometry-understanding/geometry-contract.json",
+  "build_contract_ref": "../02-modeling-strategy-scripting/build-contract.json",
+  "execution_contract_ref": "../03-execution-recovery/execution-contract.json",
+  "artifact_identity": {
+    "filename": "rectangular-prism.scdoc",
+    "sha256": "d7826c382a811a1a97ee0ceb1afc0e394857cc04d1697f549f3e971bdd4faeba",
+    "repository_bundled": false
+  },
+  "geometry_acceptance": "passed",
+  "body_feature_and_name_checks": {
+    "expected_body_count": 1,
+    "expected_body_name": "ATOMIC_PRISM",
+    "expected_face_count": 6,
+    "expected_edge_count": 12,
+    "status": "passed"
+  },
+  "dimension_bbox_and_volume_checks": {
+    "bbox_min_mm": [10.0, -5.0, 2.0],
+    "bbox_max_mm": [50.0, 25.0, 14.0],
+    "volume_mm3": 14400.0,
+    "bbox_tolerance_mm": 0.001,
+    "volume_tolerance_mm3": 0.001,
+    "status": "passed"
+  },
+  "native_save_result": "passed",
+  "native_reopen_result": "passed",
+  "visual_review_views": [
+    {
+      "view": "overview",
+      "selection_state": "none",
+      "expected": "One axis-aligned rectangular prism and no additional body or feature.",
+      "observed": "One unselected rectangular prism was visible with three orthogonal faces and no unexpected feature.",
+      "occluded_or_unresolved": [],
+      "external_capture_filename": "overview.png",
+      "sha256": "82317ddfa767fed89557224e550d77294c90ffd3ad705bab9c70f379226e58c6",
+      "status": "passed"
+    },
+    {
+      "view": "top",
+      "selection_state": "none",
+      "expected": "A 40 by 30 rectangular silhouette.",
+      "observed": "The rectangular silhouette and its 4:3 proportion agreed with the X-Y extents.",
+      "occluded_or_unresolved": [],
+      "external_capture_filename": "top.png",
+      "sha256": "abfddbb54001e8eaa0924bc8b0899c9f555dde4f008bf89fa437c5397cb5769a",
+      "status": "passed"
+    },
+    {
+      "view": "front",
+      "selection_state": "none",
+      "expected": "A 40 by 12 rectangular silhouette.",
+      "observed": "The front silhouette agreed with the X-Z extents and contained no extra edge or feature.",
+      "occluded_or_unresolved": [],
+      "external_capture_filename": "front.png",
+      "sha256": "68aaa3f78d95784ffd843e17106550c1f3f671971cc1be9f61e9421bba5ae90f",
+      "status": "passed"
+    },
+    {
+      "view": "right",
+      "selection_state": "none",
+      "expected": "A 30 by 12 rectangular silhouette.",
+      "observed": "The right silhouette agreed with the Y-Z extents and contained no extra edge or feature.",
+      "occluded_or_unresolved": [],
+      "external_capture_filename": "right.png",
+      "sha256": "92287c36c7f571aa2c4f6344debcb7bee6d6dcbf3d9be9f635ee9a7942cc3738",
+      "status": "passed"
+    }
+  ],
+  "visual_agreement": "passed",
+  "requested_export_result": "not_applicable",
+  "evidence_map": {
+    "runtime_evidence": "evidence/runtime-evidence.json",
+    "forward_report": "evidence/forward-runtime-report.json",
+    "validation_report": "evidence/validation-runtime-report.json",
+    "narrative": "evidence/runtime-evidence.md"
+  },
+  "unresolved_risks": [
+    "The native model and screenshot binaries are retained outside the repository; the repository records their exact SHA-256 identities and review observations."
+  ],
+  "overall_status": "passed"
+}

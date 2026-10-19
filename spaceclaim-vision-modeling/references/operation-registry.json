@@ -1,0 +1,1959 @@
+{
+  "$schema": "operation-registry.schema.json",
+  "registry_version": 1,
+  "architecture_version": "0.3",
+  "template_contract_version": 1,
+  "stages": [
+    "geometry_understanding",
+    "modeling_strategy_scripting",
+    "execution_recovery",
+    "validation_visual_review"
+  ],
+  "extension_points": [
+    {
+      "extension_id": "source.video-temporal-observation",
+      "status": "reserved",
+      "purpose": "Reserve a future adapter for geometry observations derived from video or screen recording.",
+      "entry_from": "workflow_input",
+      "input_contract": "video_or_screen_recording_source",
+      "output_contract": "temporal_observation_contract",
+      "reentry_stage": "geometry_understanding",
+      "bypass_core_stages": false,
+      "contract_path": null
+    },
+    {
+      "extension_id": "learning.demonstrated-modeling-candidate",
+      "status": "reserved",
+      "purpose": "Reserve a future learning stage that converts a validated modeling demonstration into a candidate reusable operation.",
+      "entry_from": "validation_visual_review",
+      "input_contract": "validated_demonstration_bundle",
+      "output_contract": "candidate_operation_template",
+      "reentry_stage": "geometry_understanding",
+      "bypass_core_stages": false,
+      "contract_path": null
+    }
+  ],
+  "fallback": {
+    "enabled": true,
+    "entrypoint": "SKILL.md",
+    "conditions": [
+      "no active template matches",
+      "a template precondition is unmet",
+      "the target environment is unsupported by the template",
+      "the template conflicts with the accepted geometry contract"
+    ]
+  },
+  "operations": [
+    {
+      "operation_id": "modeling_strategy_scripting.package-scscript",
+      "stage": "modeling_strategy_scripting",
+      "status": "active",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/package-scscript.json",
+      "template_sha256": "e01325a7184edd0d1960efb4369b6a206bb94bc301aae6ed569742fd142be3d5",
+      "trigger_summary": "Package a prepared version-matched source as a deterministic SpaceClaim script archive.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.audit-scscript",
+      "stage": "modeling_strategy_scripting",
+      "status": "active",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/audit-scscript.json",
+      "template_sha256": "356f0f7db1e2e855d41f7e94641e8a6e1da8c23972342bc6afb9417071dd4a2e",
+      "trigger_summary": "Audit a SpaceClaim script archive for structure, API markers, unsafe paths, and forbidden recorded aliases.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.validate-runtime-report-schema",
+      "stage": "validation_visual_review",
+      "status": "active",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/validate-runtime-report-schema.json",
+      "template_sha256": "1440a21095e112a806ddd3b3ca7a09af0c92b49b29aa0dcf8512737c8f9b7357",
+      "trigger_summary": "Validate the structure and internal invariants of one declared SpaceClaim runtime report on the host.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.compare-runtime-report-to-contract",
+      "stage": "validation_visual_review",
+      "status": "active",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/compare-runtime-report-to-contract.json",
+      "template_sha256": "7bab2ccd8473b34990879c866f622a6beba9ee51508efe57f420e667196a168c",
+      "trigger_summary": "Compare one structurally valid runtime report with one expected measurement contract on the host.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.compare-runtime-reports",
+      "stage": "validation_visual_review",
+      "status": "active",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/validation-visual-review/compare-runtime-reports.json",
+      "template_sha256": "2c6a9e3bdb1ce370d2e1a8575f58b08fd519d97e2b38b79d16852619c50cb90f",
+      "trigger_summary": "Compare declared forward and native-reopen geometry measurements and names on the host.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-source-type",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-source-type.json",
+      "template_sha256": "1c702971750edc26d4fdcb10189c76f288a6747e8cdaffed237fe1b13dfbf0c2",
+      "trigger_summary": "识别输入来源类型 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.record-source-provenance",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/record-source-provenance.json",
+      "template_sha256": "9bd8311ac888ecbf502832626f080543c4f9c3155a536e5e7084046bdce17084",
+      "trigger_summary": "建立来源记录 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-view-projection",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-view-projection.json",
+      "template_sha256": "7b9333333db00fecd656c14406e02aa550cc5f40c73c9771039169ded70e92ed",
+      "trigger_summary": "识别一个视图及投影关系 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.correspond-items-across-views",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/correspond-items-across-views.json",
+      "template_sha256": "c66fe908aa46e13034ebb996de5d731d54b0a9b3008ca5c9c3f1f39ea2b84f2b",
+      "trigger_summary": "建立两个视图间的对应关系 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-geometric-primitive",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-geometric-primitive.json",
+      "template_sha256": "e996fe6bcd85a3808b25714cc7a28848f644773b333d4081489b75aeef915a2d",
+      "trigger_summary": "识别一个几何基元 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-planar-profile",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-planar-profile.json",
+      "template_sha256": "3ddebc3d130435916b89c4802602747ae475d49a589d726224fd4ef20e2c2b4a",
+      "trigger_summary": "识别一个平面轮廓 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-local-feature",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-local-feature.json",
+      "template_sha256": "d478a3ab4b8dd3b587e59b6b845f799307be0041096d8c35f551a35df7f295f9",
+      "trigger_summary": "识别一个局部特征 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-spatial-relation",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-spatial-relation.json",
+      "template_sha256": "628291286f10f2060b92b430194b9d9367b9bfe15874e81cb413d0dcb3f10d75",
+      "trigger_summary": "识别一个空间关系 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-symmetry-relation",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-symmetry-relation.json",
+      "template_sha256": "17555dc58cb0d30b9285a1e2683c1cf30fa930a7a48977fa7ced647664cf836f",
+      "trigger_summary": "识别一个对称关系 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-repetition-rule",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-repetition-rule.json",
+      "template_sha256": "f6dc8a6898cb05eaad3097800de034a1f8b82202869b87ebad5fb239e93bb4af",
+      "trigger_summary": "识别一个重复规则 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.extract-dimension",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/extract-dimension.json",
+      "template_sha256": "78d5c67459d9bb5977d96cb426baee34c108efb1e66f2b0ab39cbff813a543b1",
+      "trigger_summary": "提取一个尺寸 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.normalize-dimension-unit",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/normalize-dimension-unit.json",
+      "template_sha256": "7309a8c7482896c6c6241f8ad17fa28afb4728bbb5a379f6002755308387f0a4",
+      "trigger_summary": "统一一个尺寸单位 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.derive-dimension",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/derive-dimension.json",
+      "template_sha256": "ce8562861bf7b39be0f9c3ccd0a3ee7891acf7a1cc0073e8d215a5253c3831b5",
+      "trigger_summary": "推导一个尺寸 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.check-dimension-relation",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/check-dimension-relation.json",
+      "template_sha256": "bb01eadb2cf95beb137c4663483047479ec30335c088d43b1ecc6179f519d549",
+      "trigger_summary": "检查一个尺寸关系 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.define-coordinate-frame",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/define-coordinate-frame.json",
+      "template_sha256": "6e1e4349bc7307bcde43c20a545f3ddc5c32b2089cf83a737c51d1ce9e993f9f",
+      "trigger_summary": "定义一个坐标框架 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.map-view-to-coordinate-frame",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/map-view-to-coordinate-frame.json",
+      "template_sha256": "dabf59540db212d2e37a25aae9adbc4d978cb86eed7b42e47fac3bc699b907bb",
+      "trigger_summary": "建立一个视图到坐标系的映射 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.identify-edge-treatment",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/identify-edge-treatment.json",
+      "template_sha256": "e2233f1a6f0056272064fa16a7920ae7151623c245d3e25802fbb6dcf89eeafe",
+      "trigger_summary": "识别一个边缘处理要求 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.record-assumption-or-unresolved-item",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/record-assumption-or-unresolved-item.json",
+      "template_sha256": "86658cd4afb9a3e83b755da9723f007e09aaf15bb54902e6900d2d9f94168bb4",
+      "trigger_summary": "记录一个假设或未决项 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.derive-expected-measurement",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/derive-expected-measurement.json",
+      "template_sha256": "5318454a0c7e61af1a714ec93efe737c1056e024801ef2cbef59f24e30e93f03",
+      "trigger_summary": "推导一个预期测量值 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "geometry_understanding.record-deliverable-requirement",
+      "stage": "geometry_understanding",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/geometry-understanding/atoms/record-deliverable-requirement.json",
+      "template_sha256": "cc5b5e5d6b0060ef036261d0961340b6fe22981711acca66e831a8dbb8f94970",
+      "trigger_summary": "记录一个交付要求 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.declare-parameter",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/declare-parameter.json",
+      "template_sha256": "767cf18e2e43bb3b667a6ac88c91fa5ab02737c81b5da96fd6defa41b26b19fd",
+      "trigger_summary": "声明一个参数 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.validate-parameter-constraint",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/validate-parameter-constraint.json",
+      "template_sha256": "c28c37c682144e10faaa42a9d57da620fbf24f692a39aee6444b309d5c6d3052",
+      "trigger_summary": "验证一个参数约束 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.choose-feature-construction-method",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/choose-feature-construction-method.json",
+      "template_sha256": "769cd0b2a0d8eeeadb1134e89690025407f00bbd2e6cdbe33e245d0b021ea3bf",
+      "trigger_summary": "为一个特征选择构造方法 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.declare-operation-dependency",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/declare-operation-dependency.json",
+      "template_sha256": "9cbf80673f1e0f59eb6812680e66689717c744128680b3c5598876f19e4350e9",
+      "trigger_summary": "声明一个操作依赖 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.bind-target-api-call",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/bind-target-api-call.json",
+      "template_sha256": "7a0d40f52d041af14ae557bb8c0f72b8754f97d8a9c6d105eb56fb0844c6175a",
+      "trigger_summary": "绑定一个目标API调用 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.declare-semantic-selection-condition",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/declare-semantic-selection-condition.json",
+      "template_sha256": "7c18dd70e95bfaf5098a850bfb844d099df3d45739a611c100d8924bafe42f21",
+      "trigger_summary": "声明一个语义选择条件 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.declare-topology-refresh-point",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/declare-topology-refresh-point.json",
+      "template_sha256": "451ee9ad24a14e60e2bb1346646d70f29c8105ba28d64553eb5a8a15f7b3862b",
+      "trigger_summary": "声明一个拓扑刷新点 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.declare-postcondition-assertion",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/declare-postcondition-assertion.json",
+      "template_sha256": "e96e2eacdf6a6c8b50dbf89f6e2bf44c39e97559745a445ab7b9060f4f589092",
+      "trigger_summary": "声明一个后置断言 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.bind-run-output-path",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/atoms/bind-run-output-path.json",
+      "template_sha256": "ff3fbf15a99e21ea0e887ed32800e4cad9d6a08dced5c3f8142c1da950adc476",
+      "trigger_summary": "绑定一个运行输出路径 when its declared inputs are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-reference-frame",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-reference-frame.json",
+      "template_sha256": "bcfa74c751505ded13b93e3f03fe05cb7156bc0c6f0e0ade1bd1e7703fe37fc5",
+      "trigger_summary": "Use when the build plan requires create-reference-frame and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-reference-plane",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-reference-plane.json",
+      "template_sha256": "4eafc6e299b8fb9b9a2b4455910ab73083d7811a7469ed4d48e17c16b29a2b95",
+      "trigger_summary": "Use when the build plan requires create-reference-plane and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-reference-axis",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-reference-axis.json",
+      "template_sha256": "594d02a202e97404496ffec3d097b549f77def71add295a52378622f9b1c424b",
+      "trigger_summary": "Use when the build plan requires create-reference-axis and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-parameterized-planar-profile",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-parameterized-planar-profile.json",
+      "template_sha256": "727cea7622c871a8a83aba93ec182d59919bc3b773a2e841b3956e2f6e77cf3d",
+      "trigger_summary": "Use when the build plan requires create-parameterized-planar-profile and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-block-from-bounds",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-block-from-bounds.json",
+      "template_sha256": "be66cd1a61946659a64ac60774ca8f6fff0cb026fc337bf885adf52507a4794b",
+      "trigger_summary": "Use when the build plan requires create-block-from-bounds and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.extrude-planar-profile",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/extrude-planar-profile.json",
+      "template_sha256": "8a4a25bd6d97d1433b5b6170db38c885e66d33d90a344316a1205545ed3396b2",
+      "trigger_summary": "Use when the build plan requires extrude-planar-profile and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.extrude-profile-to-face",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/extrude-profile-to-face.json",
+      "template_sha256": "ba2f97bc3b1cc488d887341ecd616cce17d5252eabe1a8ea46d011f99b0825af",
+      "trigger_summary": "Use when the build plan requires extrude-profile-to-face and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.revolve-profile",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/revolve-profile.json",
+      "template_sha256": "ceda24f787905c2f6ec8a2fb6ca3766f92b1000dd475fd00d8f498a93412d60f",
+      "trigger_summary": "Use when the build plan requires revolve-profile and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.sweep-profile-along-path",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/sweep-profile-along-path.json",
+      "template_sha256": "233722ba422d49e45c117f54ddc8fd07e1c9cfc713a4335fd890cde804ae210e",
+      "trigger_summary": "Use when the build plan requires sweep-profile-along-path and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.loft-between-sections",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/loft-between-sections.json",
+      "template_sha256": "5fd005d540446718af9cf158e76c1bc07b1729bfdeea3653e71ef83fbbba2a88",
+      "trigger_summary": "Use when the build plan requires loft-between-sections and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.shell-body",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/shell-body.json",
+      "template_sha256": "412e751c907456bcb67be7815ffa0d05cd30292d472424e53f7693dbb07fba3b",
+      "trigger_summary": "Use when the build plan requires shell-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.attach-transient-body",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/attach-transient-body.json",
+      "template_sha256": "f3ca3da964f8b7285202b63128c1092f9c28bdd362a35c4f553c7bc95a4070e0",
+      "trigger_summary": "Use when the build plan requires attach-transient-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.copy-body",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/copy-body.json",
+      "template_sha256": "74a3a6e1be8c86aa75f59c86182fd4fc56386ff0840d553223b702b41cc722d5",
+      "trigger_summary": "Use when the build plan requires copy-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.translate-body",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.3.1",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/translate-body.json",
+      "template_sha256": "fcc08a8a0fd1f202ad49932a454a8c8acfb4d50ead4126f6633b06944df3145b",
+      "trigger_summary": "Use when the build plan requires translate-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.translate-body-to-face",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/translate-body-to-face.json",
+      "template_sha256": "768db50f4b65c444a3c190d2e533e3003b373e86017ff45cf5301fd8e72680d1",
+      "trigger_summary": "Use when the build plan requires translate-body-to-face and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.rotate-body-about-axis",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/rotate-body-about-axis.json",
+      "template_sha256": "b9a2e628504fe873d459aee5c008375ab15ca59eee6cfb2baeca64fa6d749106",
+      "trigger_summary": "Use when the build plan requires rotate-body-about-axis and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.mirror-body-or-feature",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/mirror-body-or-feature.json",
+      "template_sha256": "bba0b0bed9c376924e958447b75e2488c5cab255933e96ebe27a8fd220fd737d",
+      "trigger_summary": "Use when the build plan requires mirror-body-or-feature and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-linear-pattern",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-linear-pattern.json",
+      "template_sha256": "5217370e44bc998954027a0d70cf9e976c9d56ee00491025fe97cf171ec4a8c4",
+      "trigger_summary": "Use when the build plan requires create-linear-pattern and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-circular-pattern",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-circular-pattern.json",
+      "template_sha256": "107f171ecf136f32d30e7b5a68c49801efed0fa18ba7b40d79b1960a90e823d8",
+      "trigger_summary": "Use when the build plan requires create-circular-pattern and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.union-bodies",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/union-bodies.json",
+      "template_sha256": "612bf04e1cafb1d9fe2a6d8883aaf94f55417b08cb7a75d405c1b25bf7de755a",
+      "trigger_summary": "Use when the build plan requires union-bodies and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.subtract-tool-body",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/subtract-tool-body.json",
+      "template_sha256": "eae761a05e1f552dfd565a7014356568e304144de87f32c2028f3188186a8c34",
+      "trigger_summary": "Use when the build plan requires subtract-tool-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.intersect-bodies",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/intersect-bodies.json",
+      "template_sha256": "ad16a713b35d82319e0b67ce38272581e43d49e2f9fd10f04630ea3c656c6443",
+      "trigger_summary": "Use when the build plan requires intersect-bodies and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.split-body-with-plane",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/split-body-with-plane.json",
+      "template_sha256": "623309a717ec250a31eebe4f97097a80e920879ad11dec21ec93b1776098fa23",
+      "trigger_summary": "Use when the build plan requires split-body-with-plane and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.split-face-parametrically",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/split-face-parametrically.json",
+      "template_sha256": "d73ad950c293366fc645f2adee84b47829d0fb618c78e96e201b1c4939be2b54",
+      "trigger_summary": "Use when the build plan requires split-face-parametrically and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.extract-closed-volume",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/extract-closed-volume.json",
+      "template_sha256": "249c93d6238566994030dc947d9274b859027e4df634adbd0f68dfce11e65f82",
+      "trigger_summary": "Use when the build plan requires extract-closed-volume and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.apply-constant-fillet",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/apply-constant-fillet.json",
+      "template_sha256": "faa0c094adbc844a675134242d96754cd9b2d0e422d961ab85a5542459afdf71",
+      "trigger_summary": "Use when the build plan requires apply-constant-fillet and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.apply-equal-distance-chamfer",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/apply-equal-distance-chamfer.json",
+      "template_sha256": "932d15b44e650a2c2c3fc94f84b40c1af637a84d4f46c5686343c6a545335d33",
+      "trigger_summary": "Use when the build plan requires apply-equal-distance-chamfer and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.resolve-body-semantically",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/resolve-body-semantically.json",
+      "template_sha256": "00b1d6d8790ae1ecb58ac81c70bf6a10a38721e46ffa64fdd54ea523cbdf1af0",
+      "trigger_summary": "Use when the build plan requires resolve-body-semantically and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.resolve-face-semantically",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/resolve-face-semantically.json",
+      "template_sha256": "eb28ad13b80df799462dacf1afa5fb2cd0a1b56b29670b1df6a200aec06d3bce",
+      "trigger_summary": "Use when the build plan requires resolve-face-semantically and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.resolve-edge-semantically",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/resolve-edge-semantically.json",
+      "template_sha256": "a17103de1f624df476908810b171714b9f8739383c011c1cef874613e84938d9",
+      "trigger_summary": "Use when the build plan requires resolve-edge-semantically and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.reenumerate-after-topology-change",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/reenumerate-after-topology-change.json",
+      "template_sha256": "27da221ae91716c4048e87c00a57fed0730d5240c35c18a6079e6dc40619333d",
+      "trigger_summary": "Use when the build plan requires reenumerate-after-topology-change and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.rename-object",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/rename-object.json",
+      "template_sha256": "7f4ce84f5326183929ea4bd4b6667e4b7f43c0960317bbc436e6cababe166f36",
+      "trigger_summary": "Use when the build plan requires rename-object and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.create-named-selection",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/create-named-selection.json",
+      "template_sha256": "36273fcdd894faea512f9f5b4685ba37ef797ef7544b3fc5ccf5c0b1a3fc83ea",
+      "trigger_summary": "Use when the build plan requires create-named-selection and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.rename-named-selection",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/rename-named-selection.json",
+      "template_sha256": "01392e47c822cac7a86626f708d0a894894b8b51307037ed7ef4d3162db3f3eb",
+      "trigger_summary": "Use when the build plan requires rename-named-selection and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "modeling_strategy_scripting.import-geometry-controlled",
+      "stage": "modeling_strategy_scripting",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/modeling-strategy-scripting/import-geometry-controlled.json",
+      "template_sha256": "00dd1d4a05fabcbd3911758e48e5094d129e4482e293b043656f5a964fd9241d",
+      "trigger_summary": "Use when the build plan requires import-geometry-controlled and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.confirm-control-authorization",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-01.json",
+      "template_sha256": "2921017422bb3f3d607b27e77fb9e897e3e6cdd465dac5c816885b4624537e59",
+      "trigger_summary": "Use before any desktop control when the task scope or authorization record may have changed.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.confirm-target-spaceclaim-session",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-02.json",
+      "template_sha256": "2df400c6237a1306a0daeab40fae5147d97b97e20bf331291b69e366154a42ea",
+      "trigger_summary": "Use when more than one application window or session could receive the next action.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.maximize-spaceclaim-window",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-03.json",
+      "template_sha256": "c13170d6df108fdc0d130da6f3560784f35b01c94dc71c7b9689698b7d9d38bd",
+      "trigger_summary": "Use after a unique target session is confirmed and before active visual or script control.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.create-unsaved-blank-design",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-04.json",
+      "template_sha256": "b4dcd2754712ddd9f0d0706bc2edfdd53368f958e004e237fc4b1ca4ba6e2ee3",
+      "trigger_summary": "Use when a no-baseline execution requires a clean document entry state.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.copy-baseline-model",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-05.json",
+      "template_sha256": "486895e7abf33253853444483040f258b3a6eadad02f8cc30940ef60a83e18b6",
+      "trigger_summary": "Use when a run must operate on an existing baseline without mutating the baseline path.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.verify-active-document",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-06.json",
+      "template_sha256": "85d4d3fc9687e2dc603616793333bfe286b20a224e2c4855daee8ff28d9cb91d",
+      "trigger_summary": "Use immediately before script loading/execution when document focus may have changed.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.verify-run-output-path",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-07.json",
+      "template_sha256": "0891ac741af051cd84104576d140b521d677f93f500d72b8f012871fb6c86184",
+      "trigger_summary": "Use before creating a runtime report, native model, or other run output.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.load-scscript",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-08.json",
+      "template_sha256": "4434af6c4f8a09895243487a0f496ac78df9d7a1fe48aa1fe4264cb127cb1e3d",
+      "trigger_summary": "Use after entry/document/output gates pass and the session is idle.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.execute-loaded-scscript-once",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-09.json",
+      "template_sha256": "20bbaee591bd25c2bed9673695c65c52635bc467aebf5e06b16ca4c01105afcb",
+      "trigger_summary": "Use only after authorization, session, document, and loaded-script gates are satisfied.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.wait-for-run-terminal-state",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-10.json",
+      "template_sha256": "5ee031e8f83635cdbf66e6e2230d2d3a9f525b0aa5c48fab0411ea4a250f6744",
+      "trigger_summary": "Use after one execution event is correlated and no second run may start.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.record-executed-artifact-identity",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-11.json",
+      "template_sha256": "2b63cb8cb6c9b1933d9d2e94b11a7dab8db4d323ba39f875b8f7b72b7e871e4a",
+      "trigger_summary": "Use after an execution event when planned and actual script bytes may differ.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.capture-earliest-failure-state",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-12.json",
+      "template_sha256": "d1a99eabe7cb33c02d5af3d97f39d0c7a33bd69d3a0bf59a7512b8975aff70fb",
+      "trigger_summary": "Use when a run has failed/stopped and logs, events, and state are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.block-save-after-critical-failure",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-13.json",
+      "template_sha256": "76c5cf83d8f5d32132386a399255d80f49288f0c92dffe96110eeb6b1b07f1fc",
+      "trigger_summary": "Use after a critical assertion failure and before any native save has begun.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.save-asserted-native-model",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/ex-14.json",
+      "template_sha256": "d5e694377f0fe0a126a3cc7082ee35a626c9e2433fd7ba667064afa9ab3ea625",
+      "trigger_summary": "Use only after the current root Part and every supplied critical check match the accepted run.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "native_save"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.classify-earliest-failure",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-01.json",
+      "template_sha256": "698b8e326ef10114712c6ccfead9da8ef50afb9ce55a0d7c5c9eda2825952854",
+      "trigger_summary": "Use after EX-12 has produced an ordered earliest_failure record.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.repair-api-or-namespace-mismatch",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-02.json",
+      "template_sha256": "0d1f31caefc3a4046073424ca093f025a6d72764c19ce7b13f0ca3604a44a73d",
+      "trigger_summary": "Use when one failing call is identified and the target version signature is available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.repair-path-or-encoding",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-03.json",
+      "template_sha256": "530a844743440c907aca838aae6e0ffa6209d8a7929b9e459bb3c827945365ec",
+      "trigger_summary": "Use when one path parse, escape, Unicode, or encoding failure is located.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.strengthen-semantic-selection",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/execution-recovery/er-04.json",
+      "template_sha256": "5c3bf4266a57ada1da89b7e2e5be440bdc4c6c8533635c5aa6f5d9caacc02fc8",
+      "trigger_summary": "Use when one selection predicate is ambiguous or selected the wrong candidate.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.insert-topology-reenumeration",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/execution-recovery/er-05.json",
+      "template_sha256": "08f5922ed4be35fa7d59ce0d0d74dab4b39e932d8bce29a08e289abd41f591c5",
+      "trigger_summary": "Use when one consumer is proven to use a pre-mutation body/face/edge collection.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.repair-boolean-result-classification",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-06.json",
+      "template_sha256": "8819a02c1ee61fa2ecdfa59c25f64fea53d8cf0843ece4dbac2d21bafde19cc4",
+      "trigger_summary": "Use after a Boolean completed and results are observable but the wrong result member was selected.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.repair-open-or-invalid-geometry",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-07.json",
+      "template_sha256": "9ab8e11bb5757dccc0ef6fac9ded8bd4c7d40dcb5d75bfa55a088d052a16bdd7",
+      "trigger_summary": "Use when one defect and one approved repair mode are known; not a generic repair search.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.resolve-naming-conflict",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.1",
+      "template_path": "assets/operation-templates/execution-recovery/er-08.json",
+      "template_sha256": "3a4eebae1383933619a4168a7b0be65e12fe8c3c94518ff28c4eb98c59c54002",
+      "trigger_summary": "Use when one desired name collides with an existing object and ownership/strategy are known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.restore-application-or-document-state",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-09.json",
+      "template_sha256": "578bdba2a93e5450367e3b721f769cb59994418b31c646583d21019ac02ced6f",
+      "trigger_summary": "Use when one state mismatch is located and expected state is known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.repair-persistence-or-export-condition",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-10.json",
+      "template_sha256": "1c080f6f67b60985de61fff2091fe98dff9b33a008d2d683868ab9af9762b141",
+      "trigger_summary": "Use when failure is isolated to one path, format, permission, or other declared condition.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.remove-run-owned-failed-artifact",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-11.json",
+      "template_sha256": "26b2bb63e142761dd1cb086a82831f6e7555987348ebd28467db0338a3e89df0",
+      "trigger_summary": "Use only when a failed artifact is proven run-owned and is not baseline/evidence.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "execution_recovery.rerun-from-clean-entry",
+      "stage": "execution_recovery",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/execution-recovery/er-12.json",
+      "template_sha256": "192c2ab9462715553178ccede54798805ab4b136744988b793b2c5a095834dbb",
+      "trigger_summary": "Use after caller restored clean entry and loaded corrected artifact.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.enumerate-bodies",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-04.json",
+      "template_sha256": "a0a14e37dd99416bd4a4043632e3872696cb8dceeb8fcd889ed53a2b5e598550",
+      "trigger_summary": "Use when the current root Part is resolved and body enumeration or an expected body count must be checked.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.enumerate-body-faces",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-05.json",
+      "template_sha256": "db394908071110036944aa66bf3c3383298f606c40b3bb0d23211e642aaa0e5e",
+      "trigger_summary": "Use when one current body is resolved and its face collection or expected face count must be checked.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.enumerate-body-edges",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-06.json",
+      "template_sha256": "50138fb9bb0355d1aa08d42a31f1aa8d94009710be38ed1cb455ed61867587d7",
+      "trigger_summary": "Use when one current body is resolved and its edge collection or expected edge count must be checked.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-object-count",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-07.json",
+      "template_sha256": "b77fc8737925f33ba684cf410c71ede61a821a930c6ee70ff811a305cf3ca275",
+      "trigger_summary": "Use when a finite object collection, expected count, and explicit or unambiguous object scope are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-body-bounding-box",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-08.json",
+      "template_sha256": "3ac131ee8798abfcba4c1a17724ff39ad6c4ddf740e23abec06714db4d318140",
+      "trigger_summary": "Use when the current body, frame, unit, and any expected bounding-box tolerance are explicit.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-body-volume",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-09.json",
+      "template_sha256": "c33d0e546e87b3013653dd2baf5a7edff8164be25c58999b2992d7a72477c8a5",
+      "trigger_summary": "Use when the current body, volume unit, and any expected value or tolerance are explicit.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-body-surface-area",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-10.json",
+      "template_sha256": "8a8f9f1cd1544249b11c56810883ed9b0cd8c43caf9afd393687647f627d40e2",
+      "trigger_summary": "Use when the current body, area unit, and any expected value or tolerance are explicit.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-face-semantics",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-11.json",
+      "template_sha256": "755b394f611e707f26ba8b417db0ea9f47a6b96c71b1f1d29f72e3a9800a69bd",
+      "trigger_summary": "Use when the current body/face, requested property, unit, and center frame requirement are explicit.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.classify-analytic-face-type",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-12.json",
+      "template_sha256": "e4fc91feb7f045c012986de72528958ebe191001bf091a55ce7fdd40b695ca8e",
+      "trigger_summary": "Use when the current body/face identity is resolved and the underlying face type must be reported.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-cylindrical-face",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-13.json",
+      "template_sha256": "470956b831cd03c19da5ab127a66bfeedadc66960e33a7ac359d70a84eb18c3a",
+      "trigger_summary": "Use when a current cylinder face and unit are explicit; preserve manual review for unavailable axes or non-exact rotated spans.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-conical-face",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-14.json",
+      "template_sha256": "9e8f4b8290d1dc359fa6f5f16f2c03837ab4a310ad41ca26240c746175b660b7",
+      "trigger_summary": "Use when a current cone face, unit, and angle convention are explicit; preserve manual review for unresolved span precision.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.measure-toroidal-fillet-radius",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-15.json",
+      "template_sha256": "ecb5503e6b1e4e3a4ef37da568fa6683b7e2cb7a86b5074c77fb6c14275f2c32",
+      "trigger_summary": "Use when the current torus face and unit are resolved and any intended fillet relation is explicitly declared.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution",
+        "geometry_measurements"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-repeated-feature-placement",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-16.json",
+      "template_sha256": "8ab886030a43578a28a9110042c9fbcdbcd5c13b0196370dcac8a1736defb692",
+      "trigger_summary": "Use when the live root, positions, rule, and tolerance are supplied; do not infer CAD feature locations.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-object-name",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-17.json",
+      "template_sha256": "b796c3cf7572ae61d0da90abf959ca78376e1ee62e421d09406a8c9707c18bff",
+      "trigger_summary": "Use when exactly one current target identity and its expected name are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-named-selection-members",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-18.json",
+      "template_sha256": "afc4318583442006c0e7996d2f3f5031ab3000794060c7ac10f5e261a580578c",
+      "trigger_summary": "Use when the current group and complete expected member identities are resolved in the same root scope.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "spaceclaim_execution"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-output-file-identity",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-19.json",
+      "template_sha256": "fc9f32925b94713b1e243107ed719ec7a0343e24535f90724d933e15b67d4a43",
+      "trigger_summary": "Use after an output file exists at an authorized absolute regular path and its expected digest is known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-native-save-result",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-20.json",
+      "template_sha256": "b13849ef1602d67d5adb24aa7e8644acc4da63b3ed4b9171e368cd59faf088eb",
+      "trigger_summary": "Use after a native .scdoc save when the file digest, save record, and run reference are available for checking.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.close-native-model",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-21.json",
+      "template_sha256": "a687c1eb50fca1f0934dbcbda9b6c1be417e547de3613f8fa79d4393643b78bd",
+      "trigger_summary": "Use when the target document is uniquely controllable and the unsaved-change choice is explicit and authorized.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.reopen-native-model",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-22.json",
+      "template_sha256": "8c0c4eccc27632789161b8cf6469594931c998d9289be47a5ddd046050c4ffe6",
+      "trigger_summary": "Use when the native file is readable and the target session is idle, unique, and free of blocking dialogs.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "native_reopen"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.check-reopened-property",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-23.json",
+      "template_sha256": "73c91d3a17f0b7f1d811998adb0459f29f6a6e7467b9d5f2f910648166aa6136",
+      "trigger_summary": "Use when a measured native-reopen observation, expected value, artifact SHA-256, and any tolerance are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.export-requested-geometry",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-24.json",
+      "template_sha256": "55e175829d99575f1e82eca0e01960a4e5175460752f288bc8699b49abe1090a",
+      "trigger_summary": "Use when the active model, export format/path, options, and independent identity gates are explicit.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.reimport-and-check-export",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/va-25.json",
+      "template_sha256": "27eb544d23f5ba9ef287988574557e810f893b2b55613b390617e8d0fb555f00",
+      "trigger_summary": "Use when a measured reimport observation, expected value, source SHA-256, and any tolerance are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.confirm-unobstructed-maximized-viewport",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-01.json",
+      "template_sha256": "1fd194f6e4b5899b7c6c8eae06c66af8dba914335974eca3d26829c996806aa8",
+      "trigger_summary": "Use before GUI selection, navigation, or screenshot actions when the target window state is observable.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.calibrate-navigation-mapping",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-02.json",
+      "template_sha256": "f726c9307921e4e91b6dd37f802e4267583d96a95aaf1bed47f4b2f5a6b2c3e0",
+      "trigger_summary": "Use when a maximized unobstructed viewport is available and navigation controls need session-specific calibration.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.select-one-object",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-03.json",
+      "template_sha256": "32c3e42c7e9beb1ed5bc70c5be491d0dc4e8bba54071684e8cc165cf9439b3ef",
+      "trigger_summary": "Use when the target is visible, unique under the filter, and pre-highlight identifies the intended object.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.toggle-one-selection-member",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-04.json",
+      "template_sha256": "6ecd6966fcc13359e373c0edd35051f011be4147cf0929de3b32f2ed75f5a2ea",
+      "trigger_summary": "Use when the target, current selection set, and Ctrl+left or equivalent toggle mapping are known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.select-edge-loop",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-05.json",
+      "template_sha256": "97be98d19deeb7fc3385e8ca5fe2b3e0ddb7c5c03a9d37ffdc0ee18e2e316ef4",
+      "trigger_summary": "Use when the target edge and loop are identifiable and double-click or an equivalent loop command is calibrated.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.select-complete-body",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-06.json",
+      "template_sha256": "c34202ff36032f132e7e72cd0d1523f8832c749fa557649f62964524f38a16eb",
+      "trigger_summary": "Use when the body is visible, uniquely identified, and triple-click or an equivalent body-selection route is verified.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.cycle-overlapping-preselection",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-07.json",
+      "template_sha256": "b617ee5c447c2a5db79d59087e68a9b00905a22a1022c5fc0830248906bb9b2c",
+      "trigger_summary": "Use when at least two candidates overlap at the known cursor position and candidate cycling is supported.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.clear-selection",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-08.json",
+      "template_sha256": "39213d26e51ec28a2c9e39d8fa92e5f22587fa969e2272db1b4187228d83f789",
+      "trigger_summary": "Use in an interactive idle session when a single clear-selection control is calibrated for the current mode.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.box-select",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-09.json",
+      "template_sha256": "818a10a777c3446dd4af374d6e1a73694ad881d4a8fdae957b4328398b9c19bd",
+      "trigger_summary": "Use when the screen region, selection filter, and current left-to-right/right-to-left rule are known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.open-context-menu",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-10.json",
+      "template_sha256": "bd800e83d4d1deb3edb9cda49328bc14860a40725948a981b3002e37b1bc0ea0",
+      "trigger_summary": "Use when the context target and focus are explicit and a stationary right click is controllable.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.rotate-view-with-middle-drag",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-11.json",
+      "template_sha256": "6ce4dfde7e61c6a1eff5618c11d09de33b91ca33c0e97a18d8001475ebc5f8a3",
+      "trigger_summary": "Use when the viewport is unobstructed, no geometry tool is active, and middle-drag or Spin is calibrated.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.pan-view-with-shift-middle-drag",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-12.json",
+      "template_sha256": "118cad190e3ef4fe0d2c0f3d736797ff60b5cacdd530e1a842da317c3805959b",
+      "trigger_summary": "Use when the viewport is unobstructed, no geometry tool is active, and Shift+middle-drag or Pan is calibrated.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.zoom-view-with-control-middle-drag",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-13.json",
+      "template_sha256": "7c692640a085e7fc1026c2d169247ca5029768edfc9bb875f0c88e37146b4e9b",
+      "trigger_summary": "Use when the viewport is unobstructed, no geometry tool is active, and Ctrl+middle-drag or Zoom is calibrated.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.zoom-view-with-wheel",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-14.json",
+      "template_sha256": "93be79ce49f9faf396384258d7621c40caae73e99027dcc72c1d15756273731c",
+      "trigger_summary": "Use when the cursor is over the viewport and wheel direction/step behavior is calibrated in the session.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.zoom-extents",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-15.json",
+      "template_sha256": "03df3bf6783e8cbe94345dedf215f04a639285835af069a463651ff1ca216a83",
+      "trigger_summary": "Use when the target range is explicit, the fit command is available, and no dialog blocks the viewport.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.restore-home-view",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-16.json",
+      "template_sha256": "4e61c7a14984ab8d56a1980a6270163cf2cb588980bf2b2b73efdb5bd96118e4",
+      "trigger_summary": "Use when the target session is unique and idle and one current Home definition is known.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.switch-standard-view",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-17.json",
+      "template_sha256": "e5e2032a34b2dcaa262d026f86167bc07d0fe7a99a0e32b60737513b47b82e08",
+      "trigger_summary": "Use when the standard direction/frame are explicit and the View control is visible in the unique target session.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.snap-view-normal-to-plane",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-18.json",
+      "template_sha256": "56a6670c0ca6afe269e9d125b2f2e69e1d92c8df5a55b00cc23086d23eff91f8",
+      "trigger_summary": "Use when the reference normal, view side, side convention, and Plan/Snap control are available.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.frame-local-feature-view",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-19.json",
+      "template_sha256": "bf307065ba5da6ca62b80c7f6d2ac090b49ada5ad80fa0cf1340d76ad3e53751",
+      "trigger_summary": "Use when the target feature and visibility goal are explicit and any camera adjustment is authorized.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.compare-one-view-visually",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-20.json",
+      "template_sha256": "fcc4d8ecde30e0f8f2c62737bce5d80d0fef1f091d89a5d170851c40ded83cb5",
+      "trigger_summary": "Use when both views and the feature are available and projection or scale differences are explicitly considered.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.record-visual-occlusion-or-uncertainty",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-21.json",
+      "template_sha256": "65947051bdecdc4145f1f6699323d6b6abbf4ef8b3debcd6cfd2a82e17dab3bd",
+      "trigger_summary": "Use when the target feature, current view, and observed obstruction or uncertainty can be located.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked"
+      ]
+    },
+    {
+      "operation_id": "validation_visual_review.capture-evidence-screenshot",
+      "stage": "validation_visual_review",
+      "status": "candidate",
+      "template_version": "0.1.0",
+      "template_path": "assets/operation-templates/validation-visual-review/vi-22.json",
+      "template_sha256": "2523fc42ab49169ff72205a6d90f0594dcc23c80902fe15bed2a43b38a49a686",
+      "trigger_summary": "Use when the target view is confirmed, the viewport is sufficiently unobstructed, and the screenshot destination is authorized.",
+      "evidence_layers": [
+        "design_only",
+        "host_checked",
+        "visual_review"
+      ]
+    }
+  ]
+}

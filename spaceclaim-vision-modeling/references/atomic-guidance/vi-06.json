@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-06",
+  "input_fields": [
+    {
+      "name": "visible_body",
+      "type": "object",
+      "description": "One visible complete body identity."
+    },
+    {
+      "name": "selection_filter",
+      "type": "object",
+      "description": "Body/solid selection filter or mode."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified triple-click mapping or a body-selection equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "body_selection_state",
+      "type": "object",
+      "description": "Selected complete body identity and direct/equivalent control used."
+    }
+  ],
+  "procedure": [
+    "Set body/solid selection mode and pre-highlight visible_body.",
+    "Use one calibrated triple click, or one verified body-selection filter/menu equivalent.",
+    "Observe complete-body highlight and return body_selection_state.",
+    "If only a face/edge is selected, stop and return mismatch rather than escalating clicks."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous body, unsupported triple click without equivalent, or partial selection.",
+    "Do not assume triple click is cross-version invariant.",
+    "Do not modify body geometry."
+  ]
+}

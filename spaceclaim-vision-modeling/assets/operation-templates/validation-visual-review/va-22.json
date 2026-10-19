@@ -1,0 +1,232 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.reopen-native-model",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Reopen one identified native model in one target session and report the resulting document state.",
+  "trigger": "Use when the native file is readable and the target session is idle, unique, and free of blocking dialogs.",
+  "inputs": [
+    {
+      "name": "native_file_identity",
+      "type": "object",
+      "description": "Readable native file path/hash and expected document identity.",
+      "required": true
+    },
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Unique maximized SpaceClaim session prepared to open one file.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Native file is readable and target session is unique, idle, and free of a blocking dialog.",
+    "The file identity and intended session are known."
+  ],
+  "outputs": [
+    {
+      "name": "reopened_document_state",
+      "type": "object",
+      "description": "Actual opened document identity, path/hash, and active session.",
+      "required": true
+    },
+    {
+      "name": "reopen_status",
+      "type": "string",
+      "description": "opened, blocked, or needs_manual_review.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The opened active document is bound to the requested file identity.",
+    "No property measurement or visual acceptance is claimed by reopening."
+  ],
+  "implementation": {
+    "mode": "computer_use",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/va-22.json",
+    "target_environment": "Authorized SpaceClaim V21 desktop session with the window maximized/full-screen unless a recorded layout exception applies.",
+    "topology_effect": "none",
+    "determinism": "interactive",
+    "notes": "The controller performs one bounded GUI observation/action; it must calibrate the current mapping and must not expand this atom into a view workflow. One GUI reopen action; no executable artifact is bound."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Resolve the declared target from its supplied identity and semantic properties; do not use arbitrary BodyN/FaceN aliases or return order.",
+      "If the target is not unique or the current topology/view cannot be observed, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "target_unresolved",
+      "condition": "The declared target, scope, or view identity is missing or ambiguous.",
+      "detection": "The supplied identity does not resolve to exactly one current target.",
+      "safe_state": "No validation action is performed and no pass claim is emitted."
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "condition": "The required API, host path, controller gesture, or visible state cannot be observed.",
+      "detection": "The adapter or controller reports unsupported/blocked/unknown state.",
+      "safe_state": "Preserve the current document/view and return needs_manual_review or not_tested."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "target_unresolved",
+      "action": "Strengthen the target identity or stop for manual review; do not substitute a numbered alias.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "action": "Use only a verified equivalent control/API or return needs_manual_review; do not repeat an unsupported gesture.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare this contract's inputs, outputs, procedure boundary, and refusal rules with the linked guidance file.",
+      "expected": "The contract exposes the same fields and preserves needs_manual_review, unsupported-control, and no-overclaim boundaries.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Run the exact future script, host check, or calibrated controller action only after target identity and evidence gates pass.",
+      "expected": "The opened active document is bound to the requested file identity.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-22-host-check.json",
+            "sha256": "ec2b12ce2fe401c87ab250411d65285cfb245580f20c1cc73e4a6b721efa6dab"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-22-host-check.json",
+            "sha256": "ec2b12ce2fe401c87ab250411d65285cfb245580f20c1cc73e4a6b721efa6dab"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-evidence.json",
+            "sha256": "505da7beb451400ff5d9f976df2009177c42a29ea2d8d6140461df4da00d0c54"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+            "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-test.py",
+            "sha256": "97c7a2ce420c485a543678d9116f50ca83708f909b0c6366d98f00d4d9d3871b"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+            "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+          }
+        ]
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-22.json",
+      "sha256": "9f8b49a2b04672f1876cdbcfe9672d5f71b4f16f8f5e01bbd17c7819cda0a52f",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-22.json",
+      "sha256": "9f8b49a2b04672f1876cdbcfe9672d5f71b4f16f8f5e01bbd17c7819cda0a52f",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_guidance.py",
+      "sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-22-host-check.json",
+      "sha256": "ec2b12ce2fe401c87ab250411d65285cfb245580f20c1cc73e4a6b721efa6dab",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-evidence.json",
+      "sha256": "505da7beb451400ff5d9f976df2009177c42a29ea2d8d6140461df4da00d0c54",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-test.py",
+      "sha256": "97c7a2ce420c485a543678d9116f50ca83708f909b0c6366d98f00d4d9d3871b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+      "role": "evidence"
+    }
+  ]
+}

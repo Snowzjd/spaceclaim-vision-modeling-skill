@@ -1,0 +1,53 @@
+{
+  "catalog_id": "GU-15",
+  "input_fields": [
+    {
+      "name": "origin_basis",
+      "type": "object",
+      "description": "原点来自标注、模型基准或用户约定的依据；必须保留来源和约定状态。"
+    },
+    {
+      "name": "axis_direction_basis",
+      "type": "object",
+      "description": "三个轴方向的可追溯来源或用户约定；轴方向未知时不能用默认方向。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "明确的长度/坐标单位；未知时为 null。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "origin",
+      "type": "array",
+      "description": "长度为 3 的原点坐标数组；依据不足时为 null，不填默认零点。"
+    },
+    {
+      "name": "axes",
+      "type": "array",
+      "description": "3×3 的三个轴向量数组；每个向量需可归一化并有来源，未知时为 null。"
+    },
+    {
+      "name": "handedness",
+      "type": "string",
+      "description": "只允许 right-handed 或 left-handed；手性无法由依据确认时为 null。"
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "坐标框架使用的长度单位；必须与原点和轴方向依据一致。"
+    }
+  ],
+  "procedure": [
+    "从原点依据、轴方向依据和单位中提取可追溯值，明确标注 observed、user 和 derived。",
+    "组装一个原点与三个轴的候选框架，检查轴向量长度、两两正交、单位一致性和右/左手性。",
+    "输出 origin、axes、handedness 和 unit；任何条件不满足时对应字段写 null，并附 provenance 与 unresolved。",
+    "只定义坐标框架本身，不加入视图对应、视图方向或其他来源映射。"
+  ],
+  "rejection_rules": [
+    "原点或轴缺少来源时可采用明确记录的几何不变建模约定（convention）；不得以约定改变用户基准或缺失尺寸。单位必须有依据。",
+    "轴不能归一化、不是两两正交、单位冲突或手性不满足约定时拒绝静默修正。",
+    "不得使用默认原点、默认轴、模型世界坐标或未记录的数值替代缺失依据。"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "catalog_id": "MS-03",
+  "input_fields": [
+    {
+      "name": "feature_description",
+      "type": "object",
+      "description": "Object with required keys `effect`, `required_geometry`, `required_topology`, and `acceptance_conditions` for one feature effect."
+    },
+    {
+      "name": "target_environment",
+      "type": "object",
+      "description": "Object with required keys `host`, `spaceclaim_release`, `api_version`, and `runtime`; other constraints remain explicit members."
+    },
+    {
+      "name": "available_methods",
+      "type": "array",
+      "description": "Array of method objects, each with required keys `method_id`, `scope`, `prerequisites`, `target_environments`, `evidence`, and `stability`."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "construction_decision",
+      "type": "object",
+      "description": "Object with required keys `method_id`, `reason`, `prerequisites`, `covered_effect`, and `stability_basis`; nullable when the common output envelope records materially missing requirements."
+    },
+    {
+      "name": "alternative_conditions",
+      "type": "array",
+      "description": "Array of alternative objects, each with required keys `method_id`, `when_preferred`, and `tradeoff`; it may be empty."
+    }
+  ],
+  "procedure": [
+    "Reduce the request to one feature effect and list the geometry, topology, environment, and acceptance conditions it requires.",
+    "Filter only the supplied methods whose prerequisites and target-environment constraints are satisfied.",
+    "Select one primary method when it covers the effect; when several supplied methods are viable, prefer the simpler stable method and record why.",
+    "Return `construction_decision` and any alternative conditions as action data, using the common output envelope only when geometry or environment facts are materially insufficient."
+  ],
+  "rejection_rules": [
+    "Reject a whole-part, multi-feature, or ordered recipe request; choose a method for one feature effect only.",
+    "Reject any method not present in the supplied method set and do not invent an API or construction primitive.",
+    "When viable methods tie, do not mark the action unresolved solely because of the tie; choose the simpler stable supplied method and explain the choice.",
+    "Use the common unresolved envelope only when missing geometry or environment facts could change coverage or method validity."
+  ]
+}

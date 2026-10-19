@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.3.0 - 2026-10-19
+
+- Establish Geometry understanding, Modeling strategy and scripting, Execution and recovery, and Validation and visual review as the four core stages, with explicit handoff contracts.
+- Register 139 action-scoped contracts and implementations/guidance across the four libraries; retain 5 active host tools and keep 134 candidates bounded by their own evidence.
+- Add independent source-interpretation and strategy evaluations, V21 modeling-action scripts, execution/recovery helpers, geometry checks and recorded visual-navigation variants.
+- Preserve the complete modeling workflow as the fallback when an eligible atomic operation is unavailable.
+- Bind execution and measurement claims to exact script versions and hashes; retain failure reports and reviewed corrections.
+- Add host handoff integrity checks and installation-aware artifact resolution.
+- Document the complete external runtime requirements and provide pinned host dependencies, installation checks and relocated-install support.
+- Clarify Computer Use input limits and standard SpaceClaim navigation alternatives.
+- Reserve extension interfaces for future video-source interpretation, demonstrated operations and later composition without bypassing core-stage validation.
+
+Existing evidence covers only its recorded inputs, versions and variants; this release
+does not activate all operations or establish universal recognition, gesture or
+cross-version support.
+
 ## v0.2.0 - 2026-08-31
 
 - Clarify the project boundary around the Skill's SpaceClaim modeling capabilities, handoff contracts, exclusions, and validation layers.

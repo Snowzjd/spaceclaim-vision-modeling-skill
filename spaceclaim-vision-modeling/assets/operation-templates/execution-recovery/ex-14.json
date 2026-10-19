@@ -1,0 +1,275 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.save-asserted-native-model",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Save one asserted SpaceClaim document to a new run-owned native path without reopening it.",
+  "trigger": "Use only after the current root Part and every supplied critical check match the accepted run.",
+  "inputs": [
+    {
+      "name": "expected_root",
+      "type": "object",
+      "description": "Expected current root Part identity and binding.",
+      "required": true
+    },
+    {
+      "name": "run_root",
+      "type": "string",
+      "description": "Absolute run-owned directory; not a baseline, evidence, or existing-output ancestor.",
+      "required": true
+    },
+    {
+      "name": "output_path",
+      "type": "string",
+      "description": "New .scdoc path under run_root; it must not already exist.",
+      "required": true
+    },
+    {
+      "name": "critical_checks",
+      "type": "array",
+      "description": "Checks with id and status; every critical check must be passed.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Active document is expected current root Part and all critical checks passed.",
+    "run_root is absolute/run-owned and output_path is a new .scdoc beneath it.",
+    "No native save has occurred for output_path."
+  ],
+  "outputs": [
+    {
+      "name": "path",
+      "type": "string",
+      "description": "Exact saved native-model path.",
+      "required": true
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "description": "SHA-256 of the saved native-model bytes.",
+      "required": true
+    },
+    {
+      "name": "native_save",
+      "type": "string",
+      "description": "passed only after native save and hash succeed.",
+      "required": true
+    },
+    {
+      "name": "native_reopen",
+      "type": "string",
+      "description": "Always not_tested for this save-only operation.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "Formal artifact returns path, SHA-256, native_save=passed, native_reopen=not_tested after one new native output.",
+    "Existing path, failed check, root mismatch, unsafe ancestor, or save error is rejected."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/execution-recovery/save-asserted-native-model.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 .scscript execution in an authorized session.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Invoke the formal .scscript with ATOMIC_INPUT={expected_root,run_root,output_path,critical_checks}; ATOMIC_OUTPUT={path,sha256,native_save,native_reopen}. expected_root is a live Part identity, not serialized JSON. New-output only, save-only; raises ValueError for rejected input and RuntimeError for failed post-save assertions. Native save and reopen evidence remain independent."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "save_precondition_failed",
+      "condition": "Root, path/newness, or critical checks fail.",
+      "detection": "Formal artifact rejects expected_root, run_root/output_path, or a check.",
+      "safe_state": "No native success output is promoted."
+    },
+    {
+      "failure_id": "native_save_failed",
+      "condition": "Save command or post-save hash fails.",
+      "detection": "Artifact returns error or hash cannot be read.",
+      "safe_state": "Preserve error; do not claim native_save=passed."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "save_precondition_failed",
+      "action": "Correct the failed precondition and rerun from clean asserted state; do not overwrite.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "native_save_failed",
+      "action": "Keep failed output run-owned and diagnose with ER-10.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Formal artifact returns path, SHA-256, native_save=passed, native_reopen=not_tested after one new native output.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.verify-active-document"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-14-host-check.json",
+            "sha256": "ac19304081c71006b2d1d32c7e74e224afd668a7eb1b33bc37df719bf66b83e7"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-14-host-check.json",
+            "sha256": "ac19304081c71006b2d1d32c7e74e224afd668a7eb1b33bc37df719bf66b83e7"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-report.json",
+            "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-evidence.json",
+            "sha256": "72a686d8c8a66527dfe40e7732256aed494bc67b4e95c1d8595cf218cba1c1e0"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-report.json",
+            "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-evidence.json",
+            "sha256": "72a686d8c8a66527dfe40e7732256aed494bc67b4e95c1d8595cf218cba1c1e0"
+          }
+        ]
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Five host input guards and exact V21 save-01 critical-save-block/native-save checks passed. Save-only new-output variant; reopen and complete visual review not performed."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/execution-recovery/save-asserted-native-model.scscript",
+      "sha256": "76cf79f45107d9222fab98a29f65fe8235e3fae678f4bc5ffa5d54da3f779f9f",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-14.json",
+      "sha256": "b7c5896b6c9f4d1a022bab0562130749f590d746d6947db98da79d45b4b80a1b",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_native_save_atom.py",
+      "sha256": "294d06d9cebebfb7b23a5cd078769ad0b43ca24804b2431808975f33a4b11862",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-14-host-check.json",
+      "sha256": "ac19304081c71006b2d1d32c7e74e224afd668a7eb1b33bc37df719bf66b83e7",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/execution-recovery/save-asserted-native-model.py",
+      "sha256": "d9831a7e0899221d52a5c25c48e2dc5d7ffe93fcda0b7b80503c059b69d7ae61",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-report.json",
+      "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-evidence.json",
+      "sha256": "72a686d8c8a66527dfe40e7732256aed494bc67b4e95c1d8595cf218cba1c1e0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-test.py",
+      "sha256": "279b8d869a5b542032ed1aad692b76eda9d65b4612d9ea057b6385ee00a92ae8",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+      "role": "evidence"
+    }
+  ]
+}

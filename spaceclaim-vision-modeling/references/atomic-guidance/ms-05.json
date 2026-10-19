@@ -1,0 +1,43 @@
+{
+  "catalog_id": "MS-05",
+  "input_fields": [
+    {
+      "name": "target_version",
+      "type": "object",
+      "description": "Object with required keys `host`, `spaceclaim_release`, `api_version`, and `runtime` for the exact requested target."
+    },
+    {
+      "name": "operation_semantics",
+      "type": "object",
+      "description": "Object with required keys `operation_id`, `inputs`, `outputs`, `side_effects`, and `units` for one operation semantic."
+    },
+    {
+      "name": "known_api_signature",
+      "type": "object",
+      "description": "Object with required keys `symbol`, `arguments`, `return_type`, `version`, and `source_ref`; the signature must be supplied and source-backed."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "api_binding",
+      "type": "object",
+      "description": "Object with required keys `target_version`, `symbol`, `argument_mappings`, `return_mapping`, and `source_ref`; nullable when the common output envelope records missing signature evidence."
+    },
+    {
+      "name": "compatibility_notes",
+      "type": "array",
+      "description": "Array of strings recording compatibility limits and unverified runtime assumptions; it may be empty."
+    }
+  ],
+  "procedure": [
+    "Verify that the supplied signature is source-backed and explicitly associated with the exact target version.",
+    "Match the operation's declared inputs and outputs to the signature's argument and return types without changing the semantics.",
+    "Record the qualified symbol, version, mappings, source reference, and any compatibility limits as one binding.",
+    "Return `api_binding` and `compatibility_notes` as action data, using the common output envelope for status, provenance ownership, and unresolved evidence; do not emit an executable call when unknown."
+  ],
+  "rejection_rules": [
+    "Reject a missing, version-mismatched, or untraceable API signature.",
+    "Never invent a symbol, argument order, overload, return type, or compatibility claim from a generic API name.",
+    "Do not present a planning binding as proof of SpaceClaim execution or runtime compatibility."
+  ]
+}

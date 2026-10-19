@@ -1,0 +1,142 @@
+{
+  "status": "passed_after_review_delta",
+  "scope": "host_preparation_and_handoff_only",
+  "original_pass_claim": "Static audit passed but did not detect V21 call incompatibilities; not a first-pass modeling success.",
+  "review_corrections": [
+    "Treat DocumentSave.Execute(path) as a no-result V21 call; verify nonempty output file and active Document.Path identity separately.",
+    "Enumerate root DesignBody objects explicitly through GetRootPart().GetDescendants[DesignBody]() and Parent scoping.",
+    "Use the Geometry namespace wildcard so ITrimmedCurve and related V21 geometry types are available in the formal source."
+  ],
+  "local_handoff_checks": {
+    "A": {
+      "source_sha256": "dc6d90b919a3fabdacbcc5af807600be4dab0556b45673ad6ec37f8f0460e946",
+      "result": {
+        "status": "passed",
+        "evidence_level": "host_handoff_integrity_only",
+        "issues": [],
+        "next_stage": "execution_recovery",
+        "cad_verified": false
+      }
+    },
+    "B": {
+      "source_sha256": "85bdd866ce0c27298a7695fea09b0be6b40fe3c46147c49fba223c4c182c9494",
+      "result": {
+        "status": "passed",
+        "evidence_level": "host_handoff_integrity_only",
+        "issues": [],
+        "next_stage": "geometry_understanding",
+        "cad_verified": false
+      }
+    }
+  },
+  "request_A_expected": {
+    "volume_mm3": 864.5,
+    "bbox_mm": [
+      4,
+      -3,
+      2,
+      23,
+      10,
+      9
+    ],
+    "faces": 5,
+    "edges": 9
+  },
+  "request_B_script_generated": false,
+  "candidates_promoted": [],
+  "desktop_or_cad_execution_performed": false,
+  "evidence_layers": {
+    "spaceclaim_execution": "not_tested",
+    "geometry_measurements": "not_tested",
+    "native_save": "not_tested",
+    "native_reopen": "not_tested",
+    "visual_review": "not_tested",
+    "requested_export": "not_tested"
+  },
+  "provenance": [
+    {
+      "local_relative_source": "raw-requests.json",
+      "original_sha256": "780e010023c53dda2ff7f5d25e4af832eb710ddc771cd3b242c4c3d46c8c660b",
+      "public": {
+        "path": "raw-requests.json",
+        "sha256": "780e010023c53dda2ff7f5d25e4af832eb710ddc771cd3b242c4c3d46c8c660b"
+      },
+      "transformation": "none"
+    },
+    {
+      "local_relative_source": "package-isolation.json",
+      "original_sha256": "18cb40f60b846ab88a82d58cd5f2f14e2129d7362ecc34c3f39ac9493f15766f",
+      "public": {
+        "path": "package-isolation.json",
+        "sha256": "18cb40f60b846ab88a82d58cd5f2f14e2129d7362ecc34c3f39ac9493f15766f"
+      },
+      "transformation": "none"
+    },
+    {
+      "local_relative_source": "request-a/routing-record.json",
+      "original_sha256": "fbf85dcfd1c583736ebb90989ddbff3051e9bfda0b43bb4162778a279c4d8c53",
+      "public": {
+        "path": "routing-record.json",
+        "sha256": "fbf85dcfd1c583736ebb90989ddbff3051e9bfda0b43bb4162778a279c4d8c53"
+      },
+      "transformation": "none"
+    },
+    {
+      "local_relative_source": "request-b/clarification.json",
+      "original_sha256": "fc177e63db958204e6ded029e2510685e12908ae967844a56e22f7c3b826a38b",
+      "public": {
+        "path": "clarification.json",
+        "sha256": "fc177e63db958204e6ded029e2510685e12908ae967844a56e22f7c3b826a38b"
+      },
+      "transformation": "none"
+    },
+    {
+      "local_relative_source": "request-a/right-triangular-prism.py",
+      "original_sha256": "5fb5e846ed9637edc8412f7e9390802fcf72be4795f75da9ed122469a67844e4",
+      "original_archive_sha256": "ef5d48ea001268334514b1a25d82531d5d63d55b974e9c66fc523efdd5a3c0f3",
+      "public": {
+        "path": "initial.py",
+        "sha256": "d555f959f9cf717345d8d426e6e013147c6f1e88b951436d4efbca90c1d527c5"
+      },
+      "public_archive": {
+        "path": "initial.scscript",
+        "sha256": "30d44d36dcbb5a2d51026e41d7d429d08f090c9b4b8ec5a708a0442ebb633d1a"
+      },
+      "transformation": "Normalize line endings; remove MODEL_PATH/REPORT_PATH assignments; insert empty configuration and pre-import absolute-path guard. All other source retained.",
+      "runtime_status": "not_tested"
+    },
+    {
+      "local_relative_source": "request-a-delta/right-triangular-prism-v2.py",
+      "original_sha256": "13acebbf1da293701a559aac57f9fba261e2148556c64bbde610f8b7b265ff38",
+      "original_archive_sha256": "980a15e455747907fcfca28c21c12b3c519df9274f4aff84cb2924883d5bca14",
+      "public": {
+        "path": "corrected.py",
+        "sha256": "19e09c4e91531f1eb07aa4676bc7884dc9b5f3bfd8456b5705943e01a3d77fe8"
+      },
+      "public_archive": {
+        "path": "corrected.scscript",
+        "sha256": "3b46abca9a1ecf9a1aac33d05f578d132d54b3ff888406c3b41915686943943a"
+      },
+      "transformation": "Normalize line endings; remove MODEL_PATH/REPORT_PATH assignments; insert empty configuration and pre-import absolute-path guard. All other source retained.",
+      "runtime_status": "not_tested"
+    },
+    {
+      "local_relative_source": "request-a-delta/handoff-A-delta.json",
+      "original_sha256": "dc6d90b919a3fabdacbcc5af807600be4dab0556b45673ad6ec37f8f0460e946",
+      "public": {
+        "path": "handoff-A.json",
+        "sha256": "1f571d28fcebf96afbab902538331013a8b1eb10c49603c1425b5c3fec820a09"
+      },
+      "transformation": "Public derivative: rebind references to portable artifacts, keep incomplete stages, mark A build draft pending path configuration, omit unrequested export from required layers."
+    },
+    {
+      "local_relative_source": "handoff-B.json",
+      "original_sha256": "85bdd866ce0c27298a7695fea09b0be6b40fe3c46147c49fba223c4c182c9494",
+      "public": {
+        "path": "handoff-B.json",
+        "sha256": "58b9ea8957b58276df467eec83b635068e0465197917a9c24a63bd3ac2a0b4a4"
+      },
+      "transformation": "Public derivative: rebind references to portable artifacts, keep incomplete stages, mark A build draft pending path configuration, omit unrequested export from required layers."
+    }
+  ]
+}

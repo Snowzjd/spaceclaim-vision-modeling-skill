@@ -1,0 +1,71 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.import-geometry-controlled",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "SpaceClaim V21 P3 suite-import-03/report.json; selected MA-35 event; passed groups: positive-native-import",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 1,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.scscript",
+  "test": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/harness.py",
+  "tool_sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0",
+  "test_sha256": "7355a77648d2d8e0ace409046bbba19bcdf90a648358a33670a1f751601b8c11",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.scscript",
+      "sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0",
+      "role": "tool"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/harness.py",
+      "sha256": "7355a77648d2d8e0ace409046bbba19bcdf90a648358a33670a1f751601b8c11",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json",
+      "sha256": "2a57e7669b6836d67ddce03bf6dc9755d4d7eeb53578decde719c8532f8dc51a",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The candidate contract and catalog slug were schema-validated before runtime calibration."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Exact action/report/test bindings were checked on the host; passed groups: positive-native-import."
+    },
+    "spaceclaim_execution": {
+      "status": "passed",
+      "scope": "One executed event in spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json matched spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.scscript and its extracted source bytes."
+    },
+    "geometry_measurements": {
+      "status": "passed",
+      "scope": "The independent group(s) positive-native-import passed in the recorded SpaceClaim suite runs/p3-live/suite-import-03/forward.py."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not save a native document."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not reopen a native document."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "No viewport or screenshot review was part of this action group."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No requested model export was part of this action group."
+    }
+  },
+  "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+}

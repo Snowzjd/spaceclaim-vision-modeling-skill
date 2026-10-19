@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-24",
+  "input_fields": [
+    {
+      "name": "actual_model",
+      "type": "object",
+      "description": "One active model identity already approved for export."
+    },
+    {
+      "name": "output_format_path",
+      "type": "object",
+      "description": "Requested supported export format and one run-owned output path."
+    },
+    {
+      "name": "options",
+      "type": "object",
+      "description": "Explicit export options for this one request."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "export_result",
+      "type": "object",
+      "description": "One export command/result, model identity, requested format/path, and observed file identity when available."
+    },
+    {
+      "name": "export_status",
+      "type": "string",
+      "description": "exported, rejected, blocked, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Verify active model, supported format, options, and run-owned path.",
+    "Issue one visible export command and record the resulting dialog/status/file identity.",
+    "Return export_result and export_status; preserve unknown completion as needs_manual_review.",
+    "Do not reimport the export or inspect a second format."
+  ],
+  "rejection_rules": [
+    "Reject unsupported format, ambiguous model/path, missing user request, or unsafe overwrite.",
+    "Do not repeat an uncertain export command.",
+    "Do not claim exported geometry retention from file existence alone."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-10",
+  "input_fields": [
+    {
+      "name": "context_target",
+      "type": "object",
+      "description": "One object/viewport context target and focus identity."
+    },
+    {
+      "name": "right_click_position",
+      "type": "object",
+      "description": "One stationary right-click location."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "context_menu_state",
+      "type": "object",
+      "description": "Opened menu identity, target, location, and evidence that no menu command ran."
+    }
+  ],
+  "procedure": [
+    "Focus context_target and place the cursor at right_click_position.",
+    "Issue one stationary right click without dragging.",
+    "Observe menu target/title and return context_menu_state.",
+    "Close/leave the menu for the caller; do not select a command in this atom."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous focus, right-button drag behavior, or a menu that cannot be tied to context_target.",
+    "Do not use right-button drag as a menu substitute without calibration.",
+    "Do not execute a menu command."
+  ]
+}

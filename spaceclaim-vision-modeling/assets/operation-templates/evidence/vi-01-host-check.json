@@ -1,0 +1,86 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.confirm-unobstructed-maximized-viewport",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_validation_guidance -v",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 5,
+  "tool": "spaceclaim-vision-modeling/references/atomic-guidance/vi-01.json",
+  "tool_sha256": "228a6ba702429c9e2e20921013f75e096fef52fc385fa6469178c932c0b977e4",
+  "test": "tests/test_validation_guidance.py",
+  "test_sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-01.json",
+      "sha256": "228a6ba702429c9e2e20921013f75e096fef52fc385fa6469178c932c0b977e4",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_validation_guidance.py",
+      "sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual-evidence.json",
+      "sha256": "9a8a24005b0dd30218ca9947edfea94a5618171c69bdfe29a521ba63652ea5a7",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-home.png",
+      "sha256": "eb5384f584a8b08503caf06c9b75ac01cabbdbc88708af07311e6378c742ae7f",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+    },
+    "spaceclaim_execution": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "passed",
+      "scope": "Observe reviewable already-maximized viewport; no layout mutation. Navigation observation only; not whole-model acceptance."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+}

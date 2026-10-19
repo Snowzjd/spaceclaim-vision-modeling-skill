@@ -1,0 +1,20 @@
+{
+  "design_review_version": 1,
+  "operation_id": "modeling_strategy_scripting.create-rectangular-prism-scscript",
+  "template_version": "0.1.0",
+  "reviewed_on": "2026-09-03",
+  "review_type": "design_only",
+  "result": "passed",
+  "scope": "Review the conversion of one accepted rectangular-prism contract into a formal V21 .scscript.",
+  "checks": [
+    {"name": "single_purpose", "status": "passed", "notes": "The operation generates and packages one rectangular-prism build artifact; it does not run SpaceClaim."},
+    {"name": "parameterization", "status": "passed", "notes": "Geometry values and run paths are supplied by contracts and generator inputs."},
+    {"name": "topology_safety", "status": "passed", "notes": "The generated source re-enumerates bodies and validates semantic geometry before save."},
+    {"name": "evidence_boundary", "status": "passed", "notes": "Static generation and audit do not claim application execution or geometry correctness."}
+  ],
+  "review_basis": [
+    "spaceclaim-vision-modeling/references/operation-template-contract.md",
+    "spaceclaim-vision-modeling/references/spaceclaim-scripting-rules.md"
+  ],
+  "notes": "The generated .scscript is the formal executable; the .py neighbor is editable packaging source only."
+}

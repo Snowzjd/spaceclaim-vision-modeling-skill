@@ -1,0 +1,22 @@
+{
+  "operation_id": "geometry_understanding.identify-repetition-rule",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-10",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "重复规则记录",
+    "declared_inputs": [
+      "feature_instances",
+      "size_or_layout_clues"
+    ],
+    "result_fields": [
+      "rule_kind",
+      "instance_refs",
+      "count",
+      "layout"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

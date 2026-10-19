@@ -1,0 +1,16 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-redundant-dimensions",
+  "dimensions_with_provenance": [
+    {"id": "dimension-overall-extent", "target_ref": "feature-overall-extent", "disposition": "accepted", "value": 25.0, "unit": "millimeter", "provenance": {"kind": "observation", "source_refs": [{"source_id": "drawing-a", "locator": "overall extent callout", "modality": "drawing"}]}, "supporting_statement_refs": ["statement-a", "statement-b"], "confidence": "high"}
+  ],
+  "dimension_relations": [
+    {"id": "relation-redundant-callouts", "relation_type": "equality", "operand_refs": ["statement-a", "statement-b"], "expression": "statement-a equals statement-b after explicit unit normalization", "provenance": {"kind": "inference", "source_refs": [{"source_id": "drawing-a", "locator": "overall extent callout", "modality": "drawing"}, {"source_id": "note-b", "locator": "matching extent statement", "modality": "text"}], "rationale": "Both statements reference the same feature extent and use compatible units."}}
+  ],
+  "unresolved_items": [],
+  "reconciliation_confidence": {"level": "high", "coverage": "complete", "rationale": "The redundant statements agree and retain both source locators."}
+}

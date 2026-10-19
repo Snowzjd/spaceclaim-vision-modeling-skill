@@ -1,0 +1,20 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.extract-geometry-observations",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-invalid-state",
+  "observed_geometry": [
+    {"id": "observation-profile", "statement": "A closed profile is visible.", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-a", "locator": "closed contour", "modality": "image"}]}, "confidence": "medium"}
+  ],
+  "bodies_and_features": [
+    {"id": "feature-unresolved", "statement": "The feature depth remains unknown.", "provenance": {"kind": "unresolved", "source_refs": [], "rationale": "No depth cue is supplied."}, "confidence": "unknown"}
+  ],
+  "spatial_relations": [],
+  "symmetry_and_repetition": [],
+  "unresolved_items": [
+    {"id": "unresolved-feature-depth", "description": "Feature depth is missing.", "reason": "missing", "blocks_handoff": true, "clarification_needed": "Supply the feature depth.", "source_refs": [], "related_refs": ["feature-unresolved"]}
+  ],
+  "confidence": {"level": "low", "coverage": "partial", "rationale": "A required extent is missing."}
+}

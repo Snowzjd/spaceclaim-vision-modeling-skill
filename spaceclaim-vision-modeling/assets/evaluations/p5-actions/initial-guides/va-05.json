@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VA-05",
+  "input_fields": [
+    {
+      "name": "body_reference",
+      "type": "object",
+      "description": "One current body reference whose faces are to be enumerated."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "face_collection",
+      "type": "array",
+      "description": "All current faces owned by body_reference."
+    },
+    {
+      "name": "body_binding",
+      "type": "object",
+      "description": "Body identity and ownership check proving no other body was mixed in."
+    }
+  ],
+  "procedure": [
+    "Resolve body_reference and verify its current ownership before enumeration.",
+    "Read the body's current face collection once and preserve each face identity.",
+    "Check that every returned face belongs to the resolved body; return body_binding.",
+    "Do not measure, select, rename, or repair any face in this atom."
+  ],
+  "rejection_rules": [
+    "Reject an ambiguous/stale body reference or a face collection containing another body's faces.",
+    "Reject reuse of a pre-topology-mutation collection.",
+    "Do not infer face count or semantic feature type from this enumeration alone."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-04",
+  "input_fields": [
+    {
+      "name": "current_selection_set",
+      "type": "object",
+      "description": "Current selection identities before the toggle."
+    },
+    {
+      "name": "target_object",
+      "type": "object",
+      "description": "One visible target object to add/remove."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified controller capability/mapping for Ctrl+left click or an explicit equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "selection_state",
+      "type": "object",
+      "description": "Before/after member sets, target identity, and toggle result."
+    }
+  ],
+  "procedure": [
+    "Verify current selection and target identity; check controller support before holding Ctrl.",
+    "Use one calibrated Ctrl+left click, or stop and return a documented Select-mode/menu equivalent if available.",
+    "Observe before/after sets and require symmetric difference exactly {target_object}.",
+    "Return selection_state with direct_vs_equivalent control recorded."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous target/current set or unsupported Ctrl input without a verified equivalent.",
+    "Do not emulate Ctrl by repeated plain clicks.",
+    "Do not claim direct modifier automation when the controller cannot express it."
+  ]
+}

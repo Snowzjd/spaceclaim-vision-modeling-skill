@@ -1,0 +1,17 @@
+{
+  "artifact": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/fixtures/native-loft.scdoc",
+    "sha256": "e779ad946f30b2f2e6d2d20b8b45b622af64de3fdac39289768bef520cd61e7c"
+  },
+  "bbox_mm": [
+    346,
+    -4,
+    0,
+    354,
+    4,
+    12
+  ],
+  "volume_mm3": 448,
+  "provenance": "Synthetic P3 native loft fixture created during authorized development. Not a user baseline.",
+  "boundary": "Historical MA35 import fixture; no complete visual or native-reopen acceptance claimed."
+}

@@ -1,0 +1,381 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.check-object-name",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "validation_visual_review",
+  "purpose": "Compare an expected Unicode-safe name with the name of one resolved current body, face, edge, or group.",
+  "trigger": "Use when exactly one current target identity and its expected name are available.",
+  "inputs": [
+    {
+      "name": "root",
+      "type": "SpaceClaim.Api.V21.Part",
+      "description": "Live current document root Part.",
+      "required": true
+    },
+    {
+      "name": "body",
+      "type": "SpaceClaim.Api.V21.DesignBody",
+      "description": "Optional live body target or owner for a face/edge target.",
+      "required": false
+    },
+    {
+      "name": "face",
+      "type": "SpaceClaim.Api.V21.DesignFace",
+      "description": "Optional live face target; body must also identify its current owner.",
+      "required": false
+    },
+    {
+      "name": "edge",
+      "type": "SpaceClaim.Api.V21.DesignEdge",
+      "description": "Optional live edge target; body must also identify its current owner.",
+      "required": false
+    },
+    {
+      "name": "group",
+      "type": "object",
+      "description": "Optional named-group target; native group-parent identity is unverified for a DocObject parent and is not a runtime-supported target yet.",
+      "required": false
+    },
+    {
+      "name": "named_group",
+      "type": "object",
+      "description": "Optional group alias accepted by the action; native group-name runtime support remains unverified.",
+      "required": false
+    },
+    {
+      "name": "object",
+      "type": "object",
+      "description": "Optional generic target; object_kind is required unless the target is a directly typed body/face/edge/group.",
+      "required": false
+    },
+    {
+      "name": "object_kind",
+      "type": "enum(body|face|edge|group)",
+      "description": "Optional kind for generic object; exactly one target identity must resolve.",
+      "required": false
+    },
+    {
+      "name": "expected_name",
+      "type": "nonempty string",
+      "description": "Expected Unicode-safe object name to compare.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "root is the live current root Part and exactly one root-scoped target identity resolves; body owner is supplied when needed for face/edge.",
+    "expected_name is a nonempty string and is compared without ASCII-forcing Unicode."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "Literal validation action identity emitted by the script.",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "enum(passed|failed|needs_manual_review)",
+      "description": "Action status from the script result; no status is inferred when execution is unavailable.",
+      "required": true
+    },
+    {
+      "name": "geometry_modified",
+      "type": "boolean",
+      "description": "Always false for this read-only action.",
+      "required": true
+    },
+    {
+      "name": "gui_interaction",
+      "type": "boolean",
+      "description": "Always false; the action does not drive the GUI.",
+      "required": true
+    },
+    {
+      "name": "runtime_claim",
+      "type": "boolean",
+      "description": "Always false; the result does not by itself promote runtime evidence.",
+      "required": true
+    },
+    {
+      "name": "validation_boundary",
+      "type": "string",
+      "description": "Read-only current-root measurement/check boundary reported by the action.",
+      "required": true
+    },
+    {
+      "name": "object_kind",
+      "type": "enum(body|face|edge|group)",
+      "description": "Resolved target kind.",
+      "required": true
+    },
+    {
+      "name": "actual_name",
+      "type": "string",
+      "description": "Unicode-safe current target name.",
+      "required": true
+    },
+    {
+      "name": "expected_name",
+      "type": "string",
+      "description": "Unicode-safe normalized expected name.",
+      "required": true
+    },
+    {
+      "name": "matches",
+      "type": "boolean",
+      "description": "Whether actual_name equals expected_name.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The name comparison is bound to the resolved current object identity and reports actual_name/expected_name/matches.",
+    "No rename or other geometry/document mutation occurs."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-17.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper with ATOMIC_INPUT/ATOMIC_OUTPUT; runtime execution remains not_tested in this candidate.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Candidate exact artifact is bound below; consult the exact-version evidence layers for tested variants. Adapt guidance object_current_name to the action's typed ATOMIC_INPUT target alternatives={body|face|edge|group|named_group|object}+root/object_kind as applicable; do not dispatch object_current_name or a name-only target. Native group/named_group target identity with a DocObject parent is unverified and unsupported for runtime claims; current runtime evidence is limited to the body-name variant. The current action's Unicode normalization is authoritative."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Resolve the declared target from its supplied identity and semantic properties; do not use arbitrary BodyN/FaceN aliases or return order.",
+      "If the target is not unique or the current topology/view cannot be observed, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; this operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "target_unresolved",
+      "condition": "The declared target, scope, or view identity is missing or ambiguous.",
+      "detection": "The supplied identity does not resolve to exactly one current target.",
+      "safe_state": "No validation action is performed and no pass claim is emitted."
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "condition": "The required API, host path, controller gesture, or visible state cannot be observed.",
+      "detection": "The adapter or controller reports unsupported/blocked/unknown state.",
+      "safe_state": "Preserve the current document/view and return needs_manual_review or not_tested."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "target_unresolved",
+      "action": "Strengthen the target identity or stop for manual review; do not substitute a numbered alias.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "observation_unavailable",
+      "action": "Use only a verified equivalent control/API or return needs_manual_review; do not repeat an unsupported gesture.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare its operation ID with the catalog slug.",
+      "expected": "The object is schema-valid, candidate-only, and declares one independent validation_visual_review action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance/refusal binding",
+      "method": "Compare this contract's canonical ATOMIC_INPUT/ATOMIC_OUTPUT fields with the linked action artifact and keep any conceptual guidance-to-script adaptation explicit.",
+      "expected": "Canonical live-object/unit/frame fields match the action boundary; guidance-only aliases are not dispatched without an adapter.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific observation",
+      "method": "Execute the exact linked .scscript with one injected ATOMIC_INPUT only after target identity and evidence gates pass.",
+      "expected": "The name comparison is bound to the resolved current object identity and reports actual_name/expected_name/matches.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-17-host-check.json",
+            "sha256": "96e549e114cce4e90f752e2c611ee45a82dfc341c9fe9dac549a5148e1923b6d"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-17-host-check.json",
+            "sha256": "96e549e114cce4e90f752e2c611ee45a82dfc341c9fe9dac549a5148e1923b6d"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+            "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+            "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+            "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+            "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.py",
+            "sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.scscript",
+            "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+            "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+            "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+            "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+            "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-17.scscript",
+      "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-17.json",
+      "sha256": "747950d02c2e2ced80bf6dbcb4290ff6a94e910589cde8373971c1afeb27f81b",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_validation_actions.py",
+      "sha256": "acf8b17ad0af20da68ec17ddc3a04ce3e5fdc384fb4121ee7528fbd3332ec51d",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/va-17-host-check.json",
+      "sha256": "96e549e114cce4e90f752e2c611ee45a82dfc341c9fe9dac549a5148e1923b6d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-17.py",
+      "sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+      "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+      "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+      "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+      "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.py",
+      "sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.scscript",
+      "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+      "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+      "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+      "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+      "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c",
+      "role": "evidence"
+    }
+  ]
+}

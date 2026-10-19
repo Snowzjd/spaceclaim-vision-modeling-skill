@@ -1,0 +1,44 @@
+{
+  "catalog_id": "ER-08",
+  "input_fields": [
+    {
+      "name": "target_name",
+      "type": "string",
+      "description": "Desired case-neutral name and naming constraints."
+    },
+    {
+      "name": "conflict_object_identity",
+      "type": "object",
+      "description": "Target object identity plus existing conflicting object identity."
+    },
+    {
+      "name": "naming_strategy",
+      "type": "object",
+      "description": "One deterministic policy such as rename-target or choose-suffixed-name."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "naming_resolution",
+      "type": "object",
+      "description": "Unique final name, target identity, conflict resolution, and optional call snippet."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when ownership or naming policy is unclear."
+    }
+  ],
+  "procedure": [
+    "Resolve target/conflict ownership and enumerate names in declared scope.",
+    "Apply one naming strategy and choose one unique final name; preserve object identity and member relationships.",
+    "Emit final name and, when supported, one rename call such as RenameObject.Execute on target selection.",
+    "Return needs_manual_review when ownership or policy remains ambiguous."
+  ],
+  "rejection_rules": [
+    "If the strategy's editable scope conflicts with the object its rename/suffix rule would change, return needs_manual_review; do not silently prioritize either field.",
+    "Reject ordinal-only identity, duplicate final name, or ambiguous owner.",
+    "Reject a strategy changing group membership/geometry.",
+    "Do not rename multiple objects or build a naming workflow."
+  ]
+}

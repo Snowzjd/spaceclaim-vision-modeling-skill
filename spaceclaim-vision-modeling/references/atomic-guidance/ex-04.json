@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-04",
+  "input_fields": [
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Confirmed SpaceClaim session identity."
+    },
+    {
+      "name": "clean_entry_policy",
+      "type": "object",
+      "description": "No-baseline policy and non-overwrite rule."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "document_state",
+      "type": "object",
+      "description": "Observed new-document state, unsaved status, and active-session identity; no separate body-count inspection."
+    },
+    {
+      "name": "document_identity",
+      "type": "object",
+      "description": "Stable identity for the new active unsaved document."
+    }
+  ],
+  "procedure": [
+    "Verify session identity, active-document state, idle status, and non-overwrite policy.",
+    "Invoke exactly one new-blank-design command and wait for the new document to become active.",
+    "Observe the unsaved marker and document identity; do not add bodies or run a geometry check.",
+    "Return document_state and document_identity."
+  ],
+  "rejection_rules": [
+    "Reject when user work might be overwritten or a new-document transition is not provable.",
+    "Reject a busy/modal session.",
+    "Do not save, load, or execute a script."
+  ]
+}

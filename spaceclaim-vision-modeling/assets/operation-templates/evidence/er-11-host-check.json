@@ -1,0 +1,86 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "execution_recovery.remove-run-owned-failed-artifact",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_execution_host_actions tests.test_execution_workflow -v",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 18,
+  "tool": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+  "tool_sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+  "test": "tests/test_execution_host_actions.py",
+  "test_sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+    },
+    "spaceclaim_execution": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+}

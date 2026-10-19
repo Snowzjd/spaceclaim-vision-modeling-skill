@@ -1,0 +1,43 @@
+{
+  "catalog_id": "MS-04",
+  "input_fields": [
+    {
+      "name": "upstream_operation",
+      "type": "object",
+      "description": "Object with required keys `operation_id` and `outputs`; operation_id identifies one upstream instance."
+    },
+    {
+      "name": "downstream_operation",
+      "type": "object",
+      "description": "Object with required keys `operation_id` and `inputs`; operation_id identifies one downstream instance."
+    },
+    {
+      "name": "required_artifact_or_state",
+      "type": "object",
+      "description": "Object with required keys `name`, `kind`, and `reason` for the one artifact or state that must flow."
+    },
+    {
+      "name": "existing_dependency_edges",
+      "type": "array",
+      "description": "Array of edge objects, each with required keys `upstream_id`, `downstream_id`, and `artifact_or_state`, used only for duplicate and cycle checks."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "dependency_edge",
+      "type": "object",
+      "description": "Object with required keys `upstream_id`, `downstream_id`, `artifact_or_state`, and `rationale`; nullable when the common output envelope records insufficient dependency evidence."
+    }
+  ],
+  "procedure": [
+    "Verify that the two operation identities are distinct and that their declared outputs and inputs are available for comparison.",
+    "Match the required artifact or state to a concrete upstream output and downstream prerequisite.",
+    "Check the directed edge against existing edges for duplication and cycles, without adding unrelated ordering constraints.",
+    "Return `dependency_edge` as action data and place status, provenance ownership, and any unresolved fields in the common output envelope."
+  ],
+  "rejection_rules": [
+    "Reject an edge justified only by visual order, stage labels, or convenience rather than a required artifact or state.",
+    "Reject self-edges, cycles, duplicate edges, and operation identities that are not explicit.",
+    "Do not turn a dependency edge into a complete recipe or hidden operation sequence."
+  ]
+}

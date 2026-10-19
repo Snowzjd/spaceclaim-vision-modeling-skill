@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-21",
+  "input_fields": [
+    {
+      "name": "target_feature",
+      "type": "object",
+      "description": "One target feature whose visibility or interpretation is unresolved."
+    },
+    {
+      "name": "current_view",
+      "type": "object",
+      "description": "Current view identity, camera/projection, and observed image region."
+    },
+    {
+      "name": "occlusion_reason",
+      "type": "object",
+      "description": "Observed occlusion/uncertainty reason and the missing evidence needed to resolve it."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "visual_uncertainty_record",
+      "type": "object",
+      "description": "Target, current view, visible symptom, occlusion/uncertainty reason, missing view/evidence, and unresolved status."
+    }
+  ],
+  "procedure": [
+    "Locate target_feature in current_view and record the visible symptom or overlap region.",
+    "Classify the observed occlusion_reason and identify the smallest missing view/evidence needed.",
+    "Return visual_uncertainty_record with status unresolved/needs_manual_review as appropriate.",
+    "Do not fill the gap by assuming the hidden feature is absent or by changing geometry."
+  ],
+  "rejection_rules": [
+    "Reject an unidentifiable target/view, missing occlusion reason, or a record that asserts structure from invisibility.",
+    "Do not convert uncertainty into a failed geometry conclusion without the required evidence.",
+    "Do not hide the issue by clearing the view record."
+  ]
+}

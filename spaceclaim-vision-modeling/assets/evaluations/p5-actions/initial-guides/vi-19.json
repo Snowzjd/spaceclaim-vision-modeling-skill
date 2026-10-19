@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-19",
+  "input_fields": [
+    {
+      "name": "target_feature",
+      "type": "object",
+      "description": "One semantically identified feature to make visible."
+    },
+    {
+      "name": "visibility_goal",
+      "type": "object",
+      "description": "One local visibility goal, including required neighboring context and acceptable occlusion."
+    },
+    {
+      "name": "camera_adjustment_allowed",
+      "type": "object",
+      "description": "Explicitly allowed orbit/pan/zoom adjustments for this one local view."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "local_feature_view",
+      "type": "object",
+      "description": "Target feature, visibility goal, final camera/scale, neighboring context, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Resolve target_feature semantically and record visibility_goal before moving the camera.",
+    "Use the smallest calibrated Spin/Pan/Zoom or standard-view sequence permitted by camera_adjustment_allowed.",
+    "Stop after one focused local view makes the declared feature/context observable and return local_feature_view.",
+    "Record residual occlusion rather than compensating with geometry edits or an unbounded view search."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous target, missing visibility goal, disallowed camera adjustment, or a feature that remains unobservable.",
+    "Do not claim a multi-view acceptance plan from this one focused view.",
+    "Do not modify geometry to make the feature visible."
+  ]
+}

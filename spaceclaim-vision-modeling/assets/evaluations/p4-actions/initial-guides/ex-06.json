@@ -1,0 +1,38 @@
+{
+  "catalog_id": "EX-06",
+  "input_fields": [
+    {
+      "name": "active_document_state",
+      "type": "object",
+      "description": "Observed model-document state, title/path/hash, active marker, and script-console distinction."
+    },
+    {
+      "name": "expected_document_identity",
+      "type": "object",
+      "description": "Expected path/hash/title or explicit unsaved-document marker."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "match_status",
+      "type": "string",
+      "description": "One of matched, mismatched, unavailable, or needs_manual_review."
+    },
+    {
+      "name": "active_document_identity",
+      "type": "object",
+      "description": "Observed actual document identity and active-session binding."
+    }
+  ],
+  "procedure": [
+    "Observe the active model document, not a script tab, console title, or planned output name.",
+    "Normalize path, hash, title, and unsaved marker into active_document_identity.",
+    "Compare with expected_document_identity and return match_status.",
+    "Do not focus another document or repair the mismatch in this atom."
+  ],
+  "rejection_rules": [
+    "Reject missing identity or a script-console label presented as a model document.",
+    "Reject path/hash/marker mismatch.",
+    "Do not load, run, save, or close a document while unresolved."
+  ]
+}

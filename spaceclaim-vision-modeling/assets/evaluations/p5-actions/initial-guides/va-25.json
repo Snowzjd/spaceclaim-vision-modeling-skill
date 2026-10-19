@@ -1,0 +1,98 @@
+{
+  "catalog_id": "VA-25",
+  "input_fields": [
+    {
+      "name": "observation",
+      "type": "object",
+      "description": "One caller-provided measured property record from an already completed reimport."
+    },
+    {
+      "name": "expected_value",
+      "type": "object",
+      "description": "One expected scalar, text, boolean, or flat numeric vector."
+    },
+    {
+      "name": "expected_artifact_sha256",
+      "type": "string",
+      "description": "Expected hash of the reimported/export artifact."
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Finite nonnegative tolerance; default may be zero."
+    },
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-25 action identity."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-25 host action identity."
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed or failed comparison."
+    },
+    {
+      "name": "property",
+      "type": "string",
+      "description": "Compared property name."
+    },
+    {
+      "name": "object_identity",
+      "type": "string",
+      "description": "Observed reimported object identity."
+    },
+    {
+      "name": "actual",
+      "type": "object",
+      "description": "Observed property value."
+    },
+    {
+      "name": "expected",
+      "type": "object",
+      "description": "Expected value."
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Applied tolerance."
+    },
+    {
+      "name": "observation_ref",
+      "type": "string",
+      "description": "Caller observation reference."
+    },
+    {
+      "name": "artifact_sha256",
+      "type": "string",
+      "description": "Reimported artifact hash used for binding."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for supplied-observation comparison only."
+    },
+    {
+      "name": "runtime_observed",
+      "type": "boolean",
+      "description": "Always false; host helper does not import or observe SpaceClaim."
+    }
+  ],
+  "procedure": [
+    "Validate one reimport observation and compare its artifact hash with expected_artifact_sha256.",
+    "Compare exactly one property using the supported scalar/text/boolean/flat-vector semantics.",
+    "Return the flat host result with actual/expected values and runtime_observed=false.",
+    "Do not import, reopen, or inspect a second property in this atom."
+  ],
+  "rejection_rules": [
+    "Reject wrong source_kind/action_id, unmeasured observation, missing identity/ref, hash mismatch, unsupported value shape, or invalid tolerance.",
+    "Do not claim MA-35/import success from this comparison.",
+    "Do not add a second property check."
+  ]
+}

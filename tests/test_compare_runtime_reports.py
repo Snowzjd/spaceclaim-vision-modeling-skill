@@ -130,6 +130,18 @@ class CompareRuntimeReportsTests(unittest.TestCase):
             self.assertEqual(0, exit_code)
             self.assertEqual("passed", json.loads(stdout.getvalue())["status"])
 
+    def test_cli_rejects_same_forward_and_reopen_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            report_path = Path(directory) / "same.json"
+            report_path.write_text(json.dumps(report(reopen=False)), encoding="utf-8")
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                exit_code = COMPARATOR.main([str(report_path), str(report_path)])
+            result = json.loads(stdout.getvalue())
+            self.assertEqual(2, exit_code)
+            self.assertEqual("failed", result["status"])
+            self.assertIn("same_report_path", [item["code"] for item in result["issues"]])
+
 
 if __name__ == "__main__":
     unittest.main()

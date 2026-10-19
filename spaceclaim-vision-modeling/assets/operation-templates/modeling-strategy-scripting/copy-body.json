@@ -1,0 +1,234 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.copy-body",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic copy-body operation within the MA-13 boundary: Geometry-copy variant only. It accepts a current DesignBody or transient source, returns a transient copy, and does not translate, rotate, attach, name, or target a component.",
+  "trigger": "Use when the build plan requires copy-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "DesignBody or Modeler.Body",
+      "required": true,
+      "description": "A closed nonempty source body; its shape is copied and the source is not attached by this action."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance used to compare source and copied volumes."
+    }
+  ],
+  "preconditions": [
+    "The source passes assert_closed.",
+    "volume_tolerance_mm3 is finite and nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "transient Modeler.Body",
+      "required": true,
+      "description": "An independent transient geometry copy; attachment remains MA-12."
+    }
+  ],
+  "postconditions": [
+    "shape_of(source).Copy() has independent identity from the source.",
+    "Copied volume matches source within volume_tolerance_mm3.",
+    "The copy passes require_transient and assert_closed."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-13.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic copy-body operation within the MA-13 boundary: Geometry-copy variant only. It accepts a current DesignBody or transient source, returns a transient copy, and does not translate, rotate, attach, name, or target a component. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "Not applicable to transient source/copy geometry."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_source",
+      "condition": "Source is not a closed nonempty body or Copy raises.",
+      "detection": "Source is not a closed nonempty body or Copy raises.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    },
+    {
+      "failure_id": "copy_integrity_failure",
+      "condition": "Copy identity, volume, or transient checks fail.",
+      "detection": "Copy identity, volume, or transient checks fail.",
+      "safe_state": "Stop downstream use and retain only a clean run-owned state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_source",
+      "action": "Discard any partial transient copy and supply a valid source.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "copy_integrity_failure",
+      "action": "Discard the copied body and rerun from the unchanged source; no attachment rollback is needed.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: shape_of(source).Copy() has independent identity from the source.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "shape_of(source).Copy() has independent identity from the source.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Copied volume matches source within volume_tolerance_mm3.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Copied volume matches source within volume_tolerance_mm3.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The copy passes require_transient and assert_closed.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The copy passes require_transient and assert_closed.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-13-host-check.json",
+            "sha256": "1cb15fe06ebca1ba9361ae80cd19c177b01243a6d50d196e29f4f0bdbb413c50"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-13-host-check.json",
+            "sha256": "1cb15fe06ebca1ba9361ae80cd19c177b01243a6d50d196e29f4f0bdbb413c50"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-13.scscript",
+      "sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-13.py",
+      "sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-13.action.py",
+      "sha256": "4560ea070f418d0c91d188610f5cc30bc5138e112fb5887cc0beac30801eb5ea",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-13-host-check.json",
+      "sha256": "1cb15fe06ebca1ba9361ae80cd19c177b01243a6d50d196e29f4f0bdbb413c50",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "catalog_id": "ER-04",
+  "input_fields": [
+    {
+      "name": "failed_selection_predicate",
+      "type": "object",
+      "description": "One existing selector, its failure/ambiguity, and consuming source location."
+    },
+    {
+      "name": "actual_candidate_properties",
+      "type": "array",
+      "description": "Candidate geometry/state properties available for discrimination."
+    },
+    {
+      "name": "target_semantics",
+      "type": "object",
+      "description": "Target direction, position, normal, area, bounds, topology, adjacency, or type."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "corrected_selector",
+      "type": "string",
+      "description": "One copyable selector expression using semantic fields."
+    },
+    {
+      "name": "predicate_fields",
+      "type": "array",
+      "description": "Candidate properties actually used."
+    },
+    {
+      "name": "rejected_candidates",
+      "type": "array",
+      "description": "Candidates excluded and predicate reason."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when properties do not make one target unique."
+    }
+  ],
+  "procedure": [
+    "Map each target semantic requirement to a candidate property.",
+    "Construct one predicate using the smallest justified direction/position/normal/area/bounds/topology/adjacency set.",
+    "Return selector, fields, rejected candidates, and a uniqueness assertion.",
+    "If no unique predicate is justified, return needs_manual_review and no positional fallback."
+  ],
+  "rejection_rules": [
+    "Reject insufficient properties, unresolved semantics, zero/multiple matches, or arbitrary FaceN/BodyN/list-index selectors.",
+    "Do not include topology repair or geometry changes."
+  ]
+}

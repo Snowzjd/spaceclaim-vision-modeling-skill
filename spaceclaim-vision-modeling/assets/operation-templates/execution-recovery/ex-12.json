@@ -1,0 +1,271 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.capture-earliest-failure-state",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Extract the earliest recorded failure under a complete comparable chronology or explicit input-order assertion.",
+  "trigger": "Use when a run has failed/stopped and logs, events, and state are available.",
+  "inputs": [
+    {
+      "name": "events",
+      "type": "array or object",
+      "required": true,
+      "description": "Failure records, optionally wrapped in events/stage_events/error_logs."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Optional current run; reject mixed explicit event run references."
+    },
+    {
+      "name": "ordered",
+      "type": "boolean",
+      "required": false,
+      "description": "False default; true asserts that input order is authoritative when timestamps/sequence are incomplete."
+    }
+  ],
+  "preconditions": [
+    "Caller must establish run association when records lack run_ref; this helper does not infer missing identity or physical causality. It returns recorded chronology, not a root-cause diagnosis.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "EX-12"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "failure_event",
+      "type": "object",
+      "required": true,
+      "description": "Copy of earliest recorded failure."
+    },
+    {
+      "name": "event",
+      "type": "object",
+      "required": true,
+      "description": "Alias of failure_event."
+    },
+    {
+      "name": "earliest_failure",
+      "type": "object",
+      "required": true,
+      "description": "Alias of failure_event."
+    },
+    {
+      "name": "source_event_index",
+      "type": "integer",
+      "required": true,
+      "description": "Original input position."
+    },
+    {
+      "name": "ordering_basis",
+      "type": "string",
+      "required": true,
+      "description": "timestamp, sequence, single_event, or explicit_input_order."
+    },
+    {
+      "name": "ordering_timestamp",
+      "type": "number or null",
+      "required": true,
+      "description": "Timestamp if available."
+    },
+    {
+      "name": "root_cause_inferred",
+      "type": "boolean",
+      "required": true,
+      "description": "Always false."
+    },
+    {
+      "name": "claim_boundary",
+      "type": "string",
+      "required": true,
+      "description": "Recorded chronology only."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Present when supplied or resolved from records."
+    }
+  ],
+  "postconditions": [
+    "Extract the earliest recorded failure under a complete comparable chronology or explicit input-order assertion.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "Windows host tooling; no SpaceClaim control or geometry mutation is implied.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call capture_earliest_failure_state(**payload), or dispatch(\"EX-12\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. Caller must establish run association when records lack run_ref; this helper does not infer missing identity or physical causality. It returns recorded chronology, not a root-cause diagnosis. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "chronology_incomplete",
+      "condition": "Earliest error cannot be established.",
+      "detection": "Timestamps/sequence are missing or contradictory.",
+      "safe_state": "Preserve raw logs and choose no repair target."
+    },
+    {
+      "failure_id": "mixed_run_reference",
+      "condition": "Records from different runs are being combined.",
+      "detection": "run_ref values differ or cannot be joined uniquely.",
+      "safe_state": "Do not emit an earliest_failure."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "chronology_incomplete",
+      "action": "Return needs_manual_review and request missing context.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "mixed_run_reference",
+      "action": "Partition by one run_ref or return needs_manual_review; never merge.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "earliest_failure is the first supported failure and later errors remain downstream observations.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-12-host-check.json",
+            "sha256": "34f2a0614dd7c7e4b7e6f9e01aadf3a2d4b1dfa39c8927b7fb06b6d53f4a5992"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-12-host-check.json",
+            "sha256": "34f2a0614dd7c7e4b7e6f9e01aadf3a2d4b1dfa39c8927b7fb06b6d53f4a5992"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-12.json",
+      "sha256": "5c75136855cc33a1dffe3c870d8d36f06f8f19f5701c22afa4ad9e3a6edfc570",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-12-host-check.json",
+      "sha256": "34f2a0614dd7c7e4b7e6f9e01aadf3a2d4b1dfa39c8927b7fb06b6d53f4a5992",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

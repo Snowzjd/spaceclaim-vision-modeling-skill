@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-07",
+  "input_fields": [
+    {
+      "name": "object_collection",
+      "type": "array",
+      "description": "One already resolved collection and its declared scope/type."
+    },
+    {
+      "name": "expected_count",
+      "type": "number",
+      "description": "Expected nonnegative integer count for this collection."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "count_result",
+      "type": "object",
+      "description": "Actual integer count, expected count, scope, and comparison evidence."
+    },
+    {
+      "name": "comparison_status",
+      "type": "string",
+      "description": "matched, mismatched, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Validate collection scope and count semantics before counting.",
+    "Count exactly the supplied collection once and compare it with expected_count.",
+    "Return count_result and comparison_status with the collection identity.",
+    "Do not expand the scope to similar objects or infer a body/face count from another collection."
+  ],
+  "rejection_rules": [
+    "Reject a non-integer/negative expected_count or an unbounded collection.",
+    "Reject mixed object types or a scope inferred from visual pixels.",
+    "Do not treat equal counts as member identity or geometry agreement."
+  ]
+}

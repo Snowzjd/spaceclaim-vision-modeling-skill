@@ -1,0 +1,21 @@
+{
+  "evaluation_version": 1,
+  "case_step_id": "geometry-understanding",
+  "case_record_version": "0.1.0",
+  "source_quality_review": "source-quality-review.json",
+  "geometry_contract": "geometry-contract.json",
+  "result": "passed",
+  "comparisons": {
+    "primitive_kind": "passed",
+    "body_name": "passed",
+    "minimum_corner_mm": "passed",
+    "size_mm": "passed",
+    "orientation": "passed",
+    "body_count": "passed",
+    "derived_bbox": "passed",
+    "derived_volume": "passed",
+    "provenance_binding": "passed",
+    "unresolved_items": "passed"
+  },
+  "evidence_boundary": "This case-specific evaluation checks one explicit text source. It is not an atomic template and does not establish image, drawing, or ambiguous-text interpretation capability."
+}

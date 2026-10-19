@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Single atomic reasoning result; structure does not prove interpretation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "catalog_id", "instance_id", "status", "data", "provenance", "unresolved"],
+  "properties": {
+    "contract_version": {"const": 1},
+    "catalog_id": {"type": "string", "pattern": "^(GU|MS)-[0-9]{2}$"},
+    "instance_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["resolved", "requires_clarification"]},
+    "data": {"type": "object", "minProperties": 1},
+    "provenance": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["fields", "kind", "source_refs", "rationale"],
+        "properties": {
+          "fields": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "kind": {"enum": ["observed", "user", "derived", "convention", "unknown"]},
+          "source_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "rationale": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "not_applicable": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["field", "reason"],
+        "properties": {"field": {"type": "string", "minLength": 1}, "reason": {"type": "string", "minLength": 1}}}
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["field", "reason", "blocking", "needed"],
+        "properties": {
+          "field": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1},
+          "blocking": {"type": "boolean"},
+          "needed": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

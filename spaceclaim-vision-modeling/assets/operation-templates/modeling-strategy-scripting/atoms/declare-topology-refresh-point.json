@@ -1,0 +1,182 @@
+{
+  "operation_id": "modeling_strategy_scripting.declare-topology-refresh-point",
+  "template_version": "0.3.1",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "拓扑刷新声明",
+  "trigger": "声明一个拓扑刷新点 when its declared inputs are available.",
+  "inputs": [
+    {
+      "name": "topology_modifying_action",
+      "type": "object",
+      "description": "Object with required keys `action_id`, `topology_effect`, and `operation_boundary`; topology_effect must describe the supplied action.",
+      "required": true,
+      "provenance_required": true
+    },
+    {
+      "name": "affected_object_references",
+      "type": "array",
+      "description": "Array of reference objects, each with required keys `reference_id`, `reference_kind`, and `selection_scope`, that may become stale.",
+      "required": true,
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "已知动作可能使哪些引用失效",
+    "Use only this single-action procedure; source or upstream instance references must be supplied."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "atomic-reasoning-output",
+      "required": true,
+      "description": "One 拓扑刷新声明 in the common envelope; data fields: topology_refresh_declaration, invalidated_references."
+    }
+  ],
+  "output_schema": {
+    "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+    "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+  },
+  "host_checker": {
+    "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+    "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+  },
+  "postconditions": [
+    "下一次选择前刷新范围明确且旧引用不再被默认使用",
+    "The typed result and provenance agree with the declared single-action scope; unsupported required fields withhold a resolved result."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": null,
+    "target_environment": "Source interpretation or strategy reasoning; no SpaceClaim runtime.",
+    "topology_effect": "none",
+    "determinism": "bounded_heuristic",
+    "notes": "No standalone deterministic interpreter is claimed. Apply only MS-07 in the hash-bound guidance reference using atomic-reasoning-protocol.md."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Reject a refresh point without an identified action or affected reference scope.",
+      "Do not preserve stale references, infer stable identity from numbering, or hide the refresh inside a later operation.",
+      "This operation declares a refresh boundary only; it must not perform the refresh or mutate geometry."
+    ],
+    "topology_refresh": "No geometry handles are acquired; declarations do not mutate or refresh application topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "condition": "The declared action inputs cannot support a unique required result.",
+      "detection": "Apply the action rejection rules and inspect raw source evidence.",
+      "safe_state": "Return actionable unresolved fields; retain original evidence and values."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "insufficient_or_conflicting_input",
+      "action": "Supply only the missing source or prerequisite, then repeat this action; do not invent geometry or start application execution.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "One action boundary",
+      "method": "Inspect named inputs, result fields, procedure and rejection rules for MS-07",
+      "expected": "拓扑刷新声明",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Result structure and supported invariants",
+      "method": "validate_atomic_reasoning.py with an actual source manifest; separately review interpretation against raw material.",
+      "expected": "下一次选择前刷新范围明确且旧引用不再被默认使用",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.3.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/ms-07-design.json",
+            "sha256": "efc5419632a3179c16a1be8338276dc1708b9467046a62c171add523076d4e67"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ms-07-host-check.json",
+            "sha256": "c1a40ac6b3dd74189ebd03d5e8a0d5f2eb5b8ab56534b9adfe100ba3d32065ea"
+          }
+        ],
+        "notes": "Host structure/invariants and bounded independent source evaluation; no automatic promotion."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Candidate. Structural tests cannot establish source interpretation accuracy or any SpaceClaim runtime capability."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ms-07.json",
+      "role": "reference",
+      "sha256": "2862b45a4071138169e2d9a99d1a34536c292ba2ae9a804229d3a718ee8a3c3a"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-protocol.md",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-reasoning-output.schema.json",
+      "role": "reference",
+      "sha256": "bf85e0ce52172812c387b32e8b3f374cf9d637802d0d9706bc29baf4408b404f"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_atomic_reasoning.py",
+      "role": "evaluation",
+      "sha256": "214bb860c82ab19f3a04db89d09696db90c9fc104ab9afa095c24da8c4aa824c"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/ms-07-design.json",
+      "role": "evidence",
+      "sha256": "efc5419632a3179c16a1be8338276dc1708b9467046a62c171add523076d4e67"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ms-07-host-check.json",
+      "role": "evidence",
+      "sha256": "c1a40ac6b3dd74189ebd03d5e8a0d5f2eb5b8ab56534b9adfe100ba3d32065ea"
+    },
+    {
+      "path": "tests/test_atomic_reasoning.py",
+      "role": "test",
+      "sha256": "368a780f4e677ecd000769eb8848b6ee4349292a1ecbe21d4db8446c6e1dcc6c"
+    }
+  ]
+}

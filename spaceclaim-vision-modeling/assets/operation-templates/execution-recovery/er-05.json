@@ -1,0 +1,222 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.insert-topology-reenumeration",
+  "template_version": "0.1.1",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Insert one explicit current-topology enumeration after a located mutation and before its stale-reference consumer.",
+  "trigger": "Use when one consumer is proven to use a pre-mutation body/face/edge collection.",
+  "inputs": [
+    {
+      "name": "stale_reference_location",
+      "type": "object",
+      "description": "Source location and old reference/collection consumed after mutation.",
+      "required": true
+    },
+    {
+      "name": "topology_change_point",
+      "type": "object",
+      "description": "Single operation that changed topology and its output identity.",
+      "required": true
+    },
+    {
+      "name": "consumers",
+      "type": "array",
+      "description": "Downstream consumers; one repair target is required.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "One topology mutation and one stale consumer are causally located.",
+    "Target API exposes current enumeration for affected object type."
+  ],
+  "outputs": [
+    {
+      "name": "refresh_point",
+      "type": "string",
+      "description": "One copyable enumeration statement/insertion location after mutation.",
+      "required": true
+    },
+    {
+      "name": "refreshed_reference_binding",
+      "type": "object",
+      "description": "Old consumer binding replaced by current-topology binding.",
+      "required": true
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when mutation/consumer causality or API enumeration is unknown.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "The emitted refresh point enumerates after mutation; missing downstream selection bindings remain unresolved instead of introducing undefined helpers. Execution is not claimed.",
+    "Repair does not alter mutation or add unrelated selection."
+  ],
+  "implementation": {
+    "mode": "reasoning_guidance",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/er-05.json",
+    "target_environment": "SpaceClaim V21-compatible contract reasoning; no host execution is performed by this operation.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "The reusable artifact is this candidate guidance contract; no executable implementation is claimed. One refresh point only; not a topology repair workflow."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "topology",
+      "geometry_type"
+    ],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "The inserted point is the required post-mutation refresh; consumers must not reuse pre-mutation handles."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "refresh_boundary_unknown",
+      "condition": "Mutation-to-consumer boundary cannot be located.",
+      "detection": "Source order/reference ownership is ambiguous.",
+      "safe_state": "Leave stale reference unchanged and stop."
+    },
+    {
+      "failure_id": "enumeration_api_unknown",
+      "condition": "Current-topology enumeration is not proven.",
+      "detection": "No authoritative collection/API is available.",
+      "safe_state": "Emit no refresh snippet."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "refresh_boundary_unknown",
+      "action": "Return needs_manual_review and request exact locations.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "enumeration_api_unknown",
+      "action": "Supply target-version enumeration signature.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Consumer reads a fresh reference after mutation.",
+      "evidence_layer": "design_only"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.capture-earliest-failure-state"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-05-host-check.json",
+            "sha256": "8fdcced045bd6f8d6a1ed76ee4aba2046ca7ec8015d67991de0a8300d06cb56d"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-05-host-check.json",
+            "sha256": "8fdcced045bd6f8d6a1ed76ee4aba2046ca7ec8015d67991de0a8300d06cb56d"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-05.json",
+      "sha256": "b6088b4020fe6211f15f4490dec3a9317d1ca1da97b94d78ea23b6de822d1465",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-05.json",
+      "sha256": "b6088b4020fe6211f15f4490dec3a9317d1ca1da97b94d78ea23b6de822d1465",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_guidance.py",
+      "sha256": "f3918ac4379f5488144fab920f60d121aa4e5863ef91808bb4ae04b469601e53",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-05-host-check.json",
+      "sha256": "8fdcced045bd6f8d6a1ed76ee4aba2046ca7ec8015d67991de0a8300d06cb56d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

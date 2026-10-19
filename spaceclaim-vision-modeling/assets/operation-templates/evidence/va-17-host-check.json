@@ -1,0 +1,126 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.check-object-name",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_validation_actions -v",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 10,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-17.scscript",
+  "tool_sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15",
+  "test": "tests/test_validation_actions.py",
+  "test_sha256": "acf8b17ad0af20da68ec17ddc3a04ce3e5fdc384fb4121ee7528fbd3332ec51d",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/validation-visual-review/actions/va-17.scscript",
+      "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_validation_actions.py",
+      "sha256": "acf8b17ad0af20da68ec17ddc3a04ce3e5fdc384fb4121ee7528fbd3332ec51d",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/runtime-snapshots.json",
+      "sha256": "c4813f03be9fe289bf9a894f34ebc85663368a08f325b5d7027b39b8ac40e1e9",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/README.md",
+      "sha256": "660a2e8750a1ca0192c4f22e469cbc8113755377d4c3706311829c10a1901fa4",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/report.json",
+      "sha256": "dabc0a30b4258a54fa26910f085a63223b9f2627c3068680687d5d8e6f91a17f",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/portable-harness.py",
+      "sha256": "df61509e949e1e0d90a75099ae9861bec762b9b165df71c82cde920ab01f9391",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.py",
+      "sha256": "a8997ef14a9285ab2ee4641554c36ac130e8f3d595da241fff6db9f94e37684c",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/probe-01/actions/va-17.scscript",
+      "sha256": "52d405f7d9345de3c3e9741d9b7b9d54b6fd7a237eb5d52bdef4e52e4e86ec15",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/report.json",
+      "sha256": "b191e916e07aeaaece6d9c5650ecff3d3b3ea0bd609eff379f953346cbe0fa14",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/delta-01/portable-harness.py",
+      "sha256": "198e5e17594c1e05992c7d30fe4796d630c41263cabea8c82632b178237eb9a8",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/report.json",
+      "sha256": "c1a82409ca01d3e43f3958cb26333a2be6d1ddfffb11f31e6fee8429a459161e",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/group-01/portable-harness.py",
+      "sha256": "3bb0056eba16f1ccc78ba208d08574e60563154b7a78cbc184517ad72726da9c",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+    },
+    "spaceclaim_execution": {
+      "status": "passed",
+      "scope": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Exact V21 action run and paired synthetic assertion passed. Only declared root-scoped variant; see runtime snapshots and limitations."
+}

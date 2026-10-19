@@ -1,0 +1,240 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.split-body-with-plane",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic split-body-with-plane operation within the MA-23 boundary: Transient in-place plane split only. It does not attach, call SeparatePieces, or accept an attached DesignBody/component occurrence.",
+  "trigger": "Use when the build plan requires split-body-with-plane and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "transient Modeler.Body",
+      "required": true,
+      "description": "Closed nonempty transient body to split in place."
+    },
+    {
+      "name": "plane",
+      "type": "Geometry.Plane",
+      "required": true,
+      "description": "Dividing plane supplied directly to Body.Split."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for volume conservation."
+    }
+  ],
+  "preconditions": [
+    "body passes require_transient/assert_closed.",
+    "plane is a valid dividing plane and volume_tolerance_mm3 is finite/nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{body: transient Modeler.Body, piece_count: integer}; the body remains a disjoint-piece container unless the caller separately separates pieces."
+    }
+  ],
+  "postconditions": [
+    "Body.Split(plane, None) increases PieceCount.",
+    "Volume remains within volume_tolerance_mm3.",
+    "The returned body passes assert_closed and reports the resulting piece_count."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "modifies",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic split-body-with-plane operation within the MA-23 boundary: Transient in-place plane split only. It does not attach, call SeparatePieces, or accept an attached DesignBody/component occurrence. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No document selection is performed inside this action; supplied references are validated directly."
+    ],
+    "topology_refresh": "No separate-piece refresh is performed; callers must treat prior topology references as stale."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "plane_no_intersection",
+      "condition": "PieceCount does not increase.",
+      "detection": "PieceCount does not increase.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    },
+    {
+      "failure_id": "split_integrity_failure",
+      "condition": "Split raises or volume/assert_closed checks fail.",
+      "detection": "Split raises or volume/assert_closed checks fail.",
+      "safe_state": "Stop downstream use and retain only a clean run-owned state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "plane_no_intersection",
+      "action": "Discard the unchanged/partially mutated transient and supply a plane that crosses it.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "split_integrity_failure",
+      "action": "Discard the transient body and rerun from a fresh copy; no rollback is implemented.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Body.Split(plane, None) increases PieceCount.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Body.Split(plane, None) increases PieceCount.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Volume remains within volume_tolerance_mm3.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Volume remains within volume_tolerance_mm3.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The returned body passes assert_closed and reports the resulting piece_count.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The returned body passes assert_closed and reports the resulting piece_count.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-23-host-check.json",
+            "sha256": "076d318c3329257b276c86f06aff39086e93fd3dd3a213ee3e1e3f8b7958e84e"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-23-host-check.json",
+            "sha256": "076d318c3329257b276c86f06aff39086e93fd3dd3a213ee3e1e3f8b7958e84e"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+            "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.scscript",
+      "sha256": "c7543d9b14c976998806861b6d10b665e433816c3792d17799874ea0efb7b6f8",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.py",
+      "sha256": "ce7e846ff5078bee6c598bfdc56b769bdd4ae904c7760f46df643f20eafd8fea",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-23.action.py",
+      "sha256": "55d81c9874b5298bdaf349a36b8ee5a9c4cd23e13143df42f7f287950a0dc769",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-23-host-check.json",
+      "sha256": "076d318c3329257b276c86f06aff39086e93fd3dd3a213ee3e1e3f8b7958e84e",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/report.json",
+      "sha256": "04143ab9eee9ef6ae0232b9dfac11697120e802b5f6fdef32fdeb8ae6d8f01d6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-01/harness.py",
+      "sha256": "b382f482d3878b3b5c9ebcd3f2b2a8bb9392c45232d3b2737702ae83d5d99990",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

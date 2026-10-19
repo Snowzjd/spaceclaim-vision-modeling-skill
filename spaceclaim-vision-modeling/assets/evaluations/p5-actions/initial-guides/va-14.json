@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VA-14",
+  "input_fields": [
+    {
+      "name": "conical_face",
+      "type": "object",
+      "description": "One face already identified as a conical face."
+    },
+    {
+      "name": "angle_convention",
+      "type": "object",
+      "description": "Explicit half-angle or full-angle convention and measurement frame."
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Requested angular/length unit for the result."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "cone_measurement",
+      "type": "object",
+      "description": "Angle under the declared convention, axis/apex context, trimmed span, unit, and face identity."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one conical face and record the angle convention before reading values.",
+    "Measure the analytic angle and one declared trimmed span in the requested unit.",
+    "Return cone_measurement with half/full-angle label and measurement_status.",
+    "Do not silently convert half-angle to full-angle or use an untrimmed extent."
+  ],
+  "rejection_rules": [
+    "Reject a nonconical/ambiguous face, missing convention, incompatible unit, or nonfinite span.",
+    "Reject a visual angle estimate as analytic measurement.",
+    "Do not change the face to make its angle fit."
+  ]
+}

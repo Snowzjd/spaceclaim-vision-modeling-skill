@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-07",
+  "input_fields": [
+    {
+      "name": "preselection_candidates",
+      "type": "array",
+      "description": "Known overlapping candidates at one fixed cursor location."
+    },
+    {
+      "name": "mouse_position",
+      "type": "object",
+      "description": "Fixed viewport position where candidates overlap."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified Ctrl+wheel mapping or a visible candidate-cycle equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "preselection_state",
+      "type": "object",
+      "description": "Candidate order/identity before and after one cycle, cursor position, and control path."
+    }
+  ],
+  "procedure": [
+    "Place the cursor at mouse_position without moving it during the test.",
+    "Check modifier/wheel support; use one calibrated Ctrl+wheel cycle or one visible candidate-cycle equivalent.",
+    "Observe pre-highlight/status-bar identity and return preselection_state.",
+    "Do not click or commit a selection as part of this cycle operation."
+  ],
+  "rejection_rules": [
+    "Reject fewer than two candidates, moved cursor, unsupported combination without equivalent, or unobservable pre-highlight.",
+    "Do not claim candidate cycling from a wheel event alone.",
+    "Do not alter geometry."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "catalog_id": "GU-14",
+  "input_fields": [
+    {
+      "name": "participating_dimensions",
+      "type": "array",
+      "description": "待比较的带单位数值及其目标、来源和量纲；原始、用户和派生值必须分层。"
+    },
+    {
+      "name": "constraint_to_check",
+      "type": "object",
+      "description": "一个可审计的等式或不等式约束及其适用量纲；不能从名称猜约束。"
+    },
+    {
+      "name": "tolerance",
+      "type": "number",
+      "description": "用户或契约指定的非负比较容差，单位必须与参与尺寸兼容。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "lhs",
+      "type": "number",
+      "description": "约束左侧可复算数值；输入缺失或冲突时为 null。"
+    },
+    {
+      "name": "rhs",
+      "type": "number",
+      "description": "约束右侧可复算数值；输入缺失或冲突时为 null。"
+    },
+    {
+      "name": "tolerance",
+      "type": "number",
+      "description": "实际使用的非负容差及其单位语义；无明确容差时为 null。"
+    },
+    {
+      "name": "relation",
+      "type": "string",
+      "description": "只允许 eq、le 或 ge，表示待检验约束的关系。"
+    },
+    {
+      "name": "verdict",
+      "type": "string",
+      "description": "只允许 consistent、conflict、underdetermined 或 redundant；未决不是 consistent。"
+    }
+  ],
+  "procedure": [
+    "解析一个约束的左右两侧并保留参与尺寸引用，确认值、单位、容差和关系来自可追溯输入。",
+    "在兼容量纲下计算 lhs 与 rhs，按用户约束使用 eq、le 或 ge，并记录计算属于 derived。",
+    "依据容差输出 lhs、rhs、tolerance、relation 和 verdict；输入不足时相关数值写 null，verdict 为 underdetermined。",
+    "把冲突、冗余和未决原因写入 provenance 与 unresolved，不把未决判断标作 consistent。"
+  ],
+  "rejection_rules": [
+    "参与尺寸、约束或单位缺失，或容差为负、非有限或量纲不兼容时拒绝确定 verdict。",
+    "关系不是 eq、le 或 ge 时拒绝把约束转换成其他默认关系。",
+    "缺少足够独立信息时不得用默认值或几何常识把 verdict 改为 consistent。"
+  ]
+}

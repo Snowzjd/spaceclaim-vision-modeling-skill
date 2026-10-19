@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "screenshots": [
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-home.png",
+        "sha256": "eb5384f584a8b08503caf06c9b75ac01cabbdbc88708af07311e6378c742ae7f"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "Home",
+      "selection": "none",
+      "expected": "Full solid bounds visible with three faces.",
+      "observed": "Three planar faces and complete silhouette visible.",
+      "clean_capture": true,
+      "occlusion": "Rear faces occluded.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-y-view.png",
+        "sha256": "16e2539c1b836988725f0844a4c41e83dea92a2ea417ec6360f112141f8ff6cd"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "positive-Y indicator",
+      "selection": "none",
+      "expected": "7 by 13 rectangular silhouette.",
+      "observed": "Rectangular silhouette; X horizontal and Z downward.",
+      "clean_capture": true,
+      "occlusion": "Depth hidden by orthographic projection; pixels do not measure dimensions.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-back.png",
+        "sha256": "e917a7d6127b21a7ba5fbbcde6f5e3e7cdf628f00a4b79e08b9ec39f1df37555"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "View menu / Back",
+      "selection": "none",
+      "expected": "7 by 11 rectangular silhouette.",
+      "observed": "Rectangle; X left and Y up.",
+      "clean_capture": true,
+      "occlusion": "Other faces hidden; numeric dimensions independently measured.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/context.png",
+        "sha256": "3e5462793157fdf35af4f19a3ecb748cc88c8d049cc09ef1800172f45ec373b4"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "context menu",
+      "selection": "none",
+      "expected": "Blank-viewport right click opens context controls.",
+      "observed": "Context menu visible.",
+      "clean_capture": false,
+      "occlusion": "Menu overlays scene; diagnostic only.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/spin-diagnostic.png",
+        "sha256": "5f1243e6d1c66e9d3312da64813bd1a6386f117c76b304e753cae6bd49c2bd65"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "Spin tool / short left drag",
+      "selection": "none",
+      "expected": "Orientation changes without geometry operation.",
+      "observed": "Orientation and silhouette changed; solid partly outside viewport.",
+      "clean_capture": false,
+      "occlusion": "Partly clipped; not a final-acceptance image.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/body-selected.png",
+        "sha256": "c0004070e0393a07a83a472130bf0685507045c76275ff98fb3959d5f3b4ba08"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "Home",
+      "selection": "one body selected through Structure tree",
+      "expected": "Unique body selection highlights whole solid.",
+      "observed": "Entire body orange; status bar shows one body.",
+      "clean_capture": false,
+      "occlusion": "Intentional highlight; not evidence for viewport triple-click.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    },
+    {
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/selection-cleared.png",
+        "sha256": "79df5b3e1241ed2f3f08ebceaaedca00eb4d2539b5b9a7b4820e7bb816d98fe3"
+      },
+      "model": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+        "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+      },
+      "view": "Home",
+      "selection": "none after blank left click",
+      "expected": "Selection highlight removed.",
+      "observed": "Whole solid visible without orange highlight.",
+      "clean_capture": true,
+      "occlusion": "Rear faces occluded.",
+      "maximized": true,
+      "viewport_pixels": [
+        2560,
+        1400
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "catalog_id": "VI-01",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-01.json",
+        "sha256": "228a6ba702429c9e2e20921013f75e096fef52fc385fa6469178c932c0b977e4"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-home.png",
+        "sha256": "eb5384f584a8b08503caf06c9b75ac01cabbdbc88708af07311e6378c742ae7f"
+      },
+      "observed_variant": "Observe reviewable already-maximized viewport; no layout mutation.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-08",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-08.json",
+        "sha256": "8ee286f6949489abf9ff8dfcf2040b779690cdb85ea19cc51cacf6fe78ce8c49"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/selection-cleared.png",
+        "sha256": "79df5b3e1241ed2f3f08ebceaaedca00eb4d2539b5b9a7b4820e7bb816d98fe3"
+      },
+      "observed_variant": "Blank left click clears the preceding Structure-tree body selection.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-10",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-10.json",
+        "sha256": "42ac17b94c3765cc998f7d102fc0f6114fdd7498aa91bfbbaf28a9218dc60156"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/context.png",
+        "sha256": "3e5462793157fdf35af4f19a3ecb748cc88c8d049cc09ef1800172f45ec373b4"
+      },
+      "observed_variant": "Blank-viewport right click opens context menu.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-11",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-11.json",
+        "sha256": "f65db1cb289f027a4bb66baeb1780b6961971d25ce62dc4ea22603be6e68b5bc"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/spin-diagnostic.png",
+        "sha256": "5f1243e6d1c66e9d3312da64813bd1a6386f117c76b304e753cae6bd49c2bd65"
+      },
+      "observed_variant": "Visible Spin-tool + left drag only; direct middle drag not tested; capture clipped.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-16",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-16.json",
+        "sha256": "66d5ee1fd9caef7f9ede4e1f89897f5949fce70878b1d576bfc8fa17f09ff7e5"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-home.png",
+        "sha256": "eb5384f584a8b08503caf06c9b75ac01cabbdbc88708af07311e6378c742ae7f"
+      },
+      "observed_variant": "H restores this session Home orientation/fit, including after rotation.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-17",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-17.json",
+        "sha256": "0f6a511bec6c93232ab1983803d376fa8b1e35074079144f477f8104374b8ebd"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-y-view.png",
+        "sha256": "16e2539c1b836988725f0844a4c41e83dea92a2ea417ec6360f112141f8ff6cd"
+      },
+      "observed_variant": "Positive-Y direction indicator only.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-18",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-18.json",
+        "sha256": "7ca1967cd670b7c0173f0b6847a0d869ccb622869580299ec5519d780722ee2f"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-back.png",
+        "sha256": "e917a7d6127b21a7ba5fbbcde6f5e3e7cdf628f00a4b79e08b9ec39f1df37555"
+      },
+      "observed_variant": "Right-click View menu Back only.",
+      "status": "observed"
+    },
+    {
+      "catalog_id": "VI-22",
+      "guide": {
+        "path": "spaceclaim-vision-modeling/references/atomic-guidance/vi-22.json",
+        "sha256": "704ea3221a7a8534c98f944141404c40bde158920e302bea7d68c691baf232b7"
+      },
+      "screenshot": {
+        "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/visual/native-home.png",
+        "sha256": "eb5384f584a8b08503caf06c9b75ac01cabbdbc88708af07311e6378c742ae7f"
+      },
+      "observed_variant": "Capture an already-prepared clean view; layout/selection prep are separate actions.",
+      "status": "observed"
+    }
+  ],
+  "boundary": "Observed navigation/capture variants only, not universal mouse mapping or complete geometry acceptance. No Ctrl-held gestures, middle drag, wheel, pan, box/query selection or viewport triple-click were verified in P5."
+}

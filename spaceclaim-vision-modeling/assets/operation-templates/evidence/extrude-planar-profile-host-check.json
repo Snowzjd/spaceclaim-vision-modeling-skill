@@ -1,0 +1,31 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.extrude-planar-profile",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_atomic_modeling_actions -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 6,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/extrude-planar-profile.scscript",
+  "test": "tests/test_atomic_modeling_actions.py",
+  "tool_sha256": "872304349121b55f49884a852a3824f728b29bd8c101035eb506a2f2db9418b5",
+  "test_sha256": "39d7a1e6e588804752e07b811d3117455342dcbe9cd883a679841db2cb376d1b",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/audit_scscript.py", "role": "tool", "sha256": "a33bc2bf6e01cbf1599e38052715c1f226a455e0631bbaac9ab42b58240e0c7f"},
+    {"path": "tests/test_atomic_modeling_actions.py", "role": "test", "sha256": "39d7a1e6e588804752e07b811d3117455342dcbe9cd883a679841db2cb376d1b"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/extrude-planar-profile.py", "role": "fixture", "sha256": "deb94068543c3df4cf4c320b8a2a24ed89605976b5e4218e382428ada69d6121"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/extrude-planar-profile.scscript", "role": "tool", "sha256": "872304349121b55f49884a852a3824f728b29bd8c101035eb506a2f2db9418b5"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The template was checked for a single extrusion action, explicit inputs, and case-neutral postconditions."},
+    "host_checked": {"status": "passed", "scope": "Source parsing, exact package embedding, V21 metadata, action isolation, and static audit passed on the host."},
+    "spaceclaim_execution": {"status": "not_tested", "scope": "The extracted atomic template has not been run independently in SpaceClaim."},
+    "geometry_measurements": {"status": "not_tested", "scope": "No runtime geometry was measured for this exact template."},
+    "native_save": {"status": "not_applicable", "scope": "Saving is outside the extrusion operation."},
+    "native_reopen": {"status": "not_applicable", "scope": "Reopening is outside the extrusion operation."},
+    "visual_review": {"status": "not_tested", "scope": "No visual review has been performed for this exact template."},
+    "requested_export": {"status": "not_applicable", "scope": "Export is outside the extrusion operation."}
+  },
+  "notes": "This is host-only evidence for a parameterized atomic extrusion template. It does not inherit runtime evidence from a composition case."
+}

@@ -1,0 +1,40 @@
+{
+  "copied_registry_sha256_before_removal": "f439753a985812837ef000579a864a24a20c5f1bbe1816f654777f8811d55b3e",
+  "extra_in_isolated": [],
+  "isolated_file_count_after_registry_removal": 901,
+  "isolated_install_root": "isolated-package/spaceclaim-vision-modeling",
+  "mismatched_isolated_files": [],
+  "missing_from_isolated_after_allowed_removal": [],
+  "public_registry_still_present": true,
+  "public_source_tree_unchanged": true,
+  "post_copy_public_resource_reconciliation": {
+    "status": "passed",
+    "files": [
+      {
+        "path": "references/workflow-integration.md",
+        "current_public_sha256": "146dbc9fa1696791fae86d995ed58765a612ecb7ee086254653b918a2e9c41f2",
+        "isolated_sha256": "146dbc9fa1696791fae86d995ed58765a612ecb7ee086254653b918a2e9c41f2"
+      },
+      {
+        "path": "scripts/resolve_operation_artifact.py",
+        "current_public_sha256": "c18763e7c946611f33ebc291528822380099cdce519dbe6130589b0a92abb2f3",
+        "isolated_sha256": "c18763e7c946611f33ebc291528822380099cdce519dbe6130589b0a92abb2f3"
+      },
+      {
+        "path": "assets/atomic-cases/001-rectangular-prism/README.md",
+        "current_public_sha256": "4fb8134f3cd638de2e220c872881a46863a0a3df223df9c94f2e5255a4c96631",
+        "isolated_sha256": "4fb8134f3cd638de2e220c872881a46863a0a3df223df9c94f2e5255a4c96631"
+      }
+    ],
+    "note": "Maintainer-owned package files gained or changed after the initial copy; the run-local copy was reconciled to current bytes. No public file was written by this evaluation."
+  },
+  "removed_from_copy_only": [
+    "references/operation-registry.json"
+  ],
+  "source_file_count_after": 901,
+  "source_file_count_before": 901,
+  "current_public_file_count_after_reconciliation": 902,
+  "public_source_tree_changed_after_initial_snapshot": true,
+  "source_install_root": "spaceclaim-vision-modeling",
+  "status": "passed"
+}

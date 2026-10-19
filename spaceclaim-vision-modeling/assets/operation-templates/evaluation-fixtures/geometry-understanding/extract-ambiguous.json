@@ -1,0 +1,20 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.extract-geometry-observations",
+  "handoff_status": "requires_clarification",
+  "source_manifest_ref": "source-manifest:neutral-occluded-view",
+  "observed_geometry": [
+    {"id": "observation-outer-profile", "statement": "The visible outer profile is circular in the supplied view.", "category": "primitive", "provenance": {"kind": "observation", "source_refs": [{"source_id": "view-front", "locator": "outer profile", "modality": "drawing"}]}, "confidence": "high"}
+  ],
+  "bodies_and_features": [
+    {"id": "body-unknown-depth", "statement": "The depth extent of the body is not visible in the supplied view.", "category": "body", "provenance": {"kind": "unresolved", "source_refs": [{"source_id": "view-front", "locator": "single orthographic view", "modality": "drawing"}], "rationale": "A circular profile alone does not distinguish alternative depth forms."}, "confidence": "unknown"}
+  ],
+  "spatial_relations": [],
+  "symmetry_and_repetition": [],
+  "unresolved_items": [
+    {"id": "unresolved-depth-form", "description": "The source does not determine the body's depth form.", "reason": "occluded", "blocks_handoff": true, "clarification_needed": "Provide a side view or a textual depth description.", "source_refs": [{"source_id": "view-front", "locator": "single orthographic view", "modality": "drawing"}], "related_refs": ["body-unknown-depth"]}
+  ],
+  "confidence": {"level": "low", "coverage": "insufficient", "rationale": "Only one view is available and the hidden extent is contract-changing."}
+}

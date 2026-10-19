@@ -1,0 +1,43 @@
+{
+  "catalog_id": "ER-12",
+  "input_fields": [
+    {
+      "name": "clean_entry_state",
+      "type": "object",
+      "description": "Observed clean design/baseline-copy entry, session identity, and no-dialog state."
+    },
+    {
+      "name": "loaded_corrected_script",
+      "type": "object",
+      "description": "Corrected script path/hash already loaded in matching session/document."
+    },
+    {
+      "name": "prior_failure_reference",
+      "type": "object",
+      "description": "Earlier failure identity and repair reference for correlation."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "rerun_event",
+      "type": "object",
+      "description": "One rerun ID, launch time, corrected hash, clean-entry identity, and prior-failure link."
+    },
+    {
+      "name": "launch_status",
+      "type": "string",
+      "description": "One of launched, rejected, or needs_manual_review; no terminal result."
+    }
+  ],
+  "procedure": [
+    "Verify clean entry, loaded hash, authorization, no-dialog state, and prior-failure link.",
+    "Issue one execution command and record a new rerun identifier.",
+    "Return rerun_event with launch_status=launched; hand waiting to EX-10.",
+    "If any gate is uncertain, return needs_manual_review and do not issue a second command."
+  ],
+  "rejection_rules": [
+    "Reject dirty/unknown entry, hash mismatch, missing failure link, active run, or missing authorization.",
+    "Do not include cleanup/new-document/load/wait/repair logic.",
+    "Do not treat launch as completion."
+  ]
+}

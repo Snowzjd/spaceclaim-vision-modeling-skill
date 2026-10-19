@@ -1,0 +1,241 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.confirm-control-authorization",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Validate the shape and scope of an externally established authorization record; this helper does not authenticate its issuer or expiry.",
+  "trigger": "Use before any desktop control when the task scope or authorization record may have changed.",
+  "inputs": [
+    {
+      "name": "authorization",
+      "type": "object",
+      "required": true,
+      "description": "Trusted caller record with authorized=true and scope; optional run_ref. JSON does not establish real consent."
+    },
+    {
+      "name": "task_scope",
+      "type": "string or array",
+      "required": false,
+      "description": "Requested scope subset to check, default None."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Optional run binding."
+    }
+  ],
+  "preconditions": [
+    "Caller must verify issuer, expiry, revocation and actual run authorization before calling. The helper checks authorized=true, scope subset and optional run_ref only.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "EX-01"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "authorization_structure_valid",
+      "type": "boolean",
+      "required": true,
+      "description": "True after shape/scope checks."
+    },
+    {
+      "name": "authorized_by_caller",
+      "type": "boolean",
+      "required": true,
+      "description": "True; consent must have been established externally."
+    },
+    {
+      "name": "self_authorization",
+      "type": "boolean",
+      "required": true,
+      "description": "Always false."
+    },
+    {
+      "name": "caller_must_supply_trusted_authorization",
+      "type": "boolean",
+      "required": true,
+      "description": "Always true."
+    }
+  ],
+  "postconditions": [
+    "Validate the shape and scope of an externally established authorization record; this helper does not authenticate its issuer or expiry.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "SpaceClaim V21-compatible contract reasoning; no host execution is performed by this operation.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call confirm_control_authorization(**payload), or dispatch(\"EX-01\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. Caller must verify issuer, expiry, revocation and actual run authorization before calling. The helper checks authorized=true, scope subset and optional run_ref only. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "authorization_missing",
+      "condition": "No traceable authorization covers the requested control.",
+      "detection": "Issuer, scope, or validity is absent or does not match task_scope.",
+      "safe_state": "No desktop or file action has started."
+    },
+    {
+      "failure_id": "authorization_ambiguous",
+      "condition": "The record contains conflicting scope or time information.",
+      "detection": "Records disagree or the effective interval cannot be resolved.",
+      "safe_state": "Remain stopped and preserve both records."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "authorization_missing",
+      "action": "Obtain explicit authorization covering the exact application/actions, then reevaluate.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "authorization_ambiguous",
+      "action": "Return needs_manual_review and ask for one authoritative scope.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Return applicable only when the record explicitly covers the requested controls and remains valid.",
+      "evidence_layer": "design_only"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-01-host-check.json",
+            "sha256": "5d501272267f2a6c5287d5c87e3250d5a5353e8440011f663a756ec8d3cb031a"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-01-host-check.json",
+            "sha256": "5d501272267f2a6c5287d5c87e3250d5a5353e8440011f663a756ec8d3cb031a"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-01.json",
+      "sha256": "4f4a0b4bccd8c45cae05cf55030fc9275594d5023c1957450bf0bf7d93410aaf",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-01-host-check.json",
+      "sha256": "5d501272267f2a6c5287d5c87e3250d5a5353e8440011f663a756ec8d3cb031a",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

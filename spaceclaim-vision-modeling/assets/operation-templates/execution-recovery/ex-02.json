@@ -1,0 +1,213 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.confirm-target-spaceclaim-session",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Identify exactly one controllable SpaceClaim session matching the requested version and document clues.",
+  "trigger": "Use when more than one application window or session could receive the next action.",
+  "inputs": [
+    {
+      "name": "session_inventory",
+      "type": "array",
+      "description": "Observed processes/windows with stable IDs, version, document identity, modal state, and busy state.",
+      "required": true
+    },
+    {
+      "name": "target_version_and_document",
+      "type": "object",
+      "description": "Required SpaceClaim version plus path, title, hash, or other document identity clues.",
+      "required": true
+    }
+  ],
+  "preconditions": [
+    "Candidate sessions were observed from the current desktop.",
+    "Target version and at least one document identity clue are known."
+  ],
+  "outputs": [
+    {
+      "name": "target_session",
+      "type": "object",
+      "description": "Single selected session and stable window/process identity, or null when unresolved.",
+      "required": true
+    },
+    {
+      "name": "selection_status",
+      "type": "string",
+      "description": "One of unique, none, ambiguous, blocked, or needs_manual_review.",
+      "required": true
+    },
+    {
+      "name": "blocking_reason",
+      "type": "string",
+      "description": "Exact mismatch, modal, busy, or identity reason when not unique.",
+      "required": true
+    }
+  ],
+  "postconditions": [
+    "Exactly one session matches and is recorded with a stable identity.",
+    "No control action is sent when the result is none, ambiguous, blocked, or needs_manual_review."
+  ],
+  "implementation": {
+    "mode": "computer_use",
+    "primary_artifact": "spaceclaim-vision-modeling/references/atomic-guidance/ex-02.json",
+    "target_environment": "Authorized SpaceClaim V21 desktop session with the target window kept maximized unless a recorded layout exception applies.",
+    "topology_effect": "none",
+    "determinism": "interactive",
+    "notes": "The controller performs one bounded GUI action or observation; it must not expand this contract into a workflow. Session identification only; it does not maximize, create a document, load a script, or execute it."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "session_not_unique",
+      "condition": "No single session matches all identity clues.",
+      "detection": "Filtered candidate count is zero or greater than one.",
+      "safe_state": "No candidate is focused or controlled."
+    },
+    {
+      "failure_id": "session_blocked",
+      "condition": "The matching session is modal, busy, or not controllable.",
+      "detection": "A blocking dialog or busy indicator is observed.",
+      "safe_state": "Leave the session unchanged."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "session_not_unique",
+      "action": "Refresh inventory and supply a stronger clue; return needs_manual_review if still non-unique.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "session_blocked",
+      "action": "Record the blocking state and invoke one-state recovery; do not guess a dismissal.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Exactly one session matches and is recorded with a stable identity.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.confirm-control-authorization"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-02-host-check.json",
+            "sha256": "55a1d0ecbe7c8bb8e2aea0d5435ef2a2387f6f95057557ad3aea43e919ee4722"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-02-host-check.json",
+            "sha256": "55a1d0ecbe7c8bb8e2aea0d5435ef2a2387f6f95057557ad3aea43e919ee4722"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Guidance interface checked on host; synthetic independent application reviewed. No controller event or repaired geometry was observed for this guide."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-02.json",
+      "sha256": "95439cbef1fbd4b63a53b06bae1f463efd579d0698c390a8edffe0db19bb5e62",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-02.json",
+      "sha256": "95439cbef1fbd4b63a53b06bae1f463efd579d0698c390a8edffe0db19bb5e62",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_guidance.py",
+      "sha256": "f3918ac4379f5488144fab920f60d121aa4e5863ef91808bb4ae04b469601e53",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-02-host-check.json",
+      "sha256": "55a1d0ecbe7c8bb8e2aea0d5435ef2a2387f6f95057557ad3aea43e919ee4722",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

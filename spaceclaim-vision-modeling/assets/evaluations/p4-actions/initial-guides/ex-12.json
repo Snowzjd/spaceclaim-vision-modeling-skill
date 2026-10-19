@@ -1,0 +1,43 @@
+{
+  "catalog_id": "EX-12",
+  "input_fields": [
+    {
+      "name": "error_log",
+      "type": "object",
+      "description": "Raw error records with timestamps/sequence and source identity."
+    },
+    {
+      "name": "stage_events",
+      "type": "array",
+      "description": "Run-stage events including load, execution, assertions, and terminal state."
+    },
+    {
+      "name": "observed_state",
+      "type": "object",
+      "description": "Run/document state at or immediately before the first failure."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "earliest_failure",
+      "type": "object",
+      "description": "First error, stage, source location, time/sequence, run reference, and state snapshot."
+    },
+    {
+      "name": "chronology_status",
+      "type": "string",
+      "description": "One of ordered, partial, conflicting, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Normalize errors and stage events by reliable time/sequence while retaining source references and run_ref.",
+    "Reject or partition records with mixed run_ref; never merge events from different runs.",
+    "Choose the earliest causally supported failure, not merely the last dialog or truncated cascade line.",
+    "Snapshot stage, source location, run_ref, and state; set needs_manual_review when order/causality cannot be established."
+  ],
+  "rejection_rules": [
+    "Reject missing original error, stage, run association, or mixed-run records.",
+    "Fail closed when timestamps/sequence are contradictory; do not pick a first event by display order.",
+    "Do not classify, repair, rerun, or delete artifacts here."
+  ]
+}

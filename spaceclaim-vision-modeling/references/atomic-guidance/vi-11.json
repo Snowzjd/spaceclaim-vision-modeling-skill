@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-11",
+  "input_fields": [
+    {
+      "name": "viewport",
+      "type": "object",
+      "description": "Maximized unobstructed viewport and empty drag region."
+    },
+    {
+      "name": "drag_path",
+      "type": "object",
+      "description": "One short rotation drag path."
+    },
+    {
+      "name": "navigation_mapping",
+      "type": "object",
+      "description": "Verified middle-drag Spin mapping or Spin-tool equivalent."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "rotated_view",
+      "type": "object",
+      "description": "Before/after camera orientation, drag/control path, and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Place the cursor in empty viewport space and check controller support.",
+    "Use one short calibrated middle drag, or activate Spin and use one ordinary left drag as the recorded equivalent.",
+    "Observe orientation indicator/silhouette and return rotated_view.",
+    "If neither control is verifiable, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject selected geometry under the drag, uncalibrated mapping, unsupported middle drag without Spin equivalent, or no observable camera change.",
+    "Do not repeatedly retry uncertain gestures.",
+    "Do not rotate by editing model coordinates."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "events": [
+    {
+      "id": "MA-07", 
+      "archive_sha256": "f8a0b341acec55cf9826d26adb910db460cc9b56400044bb47f5452906f77cb6", 
+      "status": "executed", 
+      "source_sha256": "1fd3af3c2e7bd79e46d7bd18cc07e06d64ec28e49c7266c8ea5809f6ab53a089"
+    }, 
+    {
+      "id": "MA-08", 
+      "archive_sha256": "14c86be8447e2d97fcddb4a7db3e09be55d3b7e562e34bc334c43af9c89ae7a6", 
+      "status": "executed", 
+      "source_sha256": "f0532d8c478b3a7fc85e7c053ba71da20d74b5bc3c8897d2a8a44f2c3942112b"
+    }, 
+    {
+      "id": "MA-11", 
+      "archive_sha256": "e7e0b75c461ca20f29cd2f97543c14cbf5b9ce279ceee6d8be009545682b42e8", 
+      "status": "executed", 
+      "source_sha256": "3094d6d25fe368777ac88a9fad1ed928a3b07ce7ed13c57f94308fdc624deec6"
+    }, 
+    {
+      "id": "MA-17", 
+      "archive_sha256": "ecced88a78af2c7478f54ba8f75a4d500787e945bacc9eeca71ababb31791ba4", 
+      "status": "executed", 
+      "source_sha256": "2d3fdd73c9fbcec639e95fed806a90438a9f80900f7d5766d9a0ffdf250a91b2"
+    }, 
+    {
+      "id": "MA-25", 
+      "archive_sha256": "8c11ffbf04cf4e64765635931a1edd2d88918db5e1d62b2f52adb5c20fe1d150", 
+      "status": "executed", 
+      "source_sha256": "6aa64b7ffd11f80dea92d2f296945da668be566cb42729cae70fc9e1fe7a29b0"
+    }
+  ], 
+  "tests": [
+    {
+      "id": "until-planar-face", 
+      "checks": {
+        "bbox_mm": [
+          8.0, 
+          -3.0, 
+          0.0, 
+          12.0, 
+          3.0, 
+          12.0
+        ], 
+        "volume_mm3": 288.00000000000006
+      }, 
+      "status": "passed"
+    }, 
+    {
+      "id": "revolve-ring", 
+      "checks": {
+        "volume_tolerance_mm3": 0.02, 
+        "cylinder_areas_mm2": [
+          75.39822368615485, 
+          150.79644737230993
+        ], 
+        "bbox_mm": [
+          46.000000000000007, 
+          0.0, 
+          -3.9999999999999964, 
+          54.0, 
+          6.0, 
+          3.9999999999999964
+        ], 
+        "volume_mm3": 226.1855782180487
+      }, 
+      "status": "passed"
+    }, 
+    {
+      "id": "open-shell", 
+      "checks": {
+        "bbox_mm": [
+          80.0, 
+          0.0, 
+          0.0, 
+          90.0, 
+          10.0, 
+          10.0
+        ], 
+        "volume_mm3": 423.99999999999892
+      }, 
+      "status": "passed"
+    }, 
+    {
+      "id": "mirror-body", 
+      "checks": {
+        "bbox_mm": [
+          86.0, 
+          0.0, 
+          0.0, 
+          90.000000000000014, 
+          6.0, 
+          8.0
+        ], 
+        "volume_mm3": 192.00000000000017
+      }, 
+      "status": "passed"
+    }, 
+    {
+      "id": "enclosed-volume", 
+      "checks": {
+        "bbox_mm": [
+          142.0, 
+          2.0, 
+          2.0, 
+          148.0, 
+          8.0, 
+          8.0
+        ], 
+        "volume_mm3": 216.00000000000023
+      }, 
+      "status": "passed"
+    }
+  ], 
+  "status": "passed"
+}

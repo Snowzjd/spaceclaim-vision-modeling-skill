@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "geometry_understanding.interpret-rectangular-prism",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "geometry_understanding",
+  "purpose": "Interpret one explicit axis-aligned rectangular prism as a provenance-bound primitive parameter contract without choosing a modeling method.",
+  "trigger": "One source describes exactly one rectangular prism with three positive extents, units, an explicit minimum corner, and a +X/+Y/+Z orientation, with no additional feature requiring interpretation.",
+  "inputs": [
+    {"name": "source_manifest", "type": "one or more hash-bound source records", "required": true, "description": "Readable source material and stable locators for every accepted value.", "provenance_required": true},
+    {"name": "user_intent", "type": "optional text", "required": false, "description": "Requested name or acceptance intent, kept distinct from observed source content.", "provenance_required": true}
+  ],
+  "preconditions": [
+    "The source resolves to exactly one candidate solid with no holes, rounds, chamfers, patterns, or additional bodies.",
+    "Three finite positive extents and their units are explicit; pixel scale is not used as an unsourced dimension.",
+    "The minimum corner and axis-aligned positive-XYZ orientation are explicit; otherwise the handoff requires clarification."
+  ],
+  "outputs": [
+    {"name": "primitive", "type": "rectangular_prism parameter object", "required": true, "description": "Body name, minimum corner, three sizes, fixed orientation, and provenance for each field.", "provenance_required": true},
+    {"name": "expected_geometry", "type": "derived single-body bounds and volume", "required": true, "description": "Body count, minimum and maximum bounds, and volume derived from the primitive parameters."},
+    {"name": "unresolved_items", "type": "list of blocking ambiguities", "required": true, "description": "Any missing or conflicting primitive parameter that prevents a ready handoff.", "provenance_required": true}
+  ],
+  "output_schema": {"path": "spaceclaim-vision-modeling/references/rectangular-prism-geometry-contract.schema.json", "sha256": "5155b756ee4b096d1d520c00b10a29e2b8ce5d34ecd038cf6d5a7203d49eea51"},
+  "postconditions": [
+    "A ready output describes exactly one axis-aligned rectangular prism and has no unresolved item.",
+    "Every accepted parameter names its source and locator; inferred or missing values are not silently converted into user values.",
+    "Maximum bounds equal minimum corner plus size and volume equals the product of the three sizes.",
+    "The operation does not choose a construction sequence or invoke SpaceClaim."
+  ],
+  "implementation": {"mode": "reasoning_guidance", "primary_artifact": null, "target_environment": "Visual or textual reasoning only; no SpaceClaim runtime.", "topology_effect": "none", "determinism": "bounded_heuristic", "notes": "The host checker validates emitted contract invariants but does not perform source interpretation."},
+  "host_checker": {"path": "spaceclaim-vision-modeling/scripts/validate_rectangular_prism_contract.py", "sha256": "de534e67750b902d46cc3052ab9423039bbccd8a6c18eb96917f08f9e7b7959e"},
+  "semantic_selection": {"required": false, "criteria": [], "ambiguity_checks": ["Reject this template when any additional feature, body, missing extent, unresolved unit, or unresolved orientation changes the geometry."], "topology_refresh": "Not applicable because this operation does not access model topology."},
+  "failure_modes": [
+    {"failure_id": "source_unreadable", "condition": "A declared source or locator cannot be read or hash-bound.", "detection": "Check source existence, digest, and locator before interpretation.", "safe_state": "No ready primitive contract is emitted."},
+    {"failure_id": "primitive_ambiguous", "condition": "The source supports another primitive, another body, or an extra feature.", "detection": "Inventory visible and textual features before matching the trigger.", "safe_state": "Return requires_clarification or the generic geometry-understanding workflow."},
+    {"failure_id": "parameter_unresolved", "condition": "An extent, unit, minimum corner, or orientation is missing or conflicting.", "detection": "Audit every required field and its provenance.", "safe_state": "Retain the item as unresolved and block downstream generation."}
+  ],
+  "recovery": [
+    {"failure_id": "source_unreadable", "action": "Repair or replace the source record, then rerun interpretation.", "clean_rerun_required": true},
+    {"failure_id": "primitive_ambiguous", "action": "Use the generic workflow or request the smallest source clarification that distinguishes the geometry.", "clean_rerun_required": true},
+    {"failure_id": "parameter_unresolved", "action": "Obtain the missing value or preserve requires_clarification; never supply a silent default.", "clean_rerun_required": true}
+  ],
+  "validation": [
+    {"check": "Primitive contract structure", "method": "Validate the output with the bound JSON Schema and host checker.", "expected": "Required fields, provenance references, source hashes, positive sizes, derived bounds, and volume are consistent.", "evidence_layer": "host_checked"},
+    {"check": "Atomic and case-neutral boundary", "method": "Review trigger, inputs, outputs, and failure gates against the atomic contract.", "expected": "No case number, fixed dimension, industry label, construction strategy, or application action is embedded.", "evidence_layer": "design_only"}
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/interpret-rectangular-prism-design-review.json", "sha256": "6db558b8ce2c784dc9c30eec396e4e9cbc2b9aba6e5f09d80a9acf7c4ccdec7b"}]},
+      "host_checked": {"status": "passed", "evidence_refs": [{"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/interpret-rectangular-prism-host-check.json", "sha256": "895aa56ea68cd643a5ed61371487057ce9c80d69bc95b00fa9bc81d2117724f8"}]},
+      "spaceclaim_execution": {"status": "not_applicable", "evidence_refs": []},
+      "geometry_measurements": {"status": "not_applicable", "evidence_refs": []},
+      "native_save": {"status": "not_applicable", "evidence_refs": []},
+      "native_reopen": {"status": "not_applicable", "evidence_refs": []},
+      "visual_review": {"status": "not_applicable", "evidence_refs": []},
+      "requested_export": {"status": "not_applicable", "evidence_refs": []}
+    },
+    "notes": "Host evidence validates declared invariants only; independent unseen-source interpretation evaluation is still required before activation."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/references/rectangular-prism-geometry-contract.schema.json", "role": "reference", "sha256": "5155b756ee4b096d1d520c00b10a29e2b8ce5d34ecd038cf6d5a7203d49eea51"},
+    {"path": "spaceclaim-vision-modeling/scripts/validate_rectangular_prism_contract.py", "role": "evaluation", "sha256": "de534e67750b902d46cc3052ab9423039bbccd8a6c18eb96917f08f9e7b7959e"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/design-evidence/interpret-rectangular-prism-design-review.json", "role": "evidence", "sha256": "6db558b8ce2c784dc9c30eec396e4e9cbc2b9aba6e5f09d80a9acf7c4ccdec7b"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/interpret-rectangular-prism-host-check.json", "role": "evidence", "sha256": "895aa56ea68cd643a5ed61371487057ce9c80d69bc95b00fa9bc81d2117724f8"}
+  ]
+}

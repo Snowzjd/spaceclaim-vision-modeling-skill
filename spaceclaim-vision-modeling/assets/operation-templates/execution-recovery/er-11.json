@@ -1,0 +1,321 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.remove-run-owned-failed-artifact",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Quarantine by default, or explicitly delete, exactly one hash-bound run-owned failed file.",
+  "trigger": "Use only when a failed artifact is proven run-owned and is not baseline/evidence.",
+  "inputs": [
+    {
+      "name": "artifact_path",
+      "type": "path",
+      "required": true,
+      "description": "Exactly one failed regular file."
+    },
+    {
+      "name": "run_root",
+      "type": "path",
+      "required": true,
+      "description": "Existing run-owned root."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": true,
+      "description": "Nonempty current run ID."
+    },
+    {
+      "name": "ownership",
+      "type": "object or string",
+      "required": false,
+      "description": "Trusted ownership record or run ID; alternatively artifact_run_ref."
+    },
+    {
+      "name": "artifact_run_ref",
+      "type": "string",
+      "required": false,
+      "description": "Trusted owner run reference; must equal run_ref."
+    },
+    {
+      "name": "failure_record",
+      "type": "object",
+      "required": true,
+      "description": "Associated failure; caller must ensure attribution if path/run fields are absent."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "required": true,
+      "description": "Expected current file digest."
+    },
+    {
+      "name": "baseline_path",
+      "type": "path",
+      "required": false,
+      "description": "Protected baseline."
+    },
+    {
+      "name": "baseline_paths",
+      "type": "array",
+      "required": false,
+      "description": "Additional protected baselines."
+    },
+    {
+      "name": "evidence_paths",
+      "type": "array",
+      "required": false,
+      "description": "Protected evidence paths."
+    },
+    {
+      "name": "quarantine_dir",
+      "type": "path",
+      "required": false,
+      "description": "New/existing quarantine directory inside run_root; default .quarantine."
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "description": "quarantine default (recoverable); delete only on explicit single-file deletion request."
+    }
+  ],
+  "preconditions": [
+    "Caller supplies trustworthy ownership/failure attribution and retains the failure record. No size/timestamp field or durable log is produced. Compatibility aliases path, expected_hash, evidence_path exist; use canonical fields here.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "ER-11"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "artifact_path",
+      "type": "string",
+      "required": true,
+      "description": "Original path."
+    },
+    {
+      "name": "quarantine_path",
+      "type": "string",
+      "required": false,
+      "description": "Present for quarantine."
+    },
+    {
+      "name": "sha256",
+      "type": "string",
+      "required": true,
+      "description": "Verified pre-action digest."
+    },
+    {
+      "name": "ownership_verified",
+      "type": "boolean",
+      "required": true,
+      "description": "True relative to trusted caller record."
+    },
+    {
+      "name": "failure_record_preserved",
+      "type": "boolean",
+      "required": true,
+      "description": "The supplied record was not modified; caller retains it durably."
+    },
+    {
+      "name": "recoverable",
+      "type": "boolean",
+      "required": true,
+      "description": "True for quarantine, false for deletion."
+    },
+    {
+      "name": "recursive",
+      "type": "boolean",
+      "required": true,
+      "description": "Always false."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": true,
+      "description": "Matching run reference."
+    }
+  ],
+  "postconditions": [
+    "Quarantine by default, or explicitly delete, exactly one hash-bound run-owned failed file.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "Windows host tooling; no SpaceClaim control or geometry mutation is implied.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call remove_run_owned_failed_artifact(**payload), or dispatch(\"ER-11\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. Caller supplies trustworthy ownership/failure attribution and retains the failure record. No size/timestamp field or durable log is produced. Compatibility aliases path, expected_hash, evidence_path exist; use canonical fields here. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "cleanup_target_unsafe",
+      "condition": "Resolved path is not one safe run-owned regular file.",
+      "detection": "Ownership/type/exclusion/reparse check fails.",
+      "safe_state": "No deletion is attempted."
+    },
+    {
+      "failure_id": "cleanup_verification_failed",
+      "condition": "Deletion cannot be verified.",
+      "detection": "File remains or post-delete identity is ambiguous.",
+      "safe_state": "Do not retry or delete adjacent paths."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "cleanup_target_unsafe",
+      "action": "Return needs_manual_review and preserve artifact.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "cleanup_verification_failed",
+      "action": "Record uncertain cleanup and request review.",
+      "clean_rerun_required": false
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "Only specified file is removed and cleanup record preserves prior identity/reason.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [
+    "execution_recovery.capture-earliest-failure-state"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-11-host-check.json",
+            "sha256": "b70355dc8ad4b326243ef85872036e1dfeac85d4a1668cad7351eb6633c8b59a"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-11-host-check.json",
+            "sha256": "b70355dc8ad4b326243ef85872036e1dfeac85d4a1668cad7351eb6633c8b59a"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/er-11.json",
+      "sha256": "4c1e99a297ef91f50d2c0179b26199ac852450fae7e422fd9424ef2245459aa9",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/er-11-host-check.json",
+      "sha256": "b70355dc8ad4b326243ef85872036e1dfeac85d4a1668cad7351eb6633c8b59a",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

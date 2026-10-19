@@ -1,0 +1,216 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.package-scscript",
+  "template_version": "0.1.1",
+  "contract_version": 1,
+  "status": "active",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Package a UTF-8 SpaceClaim script source into a deterministic .scscript archive.",
+  "trigger": "A prepared source file and its target script metadata are available and a reproducible archive is required.",
+  "inputs": [
+    {
+      "name": "source_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to a non-empty UTF-8 script source file.",
+      "provenance_required": true
+    },
+    {
+      "name": "output_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path at which the .scscript archive is to be created.",
+      "provenance_required": true
+    },
+    {
+      "name": "api_version",
+      "type": "decimal string",
+      "required": false,
+      "description": "Numeric SpaceClaim API metadata value from the accepted build contract; defaults to 21 when omitted."
+    },
+    {
+      "name": "smart_variable_version",
+      "type": "decimal string",
+      "required": false,
+      "description": "Numeric smart-variable metadata value; defaults to 2 when omitted."
+    },
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether an existing output may be replaced; defaults to false."
+    }
+  ],
+  "preconditions": [
+    "source_path exists, is readable, decodes as UTF-8, and contains non-whitespace source text.",
+    "output_path is different from source_path and is writable; an existing output is used only when force is true.",
+    "api_version matches the accepted build contract's target API metadata and, with smart_variable_version, contains decimal digits only. The caller supplies api_version explicitly when the target is not API 21."
+  ],
+  "outputs": [
+    {
+      "name": "archive_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "The created deterministic .scscript archive."
+    }
+  ],
+  "postconditions": [
+    "archive_path exists and is a readable ZIP package.",
+    "The archive contains the required _script, _apiVersion, _smartVariableVersion, and [Content_Types].xml members with fixed package metadata.",
+    "Repeated packaging of identical source and metadata produces identical archive bytes."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/package_scscript.py",
+    "target_environment": "Host Python 3.9 or newer; packages caller-supplied decimal SpaceClaim API metadata, defaults to 21, and does not validate or launch the target SpaceClaim runtime.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "This operation creates and checks archive bytes on the host; it does not execute the packaged script or inspect a model."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No geometry objects are selected; source bytes and numeric metadata are the only operation inputs."
+    ],
+    "topology_refresh": "Not applicable because the operation has no geometry topology effect."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_source",
+      "condition": "The source is missing, empty, or not valid UTF-8.",
+      "detection": "Read and decode source_path before creating the output archive.",
+      "safe_state": "No archive is written."
+    },
+    {
+      "failure_id": "invalid_metadata",
+      "condition": "A supplied API or smart-variable version contains a non-decimal value.",
+      "detection": "Validate each metadata value before opening output_path.",
+      "safe_state": "No archive is written."
+    },
+    {
+      "failure_id": "output_collision",
+      "condition": "output_path equals source_path or already exists while force is false.",
+      "detection": "Compare canonical paths and check output existence before writing.",
+      "safe_state": "The existing source or output remains unchanged."
+    },
+    {
+      "failure_id": "archive_write_error",
+      "condition": "The destination cannot be created or written.",
+      "detection": "Propagate the host filesystem error from archive creation.",
+      "safe_state": "The operation returns an error and does not claim a complete archive."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_source",
+      "action": "Repair or replace the source and rerun packaging.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "invalid_metadata",
+      "action": "Provide decimal metadata values and rerun packaging.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "output_collision",
+      "action": "Choose a distinct destination or explicitly enable force after checking the destination.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "archive_write_error",
+      "action": "Resolve the filesystem error and rerun from the unchanged source.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Required archive members and fixed ZIP metadata",
+      "method": "Run the repository package_scscript host test and inspect the resulting archive members.",
+      "expected": "Required members, deterministic timestamps, compression choices, and content-type bytes match the package contract.",
+      "evidence_layer": "host_checked"
+    },
+    {
+      "check": "Input and overwrite guards",
+      "method": "Run the repository package_scscript host test cases for empty input, invalid metadata, same paths, and force behavior.",
+      "expected": "Invalid inputs fail before output creation and an existing output is preserved unless force is explicit.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.1",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/package-scscript-host-check.json",
+            "sha256": "86e4cea178ad0073af40f41daa3cb251e248649b490030ab9caff447258259d1",
+            "notes": "Public contract review record; no private model or host path is included."
+          }
+        ],
+        "notes": "The contract is case-neutral and limited to deterministic host packaging."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/package-scscript-host-check.json",
+            "sha256": "86e4cea178ad0073af40f41daa3cb251e248649b490030ab9caff447258259d1",
+            "notes": "Eight repository unit tests passed for this exact tool and contract revision."
+          }
+        ],
+        "notes": "Host archive checks only; no SpaceClaim process was launched."
+      },
+      "spaceclaim_execution": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "Packaging does not execute SpaceClaim."
+      },
+      "geometry_measurements": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "Packaging does not inspect geometry."
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is saved."
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No native document is reopened."
+      },
+      "visual_review": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No viewport or image is reviewed."
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": [],
+        "notes": "No model export is produced."
+      }
+    },
+    "notes": "Formal evidence stops at design_only and host_checked for this host-only operation."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/package_scscript.py",
+      "role": "implementation",
+      "sha256": "b3b59a20e35be932438cb3e330d6dae59940c7f07d030761b1147e8358ffd5d1"
+    },
+    {
+      "path": "tests/test_package_scscript.py",
+      "role": "test",
+      "sha256": "b2e81532a585bd699361d6df75f42ff26ae7193c5d884ea12d0f97297d5dc057"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/package-scscript-host-check.json",
+      "role": "evidence",
+      "sha256": "86e4cea178ad0073af40f41daa3cb251e248649b490030ab9caff447258259d1"
+    }
+  ]
+}

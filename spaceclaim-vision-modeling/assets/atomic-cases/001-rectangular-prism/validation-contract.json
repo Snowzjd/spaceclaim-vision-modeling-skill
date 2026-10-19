@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "case_id": "v03-atomic-rectangular-prism",
+  "expected_report_status": "passed",
+  "target": {"api_version": "V21"},
+  "tolerances": {"bbox_mm": 0.001, "volume_mm3": 0.001},
+  "bodies": [
+    {
+      "name": "ATOMIC_PRISM",
+      "bbox_min_mm": [10.0, -5.0, 2.0],
+      "bbox_max_mm": [50.0, 25.0, 14.0],
+      "volume_mm3": 14400.0
+    }
+  ],
+  "named_face_groups": [],
+  "features": [],
+  "evidence_layers": {
+    "static_archive": ["not_tested", "passed"],
+    "spaceclaim_execution": ["passed"],
+    "geometry_measurements": ["passed"],
+    "native_save": ["not_tested", "passed"],
+    "native_reopen": ["not_tested", "passed"],
+    "neutral_export": ["not_tested"]
+  }
+}

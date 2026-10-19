@@ -1,0 +1,43 @@
+{
+  "catalog_id": "GU-16",
+  "input_fields": [
+    {
+      "name": "identified_view",
+      "type": "object",
+      "description": "已有身份和投影记录的单个视图；视图方向必须能回溯到来源。"
+    },
+    {
+      "name": "coordinate_frame",
+      "type": "object",
+      "description": "已定义的原点、轴、手性和单位；未知成员保持 null。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "view_ref",
+      "type": "string",
+      "description": "被映射视图的稳定引用；视图身份不确定时为 null。"
+    },
+    {
+      "name": "axis_mapping",
+      "type": "object",
+      "description": "视图方向到框架轴的对应及依据；不能确认的对应写 null。"
+    },
+    {
+      "name": "orientation",
+      "type": "object",
+      "description": "视图法向、朝向或投影方向相对框架的记录，保留来源和不确定性。"
+    }
+  ],
+  "procedure": [
+    "确认输入视图和坐标框架各自有稳定身份，读取其方向、轴和单位证据。",
+    "逐项建立视图方向与框架轴的对应，只使用可观察标记、用户约定或明确的派生关系。",
+    "输出 view_ref、axis_mapping 和 orientation；不能唯一对应的成员写 null，并附 provenance 与 unresolved。",
+    "只记录一个视图到既有框架的映射，不修改框架原点、轴、手性或单位。"
+  ],
+  "rejection_rules": [
+    "视图投影或坐标框架身份不确定时拒绝生成确定映射。",
+    "多个轴对应同样合理或方向证据冲突时不得随机选择，保留未决包。",
+    "不得为适配视图而暗中重定义坐标框架或改变单位。"
+  ]
+}

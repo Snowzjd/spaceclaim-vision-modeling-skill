@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "format": "p5-independent-public-snapshot-manifest",
+  "files": {
+    "raw-inputs.json": {
+      "original_source": "runs/p5-independent/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "size_bytes": 19451
+    },
+    "results.json": {
+      "original_source": "runs/p5-independent/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "size_bytes": 31272
+    },
+    "evaluation.md": {
+      "original_source": "runs/p5-independent/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "size_bytes": 6675
+    }
+  }
+}

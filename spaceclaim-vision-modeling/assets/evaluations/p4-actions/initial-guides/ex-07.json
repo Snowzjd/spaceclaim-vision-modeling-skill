@@ -1,0 +1,43 @@
+{
+  "catalog_id": "EX-07",
+  "input_fields": [
+    {
+      "name": "output_paths",
+      "type": "array",
+      "description": "Run output paths with one declared role and expected format each."
+    },
+    {
+      "name": "run_ownership",
+      "type": "object",
+      "description": "Run ID, owned root, baseline/evidence exclusions, and write context."
+    },
+    {
+      "name": "overwrite_policy",
+      "type": "object",
+      "description": "Whether an existing path may be replaced; default is reject."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "path_validation",
+      "type": "object",
+      "description": "Canonical paths, collisions, ownership, and writable-parent checks."
+    },
+    {
+      "name": "accepted_paths",
+      "type": "array",
+      "description": "Only paths safe for a later write operation."
+    }
+  ],
+  "procedure": [
+    "Canonicalize each path and associate it with one role and run-owned root.",
+    "Check baseline/evidence collisions, parents, existing files, and explicit overwrite policy.",
+    "Return path_validation and accepted_paths; preserve rejected paths and reasons.",
+    "Do not create directories, overwrite files, or remove artifacts."
+  ],
+  "rejection_rules": [
+    "Reject outside-root paths, role collisions, existing files without permission, traversal/reparse ambiguity, or unowned parents.",
+    "Do not auto-create a parent or substitute a different path.",
+    "Do not claim later save/export success."
+  ]
+}

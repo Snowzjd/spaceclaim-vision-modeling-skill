@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VA-04",
+  "input_fields": [
+    {
+      "name": "current_document_or_component",
+      "type": "object",
+      "description": "Current document or one explicitly selected component whose body scope is to be enumerated."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "body_collection",
+      "type": "array",
+      "description": "Current bodies in the declared scope, each with stable object identity and semantic properties."
+    },
+    {
+      "name": "enumeration_scope",
+      "type": "object",
+      "description": "Document/component scope and enumeration mode used."
+    }
+  ],
+  "procedure": [
+    "Bind the read to current_document_or_component and record whether direct or descendant bodies are requested.",
+    "Enumerate the current collection once and return each body identity without using a recorded ordinal alias.",
+    "Return enumeration_scope with the source document/component and collection kind.",
+    "Leave all geometry, names, selection, and visibility unchanged."
+  ],
+  "rejection_rules": [
+    "Reject an ambiguous document/component or an unspecified direct-versus-descendant scope.",
+    "Reject a collection that cannot be tied to the current document/component.",
+    "Do not turn this action into a count, measurement, name, or visual-review workflow."
+  ]
+}

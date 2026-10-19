@@ -1,0 +1,30 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.validate-rectangular-prism",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_atomic_rectangular_prism -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 16,
+  "tool": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py",
+  "test": "tests/test_atomic_rectangular_prism.py",
+  "tool_sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8",
+  "test_sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "role": "tool", "sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/04-validation-visual-review/output/validate-rectangular-prism.scscript", "role": "fixture", "sha256": "17cf13aa9b1acb9eb5ae73dacd23770e156779066a5e517368df4ef019380554"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The read-only rectangular-prism acceptance boundary and separate evidence layers were reviewed."},
+    "host_checked": {"status": "passed", "scope": "Validation-script generation, IronPython parsing, prohibited-operation checks, packaging, and static audit passed."},
+    "spaceclaim_execution": {"status": "not_tested", "scope": "This host-check record does not establish SpaceClaim execution; runtime evidence is recorded separately."},
+    "geometry_measurements": {"status": "not_tested", "scope": "This host-check record does not establish geometry measurements; runtime evidence is recorded separately."},
+    "native_save": {"status": "not_tested", "scope": "Native save is evaluated separately."},
+    "native_reopen": {"status": "not_tested", "scope": "Native reopen is outside this host-check record and is evaluated separately."},
+    "visual_review": {"status": "not_tested", "scope": "Visual review is outside this host-check record and is evaluated separately."},
+    "requested_export": {"status": "not_applicable", "scope": "The first atomic case requests no export."}
+  },
+  "notes": "Host checks do not substitute for SpaceClaim measurements, persistence, or visual evidence."
+}

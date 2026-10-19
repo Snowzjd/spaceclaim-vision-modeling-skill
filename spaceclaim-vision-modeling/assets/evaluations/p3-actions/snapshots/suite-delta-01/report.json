@@ -1,0 +1,932 @@
+{
+  "status": "passed", 
+  "schema_version": 1, 
+  "suite_id": "p3-actions-delta", 
+  "tests": [
+    {
+      "status": "passed", 
+      "id": "blank-design", 
+      "actions": [
+        "MA-31"
+      ], 
+      "checks": {
+        "body_count": 0
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "ma10-native-loft", 
+      "actions": [
+        "MA-10", 
+        "MA-31"
+      ], 
+      "checks": {
+        "after_count": 1, 
+        "section_policy": "consume", 
+        "sections_consumed": 2, 
+        "before_count": 2, 
+        "measurement": {
+          "bbox_mm": [
+            50.0, 
+            40.0, 
+            50.0, 
+            58.0, 
+            48.0, 
+            62.0
+          ], 
+          "volume_mm3": 447.99999999999989
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "ma15-point-to-face", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-15", 
+        "MA-31"
+      ], 
+      "checks": {
+        "delta_mm": [
+          6.0, 
+          0.0, 
+          0.0
+        ], 
+        "reference_endpoint_mm": [
+          10.0, 
+          3.0, 
+          4.0
+        ], 
+        "measurement": {
+          "bbox_mm": [
+            6.0, 
+            0.0, 
+            0.0, 
+            10.0, 
+            6.0, 
+            8.0
+          ], 
+          "volume_mm3": 192.0
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "ma18-linear-array", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-18"
+      ], 
+      "checks": {
+        "offsets_mm": [
+          [
+            0.0, 
+            0.0, 
+            0.0
+          ], 
+          [
+            2.23606797749979, 
+            4.47213595499958, 
+            0.0
+          ], 
+          [
+            4.47213595499958, 
+            8.944271909999159, 
+            0.0
+          ]
+        ], 
+        "instances": [
+          {
+            "bbox_mm": [
+              80.0, 
+              0.0, 
+              0.0, 
+              82.0, 
+              3.0, 
+              4.0
+            ], 
+            "volume_mm3": 24.000000000000021
+          }, 
+          {
+            "bbox_mm": [
+              82.236067977499786, 
+              4.47213595499958, 
+              0.0, 
+              84.236067977499786, 
+              7.47213595499958, 
+              4.0
+            ], 
+            "volume_mm3": 24.000000000000021
+          }, 
+          {
+            "bbox_mm": [
+              84.472135954999587, 
+              8.944271909999159, 
+              0.0, 
+              86.472135954999587, 
+              11.944271909999159, 
+              4.0
+            ], 
+            "volume_mm3": 24.000000000000018
+          }
+        ], 
+        "source": {
+          "bbox_mm": [
+            80.0, 
+            0.0, 
+            0.0, 
+            82.0, 
+            3.0, 
+            4.0
+          ], 
+          "volume_mm3": 24.000000000000021
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "ma19-circular-array", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-19"
+      ], 
+      "checks": {
+        "angles_degrees": [
+          0.0, 
+          90.0, 
+          180.0, 
+          270.0
+        ], 
+        "instances": [
+          {
+            "bbox_mm": [
+              8.000000000000007, 
+              0.0, 
+              0.0, 
+              10.000000000000009, 
+              2.0, 
+              3.0
+            ], 
+            "volume_mm3": 12.000000000000011
+          }, 
+          {
+            "bbox_mm": [
+              -1.9999999999999996, 
+              8.000000000000007, 
+              0.0, 
+              6.1230317691118922e-16, 
+              10.000000000000009, 
+              3.0
+            ], 
+            "volume_mm3": 12.000000000000011
+          }, 
+          {
+            "bbox_mm": [
+              -10.000000000000009, 
+              -1.9999999999999991, 
+              0.0, 
+              -8.000000000000007, 
+              1.2246063538223784e-15, 
+              3.0
+            ], 
+            "volume_mm3": 12.000000000000012
+          }, 
+          {
+            "bbox_mm": [
+              -1.8369095307335679e-15, 
+              -10.000000000000009, 
+              0.0, 
+              1.9999999999999987, 
+              -8.000000000000007, 
+              3.0
+            ], 
+            "volume_mm3": 12.000000000000011
+          }
+        ], 
+        "source": {
+          "bbox_mm": [
+            8.000000000000007, 
+            0.0, 
+            0.0, 
+            10.000000000000009, 
+            2.0, 
+            3.0
+          ], 
+          "volume_mm3": 12.000000000000011
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "ma24-split-face", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-24"
+      ], 
+      "checks": {
+        "added_face_count": 1, 
+        "face_count": 7, 
+        "top_face_areas_mm2": [
+          32.000000000000036, 
+          47.999999999999986
+        ], 
+        "measurement": {
+          "bbox_mm": [
+            30.0, 
+            0.0, 
+            0.0, 
+            40.0, 
+            8.0, 
+            6.0
+          ], 
+          "volume_mm3": 480.00000000000006
+        }
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "unicode-name-only", 
+      "actions": [
+        "MA-05", 
+        "MA-28"
+      ], 
+      "checks": {
+        "unicode_name_only_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma10-duplicate", 
+      "actions": [
+        "MA-10", 
+        "MA-31"
+      ], 
+      "checks": {
+        "duplicate_section_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma10-policy", 
+      "actions": [
+        "MA-10", 
+        "MA-31"
+      ], 
+      "checks": {
+        "invalid_section_policy_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma15-reference", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-15", 
+        "MA-31"
+      ], 
+      "checks": {
+        "off_face_reference_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma15-parallel", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-15", 
+        "MA-31"
+      ], 
+      "checks": {
+        "parallel_direction_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma15-tolerance", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-15", 
+        "MA-31"
+      ], 
+      "checks": {
+        "negative_tolerance_rejected": true, 
+        "body_position_unchanged": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma18-count", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-18"
+      ], 
+      "checks": {
+        "count_below_two_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma18-direction", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-18"
+      ], 
+      "checks": {
+        "zero_direction_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma18-nonfinite", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-18"
+      ], 
+      "checks": {
+        "nonfinite_spacing_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma19-periodic-count", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-19"
+      ], 
+      "checks": {
+        "periodic_duplicate_count_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma19-zero-step", 
+      "actions": [
+        "MA-05", 
+        "MA-13", 
+        "MA-19"
+      ], 
+      "checks": {
+        "duplicate_zero_step_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma24-empty-curves", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-24", 
+        "MA-31"
+      ], 
+      "checks": {
+        "empty_curves_rejected": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma24-tolerance", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-24", 
+        "MA-31"
+      ], 
+      "checks": {
+        "negative_tolerance_rejected": true, 
+        "body_position_unchanged": true
+      }
+    }, 
+    {
+      "status": "passed", 
+      "id": "negative-ma24-foreign-face", 
+      "actions": [
+        "MA-05", 
+        "MA-29", 
+        "MA-24", 
+        "MA-31"
+      ], 
+      "checks": {
+        "foreign_face_rejected": true
+      }
+    }
+  ], 
+  "events": [
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "2acfd1af5df27de0b7609f705be768d40f49d03c3c68fdde074a8e7006dcf568", 
+      "id": "MA-10", 
+      "source_sha256": "4505bec8924a1ce125ef751fc128a071db32d8d615fe7bf608014e501d6f1b83"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "dd277363549e0652637706d02807f2b690d1a07d3700c729ff96436d80b33a5a", 
+      "id": "MA-15", 
+      "source_sha256": "1667b866747a3ac3387f132eb94e37010106a971931e1898e12c45e4a7081471"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "b9a468aa1de5f85991f3b5d65a112d13625d9cca59c8037284a23249e9faa3f6", 
+      "id": "MA-18", 
+      "source_sha256": "68eebe217589152aadbcd1cf849effec6e307dd5153ac3402f492f3a3eb75cdc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51", 
+      "id": "MA-19", 
+      "source_sha256": "0920cdf8d92d0d23a91ed939a7bebe064e60d9f865dac32f2c6778b9c731cb27"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "69d0cf0b8fec4042a4580b3d078db343c394f6e3721529095c22a4083dc51719", 
+      "id": "MA-24", 
+      "source_sha256": "e17cfdd24481306b0a60f3a509b4821ed3def6ef5df65466e1f4596bf1ea3217"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "9cf30d9af1e5333c1f50fbf0fa209ceec32e7426649a9b15eb23ce7954e75c4a", 
+      "id": "MA-28", 
+      "source_sha256": "ba14d336c7666b9a43804ae57584e59faeb7f3a31762d236f9bb036147b23e90", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-28::_script\", line 151, in <module>\n  File \"MA-28::_script\", line 137, in operation\nValueError: Body selection needs a geometric criterion, not name alone\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "2acfd1af5df27de0b7609f705be768d40f49d03c3c68fdde074a8e7006dcf568", 
+      "id": "MA-10", 
+      "source_sha256": "4505bec8924a1ce125ef751fc128a071db32d8d615fe7bf608014e501d6f1b83", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-10::_script\", line 164, in <module>\n  File \"MA-10::_script\", line 137, in operation\nValueError: This nonperiodic variant requires two distinct section faces\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "2acfd1af5df27de0b7609f705be768d40f49d03c3c68fdde074a8e7006dcf568", 
+      "id": "MA-10", 
+      "source_sha256": "4505bec8924a1ce125ef751fc128a071db32d8d615fe7bf608014e501d6f1b83", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-10::_script\", line 164, in <module>\n  File \"MA-10::_script\", line 139, in operation\nValueError: Supply boolean ruled and explicit consume section policy\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "dd277363549e0652637706d02807f2b690d1a07d3700c729ff96436d80b33a5a", 
+      "id": "MA-15", 
+      "source_sha256": "1667b866747a3ac3387f132eb94e37010106a971931e1898e12c45e4a7081471", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-15::_script\", line 173, in <module>\n  File \"MA-15::_script\", line 148, in operation\nValueError: Reference point does not lie on the supplied trimmed face\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "dd277363549e0652637706d02807f2b690d1a07d3700c729ff96436d80b33a5a", 
+      "id": "MA-15", 
+      "source_sha256": "1667b866747a3ac3387f132eb94e37010106a971931e1898e12c45e4a7081471", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-15::_script\", line 173, in <module>\n  File \"MA-15::_script\", line 154, in operation\nValueError: Travel direction is parallel to the target plane\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "dd277363549e0652637706d02807f2b690d1a07d3700c729ff96436d80b33a5a", 
+      "id": "MA-15", 
+      "source_sha256": "1667b866747a3ac3387f132eb94e37010106a971931e1898e12c45e4a7081471", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-15::_script\", line 173, in <module>\n  File \"MA-15::_script\", line 143, in operation\n  File \"MA-15::_script\", line 48, in tolerance\nValueError: Tolerance cannot be negative\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "b9a468aa1de5f85991f3b5d65a112d13625d9cca59c8037284a23249e9faa3f6", 
+      "id": "MA-18", 
+      "source_sha256": "68eebe217589152aadbcd1cf849effec6e307dd5153ac3402f492f3a3eb75cdc", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-18::_script\", line 187, in <module>\n  File \"MA-18::_script\", line 144, in operation\nValueError: count must be at least 2\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "b9a468aa1de5f85991f3b5d65a112d13625d9cca59c8037284a23249e9faa3f6", 
+      "id": "MA-18", 
+      "source_sha256": "68eebe217589152aadbcd1cf849effec6e307dd5153ac3402f492f3a3eb75cdc", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-18::_script\", line 187, in <module>\n  File \"MA-18::_script\", line 150, in operation\n  File \"MA-18::_script\", line 34, in direction\nValueError: Direction must be nonzero\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "b9a468aa1de5f85991f3b5d65a112d13625d9cca59c8037284a23249e9faa3f6", 
+      "id": "MA-18", 
+      "source_sha256": "68eebe217589152aadbcd1cf849effec6e307dd5153ac3402f492f3a3eb75cdc", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-18::_script\", line 187, in <module>\n  File \"MA-18::_script\", line 146, in operation\n  File \"MA-18::_script\", line 39, in positive\n  File \"MA-18::_script\", line 15, in finite\nValueError: spacing_mm must be finite\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51", 
+      "id": "MA-19", 
+      "source_sha256": "0920cdf8d92d0d23a91ed939a7bebe064e60d9f865dac32f2c6778b9c731cb27", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-19::_script\", line 191, in <module>\n  File \"MA-19::_script\", line 166, in operation\nValueError: Circular array contains periodic duplicate angles\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "d671ca07d9f3f4a6cb9b64f0eb980bcf8201f8631a79716712e5522c44cec4a8", 
+      "id": "MA-13", 
+      "source_sha256": "12cc1b8d4ad6299188562a61b61b39a4136bf26ee41b283c135f34a54955cdcc"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51", 
+      "id": "MA-19", 
+      "source_sha256": "0920cdf8d92d0d23a91ed939a7bebe064e60d9f865dac32f2c6778b9c731cb27", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-19::_script\", line 191, in <module>\n  File \"MA-19::_script\", line 166, in operation\nValueError: Circular array contains periodic duplicate angles\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "69d0cf0b8fec4042a4580b3d078db343c394f6e3721529095c22a4083dc51719", 
+      "id": "MA-24", 
+      "source_sha256": "e17cfdd24481306b0a60f3a509b4821ed3def6ef5df65466e1f4596bf1ea3217", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-24::_script\", line 153, in <module>\n  File \"MA-24::_script\", line 139, in operation\nValueError: Supply nonempty trimmed splitting curves\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "69d0cf0b8fec4042a4580b3d078db343c394f6e3721529095c22a4083dc51719", 
+      "id": "MA-24", 
+      "source_sha256": "e17cfdd24481306b0a60f3a509b4821ed3def6ef5df65466e1f4596bf1ea3217", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-24::_script\", line 153, in <module>\n  File \"MA-24::_script\", line 141, in operation\n  File \"MA-24::_script\", line 48, in tolerance\nValueError: Tolerance cannot be negative\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "829b16cd56aa1dc679589284d1ba17efde48508828206d604dcbf4ae06c28e0f", 
+      "id": "MA-05", 
+      "source_sha256": "53471021ce37d200b4a7a4c2f44ed5718482d6b1e758cec6d1f870443b169d0a"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "41aabf791fe8c551ff78bd5305494d33d1192db8fe87b8926fb9cfbbfc72e14f", 
+      "id": "MA-29", 
+      "source_sha256": "f12a6dbad0678ef184c7804736747143178d4e3fd2819e32eb1afe5765aa5a97"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }, 
+    {
+      "status": "rejected", 
+      "archive_sha256": "69d0cf0b8fec4042a4580b3d078db343c394f6e3721529095c22a4083dc51719", 
+      "id": "MA-24", 
+      "source_sha256": "e17cfdd24481306b0a60f3a509b4821ed3def6ef5df65466e1f4596bf1ea3217", 
+      "reason": "Traceback (most recent call last):\n  File \"d459de8a-1553-4f85-a85c-3b81003b257a\", line 14, in _call\n  File \"MA-24::_script\", line 153, in <module>\n  File \"MA-24::_script\", line 136, in operation\nValueError: Split face must be current and belong to the supplied body\n"
+    }, 
+    {
+      "status": "executed", 
+      "archive_sha256": "434d4723f7ece3d9a2b98107eed045ad7f8464d6fab0216e51da787472aed695", 
+      "id": "MA-31", 
+      "source_sha256": "1f279140ff1eb25ecd092b7d2cba0ea7e919148ad5b62cb0f3e4dd7ca51ec743"
+    }
+  ]
+}

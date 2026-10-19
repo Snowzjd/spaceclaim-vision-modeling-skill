@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Snowzjd/spaceclaim-vision-modeling-skill/blob/main/spaceclaim-vision-modeling/references/operation-registry.schema.json",
+  "title": "SpaceClaim vision modeling operation registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "registry_version",
+    "architecture_version",
+    "template_contract_version",
+    "stages",
+    "extension_points",
+    "fallback",
+    "operations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "registry_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "architecture_version": {
+      "const": "0.3"
+    },
+    "template_contract_version": {
+      "const": 1
+    },
+    "stages": {
+      "type": "array",
+      "prefixItems": [
+        {"const": "geometry_understanding"},
+        {"const": "modeling_strategy_scripting"},
+        {"const": "execution_recovery"},
+        {"const": "validation_visual_review"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "extension_points": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/extension_point"
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "entrypoint", "conditions"],
+      "properties": {
+        "enabled": {"const": true},
+        "entrypoint": {"const": "SKILL.md"},
+        "conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "stage",
+          "status",
+          "template_version",
+          "template_path",
+          "template_sha256",
+          "trigger_summary",
+          "evidence_layers"
+        ],
+        "properties": {
+          "operation_id": {
+            "type": "string",
+            "pattern": "^(geometry_understanding|modeling_strategy_scripting|execution_recovery|validation_visual_review)\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+          },
+          "stage": {
+            "enum": [
+              "geometry_understanding",
+              "modeling_strategy_scripting",
+              "execution_recovery",
+              "validation_visual_review"
+            ]
+          },
+          "status": {
+            "enum": ["candidate", "active", "deprecated"]
+          },
+          "template_version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          },
+          "template_path": {
+            "type": "string",
+            "pattern": "^assets/operation-templates/.+\\.json$"
+          },
+          "template_sha256": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$"
+          },
+          "trigger_summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_layers": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "design_only",
+                "host_checked",
+                "spaceclaim_execution",
+                "geometry_measurements",
+                "native_save",
+                "native_reopen",
+                "visual_review",
+                "requested_export"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "stage": {
+      "enum": [
+        "geometry_understanding",
+        "modeling_strategy_scripting",
+        "execution_recovery",
+        "validation_visual_review"
+      ]
+    },
+    "extension_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extension_id",
+        "status",
+        "purpose",
+        "entry_from",
+        "input_contract",
+        "output_contract",
+        "reentry_stage",
+        "bypass_core_stages",
+        "contract_path"
+      ],
+      "properties": {
+        "extension_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+        },
+        "status": {
+          "enum": ["reserved", "candidate", "active", "deprecated"]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_from": {
+          "oneOf": [
+            {"const": "workflow_input"},
+            {"$ref": "#/$defs/stage"}
+          ]
+        },
+        "input_contract": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "output_contract": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "reentry_stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "bypass_core_stages": {
+          "const": false
+        },
+        "contract_path": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "string",
+              "pattern": "^references/extensions/.+\\.json$"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"status": {"const": "reserved"}},
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {"contract_path": {"type": "null"}}
+          },
+          "else": {
+            "properties": {"contract_path": {"type": "string"}}
+          }
+        }
+      ]
+    }
+  }
+}

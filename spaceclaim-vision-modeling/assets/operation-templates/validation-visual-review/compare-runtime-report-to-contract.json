@@ -1,0 +1,147 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "validation_visual_review.compare-runtime-report-to-contract",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "active",
+  "stage": "validation_visual_review",
+  "purpose": "Compare one structurally valid runtime report with one expected measurement contract on the host.",
+  "trigger": "One runtime report has passed schema validation and one expected measurement contract is available.",
+  "inputs": [
+    {
+      "name": "report_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to one structurally valid UTF-8 JSON runtime report.",
+      "provenance_required": true
+    },
+    {
+      "name": "contract_path",
+      "type": "filesystem path",
+      "required": true,
+      "description": "Path to one UTF-8 JSON measurement contract.",
+      "provenance_required": true
+    }
+  ],
+  "preconditions": [
+    "report_path has passed validation_visual_review.validate-runtime-report-schema.",
+    "contract_path identifies one readable schema-version-1 contract.",
+    "The caller treats compared values as declared claims, not independent observations."
+  ],
+  "outputs": [
+    {
+      "name": "contract_comparison_result",
+      "type": "object",
+      "required": true,
+      "description": "One passed or failed result with stable contract-mismatch codes."
+    }
+  ],
+  "postconditions": [
+    "Exactly one contract_comparison_result is emitted.",
+    "A passed result means the valid report matches the supplied contract within its declared tolerances.",
+    "The result does not independently observe geometry, execution, persistence, visuals, or exports."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py",
+    "target_environment": "Host Python 3.9 or newer; invoke with --contract and do not launch SpaceClaim.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "This operation runs only the report-to-contract comparison path after report schema validation."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "No geometry object is selected; declared fields are matched by contract keys and names."
+    ],
+    "topology_refresh": "Not applicable because the operation has no geometry effect."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "comparison_input_read_error",
+      "condition": "The valid report or contract cannot be read, decoded, or parsed.",
+      "detection": "Load both inputs with the bounded UTF-8 JSON loader.",
+      "safe_state": "No comparison claim is accepted and the result is failed."
+    },
+    {
+      "failure_id": "contract_structure_invalid",
+      "condition": "The supplied contract has unsupported fields, values, or structure.",
+      "detection": "Run validate_contract_structure before comparison.",
+      "safe_state": "No mismatch is interpreted as a model defect and the result is failed."
+    },
+    {
+      "failure_id": "contract_mismatch",
+      "condition": "The report differs from the contract in a declared target, body, group, feature, tolerance, or evidence boundary.",
+      "detection": "Run compare_contract and retain each stable mismatch code.",
+      "safe_state": "The report is not accepted for the supplied contract."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "comparison_input_read_error",
+      "action": "Provide readable UTF-8 JSON inputs and rerun the comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "contract_structure_invalid",
+      "action": "Repair the contract with provenance and rerun the comparison.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "contract_mismatch",
+      "action": "Investigate the first mismatch, correct the report or contract at its source, and rerun the comparison.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "One report-to-contract comparison",
+      "method": "Run targeted report-validator tests with contracts covering targets, bodies, groups, features, tolerances, and evidence boundaries.",
+      "expected": "Matching data passes and every declared mismatch returns a stable issue code without an exception.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [
+    "validation_visual_review.validate-runtime-report-schema"
+  ],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-report-to-contract-host-check.json",
+            "sha256": "8c86f32484e00d25293512211e2976da04b5581c3e1ed9bccb9870568468bea6",
+            "notes": "The single-action comparison boundary was reviewed."
+          }
+        ],
+        "notes": "The operation compares one valid report with one contract."
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-report-to-contract-host-check.json",
+            "sha256": "8c86f32484e00d25293512211e2976da04b5581c3e1ed9bccb9870568468bea6",
+            "notes": "Targeted host tests cover report-to-contract comparison behavior."
+          }
+        ],
+        "notes": "No SpaceClaim process is launched."
+      },
+      "spaceclaim_execution": {"status": "not_applicable", "evidence_refs": [], "notes": "Host-only operation."},
+      "geometry_measurements": {"status": "not_applicable", "evidence_refs": [], "notes": "Declared values are compared but not independently measured."},
+      "native_save": {"status": "not_applicable", "evidence_refs": [], "notes": "No model is saved."},
+      "native_reopen": {"status": "not_applicable", "evidence_refs": [], "notes": "No model is reopened."},
+      "visual_review": {"status": "not_applicable", "evidence_refs": [], "notes": "No viewport or image is reviewed."},
+      "requested_export": {"status": "not_applicable", "evidence_refs": [], "notes": "No geometry is exported."}
+    },
+    "notes": "Evidence stops at design_only and host_checked."
+  },
+  "artifact_links": [
+    {"path": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py", "role": "implementation", "sha256": "e1905d09380b35acfe2d12bb24af1c692b4df5c590d2aedc10adfd0c4a6aa079"},
+    {"path": "tests/test_validate_runtime_report.py", "role": "test", "sha256": "29ad6c4d295b3c12d491fbd9f7b4cc859fad3f653768c40e01290e2f39177dac"},
+    {"path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/compare-runtime-report-to-contract-host-check.json", "role": "evidence", "sha256": "8c86f32484e00d25293512211e2976da04b5581c3e1ed9bccb9870568468bea6"}
+  ]
+}

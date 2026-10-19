@@ -1,0 +1,68 @@
+{
+  "catalog_id": "GU-18",
+  "input_fields": [
+    {
+      "name": "missing_or_conflicting_information",
+      "type": "object",
+      "description": "一个可定位的缺失、冲突、遮挡、歧义或不支持项；保留原始 source_refs。"
+    },
+    {
+      "name": "affected_objects",
+      "type": "array",
+      "description": "受该问题影响的对象、尺寸、关系或交付要求引用；引用不清时为未决。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "record_kind",
+      "type": "string",
+      "description": "只允许 assumption 或 unresolved；记录不能把问题伪装成已解决事实。"
+    },
+    {
+      "name": "statement",
+      "type": "string",
+      "description": "一条可审计的假设或未决陈述；无法形成明确陈述时为 null。"
+    },
+    {
+      "name": "reason",
+      "type": "string",
+      "description": "missing、conflicting、occluded、ambiguous、unsupported 或 other 等原因。"
+    },
+    {
+      "name": "confidence",
+      "type": "string",
+      "description": "high、medium、low 或 unknown；置信度不是解决状态。"
+    },
+    {
+      "name": "impact",
+      "type": "string",
+      "description": "问题对几何解释、尺寸、坐标或交付要求的影响；影响未知时为 null。"
+    },
+    {
+      "name": "blocks_decision",
+      "type": "boolean",
+      "description": "该问题是否阻塞受影响的局部决策；不能判断时为 null。"
+    },
+    {
+      "name": "source_refs",
+      "type": "array",
+      "description": "原始证据或用户说明引用；不可伪造定位。"
+    },
+    {
+      "name": "related_refs",
+      "type": "array",
+      "description": "受影响对象引用；未知引用保留 null 或未决包。"
+    }
+  ],
+  "procedure": [
+    "定位一个缺失或冲突项，原样记录相关来源、用户说明和受影响对象，不先填补缺口。",
+    "判断 record_kind、reason、confidence 和 impact；用户明确假设标为 user，模型提出的假设标为 derived。",
+    "输出一条 statement、blocks_decision、source_refs 和 related_refs；未知字段写 null，并保持未决包可追溯。",
+    "仅记录一个问题或假设，不把多个问题合并成整体结论，也不设置操作级 ready 状态。"
+  ],
+  "rejection_rules": [
+    "问题无法定位到来源、对象或决策时拒绝生成无依据的假设。",
+    "冲突信息不得通过静默选择、平均或默认值变成已解决记录。",
+    "不得把 low/unknown confidence 当作问题已解决，也不得删除 blocking 影响。"
+  ]
+}

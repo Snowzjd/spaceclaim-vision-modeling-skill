@@ -1,0 +1,96 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.close-native-model",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_validation_guidance -v",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 5,
+  "tool": "spaceclaim-vision-modeling/references/atomic-guidance/va-21.json",
+  "tool_sha256": "8dd17372d04de5f6ca33d7ec3bb9d548999c3eab1fe65ae5c34ce061d1904737",
+  "test": "tests/test_validation_guidance.py",
+  "test_sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/va-21.json",
+      "sha256": "8dd17372d04de5f6ca33d7ec3bb9d548999c3eab1fe65ae5c34ce061d1904737",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_validation_guidance.py",
+      "sha256": "bfde12661cd831906a944030dd59bb8f5680d8708af65082e8fa499a40924b61",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-evidence.json",
+      "sha256": "505da7beb451400ff5d9f976df2009177c42a29ea2d8d6140461df4da00d0c54",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-test.py",
+      "sha256": "97c7a2ce420c485a543678d9116f50ca83708f909b0c6366d98f00d4d9d3871b",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+      "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+    },
+    "spaceclaim_execution": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Independent guidance application reviewed; structural host checks only. Unobserved variants remain not_tested."
+}

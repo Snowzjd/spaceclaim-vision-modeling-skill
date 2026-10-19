@@ -1,0 +1,86 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.reimport-and-check-export",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "python -B -m unittest tests.test_validation_host_actions -v",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 6,
+  "tool": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+  "tool_sha256": "34bc54d851e7de76ef6fc1ed0f3cabde58195ad4c618ab9b2379958b4be78827",
+  "test": "tests/test_validation_host_actions.py",
+  "test_sha256": "de28c18795efd37a0795855fbede3ea42ce023454bce96418f96972ff20bc9a9",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validation_host_actions.py",
+      "sha256": "34bc54d851e7de76ef6fc1ed0f3cabde58195ad4c618ab9b2379958b4be78827",
+      "role": "tool"
+    },
+    {
+      "path": "tests/test_validation_host_actions.py",
+      "sha256": "de28c18795efd37a0795855fbede3ea42ce023454bce96418f96972ff20bc9a9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/raw-inputs.json",
+      "sha256": "eabf47111d826108046905a5535b5a5eb7367e68c0dbadf80c8ec790f7d3b29b",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/results.json",
+      "sha256": "a566c59234051fecee67e2428c7bd159bfca814e428d356f7dd12c494e88997e",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/evaluation.md",
+      "sha256": "ef16b8304d38d83fc3593977a159e74ff40239a96dd3768ad3bdece1aef07399",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/host-checks.json",
+      "sha256": "f0a2f11840051c995b2cb6f021efa2544921ea721a62799a68634626262618f5",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p5-actions/reopen-observation.json",
+      "sha256": "72cf559296329d40069267eb4032bf20069b5af67f33dbcb3977c1420b6bc893",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+    },
+    "spaceclaim_execution": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "geometry_measurements": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_save": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "native_reopen": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    },
+    "requested_export": {
+      "status": "not_tested",
+      "scope": "This layer was not performed for this exact template."
+    }
+  },
+  "notes": "Deterministic host property/file checks only. Caller must independently provide trustworthy measured/runtime observations."
+}

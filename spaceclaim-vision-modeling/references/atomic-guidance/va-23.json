@@ -1,0 +1,98 @@
+{
+  "catalog_id": "VA-23",
+  "input_fields": [
+    {
+      "name": "observation",
+      "type": "object",
+      "description": "One caller-provided measured property record from a native_reopen observation."
+    },
+    {
+      "name": "expected_value",
+      "type": "object",
+      "description": "One expected scalar, text, boolean, or flat numeric vector."
+    },
+    {
+      "name": "expected_artifact_sha256",
+      "type": "string",
+      "description": "Expected hash of the reopened native artifact."
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Finite nonnegative tolerance; default may be zero."
+    },
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-23 action identity."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "description": "VA-23 host action identity."
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "passed or failed comparison."
+    },
+    {
+      "name": "property",
+      "type": "string",
+      "description": "Compared property name."
+    },
+    {
+      "name": "object_identity",
+      "type": "string",
+      "description": "Observed object identity."
+    },
+    {
+      "name": "actual",
+      "type": "object",
+      "description": "Observed property value."
+    },
+    {
+      "name": "expected",
+      "type": "object",
+      "description": "Expected value."
+    },
+    {
+      "name": "absolute_tolerance",
+      "type": "number",
+      "description": "Applied tolerance."
+    },
+    {
+      "name": "observation_ref",
+      "type": "string",
+      "description": "Caller observation reference."
+    },
+    {
+      "name": "artifact_sha256",
+      "type": "string",
+      "description": "Reopened artifact hash used for binding."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "description": "host_checked for supplied-observation comparison only."
+    },
+    {
+      "name": "runtime_observed",
+      "type": "boolean",
+      "description": "Always false; host helper does not observe SpaceClaim."
+    }
+  ],
+  "procedure": [
+    "Validate one native_reopen observation and compare its artifact hash with expected_artifact_sha256.",
+    "Compare the one property using finite scalar, text/boolean, or flat-vector semantics and absolute_tolerance.",
+    "Return the flat host result with actual/expected values and runtime_observed=false.",
+    "Do not open SpaceClaim, obtain another measurement, or compare a second property."
+  ],
+  "rejection_rules": [
+    "Reject wrong source_kind/action_id, unmeasured observation, missing identity/ref, hash mismatch, unsupported value shape, or negative/nonfinite tolerance.",
+    "Do not infer native reopen from a filename.",
+    "Do not report runtime observation as passed."
+  ]
+}

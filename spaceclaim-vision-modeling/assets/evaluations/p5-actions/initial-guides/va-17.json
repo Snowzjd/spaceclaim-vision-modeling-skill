@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-17",
+  "input_fields": [
+    {
+      "name": "object_current_name",
+      "type": "object",
+      "description": "One object identity together with its observed current name."
+    },
+    {
+      "name": "expected_name",
+      "type": "string",
+      "description": "One expected name under the declared naming scope."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "name_comparison_result",
+      "type": "object",
+      "description": "Target identity, observed name, expected name, and comparison."
+    },
+    {
+      "name": "name_status",
+      "type": "string",
+      "description": "matched, mismatched, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one target object and read its current name.",
+    "Compare the exact name under the declared case/scope rules.",
+    "Return name_comparison_result and name_status.",
+    "Do not rename, search for a replacement object, or infer membership from the name."
+  ],
+  "rejection_rules": [
+    "Reject an ordinal-only/ambiguous object identity or an undefined case/scope rule.",
+    "Reject a name match from a different object.",
+    "Do not convert mismatch into an automatic rename."
+  ]
+}

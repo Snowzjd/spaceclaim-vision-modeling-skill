@@ -1,0 +1,273 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.translate-body-to-face",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic translate-body-to-face operation within the MA-15 boundary: One root-body translation to a supplied planar target face. The current variant translates without rotation or deformation and requires the supplied reference point to project onto both trimmed faces.",
+  "trigger": "Use when the build plan requires translate-body-to-face and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "current root DesignBody",
+      "required": true,
+      "description": "The current moving body."
+    },
+    {
+      "name": "reference_face",
+      "type": "current face owned by body",
+      "required": true,
+      "description": "A current face on the moving body used for the reference point."
+    },
+    {
+      "name": "target_face",
+      "type": "current planar DesignFace on another root body",
+      "required": true,
+      "description": "A distinct current planar target face."
+    },
+    {
+      "name": "reference_point_mm",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite point in millimetres that must lie on the trimmed reference face."
+    },
+    {
+      "name": "direction",
+      "type": "number[3]",
+      "required": true,
+      "description": "Finite nonzero travel direction; normalized by the shared direction helper."
+    },
+    {
+      "name": "position_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for reference-point and target-face projection checks in millimetres."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for preserving body volume in cubic millimetres."
+    }
+  ],
+  "preconditions": [
+    "body is a current closed positive-volume root DesignBody and reference_face belongs to it.",
+    "target_face belongs to a different current root body and is planar.",
+    "reference_point_mm lies on the trimmed reference face within position_tolerance_mm.",
+    "direction is finite and nonzero, is not parallel to the target plane, and reaches the target face in the supplied direction.",
+    "position_tolerance_mm and volume_tolerance_mm3 are finite and nonnegative."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{body: reacquired current root DesignBody, delta_mm: number[3], reference_endpoint_mm: number[3]}."
+    }
+  ],
+  "postconditions": [
+    "The body is translated only when a nonzero travel distance is required.",
+    "The translated body is reacquired by expected bounds and volume rather than by command return order.",
+    "The reference endpoint projects onto the trimmed target face within position_tolerance_mm and body volume is preserved within volume_tolerance_mm3."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-15.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic translate-body-to-face operation within the MA-15 boundary: One root-body translation to a supplied planar target face. The current variant translates without rotation or deformation and requires the supplied reference point to project onto both trimmed faces. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "bounding_box",
+      "geometry_type",
+      "position",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Current root bodies are re-enumerated after Move.Translate and the result is resolved from expected bounds and volume; prior topology references must be reacquired after later mutation."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_translation_to_face_input",
+      "condition": "Body/face ownership, point-on-face, target-planarity, direction, reachability, or tolerance validation fails before translation.",
+      "detection": "Body/face ownership, point-on-face, target-planarity, direction, reachability, or tolerance validation fails before translation.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "translation_to_face_failure",
+      "condition": "Move.Translate raises or no unique body with the expected bounds and volume is found.",
+      "detection": "Move.Translate raises or no unique body with the expected bounds and volume is found.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_translation_to_face_input",
+      "action": "Re-enumerate current root geometry and supply a valid reference point, distinct planar target, finite direction, and nonnegative tolerances; no translation is expected.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "translation_to_face_failure",
+      "action": "Treat the root document as potentially partially mutated, reopen a clean run-owned copy, diagnose projection and target reachability, and rerun.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: The body is translated only when a nonzero travel distance is required.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The body is translated only when a nonzero travel distance is required.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The translated body is reacquired by expected bounds and volume rather than by command return order.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The translated body is reacquired by expected bounds and volume rather than by command return order.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The reference endpoint projects onto the trimmed target face within position_tolerance_mm and body volume is preserved within volume_tolerance_mm3.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The reference endpoint projects onto the trimmed target face within position_tolerance_mm and body volume is preserved within volume_tolerance_mm3.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-15-host-check.json",
+            "sha256": "3ccc4f5e1d6a97677aae4f4ce77816106d04c020c0a9dbc8cb423d3d40903d3c"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-15-host-check.json",
+            "sha256": "3ccc4f5e1d6a97677aae4f4ce77816106d04c020c0a9dbc8cb423d3d40903d3c"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+            "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-15.scscript",
+      "sha256": "dd277363549e0652637706d02807f2b690d1a07d3700c729ff96436d80b33a5a",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-15.py",
+      "sha256": "1667b866747a3ac3387f132eb94e37010106a971931e1898e12c45e4a7081471",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-15.action.py",
+      "sha256": "918a0c5e1802a368d1b8352ce54aa0da3f281e11be4ed0bfde18cf47722540f9",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-15-host-check.json",
+      "sha256": "3ccc4f5e1d6a97677aae4f4ce77816106d04c020c0a9dbc8cb423d3d40903d3c",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

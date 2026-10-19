@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-12",
+  "input_fields": [
+    {
+      "name": "face_reference",
+      "type": "object",
+      "description": "One current face whose underlying geometry type is to be classified."
+    },
+    {
+      "name": "type_criterion",
+      "type": "object",
+      "description": "Allowed analytic type set and classification rule."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "face_type",
+      "type": "string",
+      "description": "One analytic type or unknown; freeform is not forced into an analytic class."
+    },
+    {
+      "name": "classification_status",
+      "type": "string",
+      "description": "classified, unknown, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Read the face's underlying geometry type once.",
+    "Compare it with type_criterion and return one type label or unknown.",
+    "Record the source geometry type and classification_status.",
+    "Do not fit a freeform surface to a cylinder/cone/torus to force a label."
+  ],
+  "rejection_rules": [
+    "Reject inaccessible geometry, undefined labels, or a criterion that asks for multiple classifications.",
+    "Reject visual resemblance as a substitute for underlying type.",
+    "Do not modify the face to obtain a recognized type."
+  ]
+}

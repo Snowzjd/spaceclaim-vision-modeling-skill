@@ -1,0 +1,16 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "handoff_status": "requires_clarification",
+  "source_manifest_ref": "source-manifest:neutral-conflicting-dimensions",
+  "dimensions_with_provenance": [
+    {"id": "dimension-feature-spacing", "target_ref": "feature-spacing", "disposition": "conflicting", "value": null, "unit": "millimeter", "provenance": {"kind": "unresolved", "source_refs": [{"source_id": "view-a", "locator": "spacing callout", "modality": "drawing"}, {"source_id": "view-b", "locator": "spacing callout", "modality": "drawing"}], "rationale": "Two supported callouts assign different values to the same scoped spacing."}, "supporting_statement_refs": ["statement-a", "statement-b"], "confidence": "unknown"}
+  ],
+  "dimension_relations": [],
+  "unresolved_items": [
+    {"id": "unresolved-feature-spacing", "description": "Two source views conflict on the same feature spacing.", "reason": "conflicting", "blocks_handoff": true, "clarification_needed": "Identify the controlling callout or provide a corrected source.", "source_refs": [{"source_id": "view-a", "locator": "spacing callout", "modality": "drawing"}, {"source_id": "view-b", "locator": "spacing callout", "modality": "drawing"}], "related_refs": ["dimension-feature-spacing"]}
+  ],
+  "reconciliation_confidence": {"level": "low", "coverage": "complete", "rationale": "All statements are captured, but the controlling value is unresolved."}
+}

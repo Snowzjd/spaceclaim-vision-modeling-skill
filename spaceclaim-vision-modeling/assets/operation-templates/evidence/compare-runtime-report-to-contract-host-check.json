@@ -1,0 +1,61 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "validation_visual_review.compare-runtime-report-to-contract",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest discover -s tests -p test_validate_runtime_report.py -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 22,
+  "tool": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py",
+  "test": "tests/test_validate_runtime_report.py",
+  "tool_sha256": "e1905d09380b35acfe2d12bb24af1c692b4df5c590d2aedc10adfd0c4a6aa079",
+  "test_sha256": "29ad6c4d295b3c12d491fbd9f7b4cc859fad3f653768c40e01290e2f39177dac",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/validate_runtime_report.py",
+      "role": "tool",
+      "sha256": "e1905d09380b35acfe2d12bb24af1c692b4df5c590d2aedc10adfd0c4a6aa079"
+    },
+    {
+      "path": "tests/test_validate_runtime_report.py",
+      "role": "test",
+      "sha256": "29ad6c4d295b3c12d491fbd9f7b4cc859fad3f653768c40e01290e2f39177dac"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The host report-to-contract comparison contract and evidence boundary were reviewed."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Twenty-two targeted tests passed; the contract cases cover target, body, group, feature, tolerance, and evidence-boundary comparisons."
+    },
+    "spaceclaim_execution": {
+      "status": "not_applicable",
+      "scope": "No SpaceClaim process was launched."
+    },
+    "geometry_measurements": {
+      "status": "not_applicable",
+      "scope": "The tool validates declared measurements but does not independently measure geometry."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was saved."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "No native SpaceClaim document was reopened."
+    },
+    "visual_review": {
+      "status": "not_applicable",
+      "scope": "No application viewport or image was reviewed."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No model export was requested or produced by this host operation."
+    }
+  },
+  "notes": "This evidence supports invocation with --contract after schema validation. It cannot independently prove runtime, geometry, persistence, or export claims."
+}

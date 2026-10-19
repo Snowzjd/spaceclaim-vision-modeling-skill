@@ -1,0 +1,38 @@
+{
+  "catalog_id": "GU-04",
+  "input_fields": [
+    {
+      "name": "two_views",
+      "type": "array",
+      "description": "恰好两个已定位的视图及其投影记录；每个成员保留独立 source_ref。"
+    },
+    {
+      "name": "corresponding_structure_refs",
+      "type": "array",
+      "description": "用户或观察得到的候选结构引用；候选不等于已确认的同一对象。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "correspondence",
+      "type": "object",
+      "description": "Exactly one feature pair across the two supplied views: view_a_ref, view_b_ref, feature_a_ref, feature_b_ref and basis. Null when ambiguous; candidates remain in ambiguities."
+    },
+    {
+      "name": "ambiguities",
+      "type": "array",
+      "description": "无法唯一对应的候选及冲突原因；不得将歧义压缩为单一对象。"
+    }
+  ],
+  "procedure": [
+    "限定一个目标特征在两个已识别视图中的对应；不要一次建立整图对应表。",
+    "比较投影位置、轮廓、尺寸指向和邻接；分开记录可见证据和派生匹配。",
+    "输出一个 correspondence 对象；多解列入 ambiguities，将 correspondence 置 null 并记录阻塞未决项。",
+    "不得暗改坐标框架或从未确认的对应关系推导尺寸。"
+  ],
+  "rejection_rules": [
+    "任一视图身份或投影关系不可用时拒绝确定跨视图对应。",
+    "多个候选具有同等证据时不得随机选一个；输出歧义和未决包。",
+    "不得把相同位置、名称或线条数量单独作为同一对象的充分证据。"
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.import-geometry-controlled",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic import-geometry-controlled operation within the MA-35 boundary: Controlled native .scdoc component import into the currently active root Part using ImportOptions.Create() and Component.CreateFromFile(Part, string, ImportOptions). It accepts only a non-nested native source, does not open or replace the current document, save or overwrite files, rename current bodies, import foreign formats, or apply unit overrides.",
+  "trigger": "Use when the build plan requires import-geometry-controlled and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "source_path",
+      "type": "existing string path ending in .scdoc",
+      "required": true,
+      "description": "A readable native SpaceClaim document path. Foreign CAD extensions, directories, and nested-source variants are outside this action."
+    },
+    {
+      "name": "source_sha256",
+      "type": "64-character hexadecimal string",
+      "required": true,
+      "description": "The expected SHA-256 digest of source_path; it must match before import and remain unchanged through the action."
+    },
+    {
+      "name": "expected_body_count",
+      "type": "positive integer",
+      "required": true,
+      "description": "The required number of imported DesignBodyGeneral occurrence objects; boolean and non-finite values are rejected."
+    },
+    {
+      "name": "expected_body_signatures",
+      "type": "array<object{bbox_mm: number[6], volume_mm3: positive number}>",
+      "required": true,
+      "description": "One finite bounding-box/volume signature per expected body. Signatures are matched uniquely by geometry, not by import enumeration order."
+    },
+    {
+      "name": "bbox_tolerance_mm",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for imported-body bounding-box matching in millimetres."
+    },
+    {
+      "name": "volume_tolerance_mm3",
+      "type": "nonnegative number",
+      "required": true,
+      "description": "Tolerance for imported-body volume matching in cubic millimetres."
+    }
+  ],
+  "preconditions": [
+    "source_path is an existing readable .scdoc file and source_sha256 is a valid hexadecimal SHA-256 digest matching its bytes before the import call.",
+    "expected_body_count is a positive finite integer and equals the number of supplied expected_body_signatures.",
+    "Every expected signature contains six finite bbox_mm values and one positive finite volume_mm3 value.",
+    "bbox_tolerance_mm and volume_tolerance_mm3 are finite and nonnegative.",
+    "The active SpaceClaim part is the root part; foreign-format, unit-override, and nested-source options are not supplied."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{component: direct-root Component, bodies: array<DesignBodyGeneral occurrence>, source_sha256: verified digest, measurements: array<{body, bbox_mm, volume_mm3}>}; bodies are component-content occurrences whose kernel topology is checked through body.Master, and bounds and volumes are reported in mm and mm3 after converting native metre-based geometry."
+    }
+  ],
+  "postconditions": [
+    "Exactly one new Component is found by before/after root.GetDescendants[Component]() enumeration and its Parent is the active root Part.",
+    "The imported component has no nested Component descendants and its Content.Bodies collection contains exactly expected_body_count DesignBodyGeneral occurrences.",
+    "Every expected bbox/volume signature matches exactly one imported body within the supplied tolerances, without relying on returned body order.",
+    "measurements reports each returned body bbox in millimetres and volume in cubic millimetres using bounds_mm and volume_mm3 conversions from native metre-based geometry.",
+    "The source digest is returned as source_sha256 and remains unchanged when reread after import."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "creates",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic import-geometry-controlled operation within the MA-35 boundary: Controlled native .scdoc component import into the currently active root Part using ImportOptions.Create() and Component.CreateFromFile(Part, string, ImportOptions). It accepts only a non-nested native source, does not open or replace the current document, save or overwrite files, rename current bodies, import foreign formats, or apply unit overrides. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "bounding_box",
+      "geometry_type",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Enumerate direct-root components after Component.CreateFromFile and enumerate component.Content.Bodies after import before semantic matching."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_source_or_hash",
+      "condition": "Path extension, file, digest format, or pre-import hash validation fails.",
+      "detection": "Path extension, file, digest format, or pre-import hash validation fails.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "unsupported_import_scope",
+      "condition": "A foreign-format/unit-override option is supplied, the root is not active, or imported content contains nested components.",
+      "detection": "A foreign-format/unit-override option is supplied, the root is not active, or imported content contains nested components.",
+      "safe_state": "Stop downstream use and retain only a clean run-owned state."
+    },
+    {
+      "failure_id": "import_identity_or_body_contract_failure",
+      "condition": "The root set difference is not exactly one component, body count differs, a body is not a closed nonempty solid, or a bbox/volume signature is missing or ambiguous.",
+      "detection": "The root set difference is not exactly one component, body count differs, a body is not a closed nonempty solid, or a bbox/volume signature is missing or ambiguous.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    },
+    {
+      "failure_id": "source_changed_during_import",
+      "condition": "A post-import SHA-256 reread differs from the verified pre-import digest.",
+      "detection": "A post-import SHA-256 reread differs from the verified pre-import digest.",
+      "safe_state": "Stop downstream use and retain only a clean run-owned state."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_source_or_hash",
+      "action": "Stop before Component.CreateFromFile, provide a readable native .scdoc and matching SHA-256 digest, and rerun.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "unsupported_import_scope",
+      "action": "Stop or discard the newly imported component, then rerun with a clean active root and a non-nested native .scdoc source; no generic foreign-format adapter is attempted.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "import_identity_or_body_contract_failure",
+      "action": "Discard the partial imported component and rerun from the unchanged target document with corrected expected signatures; no rollback is implemented.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "source_changed_during_import",
+      "action": "Discard the imported component, restore or reselect the unchanged source file, and rerun after confirming its digest.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: Exactly one new Component is found by before/after root.GetDescendants[Component]() enumeration and its Parent is the active root Part.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Exactly one new Component is found by before/after root.GetDescendants[Component]() enumeration and its Parent is the active root Part.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The imported component has no nested Component descendants and its Content.Bodies collection contains exactly expected_body_count DesignBodyGeneral occurrences.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The imported component has no nested Component descendants and its Content.Bodies collection contains exactly expected_body_count DesignBodyGeneral occurrences.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: Every expected bbox/volume signature matches exactly one imported body within the supplied tolerances, without relying on returned body order.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "Every expected bbox/volume signature matches exactly one imported body within the supplied tolerances, without relying on returned body order.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: measurements reports each returned body bbox in millimetres and volume in cubic millimetres using bounds_mm and volume_mm3 conversions from native metre-based geometry.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "measurements reports each returned body bbox in millimetres and volume in cubic millimetres using bounds_mm and volume_mm3 conversions from native metre-based geometry.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The source digest is returned as source_sha256 and remains unchanged when reread after import.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The source digest is returned as source_sha256 and remains unchanged when reread after import.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-35-host-check.json",
+            "sha256": "5553661cc0045c5157fecdd25421958ec0aa056a750f3926deb9194ee4987ee4"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-35-host-check.json",
+            "sha256": "5553661cc0045c5157fecdd25421958ec0aa056a750f3926deb9194ee4987ee4"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json",
+            "sha256": "2a57e7669b6836d67ddce03bf6dc9755d4d7eeb53578decde719c8532f8dc51a"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json",
+            "sha256": "2a57e7669b6836d67ddce03bf6dc9755d4d7eeb53578decde719c8532f8dc51a"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.scscript",
+      "sha256": "b9f1c054188e47e27fcd00b303b8f5b4e8f9cdc84529c050e44a9d60e03610a0",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.py",
+      "sha256": "2a6ddbe5e5c1691999da767dd1dcb1184aff8196eb418ab2eedff0c4a141f24f",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-35.action.py",
+      "sha256": "5b9f24054a9ec064eb852ac811e609c341e71a8bb8c8955cae80059531aa0fce",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_atomic_import.py",
+      "sha256": "0754a9296851fa446cfd62f5d28f9e671f0e6cee3da7266d0444250a1d093a02",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-35-host-check.json",
+      "sha256": "5553661cc0045c5157fecdd25421958ec0aa056a750f3926deb9194ee4987ee4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/report.json",
+      "sha256": "2a57e7669b6836d67ddce03bf6dc9755d4d7eeb53578decde719c8532f8dc51a",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-import-03/harness.py",
+      "sha256": "7355a77648d2d8e0ace409046bbba19bcdf90a648358a33670a1f751601b8c11",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

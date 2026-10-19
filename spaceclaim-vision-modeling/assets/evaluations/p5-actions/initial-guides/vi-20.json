@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VI-20",
+  "input_fields": [
+    {
+      "name": "actual_view",
+      "type": "object",
+      "description": "One captured actual view with camera/projection context and image identity."
+    },
+    {
+      "name": "reference_view",
+      "type": "object",
+      "description": "One corresponding reference view with comparable camera/projection context and image identity."
+    },
+    {
+      "name": "feature_to_check",
+      "type": "object",
+      "description": "One feature or visual claim to compare."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "visual_comparison_record",
+      "type": "object",
+      "description": "One-view agreement, differences, indeterminate items, image regions, and projection caveats."
+    }
+  ],
+  "procedure": [
+    "Confirm actual_view and reference_view identity, camera/projection, scale, and orientation before comparison.",
+    "Inspect feature_to_check in the corresponding image region only; record agreement, difference, or indeterminate.",
+    "Bind each observation to image coordinates/regions and retain projection caveats.",
+    "Return visual_comparison_record without converting a screenshot into dimensional, topological, save, or reopen evidence."
+  ],
+  "rejection_rules": [
+    "Reject noncomparable projections, missing image identity/region, hidden feature, or an attempted whole-model conclusion from one view.",
+    "Do not treat absent visibility as structural absence; use VI-21 for unresolved occlusion.",
+    "Do not edit the model to improve visual agreement."
+  ]
+}

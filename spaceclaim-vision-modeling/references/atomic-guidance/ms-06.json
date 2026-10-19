@@ -1,0 +1,49 @@
+{
+  "catalog_id": "MS-06",
+  "input_fields": [
+    {
+      "name": "target_object_requirements",
+      "type": "object",
+      "description": "Object with required keys `object_type`, `meaning`, and `required_properties` for one target object."
+    },
+    {
+      "name": "geometry_properties",
+      "type": "array",
+      "description": "Array of property objects, each with required keys `name`, `value`, `unit`, and `source_ref`; properties must be measurable."
+    },
+    {
+      "name": "selection_tolerance",
+      "type": "object",
+      "description": "Object with required keys `criteria`, `value`, `unit`, and `comparison` for approximate matching."
+    },
+    {
+      "name": "topology_refresh_prerequisite",
+      "type": "object",
+      "description": "Optional MS-07 output with required keys `action_id`, `affected_references`, `refresh_before_next_selection`, and `refresh_scope`; it is consumed, not synthesized."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "semantic_predicate",
+      "type": "object",
+      "description": "Object with required keys `object_type`, `criteria`, `match_rule`, and `refresh_prerequisite`; nullable when the common output envelope records missing selection evidence."
+    },
+    {
+      "name": "ambiguity_policy",
+      "type": "object",
+      "description": "Object with required keys `zero_matches`, `one_match`, and `multiple_matches`, each stating the declarative handling policy."
+    }
+  ],
+  "procedure": [
+    "Translate the target meaning into measurable criteria using only the supplied object type and geometry properties.",
+    "Attach units, tolerances, and comparison operators to each criterion and define the zero-match and multiple-match policy.",
+    "If an MS-07 topology-refresh prerequisite is supplied, carry its reference into `refresh_prerequisite`; do not create a refresh declaration here.",
+    "Return `semantic_predicate` and `ambiguity_policy` as action data; the predicate describes selection but does not execute selection or retain object handles."
+  ],
+  "rejection_rules": [
+    "Reject recorded FaceN, BodyN, index, or Boolean-return order as a reusable semantic criterion.",
+    "Reject an unmeasurable requirement, missing tolerance for an approximate comparison, or an object type that is not determined.",
+    "Reject an absent or malformed MS-07 prerequisite when topology refresh is required; do not synthesize one inside MS-06.",
+    "Do not execute selection, return a selected object, or claim uniqueness when zero or multiple candidates remain."
+  ]
+}

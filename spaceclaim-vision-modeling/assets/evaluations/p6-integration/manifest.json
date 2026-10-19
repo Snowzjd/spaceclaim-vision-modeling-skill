@@ -1,0 +1,21 @@
+{
+  "files": {
+    "clarification.json": "fc177e63db958204e6ded029e2510685e12908ae967844a56e22f7c3b826a38b",
+    "corrected-audit.json": "3ed1c54720814fdc4c2f92bc727f0c8e5fec32f55f7e152fa9f9352818d4bc0d",
+    "corrected.py": "19e09c4e91531f1eb07aa4676bc7884dc9b5f3bfd8456b5705943e01a3d77fe8",
+    "corrected.scscript": "3b46abca9a1ecf9a1aac33d05f578d132d54b3ff888406c3b41915686943943a",
+    "evaluation.json": "3a62614d27a770f9501ad5cb7636ddefdacdeba4d330984b9bb1110d730669ea",
+    "handoff-A-integrity.json": "eba12d8141b6c13054188644f9eda7afca267008bacc92e7ddd5f379ae3cb9ea",
+    "handoff-A.json": "1f571d28fcebf96afbab902538331013a8b1eb10c49603c1425b5c3fec820a09",
+    "handoff-B-integrity.json": "f277480226ac201b3a027524d7b049828bc7a2816a4dac9fca0d04f0cdf94b46",
+    "handoff-B.json": "58b9ea8957b58276df467eec83b635068e0465197917a9c24a63bd3ac2a0b4a4",
+    "initial-audit.json": "2d21037e32d3349d4e2a5173d49cc94ca0a8922cafdf0ba04d6f666a27d9fae0",
+    "initial.py": "d555f959f9cf717345d8d426e6e013147c6f1e88b951436d4efbca90c1d527c5",
+    "initial.scscript": "30d44d36dcbb5a2d51026e41d7d429d08f090c9b4b8ec5a708a0442ebb633d1a",
+    "package-isolation.json": "18cb40f60b846ab88a82d58cd5f2f14e2129d7362ecc34c3f39ac9493f15766f",
+    "raw-requests.json": "780e010023c53dda2ff7f5d25e4af832eb710ddc771cd3b242c4c3d46c8c660b",
+    "README.md": "d830c7359cc325475298e89fad20d0afec69d0450ff232c54099823c53192f03",
+    "routing-record.json": "fbf85dcfd1c583736ebb90989ddbff3051e9bfda0b43bb4162778a279c4d8c53"
+  },
+  "boundary": "Hashes establish archived bytes, not CAD truth. Original configured artifacts remain local and are not runtime evidence."
+}

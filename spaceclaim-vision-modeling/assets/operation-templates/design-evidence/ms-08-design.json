@@ -1,0 +1,20 @@
+{
+  "operation_id": "modeling_strategy_scripting.declare-postcondition-assertion",
+  "template_version": "0.3.1",
+  "catalog_id": "MS-08",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "后置断言定义",
+    "declared_inputs": [
+      "expected_property",
+      "measurement_method",
+      "tolerance"
+    ],
+    "result_fields": [
+      "assertion_definition"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-01",
+  "input_fields": [
+    {
+      "name": "target_window_state",
+      "type": "object",
+      "description": "Unique SpaceClaim window identity and observed maximize/full-screen, dialog, viewport, tree, status-bar, and orientation-indicator state."
+    },
+    {
+      "name": "review_object",
+      "type": "object",
+      "description": "One model/object or review target whose visibility is being assessed."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "viewport_reviewability",
+      "type": "object",
+      "description": "Maximized/unobstructed status, visible controls, target visibility, and any recorded obstruction."
+    }
+  ],
+  "procedure": [
+    "Observe the active SpaceClaim window, viewport, Structure tree, status bar, orientation indicator, and blocking dialogs.",
+    "Record maximize/full-screen state and whether review_object is visible enough for this review.",
+    "Return viewport_reviewability with obstruction details; do not dismiss or rearrange panels.",
+    "If a blocking dialog or required exception exists, record it rather than claiming unobstructed review."
+  ],
+  "rejection_rules": [
+    "Reject a nonunique session or a review target that cannot be identified.",
+    "Do not shrink/maximize the window inside this observation atom; EX-03 owns maximize.",
+    "Do not infer hidden geometry is absent."
+  ]
+}

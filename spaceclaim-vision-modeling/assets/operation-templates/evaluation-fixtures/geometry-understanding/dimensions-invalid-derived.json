@@ -1,0 +1,14 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.reconcile-dimensions",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-invalid-derived-dimension",
+  "dimensions_with_provenance": [
+    {"id": "dimension-derived-extent", "target_ref": "feature-derived-extent", "disposition": "derived", "value": null, "unit": null, "provenance": {"kind": "inference", "source_refs": [], "rationale": "A relation was claimed without an explicit calculation."}, "supporting_statement_refs": ["statement-a"], "confidence": "low"}
+  ],
+  "dimension_relations": [],
+  "unresolved_items": [],
+  "reconciliation_confidence": {"level": "low", "coverage": "partial", "rationale": "The claimed derivation is incomplete."}
+}

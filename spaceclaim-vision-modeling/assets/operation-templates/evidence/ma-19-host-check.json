@@ -1,0 +1,71 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.create-circular-pattern",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-08",
+  "command": "SpaceClaim V21 P3 suite-delta-01/report.json; selected MA-19 event; passed groups: ma19-circular-array",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 1,
+  "tool": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.scscript",
+  "test": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+  "tool_sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51",
+  "test_sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+  "artifacts": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.scscript",
+      "sha256": "6ad5c072b0e01bb19c3a5781d77adcef8ba341cb6268df0fb71a4bfbbf9cde51",
+      "role": "tool"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/harness.py",
+      "sha256": "db90b63573bdbdc0d1670cbf5402fa84b9e5e446825488017bf035eaff0bf1e9",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json",
+      "sha256": "22502da0245460181c2579cef68d066c1f1939d5c62246ab8d60cd3bd830dd23",
+      "role": "fixture"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "fixture"
+    }
+  ],
+  "evidence_boundary": {
+    "design_only": {
+      "status": "passed",
+      "scope": "The candidate contract and catalog slug were schema-validated before runtime calibration."
+    },
+    "host_checked": {
+      "status": "passed",
+      "scope": "Exact action/report/test bindings were checked on the host; passed groups: ma19-circular-array."
+    },
+    "spaceclaim_execution": {
+      "status": "passed",
+      "scope": "One executed event in spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-delta-01/report.json matched spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-19.scscript and its extracted source bytes."
+    },
+    "geometry_measurements": {
+      "status": "passed",
+      "scope": "The independent group(s) ma19-circular-array passed in the recorded SpaceClaim suite runs/p3-live/suite-delta-01/forward.py."
+    },
+    "native_save": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not save a native document."
+    },
+    "native_reopen": {
+      "status": "not_applicable",
+      "scope": "The P3 action group does not reopen a native document."
+    },
+    "visual_review": {
+      "status": "not_tested",
+      "scope": "No viewport or screenshot review was part of this action group."
+    },
+    "requested_export": {
+      "status": "not_applicable",
+      "scope": "No requested model export was part of this action group."
+    }
+  },
+  "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+}

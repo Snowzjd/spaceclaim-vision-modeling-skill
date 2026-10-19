@@ -1,0 +1,23 @@
+{
+  "review_version": 1,
+  "source_id": "explicit-text-source",
+  "source_sha256": "d813a5f4c8a3210bb3d009dfc85e1da63e52fcf184e2d1e400935685a172ecd2",
+  "result": "passed",
+  "checks": {
+    "single_candidate_body": "passed",
+    "three_explicit_positive_extents": "passed",
+    "explicit_units": "passed",
+    "explicit_minimum_corner": "passed",
+    "explicit_axis_orientation": "passed",
+    "no_conflicting_statement": "passed",
+    "no_additional_feature": "passed",
+    "no_answer_leaking_instruction": "passed"
+  },
+  "expected_reading": {
+    "body_name": "ATOMIC_PRISM",
+    "minimum_corner_mm": [10.0, -5.0, 2.0],
+    "size_mm": [40.0, 30.0, 12.0],
+    "orientation": "axis_aligned_positive_xyz"
+  },
+  "notes": "This review qualifies the simple source for one composition case; it is not an atomic template or a general unseen-source benchmark."
+}

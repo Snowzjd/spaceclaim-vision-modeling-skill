@@ -1,0 +1,31 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "geometry_understanding.interpret-rectangular-prism",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_atomic_rectangular_prism -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 16,
+  "tool": "spaceclaim-vision-modeling/scripts/validate_rectangular_prism_contract.py",
+  "test": "tests/test_atomic_rectangular_prism.py",
+  "tool_sha256": "de534e67750b902d46cc3052ab9423039bbccd8a6c18eb96917f08f9e7b7959e",
+  "test_sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/validate_rectangular_prism_contract.py", "role": "tool", "sha256": "de534e67750b902d46cc3052ab9423039bbccd8a6c18eb96917f08f9e7b7959e"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/references/rectangular-prism-geometry-contract.schema.json", "role": "schema", "sha256": "5155b756ee4b096d1d520c00b10a29e2b8ce5d34ecd038cf6d5a7203d49eea51"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/01-geometry-understanding/geometry-contract.json", "role": "fixture", "sha256": "d7479918309362f9131d0a26208a1728739856fdafd709c43bc843eee31b7bba"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The primitive interpretation contract and ambiguity gates were reviewed."},
+    "host_checked": {"status": "passed", "scope": "Schema, source hash, provenance references, positive sizes, derived bounds, and volume invariants passed."},
+    "spaceclaim_execution": {"status": "not_applicable", "scope": "This operation does not run SpaceClaim."},
+    "geometry_measurements": {"status": "not_applicable", "scope": "No model is measured."},
+    "native_save": {"status": "not_applicable", "scope": "No native model is saved."},
+    "native_reopen": {"status": "not_applicable", "scope": "No native model is reopened."},
+    "visual_review": {"status": "not_applicable", "scope": "This is source interpretation, not final visual acceptance."},
+    "requested_export": {"status": "not_applicable", "scope": "No export is produced."}
+  },
+  "notes": "The host checker validates declared structure and invariants; it does not prove that an unseen source was interpreted correctly."
+}

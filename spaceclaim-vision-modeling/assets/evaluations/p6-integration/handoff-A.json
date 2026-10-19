@@ -1,0 +1,489 @@
+{
+  "contracts": [
+    {
+      "artifact_refs": [],
+      "assumptions": [
+        "The three supplied XY points define a simple closed triangular profile in the stated order.",
+        "The extrusion starts on z=0 and proceeds in +Z, so the pre-translation solid spans z=0..7 mm.",
+        "The body is one root DesignBody named RightTriangularPrism for the future run."
+      ],
+      "bodies_and_features": [
+        {
+          "expected_body_count": 1
+        },
+        {
+          "expected_body_name": "RightTriangularPrism"
+        },
+        {
+          "expected_topology": {
+            "closed_solid": true,
+            "edge_count": 9,
+            "face_count": 5
+          }
+        }
+      ],
+      "confidence": {
+        "basis": "fully dimensioned textual primitive and transform",
+        "overall": "high"
+      },
+      "contract_id": "A-geometry",
+      "contract_kind": "geometry_contract",
+      "contract_version": 1,
+      "coordinate_system": {
+        "axes": {
+          "x": "+X",
+          "y": "+Y",
+          "z": "+Z"
+        },
+        "origin": "global model origin",
+        "profile_frame": "XY plane at z=0",
+        "units": "mm"
+      },
+      "dimensions_with_provenance": [
+        {
+          "name": "profile_x_leg_mm",
+          "provenance": "user_text",
+          "value": 19.0
+        },
+        {
+          "name": "profile_y_leg_mm",
+          "provenance": "user_text",
+          "value": 13.0
+        },
+        {
+          "name": "extrusion_height_mm",
+          "provenance": "user_text",
+          "value": 7.0
+        },
+        {
+          "name": "translation_mm",
+          "provenance": "user_text",
+          "value": [
+            4.0,
+            -3.0,
+            2.0
+          ]
+        },
+        {
+          "name": "expected_volume_mm3",
+          "provenance": "derived_from_user_dimensions",
+          "value": 864.5
+        },
+        {
+          "name": "expected_final_bbox_mm",
+          "provenance": "derived_from_user_dimensions",
+          "value": [
+            4.0,
+            -3.0,
+            2.0,
+            23.0,
+            10.0,
+            9.0
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "path": "raw-requests.json",
+          "sha256": "780e010023c53dda2ff7f5d25e4af832eb710ddc771cd3b242c4c3d46c8c660b"
+        }
+      ],
+      "handoff_status": "ready",
+      "observed_geometry": {
+        "extrusion_direction": "+Z",
+        "primitive": "right_triangular_prism",
+        "profile_plane": "XY",
+        "profile_vertices_mm": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            19.0,
+            0.0
+          ],
+          [
+            0.0,
+            13.0
+          ]
+        ],
+        "whole_solid_translation_mm": [
+          4.0,
+          -3.0,
+          2.0
+        ]
+      },
+      "source_manifest": [
+        "raw-requests.json#/requests/0"
+      ],
+      "spatial_relations": [
+        "The right-angle corner is at the profile origin.",
+        "The whole solid is translated after extrusion; no rotation or deformation is requested."
+      ],
+      "stage": "geometry_understanding",
+      "symmetry_and_repetition": {
+        "details": [],
+        "status": "not_requested"
+      },
+      "unresolved_items": [],
+      "upstream_contract_refs": [],
+      "validation_intent": {
+        "geometry_measurements": "check final bbox, volume, face count and edge count",
+        "native_reopen": "requested_after_authorization",
+        "native_save": "requested_after_authorization",
+        "requested_export": "none",
+        "spaceclaim_execution": "requested_after_authorization",
+        "visual_review": "requested_after_authorization"
+      }
+    },
+    {
+      "artifact_refs": [
+        {
+          "path": "corrected.py",
+          "sha256": "19e09c4e91531f1eb07aa4676bc7884dc9b5f3bfd8456b5705943e01a3d77fe8"
+        },
+        {
+          "path": "corrected.scscript",
+          "sha256": "3b46abca9a1ecf9a1aac33d05f578d132d54b3ff888406c3b41915686943943a"
+        }
+      ],
+      "assumptions": [
+        "Generic fallback composes the candidate operation boundaries without activating candidate templates.",
+        "No baseline means a new unsaved design with zero root bodies at execution entry."
+      ],
+      "construction_strategy": "Generic v0.2 fallback: create a closed XY polygon profile, extrude one transient body along +Z, attach it as one root DesignBody, re-enumerate, translate the current body, re-enumerate and assert final geometry before save. The v2 source uses a no-result DocumentSave.Execute call followed by nonempty-file and active-document-path checks, and explicitly scopes root DesignBody enumeration.",
+      "contract_id": "A-build-v2",
+      "contract_kind": "build_contract",
+      "contract_version": 1,
+      "entry_state_policy": "No baseline; open a new unsaved design, verify the root document is clean through script assertions, then load the exact .scscript once after authorization.",
+      "evidence_refs": [
+        {
+          "path": "corrected-audit.json",
+          "sha256": "3ed1c54720814fdc4c2f92bc727f0c8e5fec32f55f7e152fa9f9352818d4bc0d"
+        }
+      ],
+      "failure_checkpoints": [
+        "No-baseline entry must have zero root bodies.",
+        "Profile must be nondegenerate and closed.",
+        "Extrusion must be closed and nonempty.",
+        "Body name must not collide with an existing body.",
+        "Post-attachment and post-translation semantic selections must be unique.",
+        "Final face count, edge count, bbox and volume must pass before save.",
+        "Native model and report paths must be run-owned, distinct and nonexistent before execution."
+      ],
+      "geometry_contract_ref": "A-geometry",
+      "handoff_status": "draft",
+      "host_preflight_result": {
+        "status": "not_tested",
+        "reason": "Configured local original passed; public derivative is deliberately not execution-ready."
+      },
+      "ordered_operation_plan": [
+        {
+          "candidate_operation_id": "modeling_strategy_scripting.create-parameterized-planar-profile",
+          "fallback_step": "create_closed_planar_profile",
+          "order": 1,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": "modeling_strategy_scripting.extrude-planar-profile",
+          "fallback_step": "extrude_transient_profile",
+          "order": 2,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": "modeling_strategy_scripting.attach-transient-body",
+          "fallback_step": "attach_transient_body",
+          "order": 3,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": null,
+          "fallback_step": "semantic_refresh_after_attachment",
+          "order": 4,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": "modeling_strategy_scripting.translate-body",
+          "fallback_step": "translate_current_root_body",
+          "order": 5,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": null,
+          "fallback_step": "semantic_refresh_and_geometry_assertions",
+          "order": 6,
+          "template_activated": false
+        },
+        {
+          "candidate_operation_id": null,
+          "fallback_step": "save_validated_native_model",
+          "order": 7,
+          "template_activated": false
+        }
+      ],
+      "output_policy": {
+        "model_path": null,
+        "report_path": null,
+        "overwrite": false,
+        "path_scope": "configure-new-run"
+      },
+      "parameter_table": [
+        {
+          "name": "profile_vertices_mm",
+          "provenance": "user_text",
+          "units": "mm",
+          "value": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              19.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              13.0,
+              0.0
+            ]
+          ]
+        },
+        {
+          "name": "extrusion_distance_mm",
+          "provenance": "user_text",
+          "units": "mm",
+          "value": 7.0
+        },
+        {
+          "name": "translation_mm",
+          "provenance": "user_text",
+          "units": "mm",
+          "value": [
+            4.0,
+            -3.0,
+            2.0
+          ]
+        },
+        {
+          "name": "body_name",
+          "provenance": "build_contract",
+          "units": "identifier",
+          "value": "RightTriangularPrism"
+        },
+        {
+          "name": "expected_volume_mm3",
+          "provenance": "derived",
+          "units": "mm^3",
+          "value": 864.5
+        },
+        {
+          "name": "expected_bbox_mm",
+          "provenance": "derived",
+          "units": "mm",
+          "value": [
+            4.0,
+            -3.0,
+            2.0,
+            23.0,
+            10.0,
+            9.0
+          ]
+        }
+      ],
+      "scscript_artifact": {
+        "path": "corrected.scscript",
+        "sha256": "3b46abca9a1ecf9a1aac33d05f578d132d54b3ff888406c3b41915686943943a"
+      },
+      "semantic_selection_plan": {
+        "after_translation": "Re-enumerate and require exactly one body matching final bbox [4,-3,2,23,10,9] mm, name and volume; do not use BodyN/FaceN aliases or return order.",
+        "before_translation": "Exactly one current root body named RightTriangularPrism with pre-translation bbox [0,0,0,19,13,7] mm and volume 864.5 mm^3."
+      },
+      "source_artifact_optional": {
+        "path": "corrected.py",
+        "sha256": "19e09c4e91531f1eb07aa4676bc7884dc9b5f3bfd8456b5705943e01a3d77fe8"
+      },
+      "stage": "modeling_strategy_scripting",
+      "target_environment": {
+        "api_version": "V21",
+        "python_runtime": "IronPython 2.7",
+        "spaceclaim_release": "2022 R1"
+      },
+      "topology_dependencies": [
+        "Profile must be closed before transient extrusion.",
+        "Transient body must be closed before DesignBody.Create.",
+        "Body handles are reacquired after attachment and after translation."
+      ],
+      "unresolved_items": [
+        "Portable derivative requires explicit output-path configuration and fresh package/audit before execution."
+      ],
+      "unresolved_risks": [
+        "V21 application execution and kernel geometry remain untested.",
+        "Native save/reopen, viewport review and any export remain unperformed.",
+        "This v2 delta corrects only V21 save-return handling, active-document identity checking and explicit root-body enumeration; it does not claim runtime evidence."
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "A-geometry",
+          "sha256": "a68c1de1d181f4c6597dc67683a1c21887f9265949c8feb38f4382f513e874f8"
+        }
+      ],
+      "validation_plan": {
+        "export": "not performed; no export requested",
+        "host_preparation": "source AST parse, deterministic package check, static archive audit, contract math and path checks",
+        "persistence": "not performed in this evaluation; future run must independently save and reopen",
+        "runtime_geometry": "not performed in this evaluation; future run must measure bbox, volume, face count and edge count",
+        "visual": "not performed in this evaluation; future authorized run must use multi-view review"
+      }
+    },
+    {
+      "artifact_refs": [],
+      "assumptions": [
+        "Execution remains blocked by preparation-only scope and absent desktop authorization."
+      ],
+      "build_contract_ref": "A-build-v2",
+      "contract_id": "A-execution-v2",
+      "contract_kind": "execution_contract",
+      "contract_version": 1,
+      "entry_state_observed": {
+        "reason": "No desktop execution",
+        "status": "not_tested"
+      },
+      "evidence_refs": [],
+      "executed_artifact_identity": {
+        "path": null,
+        "sha256": null,
+        "status": "not_tested"
+      },
+      "failure_state": {
+        "reason": "No run attempted",
+        "status": "not_tested"
+      },
+      "handoff_status": "not_tested",
+      "model_artifact": {
+        "path": null,
+        "sha256": null,
+        "status": "not_tested"
+      },
+      "recovery_actions": [],
+      "runtime_report": {
+        "path": null,
+        "status": "not_tested"
+      },
+      "save_state": {
+        "native_reopen": "not_tested",
+        "native_save": "not_tested",
+        "status": "not_tested"
+      },
+      "stage": "execution_recovery",
+      "stage_events": [],
+      "unresolved_items": [
+        "No SpaceClaim process was launched; no runtime report or native model exists."
+      ],
+      "unresolved_runtime_risks": [
+        "Application API/runtime compatibility and geometry behavior are unobserved."
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "A-build-v2",
+          "sha256": "e79523ea1a121fe7b6b58d4c264b534b4ef20595046bc9f2d505bf838607a8f5"
+        }
+      ]
+    },
+    {
+      "artifact_identity": {
+        "native_model": null,
+        "request_id": "A",
+        "status": "not_tested"
+      },
+      "artifact_refs": [],
+      "assumptions": [],
+      "body_feature_and_name_checks": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "contract_id": "A-acceptance-v2",
+      "contract_kind": "acceptance_contract",
+      "contract_version": 1,
+      "dimension_bbox_and_volume_checks": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "evidence_map": {
+        "geometry_measurements": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "native_reopen": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "native_save": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "requested_export": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "spaceclaim_execution": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        },
+        "visual_review": {
+          "evidence_refs": [],
+          "status": "not_tested"
+        }
+      },
+      "evidence_refs": [],
+      "geometry_acceptance": {
+        "reason": "No runtime measurements",
+        "status": "not_tested"
+      },
+      "handoff_status": "not_tested",
+      "native_reopen_result": {
+        "reason": "No execution",
+        "status": "not_tested"
+      },
+      "native_save_result": {
+        "reason": "No execution",
+        "status": "not_tested"
+      },
+      "overall_status": "not_tested",
+      "requested_export_result": {
+        "reason": "No export requested or attempted",
+        "status": "not_tested"
+      },
+      "stage": "validation_visual_review",
+      "unresolved_items": [
+        "Acceptance is not performed because execution and a native artifact are absent."
+      ],
+      "unresolved_risks": [
+        "All runtime, persistence, visual and export evidence layers remain unperformed."
+      ],
+      "upstream_contract_refs": [
+        {
+          "contract_id": "A-execution-v2",
+          "sha256": "a5e070d8aa3ab2f386475267df0d194f5384024b0e50cd747cc4932701193a36"
+        }
+      ],
+      "visual_agreement": {
+        "reason": "No viewport review",
+        "status": "not_tested"
+      },
+      "visual_review_views": []
+    }
+  ],
+  "desktop_authorization": false,
+  "handoff_version": 1,
+  "preparation_only": true,
+  "request_id": "A-v2-delta",
+  "required_evidence_layers": [
+    "spaceclaim_execution",
+    "geometry_measurements",
+    "native_save",
+    "native_reopen",
+    "visual_review"
+  ]
+}

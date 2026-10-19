@@ -1,0 +1,37 @@
+{
+  "bodies": [
+    {
+      "bbox_max_mm": [50.0, 25.0, 14.0],
+      "bbox_min_mm": [10.0, -5.0, 2.0],
+      "name": "ATOMIC_PRISM",
+      "volume_mm3": 14400.000000000002
+    }
+  ],
+  "case_id": "v03-atomic-rectangular-prism",
+  "evidence_layers": {
+    "geometry_measurements": "passed",
+    "native_reopen": "not_tested",
+    "native_save": "not_tested",
+    "neutral_export": "not_tested",
+    "spaceclaim_execution": "passed",
+    "static_archive": "not_tested"
+  },
+  "features": [],
+  "generated_at_utc": "2026-09-03T09:23:34Z",
+  "named_face_groups": [],
+  "outputs": {
+    "native_model_path": "rectangular-prism.scdoc",
+    "report_path": "validation-runtime-report.json"
+  },
+  "schema_version": 1,
+  "stages": [
+    {"message": "", "name": "read_only_geometry_validated", "status": "passed"}
+  ],
+  "status": "passed",
+  "target": {
+    "api_version": "V21",
+    "python_runtime": "IronPython 2.7",
+    "spaceclaim_release": "2022 R1"
+  },
+  "validation_boundary": "Sanitized copy of the read-only report emitted after native reopen. Save, reopen, and visual-review status are recorded independently."
+}

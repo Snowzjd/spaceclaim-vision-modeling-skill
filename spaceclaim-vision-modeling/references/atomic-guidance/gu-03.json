@@ -1,0 +1,44 @@
+{
+  "catalog_id": "GU-03",
+  "input_fields": [
+    {
+      "name": "single_view",
+      "type": "object",
+      "description": "一个已定位的图像、绘图视图或模型视图；保留其 source_ref、边界和可见内容。"
+    },
+    {
+      "name": "projection_identifier_or_visible_clues",
+      "type": "object",
+      "description": "用户标注、图纸符号、平行线/消失线等投影证据；线索与模型推断必须分开。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "view_id",
+      "type": "string",
+      "description": "被识别视图的稳定引用；没有稳定视图身份时为 null。"
+    },
+    {
+      "name": "projection_kind",
+      "type": "string",
+      "description": "正投影、透视或其他有依据的投影类别；不可确定时为 null。"
+    },
+    {
+      "name": "view_direction",
+      "type": "array",
+      "description": "从模型朝观察者的单位方向向量（view-side outward normal），不是从相机射向模型的投影射线；后者符号相反。未知方向为 null。"
+    }
+  ],
+  "procedure": [
+    "定位单个视图并记录可见边界、标注和线条等原始证据；用户标出的投影符号单独标为 user。",
+    "按证据强度区分明确投影标识、可支持的 derived 和无法判定的 unresolved，不用几何常识替代缺失线索。",
+    "输出 view_id、projection_kind 和有依据的 view_direction；未知字段写 null，并附 provenance 与 unresolved。",
+    "只判断该视图的投影关系，不跨视图对应对象，也不建立坐标框架。",
+    "无相机标定的透视图不要求唯一数值 view_direction，可用 not_applicable 说明；需要方向才能消歧时仍应标未决。"
+  ],
+  "rejection_rules": [
+    "视图边界无法定位或同时包含多个未分离视图时拒绝单视图结论。",
+    "正投影与透视证据冲突或不足时不得强选一种，输出 null 并记录冲突。",
+    "不得把默认相机方向、图纸布局或行业惯例当作已观测方向。"
+  ]
+}

@@ -29,4 +29,17 @@ This matrix records the capabilities supported in v0.2 and the evidence availabl
 
 ## Release interpretation
 
+### v0.3 operation evidence
+
+The registry maps 139 action contracts: 5 preserved host-active
+operations and 134 candidates. It is not a claim of 139 fully verified runtime
+capabilities. Candidate modeling, execution, measurement and navigation evidence
+is bound to exact artifacts and variants in the registry and
+`assets/evaluations/p2-source-evaluation`, `p3-actions`, `p4-actions` and
+`p5-actions`. General input coverage, unobserved controller gestures and
+cross-version behavior remain unclaimed. The complete v0.2 workflow remains the
+fallback when no eligible active template matches.
+
+### v0.2 stable release
+
 The v0.2 release adds deterministic `.scscript` packaging, structured report validation and comparison, a faster authorized-run workflow, and a calibrated visual-review contract. It does not claim universal geometry recognition, unattended GUI reliability, cross-version API compatibility, untested persistence behavior, or visual acceptance without a completed per-model review.

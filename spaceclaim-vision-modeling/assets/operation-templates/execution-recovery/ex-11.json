@@ -1,0 +1,283 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "execution_recovery.record-executed-artifact-identity",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "execution_recovery",
+  "purpose": "Bind one hash-checked .scscript and numeric API metadata to a supplied run reference, without claiming it was loaded or executed.",
+  "trigger": "Use after an execution event when planned and actual script bytes may differ.",
+  "inputs": [
+    {
+      "name": "artifact_path",
+      "type": "path",
+      "required": true,
+      "description": "Exact .scscript file."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "required": true,
+      "description": "Expected artifact digest."
+    },
+    {
+      "name": "expected_api_version",
+      "type": "integer or string",
+      "required": true,
+      "description": "Numeric API metadata, e.g. 21."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": true,
+      "description": "Run record to bind; this is not an observed launch event."
+    }
+  ],
+  "preconditions": [
+    "Caller separately observes loaded/executed identity through the controller. Compatibility aliases script_path, expected_hash, api_version, run_reference are available but use the canonical fields here.",
+    "Caller has established the actual run scope and trustworthy input provenance."
+  ],
+  "outputs": [
+    {
+      "name": "action_id",
+      "type": "string",
+      "required": true,
+      "description": "EX-11"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "passed; EX13 returns blocked/eligible and ER11 quarantined/deleted."
+    },
+    {
+      "name": "evidence_level",
+      "type": "string",
+      "required": true,
+      "description": "Always host_checked."
+    },
+    {
+      "name": "run_ref",
+      "type": "string",
+      "required": true,
+      "description": "Supplied reference."
+    },
+    {
+      "name": "artifact_path",
+      "type": "string",
+      "required": true,
+      "description": "Checked file path."
+    },
+    {
+      "name": "artifact_sha256",
+      "type": "string",
+      "required": true,
+      "description": "Actual archive digest."
+    },
+    {
+      "name": "expected_sha256",
+      "type": "string",
+      "required": true,
+      "description": "Normalized expected digest."
+    },
+    {
+      "name": "api_version",
+      "type": "string",
+      "required": true,
+      "description": "Actual numeric metadata."
+    },
+    {
+      "name": "expected_api_version",
+      "type": "string",
+      "required": true,
+      "description": "Expected numeric metadata."
+    },
+    {
+      "name": "identity_match",
+      "type": "boolean",
+      "required": true,
+      "description": "True."
+    },
+    {
+      "name": "execution_observed",
+      "type": "boolean",
+      "required": true,
+      "description": "Always false."
+    },
+    {
+      "name": "runtime_observation",
+      "type": "string",
+      "required": true,
+      "description": "Always not_tested."
+    },
+    {
+      "name": "claim_boundary",
+      "type": "string",
+      "required": true,
+      "description": "Identity-only limitation."
+    }
+  ],
+  "postconditions": [
+    "Bind one hash-checked .scscript and numeric API metadata to a supplied run reference, without claiming it was loaded or executed.",
+    "Only the declared flat result fields are returned; no desktop or unperformed persistence layer is implied."
+  ],
+  "implementation": {
+    "mode": "host_tool",
+    "primary_artifact": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+    "target_environment": "Windows host tooling; no SpaceClaim control or geometry mutation is implied.",
+    "topology_effect": "none",
+    "determinism": "deterministic",
+    "notes": "Call record_executed_artifact_identity(**payload), or dispatch(\"EX-11\", payload). Rejected inputs raise HostActionError (with code); filesystem failures may propagate OSError. Caller separately observes loaded/executed identity through the controller. Compatibility aliases script_path, expected_hash, api_version, run_reference are available but use the canonical fields here. The linked guide uses conceptual fields; explicitly adapt them to this canonical function interface, never dispatch the guide output directly."
+  },
+  "semantic_selection": {
+    "required": false,
+    "criteria": [],
+    "ambiguity_checks": [
+      "Use only the declared identity, state, or geometry predicates; do not substitute recorded FaceN/BodyN aliases or an arbitrary collection member.",
+      "If the declared evidence cannot make the target unique, return needs_manual_review and do not continue."
+    ],
+    "topology_refresh": "Not applicable; the operation does not mutate model topology."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "executed_bytes_unavailable",
+      "condition": "Actual executed bytes cannot be read or bound.",
+      "detection": "Only a plan, filename, or report is available.",
+      "safe_state": "Runtime claims remain unpromoted."
+    },
+    {
+      "failure_id": "artifact_event_mismatch",
+      "condition": "Artifact hash/version does not match run event.",
+      "detection": "Join keys or version comparison disagree.",
+      "safe_state": "Do not amend event or rewrite hashes."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "executed_bytes_unavailable",
+      "action": "Return needs_manual_review and obtain exact artifact identity.",
+      "clean_rerun_required": false
+    },
+    {
+      "failure_id": "artifact_event_mismatch",
+      "action": "Resolve actual artifact; rerun from clean entry if needed.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate this object against operation-template.schema.json and compare operation_id with the EX/ER catalog slug.",
+      "expected": "The object is schema-valid, remains candidate, and declares exactly one bounded execution_recovery action.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Guidance binding and refusal boundary",
+      "method": "Read the linked single-operation guidance and compare its input, result, procedure, and rejection fields with this contract.",
+      "expected": "The contract exposes every declared input/output and preserves refusal, recovery, and needs_manual_review behavior.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Action-specific postcondition",
+      "method": "Use the operation-specific controller or host-tool adapter only after the required authorization and target-state gates are independently satisfied.",
+      "expected": "bound requires actual bytes, hash, version, and run event to agree.",
+      "evidence_layer": "host_checked"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-11-host-check.json",
+            "sha256": "14df9d701e2c5b01d31f6de64e2157ae170d81ac36164d86216fd14a6fc998e1"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-11-host-check.json",
+            "sha256": "14df9d701e2c5b01d31f6de64e2157ae170d81ac36164d86216fd14a6fc998e1"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "geometry_measurements": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_save": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_tested",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Deterministic host file/event tests passed; one Windows symlink creation test skipped for missing platform privilege. No desktop observation implied."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/scripts/execution_host_actions.py",
+      "sha256": "3ce004c3c321ee2bbc72c0c7835564d6d6874a9267051b46a4882c1683437a8c",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/atomic-guidance/ex-11.json",
+      "sha256": "aca6fa15961336c1aa25e1a22f0e2ee9ad151458252760a678e5880cc528ac54",
+      "role": "reference"
+    },
+    {
+      "path": "tests/test_execution_host_actions.py",
+      "sha256": "806d5ba63ff3e9267fe35b18875ce42995cdac63670503685c585c947ff40d04",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ex-11-host-check.json",
+      "sha256": "14df9d701e2c5b01d31f6de64e2157ae170d81ac36164d86216fd14a6fc998e1",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/raw-inputs.json",
+      "sha256": "aabef50fb9f00315ad2bf3eee4bbb482f9be24552e26b944db850b135fa6ce9d",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/results.json",
+      "sha256": "2bbacd139150806264d43f6bdf509562694c5c234bb5c1acb6861cbe4e706cc4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/evaluation.md",
+      "sha256": "e6db426ca8e019a47c4bec7d7e0f9394db4ddbcd130e9c9119de8cc9061930a0",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-results.json",
+      "sha256": "c62b76c542c9e655f7c02cd28fbaa875d652b1db1e8ed4738cfaa7a434122fb4",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/delta-evaluation.md",
+      "sha256": "717cec638cce5f62e80a697721b1e364a912dda9f5bc42eafc76e8e71ee52ee8",
+      "role": "evidence"
+    }
+  ]
+}

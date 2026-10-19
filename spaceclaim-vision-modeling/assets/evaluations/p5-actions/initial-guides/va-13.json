@@ -1,0 +1,38 @@
+{
+  "catalog_id": "VA-13",
+  "input_fields": [
+    {
+      "name": "cylindrical_face",
+      "type": "object",
+      "description": "One face already identified as a cylindrical face."
+    },
+    {
+      "name": "unit_and_span_definition",
+      "type": "object",
+      "description": "Length unit and definition of the requested trimmed-face span."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "cylinder_measurement",
+      "type": "object",
+      "description": "Radius, axis, trimmed span, unit, and face identity."
+    },
+    {
+      "name": "measurement_status",
+      "type": "string",
+      "description": "measured, invalid, or needs_manual_review."
+    }
+  ],
+  "procedure": [
+    "Resolve one cylindrical face and read its analytic radius/axis.",
+    "Use the declared unit_and_span_definition to measure one trimmed span from its boundary/domain.",
+    "Return cylinder_measurement and measurement_status with face identity.",
+    "Do not treat an untrimmed analytic extent as the visible face span."
+  ],
+  "rejection_rules": [
+    "Reject a noncylindrical/ambiguous face, undefined span convention, or incompatible unit.",
+    "Reject span inferred only from a screenshot.",
+    "Do not repair or extend the cylindrical face."
+  ]
+}

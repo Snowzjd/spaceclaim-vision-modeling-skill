@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "catalog_id": "EX-14",
+  "report": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-report.json",
+    "sha256": "4deb98f45c277c7a6ef40394f93647e13ec1f0d59e20b610f92b0df230cb151f"
+  },
+  "model": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/native.scdoc",
+    "sha256": "17344d5004c2f160a8c484519bb77d5bb6a744f3ec085ad5c54e47f736e36bc3"
+  },
+  "portable_harness": {
+    "path": "spaceclaim-vision-modeling/assets/evaluations/p4-actions/save-test.py",
+    "sha256": "279b8d869a5b542032ed1aad692b76eda9d65b4612d9ea057b6385ee00a92ae8"
+  },
+  "configured_source_sha256": "404ce06615a4059ef49590bb8eaf350f7909247862316fb0f75b09e280308b96",
+  "configured_archive_sha256": "f3093687fd284681622f2c207d8a1456082d816b26fbfb2238d60d248a7b46b6",
+  "configured_body_normalization": "Only two machine-specific RUN and ACTION assignment lines were removed; supply both before packaging a new .scscript.",
+  "observation": "Authorized SpaceClaim V21 run: new unsaved design, load exact script, F5 once, report passed; application maximized throughout. The fixture was a 7 by 11 by 13 mm synthetic block.",
+  "evidence_boundary": "Critical failed-check guard and native-save only. The portable harness itself was not executed. No native reopen, export, or complete visual acceptance yet."
+}

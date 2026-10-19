@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-15",
+  "input_fields": [
+    {
+      "name": "target_range",
+      "type": "object",
+      "description": "One explicit model, selection, or component range to fit in the viewport."
+    },
+    {
+      "name": "fit_command",
+      "type": "object",
+      "description": "One verified Zoom Extents/fit control for the current release."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "fitted_view",
+      "type": "object",
+      "description": "Target range, fit control, visible bounds, clipping observation, and geometry-unchanged state."
+    }
+  ],
+  "procedure": [
+    "Resolve target_range and confirm whether the command fits the whole design or only the current selection.",
+    "Issue exactly one calibrated Alt+Z action or one verified View-menu Zoom Extents command.",
+    "Observe all target bounds and padding in the viewport, then return fitted_view.",
+    "If the target remains clipped or the command scope is unclear, stop with needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject an absent/ambiguous target range, blocked viewport, unknown fit scope, or a result that cannot be observed.",
+    "Do not claim full-model fit from a partial screenshot.",
+    "Do not modify geometry to improve framing."
+  ]
+}

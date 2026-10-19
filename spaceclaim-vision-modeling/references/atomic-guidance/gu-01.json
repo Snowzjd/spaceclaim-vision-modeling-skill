@@ -1,0 +1,38 @@
+{
+  "catalog_id": "GU-01",
+  "input_fields": [
+    {
+      "name": "source_file_or_text",
+      "type": "object",
+      "description": "原始文件、图像、绘图、模型、脚本或文本的可访问载体；保留 source_refs，不把模型推断当作原始证据。"
+    },
+    {
+      "name": "source_context",
+      "type": "object",
+      "description": "用户提供的来源说明、载体上下文和可用元数据；用户陈述与自动推断必须分开记录。"
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "source_kind",
+      "type": "string",
+      "description": "来源载体类别，例如 image、drawing、text、cad_view、script、log 或 mixed；无法判定时为 null。"
+    },
+    {
+      "name": "source_modality",
+      "type": "string",
+      "description": "实际可读取的模态或组合模态；必须注明来自原始来源、用户输入还是派生判断。"
+    }
+  ],
+  "procedure": [
+    "读取来源载体和上下文，只登记可直接检查的原始证据，并给每项证据分配 source_ref。",
+    "分别判断载体类别与模态；用户明确说明标为 user，模型归纳标为 derived，证据不足标为 unresolved。",
+    "输出 source_kind、source_modality 和 provenance；无法唯一分类的字段写 null，并把原因、source_refs 和影响对象加入 unresolved。",
+    "只完成来源类型识别，不从载体类别推导几何形状、尺寸或后续建模动作。"
+  ],
+  "rejection_rules": [
+    "来源不可访问、没有稳定引用或只能依赖未记录的上下文时拒绝给出确定类别。",
+    "多个载体无法区分且没有依据时不得擅自选一个主来源；保留 mixed 或 null 并创建未决包。",
+    "不得把文件名、行业名称或模型猜测当成来源模态证据。"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "catalog_id": "VI-22",
+  "input_fields": [
+    {
+      "name": "target_viewport",
+      "type": "object",
+      "description": "One visible target viewport in the maximized SpaceClaim session."
+    },
+    {
+      "name": "model_identity",
+      "type": "object",
+      "description": "Current model/document identity and hash or explicit unsaved identity."
+    },
+    {
+      "name": "view_state",
+      "type": "object",
+      "description": "Observed camera/orientation and selection state at capture time."
+    },
+    {
+      "name": "expected_and_observed",
+      "type": "object",
+      "description": "One expected visual claim and the observed result to bind to the screenshot metadata."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "screenshot_artifact",
+      "type": "object",
+      "description": "One screenshot path/hash and metadata binding model, view, selection, expectation, and observation."
+    }
+  ],
+  "procedure": [
+    "Confirm target_viewport, model_identity, view_state, and expected_and_observed before capture.",
+    "Require the layout to be already maximized and the selection state appropriate for the claim. If preparation is missing, return it to the separate layout/selection action; do not perform those actions inside screenshot capture.",
+    "Capture exactly one screenshot and record path/hash, model identity, view, selection, expectation, and observation.",
+    "Return screenshot_artifact; if pixels or metadata cannot be bound to the actual session, report needs_manual_review."
+  ],
+  "rejection_rules": [
+    "Reject an ambiguous model/view, obstructed viewport, unauthorized destination, mismatched model hash, or an untraceable screenshot.",
+    "Do not claim visual agreement from file existence alone.",
+    "Do not overwrite an unrelated evidence artifact."
+  ]
+}

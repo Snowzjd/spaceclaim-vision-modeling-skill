@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VI-08",
+  "input_fields": [
+    {
+      "name": "selection_set",
+      "type": "object",
+      "description": "Current selection identities to clear."
+    },
+    {
+      "name": "clear_control",
+      "type": "object",
+      "description": "One already calibrated empty-viewport click or Esc control."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "empty_selection_state",
+      "type": "object",
+      "description": "Post-action empty selection and geometry-unchanged observation."
+    }
+  ],
+  "procedure": [
+    "Record current selection_set and choose one calibrated clear_control.",
+    "Issue one empty-viewport click or Esc action, not both.",
+    "Observe no highlighted objects and return empty_selection_state.",
+    "If selection remains or geometry changes, stop and report mismatch."
+  ],
+  "rejection_rules": [
+    "Reject a running/busy session, uncalibrated clear control, or no known initial selection.",
+    "Do not use clear selection to hide an unresolved target ambiguity.",
+    "Do not modify geometry."
+  ]
+}

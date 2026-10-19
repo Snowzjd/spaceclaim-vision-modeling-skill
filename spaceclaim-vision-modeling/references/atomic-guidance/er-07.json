@@ -1,0 +1,53 @@
+{
+  "catalog_id": "ER-07",
+  "input_fields": [
+    {
+      "name": "located_defect",
+      "type": "object",
+      "description": "One open edge, invalid face, nonmanifold junction, or localized defect identity."
+    },
+    {
+      "name": "selected_repair_method",
+      "type": "object",
+      "description": "One preselected target-version repair mode and known call/signature if available."
+    },
+    {
+      "name": "allowable_scope",
+      "type": "object",
+      "description": "Faces/edges/body region and dimensions that may not change."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "single_defect_repair",
+      "type": "object",
+      "description": "One mode, target selector, exact call fragment, or needs_manual_review."
+    },
+    {
+      "name": "resulting_condition",
+      "type": "object",
+      "description": "One closure/validity condition to check afterward."
+    },
+    {
+      "name": "preservation_checks",
+      "type": "array",
+      "description": "Dimensions/topology constraints that must remain unchanged."
+    },
+    {
+      "name": "needs_manual_review",
+      "type": "boolean",
+      "description": "True when defect/mode/API is unknown."
+    }
+  ],
+  "procedure": [
+    "Verify defect identity and choose one local mode: close one gap, heal one face, or replace one edge only when its call is known.",
+    "Construct mode-specific selector/call; do not emit generic repair-all.",
+    "State one closure/validity condition and preservation checks.",
+    "If defect, mode, or API is unproven, set needs_manual_review=true and emit no guessed call."
+  ],
+  "rejection_rules": [
+    "Reject multiple defects, unbounded region, unknown mode/signature, or dimension-changing repair.",
+    "Reject automatic heal-all/repair-all.",
+    "Do not claim closure/validity until a separate geometry check."
+  ]
+}

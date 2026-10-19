@@ -1,0 +1,33 @@
+{
+  "catalog_id": "VA-06",
+  "input_fields": [
+    {
+      "name": "body_reference",
+      "type": "object",
+      "description": "One current body reference whose edges are to be enumerated."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "edge_collection",
+      "type": "array",
+      "description": "All current edges owned by body_reference."
+    },
+    {
+      "name": "body_binding",
+      "type": "object",
+      "description": "Body identity and ownership check proving no other body was mixed in."
+    }
+  ],
+  "procedure": [
+    "Resolve body_reference and verify the current body ownership.",
+    "Read the body's current edge collection once and preserve edge identities.",
+    "Check ownership for every returned edge and report body_binding.",
+    "Do not select an edge loop, measure edge lengths, or repair topology here."
+  ],
+  "rejection_rules": [
+    "Reject ambiguous/stale body references or mixed-body edge collections.",
+    "Reject pre-mutation edge handles after topology changed.",
+    "Do not infer edge-loop membership from enumeration alone."
+  ]
+}

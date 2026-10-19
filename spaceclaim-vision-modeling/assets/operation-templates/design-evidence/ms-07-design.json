@@ -1,0 +1,20 @@
+{
+  "operation_id": "modeling_strategy_scripting.declare-topology-refresh-point",
+  "template_version": "0.3.1",
+  "catalog_id": "MS-07",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "拓扑刷新声明",
+    "declared_inputs": [
+      "topology_modifying_action",
+      "affected_object_references"
+    ],
+    "result_fields": [
+      "topology_refresh_declaration",
+      "invalidated_references"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

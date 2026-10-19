@@ -1,0 +1,30 @@
+{
+  "evidence_record_version": 1,
+  "operation_id": "modeling_strategy_scripting.create-rectangular-prism-scscript",
+  "template_version": "0.1.0",
+  "recorded_on": "2026-09-03",
+  "command": "python -m unittest tests.test_atomic_rectangular_prism -q",
+  "result": "passed",
+  "exit_code": 0,
+  "tests_run": 16,
+  "tool": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py",
+  "test": "tests/test_atomic_rectangular_prism.py",
+  "tool_sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8",
+  "test_sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058",
+  "artifacts": [
+    {"path": "spaceclaim-vision-modeling/scripts/generate_rectangular_prism_scscript.py", "role": "tool", "sha256": "858316e651ec65a5033ff0fcd6c273c04e4a860ed2376a694b0341d6ca170dc8"},
+    {"path": "tests/test_atomic_rectangular_prism.py", "role": "test", "sha256": "f54dccbf87dbae30cf609486529d8cebbcc3f67117dc71b5518475ef7f92b058"},
+    {"path": "spaceclaim-vision-modeling/assets/atomic-cases/001-rectangular-prism/stages/02-modeling-strategy-scripting/output/create-rectangular-prism.scscript", "role": "fixture", "sha256": "d99e7d0a5df422bba143503c74bce84ae39d0eaa7ed1a60499b8f833358c80ff"}
+  ],
+  "evidence_boundary": {
+    "design_only": {"status": "passed", "scope": "The contract-to-script generation boundary and save-before-assertion guards were reviewed."},
+    "host_checked": {"status": "passed", "scope": "Parameterized generation, IronPython parsing, deterministic packaging, V21 metadata, and static audit passed."},
+    "spaceclaim_execution": {"status": "not_applicable", "scope": "This operation generates but does not execute a SpaceClaim script."},
+    "geometry_measurements": {"status": "not_applicable", "scope": "Host checks do not observe geometry."},
+    "native_save": {"status": "not_applicable", "scope": "The host generator does not save a native model."},
+    "native_reopen": {"status": "not_applicable", "scope": "The host generator does not reopen a native model."},
+    "visual_review": {"status": "not_applicable", "scope": "No application viewport is reviewed."},
+    "requested_export": {"status": "not_applicable", "scope": "No model export is performed."}
+  },
+  "notes": "The evidence proves generation and archive policy only, not V21 runtime compatibility or geometry correctness."
+}

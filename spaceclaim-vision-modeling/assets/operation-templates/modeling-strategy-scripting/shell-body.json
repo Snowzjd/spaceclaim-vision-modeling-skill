@@ -1,0 +1,245 @@
+{
+  "$schema": "../../../references/operation-template.schema.json",
+  "operation_id": "modeling_strategy_scripting.shell-body",
+  "template_version": "0.1.0",
+  "contract_version": 1,
+  "status": "candidate",
+  "stage": "modeling_strategy_scripting",
+  "purpose": "Execute the atomic shell-body operation within the MA-11 boundary: One root-part native shell command. A nonempty valid remove_faces set binds to Shell.RemoveFaces; an empty set binds to Shell.ShellBodies. It does not select faces semantically, save, or infer a result from command return order.",
+  "trigger": "Use when the build plan requires shell-body and all declared inputs have been resolved for the current SpaceClaim V21 action boundary.",
+  "inputs": [
+    {
+      "name": "body",
+      "type": "current root DesignBody",
+      "required": true,
+      "description": "A current closed nonempty root-part body."
+    },
+    {
+      "name": "remove_faces",
+      "type": "array<current face>",
+      "required": false,
+      "description": "Optional nonempty distinct face set owned by body. An empty set selects whole-body shelling. Default: []."
+    },
+    {
+      "name": "offset_mm",
+      "type": "finite signed nonzero number",
+      "required": true,
+      "description": "Signed shell thickness/direction in millimetres; converted to the V21 length unit before the command call."
+    }
+  ],
+  "preconditions": [
+    "body is a current root DesignBody and passes the pre-operation closed positive-volume check.",
+    "remove_faces is empty or contains distinct current faces owned by body.",
+    "offset_mm is finite and nonzero."
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "{body: current root DesignBody, mode: remove-faces|whole-body, offset_mm: number, remove_face_count: integer, is_closed: boolean, volume_mm3: positive number}; a shell with removed faces may be open, so closure is reported rather than assumed."
+    }
+  ],
+  "postconditions": [
+    "The selected V21 Shell command reports success.",
+    "After re-enumerating current root bodies, exactly one changed/surviving root body is identified with positive volume; result ordering is ignored.",
+    "The output records whether the resulting shell remains closed, because removing faces can intentionally create an open shell."
+  ],
+  "implementation": {
+    "mode": "spaceclaim_scscript",
+    "primary_artifact": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-11.scscript",
+    "target_environment": "SpaceClaim V21 / IronPython 2.7 action wrapper; runtime execution is evidenced by the attached exact candidate host record; native persistence, visual review, and requested export remain outside this action.",
+    "topology_effect": "modifies",
+    "determinism": "deterministic",
+    "notes": "Execute the atomic shell-body operation within the MA-11 boundary: One root-part native shell command. A nonempty valid remove_faces set binds to Shell.RemoveFaces; an empty set binds to Shell.ShellBodies. It does not select faces semantically, save, or infer a result from command return order. Untested variants remain outside the attached exact-run evidence."
+  },
+  "semantic_selection": {
+    "required": true,
+    "criteria": [
+      "geometry_type",
+      "topology",
+      "volume"
+    ],
+    "ambiguity_checks": [
+      "Zero or multiple matches must stop the action; numbered aliases and return order are not valid identity criteria."
+    ],
+    "topology_refresh": "Root bodies are enumerated before and after the mutating command; all prior topology references are stale after success."
+  },
+  "failure_modes": [
+    {
+      "failure_id": "invalid_shell_input",
+      "condition": "Body is stale/noncurrent, faces are empty/duplicate/nonowned, or offset is non-finite or zero.",
+      "detection": "Body is stale/noncurrent, faces are empty/duplicate/nonowned, or offset is non-finite or zero.",
+      "safe_state": "Stop downstream use until the declared recovery is completed from a clean state."
+    },
+    {
+      "failure_id": "shell_command_failure",
+      "condition": "Shell command reports failure, raises, or no unique positive-volume changed body is found.",
+      "detection": "Shell command reports failure, raises, or no unique positive-volume changed body is found.",
+      "safe_state": "Treat the document as potentially partially mutated; do not promote downstream references."
+    }
+  ],
+  "recovery": [
+    {
+      "failure_id": "invalid_shell_input",
+      "action": "Re-enumerate the current body/faces and supply a finite feasible signed offset; no shell command is called when preconditions fail.",
+      "clean_rerun_required": true
+    },
+    {
+      "failure_id": "shell_command_failure",
+      "action": "Treat the root document as potentially partially mutated, inspect/reopen a clean run-owned copy, and rerun only after thickness/removal feasibility is diagnosed; no rollback is implemented.",
+      "clean_rerun_required": true
+    }
+  ],
+  "validation": [
+    {
+      "check": "Candidate identity and schema shape",
+      "method": "Validate the emitted object against operation-template.schema.json and the catalog operation ID.",
+      "expected": "The object is schema-valid, candidate-only, and uses the catalog slug under the modeling_strategy_scripting stage.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Current action binding",
+      "method": "Parse the linked action source and compare SHA-256 bindings for the available action artifacts.",
+      "expected": "The linked source is a single bounded operation function and no absolute path is emitted.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Runtime evidence boundary",
+      "method": "Inspect the evidence_level layer records before promotion.",
+      "expected": "Only the exact attached host, SpaceClaim execution, and geometry-measurement evidence layers are marked passed; native save/reopen, visual review, and requested export remain not tested or not applicable.",
+      "evidence_layer": "design_only"
+    },
+    {
+      "check": "Declared postcondition: The selected V21 Shell command reports success.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The selected V21 Shell command reports success.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: After re-enumerating current root bodies, exactly one changed/surviving root body is identified with positive volume; result ordering is ignored.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "After re-enumerating current root bodies, exactly one changed/surviving root body is identified with positive volume; result ordering is ignored.",
+      "evidence_layer": "spaceclaim_execution"
+    },
+    {
+      "check": "Declared postcondition: The output records whether the resulting shell remains closed, because removing faces can intentionally create an open shell.",
+      "method": "Execute the exact linked action in an isolated authorized SpaceClaim V21 session and inspect the action-specific result contract.",
+      "expected": "The output records whether the resulting shell remains closed, because removing faces can intentionally create an open shell.",
+      "evidence_layer": "spaceclaim_execution"
+    }
+  ],
+  "dependencies": [],
+  "evidence_level": {
+    "template_version": "0.1.0",
+    "layers": {
+      "design_only": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-11-host-check.json",
+            "sha256": "0b166a99575a0fd59f254253e0c19423387e30e17ac828b67f08f3a5afbc00f6"
+          }
+        ]
+      },
+      "host_checked": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-11-host-check.json",
+            "sha256": "0b166a99575a0fd59f254253e0c19423387e30e17ac828b67f08f3a5afbc00f6"
+          }
+        ]
+      },
+      "spaceclaim_execution": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "geometry_measurements": {
+        "status": "passed",
+        "evidence_refs": [
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+            "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638"
+          },
+          {
+            "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+            "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5"
+          }
+        ]
+      },
+      "native_save": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "native_reopen": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      },
+      "visual_review": {
+        "status": "not_tested",
+        "evidence_refs": []
+      },
+      "requested_export": {
+        "status": "not_applicable",
+        "evidence_refs": []
+      }
+    },
+    "notes": "Exact action source/archive hashes match the historical run event and selected passing groups. The portable harness body is byte-identical after removing machine-specific configuration; it is not the full executed source. snapshot-map.json records the original configured source/archive hashes. No persistence, export or full visual claim."
+  },
+  "artifact_links": [
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-11.scscript",
+      "sha256": "e7e0b75c461ca20f29cd2f97543c14cbf5b9ce279ceee6d8be009545682b42e8",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-11.py",
+      "sha256": "3094d6d25fe368777ac88a9fad1ed928a3b07ce7ed13c57f94308fdc624deec6",
+      "role": "editable_source"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/modeling-strategy-scripting/actions/ma-11.action.py",
+      "sha256": "ecd8346eb299df1196eb31e1df97d198f05edebbd2f21dacc381da29018ae1cc",
+      "role": "implementation"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-catalog.json",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/references/operation-template-contract.md",
+      "sha256": "48b098f1cf528e0fa705cd0b42f590fcbf1d138f124b045f30505270448a0e00",
+      "role": "reference"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/operation-templates/evidence/ma-11-host-check.json",
+      "sha256": "0b166a99575a0fd59f254253e0c19423387e30e17ac828b67f08f3a5afbc00f6",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/report.json",
+      "sha256": "ec4f105cfe9b7f114fd83f94b92cf4d239a238d2598eb36c9a08729c72479638",
+      "role": "evidence"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshots/suite-advanced-08/harness.py",
+      "sha256": "cc9e159049c56f33bd4cb7f59ed74860af3d9965dd55e5e61d4d1b11f1cc10a0",
+      "role": "test"
+    },
+    {
+      "path": "spaceclaim-vision-modeling/assets/evaluations/p3-actions/snapshot-map.json",
+      "sha256": "fa2e21847abe0a45234ad37d1c696fa02a0fe93a105cbc9d61bab51f4571adb5",
+      "role": "evidence"
+    }
+  ]
+}

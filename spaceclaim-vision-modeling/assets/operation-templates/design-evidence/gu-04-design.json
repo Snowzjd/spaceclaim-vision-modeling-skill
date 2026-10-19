@@ -1,0 +1,20 @@
+{
+  "operation_id": "geometry_understanding.correspond-items-across-views",
+  "template_version": "0.3.1",
+  "catalog_id": "GU-04",
+  "status": "passed",
+  "scope": "Design boundary only; does not score source interpretation.",
+  "review": {
+    "single_effect": "跨视图对应记录",
+    "declared_inputs": [
+      "two_views",
+      "corresponding_structure_refs"
+    ],
+    "result_fields": [
+      "correspondence",
+      "ambiguities"
+    ],
+    "recovery": "Retain unsupported fields; no geometry mutation or implicit fallback dimensions.",
+    "migration": "New action boundary; no whole-part evidence inherited."
+  }
+}

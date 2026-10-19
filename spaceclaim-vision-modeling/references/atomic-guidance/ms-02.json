@@ -1,0 +1,33 @@
+{
+  "catalog_id": "MS-02",
+  "input_fields": [
+    {
+      "name": "parameter_declaration",
+      "type": "object",
+      "description": "Object with required keys `name`, `value`, `unit`, `allowed_range`, and `provenance`; it is the single parameter being checked."
+    },
+    {
+      "name": "single_constraint",
+      "type": "object",
+      "description": "Object with required keys `operator`, `operand`, and `unit`; optional key `inclusive` preserves bound semantics for this single constraint."
+    }
+  ],
+  "result_fields": [
+    {
+      "name": "constraint_result",
+      "type": "object",
+      "description": "Object with required keys `parameter_name`, `value`, `operator`, `operand`, `unit`, `verdict`, and `violation_reason`; nullable when the common output envelope records missing comparison data."
+    }
+  ],
+  "procedure": [
+    "Verify that exactly one parameter and one constraint are present and that their dimensions and units are comparable.",
+    "Normalize the constraint without changing its operator, bounds, or inclusivity, then compare it with the supplied parameter value.",
+    "Record the normalized constraint, value, units, pass or fail outcome, and a concrete violation reason when applicable.",
+    "Return `constraint_result` as action data and place status, provenance ownership, and any unresolved fields in the common output envelope."
+  ],
+  "rejection_rules": [
+    "Reject a multi-parameter or compound constraint; split it into independently checked constraints.",
+    "Reject missing values, incompatible units, invalid bound ordering, or an unknown comparison operator.",
+    "Do not mutate the parameter declaration or convert an unknown value into a passing result."
+  ]
+}

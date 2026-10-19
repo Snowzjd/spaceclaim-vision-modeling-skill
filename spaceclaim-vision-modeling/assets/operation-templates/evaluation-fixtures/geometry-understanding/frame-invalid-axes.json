@@ -1,0 +1,22 @@
+{
+  "contract_kind": "geometry_understanding_operation_output",
+  "contract_version": 1,
+  "template_version": "0.2.0",
+  "operation_id": "geometry_understanding.define-coordinate-frame",
+  "handoff_status": "ready",
+  "source_manifest_ref": "source-manifest:neutral-invalid-frame",
+  "coordinate_system": {
+    "origin": {"status": "resolved", "value": [0.0, 0.0, 0.0], "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "origin", "modality": "user_input"}]}},
+    "x_axis": {"status": "resolved", "value": [1.0, 0.0, 0.0], "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "x axis", "modality": "user_input"}]}},
+    "y_axis": {"status": "resolved", "value": [1.0, 0.0, 0.0], "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "y axis", "modality": "user_input"}]}},
+    "z_axis": {"status": "resolved", "value": [0.0, 0.0, 1.0], "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "z axis", "modality": "user_input"}]}},
+    "handedness": {"status": "resolved", "value": "right_handed", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "handedness", "modality": "user_input"}]}},
+    "unit_context": {"status": "resolved", "value": "millimeter", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "unit", "modality": "user_input"}]}},
+    "source_view_mapping": [
+      {"source_ref": {"source_id": "view-a", "locator": "entire view", "modality": "drawing"}, "mapping": "declared source mapping for isolated basis validation", "provenance": {"kind": "user", "source_refs": [{"source_id": "intent", "locator": "view mapping", "modality": "user_input"}]}}
+    ]
+  },
+  "frame_assumptions": [],
+  "unresolved_items": [],
+  "frame_confidence": {"level": "high", "coverage": "complete", "rationale": "This intentionally inconsistent fixture claims a resolved frame."}
+}
