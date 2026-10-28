@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add `references/v261-runtime-notes.md`: the 2026 R1 (API V261) unit convention (metres), the working native-save (`DocumentSave`) and STEP-export (`Part.Export`) routes, `.scdocx` extension rewriting, and the paths that block in an in-process host (`Document.SaveAs`, STEP import, fillet/chamfer commands). Documented as runtime notes, not a compatibility claim.
+
 ## v0.3.0 - 2026-10-19
 
 - Establish Geometry understanding, Modeling strategy and scripting, Execution and recovery, and Validation and visual review as the four core stages, with explicit handoff contracts.
