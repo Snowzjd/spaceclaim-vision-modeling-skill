@@ -102,28 +102,58 @@ native document, until a licensed interactive-session route is measured.
 
 Status: `blocked`.
 
-## 6. Fillets and chamfers have no API route here
+## 6. Fillets and chamfers: present, in a different assembly
 
-The V21 add-in route used by this repository's public cases
-(`ConstantRound.Execute(EdgeSelection.Create(...), radius)`) is **not present** in
-the V261 API assembly: `ConstantRound`, `ConstantChamfer` and `EdgeSelection` are
-all absent, so those cases cannot be replayed as-is on 2026 R1.
+An earlier reading of this build concluded that the fillet/chamfer commands were
+missing. That was wrong: it looked only in `SpaceClaim.Api.V261.dll`. The commands
+live in **`SpaceClaim.Api.V261.Scripting.dll`**, and the selections in
+`SpaceClaim.Api.V261.Scripting.Selection`.
 
-Modeler-level substitutes exist for prismatic work (`PolygonProfile` with
-`Modeler.Body.ExtrudeProfile`) but there is no revolve primitive on
-`Modeler.Body`, and `LoftProfiles` in this build expects a list of trimmed-curve
-collections rather than `Profile` objects, so lofted cone rings for chamfers did
-not build.
+```python
+import clr
+clr.AddReference("SpaceClaim.Api.V261.Scripting")
+from SpaceClaim.Api.V261.Scripting.Commands import ConstantRound, Chamfer
+from SpaceClaim.Api.V261.Scripting.Selection import EdgeSelection
 
-Consequence for a case that must keep R18 corners and C2/C1.5 chamfers:
+# edge selection by geometry: radius and z of a circular edge, or bbox of a line edge
+sel = EdgeSelection.Create(edges)
+result = ConstantRound.Execute(sel, radius_m, None)   # ICommandInfo may be null
+result = Chamfer.Execute(sel, distance_m, None)
+```
 
-- corners can be approximated with a sampled polygon profile (sub-millimetre area
-  error, but not a true fillet face);
-- chamfers are not built, and their volume contribution must be stated in the
-  case record rather than silently omitted.
+Signature summary:
 
-Status: `blocked` for true fillets/chamfers.
+- `ConstantRound.Execute(ISelection selection, Double radius, ICommandInfo info)`
+- `Chamfer.Execute(ISelection selection, Double distance, ICommandInfo info)`
+  (plus two-distance and `copy` overloads)
+- `FullRound.Execute(ISelection faceSelection, ICommandInfo info)`
+- `EdgeSelection.Create(IDesignEdge)` / `Create(IEnumerable<IDesignEdge>)`,
+  `FaceSelection.Create(...)` with the same shapes.
 
+Measured effect on a part with the public cases' feature set (180x140x18 plate,
+phi96 body, phi132 flange, stepped bore, 4 phi14 holes, 4 phi6.8 holes, 4 ribs):
+
+| stage | volume (mm3) |
+| --- | --- |
+| prismatic solid | 850,128.476680 |
+| after R18 rounds on the 4 plate corners | 845,122.245036 |
+| after C1.5 flange rim chamfer | 844,659.252818 |
+| after C2 bore-bottom chamfer | 844,324.149602 |
+| after C1.5 bore-top chamfer | 844,161.572182 |
+| contract volume | 844,020.4 |
+
+That is +0.017% against the contract value, with the four R18 fillets present as
+real cylindrical faces (radius 18, four of them) in the reopened document.
+
+Two limits remain:
+
+- The modeler-only route (`Modeler.Body` + profiles) still has no revolve primitive,
+  so an axisymmetric feature has to be built as document commands or as
+  extrude/boolean compositions.
+- `EdgeSelection` is geometry-based; a script must find its edges by radius, bbox or
+  position. Recorded `EdgeN` identifiers are not reusable.
+
+Status: `tested`.
 ## 7. What a caller should check before claiming a run
 
 1. The written path and its extension (`.scdocx` on this release).
