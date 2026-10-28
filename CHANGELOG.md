@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Document a backend-agnostic host capability contract for desktop control: minimum operation set, per-action metadata, `implemented`/`tested`/`unsupported`/`not_tested` states, one-backend and one-queue rules, and stop/queue-empty thresholds. The existing Computer Use plugin remains the reference implementation; no controller implementation or capability claim changed.
+
 ## v0.3.0 - 2026-10-19
 
 - Establish Geometry understanding, Modeling strategy and scripting, Execution and recovery, and Validation and visual review as the four core stages, with explicit handoff contracts.
