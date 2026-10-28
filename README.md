@@ -38,6 +38,7 @@ Installing or copying this repository does **not** install or provide the follow
    - Controls the SpaceClaim window, mouse, keyboard, script loading and execution, view changes, object selection, and screenshot capture.
    - Install and enable the plugin and both its server and Skill in the desktop app; grant access to SpaceClaim when prompted. Copying only its `SKILL.md` is insufficient. Follow the [official Computer Use setup](https://developers.openai.com/codex/computer-use).
    - The Windows reference controller uses the plugin's `node_repl` / `@oai/sky` runtime. Do not install a guessed npm substitute or add another desktop MCP to bypass a missing capability. The controller and its tools come from the plugin, not this repository.
+   - The reference plugin is one implementation of the [host capability contract](spaceclaim-vision-modeling/references/controller-compatibility.md#host-capability-contract), not the contract itself. A substitute backend — a CLI command or a local MCP server — is admissible only when it satisfies that contract (window identity, capture, focus, input, stop, health) and is declared before the run; declared is still not tested.
    - Without it, the package can still generate, package, and statically audit scripts, but it cannot operate SpaceClaim or collect desktop-based execution evidence. See the [controller compatibility rules](spaceclaim-vision-modeling/references/controller-compatibility.md) for direct actions, equivalent paths and outstanding live checks.
 
 3. **Local SpaceClaim and host Python**
